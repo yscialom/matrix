@@ -26,11 +26,11 @@ TEST(construct, default_user_defined_type)
     ASSERT_TRUE(m(0).triggered());
 }
 
-// Expect matrix elements to be default-initialized for user-defined types
-TEST(construct, value_user_defined_type)
+// Expect matrix elements to be default-initialized for array types
+TEST(construct, default_array_type)
 {
     struct user_defined : ysc::test::SideEffect<>
     { user_defined() { trigger(); } };
-    ysc::matrix<user_defined, 1> const m;
-    ASSERT_TRUE(m(0).triggered());
+    ysc::matrix<user_defined[1], 1> const m;
+    ASSERT_TRUE(m(0)[0].triggered());
 }
