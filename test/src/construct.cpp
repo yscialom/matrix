@@ -2,23 +2,30 @@
 #include <gtest/gtest.h>
 #include "utils.hpp"
 
-// Expect matrix elements to be zero-initialized for trivial types
-TEST(construct, default_trivial_type)
+// Expect matrix elements to be default-initialized (uninitialized) for trivial types
+TEST(construct_init, default_trivial_type)
 {
     /*
      * Since reading uninitialized memory is UB, we can not rely solely on
      * reading the value of a matrix<unsigned> element after default-init.
      */
-    std::array<unsigned char, sizeof(unsigned)> non_zero_memory;
-    constexpr unsigned char non_zero = 0xC5;
-    non_zero_memory.fill(non_zero);
+    auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>();
+    ASSERT_NE((*m)(0), 0);
+}
 
-    auto const& m = *new(non_zero_memory.data()) ysc::matrix<unsigned, 1>();
-    ASSERT_EQ(m(0), 0);
+// Expect matrix elements to be zero-initialized for trivial types on demand
+TEST(construct_init, zero_trivial_type)
+{
+    /*
+     * Since reading uninitialized memory is UB, we can not rely solely on
+     * reading the value of a matrix<unsigned> element after default-init.
+     */
+    auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>(ysc::matrix_zero);
+    ASSERT_EQ((*m)(0), 0);
 }
 
 // Expect matrix elements to be default-initialized for user-defined types
-TEST(construct, default_user_defined_type)
+TEST(construct_init, default_user_defined_type)
 {
     struct user_defined : ysc::test::SideEffect<>
     { user_defined() { trigger(); } };
@@ -27,7 +34,16 @@ TEST(construct, default_user_defined_type)
 }
 
 // Expect matrix elements to be default-initialized for array types
-TEST(construct, default_array_type)
+TEST(construct_init, default_array_type)
+{
+    struct user_defined : ysc::test::SideEffect<>
+    { user_defined() { trigger(); } };
+    ysc::matrix<user_defined[1], 1> const m;
+    ASSERT_TRUE(m(0)[0].triggered());
+}
+
+// Expect matrix elements to be default-initialized for array types
+TEST(construct_init, )
 {
     struct user_defined : ysc::test::SideEffect<>
     { user_defined() { trigger(); } };
