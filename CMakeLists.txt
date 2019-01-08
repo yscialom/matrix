@@ -17,6 +17,9 @@ add_subdirectory(src)
 ##
 # test configuration
 #
-add_subdirectory(test)
 enable_testing()
-#add_test(NAME ${TARGET_NAME}_test COMMAND test)
+add_subdirectory(test)
+add_custom_target(check # alias for make && make test
+    COMMAND ${CMAKE_CTEST_COMMAND}
+    DEPENDS ${TARGET_NAME}-test
+)

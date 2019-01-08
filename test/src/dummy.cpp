@@ -1,8 +1,15 @@
 #include <matrix.hpp>
+#include <gtest/gtest.h>
 
-int main()
+TEST(DUMMY, DUMMYCASE)
 {
     ysc::matrix<unsigned, 1> m;
-    m(0) = 0;
-    return m(0);
+    ASSERT_EQ(m(0), 0);
+}
+    
+
+int main(int argc, char** argv)
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
