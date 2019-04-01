@@ -3,6 +3,7 @@
 
 #include <array>
 #include <numeric>
+#include <algorithm>
 
 namespace ysc
 {
@@ -36,7 +37,8 @@ public:
     static constexpr std::array  dimensions = { Dimensions... };
 
 private:
-    std::array<T, (Dimensions * ...)> _data;
+    static constexpr std::size_t linear_size = (Dimensions * ...);
+    std::array<T, linear_size> _data;
 
 public:
     friend void swap(matrix& lhs, matrix& rhs)
@@ -46,22 +48,46 @@ public:
     }
 
 public:
-    matrix()                          = default;
-    matrix(matrix&& other)            = default;
-    matrix& operator=(matrix&& other) = default;
+    // default constructor
+    matrix() = default;
 
-    matrix(matrix_zero_t) : _data({}) {}
+    // value constructors
+    matrix(matrix_zero_t)
+        : _data({})
+    {}
+
+    template<class ... Args>
+    matrix(Args&& ... args)
+        : _data{std::forward<Args>(args)...}
+    {}
+
+    // copy constructors
+    matrix(matrix const& other) = default;
 
     template<class U>
-    matrix(matrix<U, Dimensions...> const& other) { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+    matrix(matrix<U, Dimensions...> const& other)
+    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+
+    // move constructors
+    matrix(matrix && other) = default;
+
+    template<class U>
+    matrix(matrix<U, Dimensions...> && other)
+    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
+
+    // assignment operators (copy)
+    matrix& operator=(matrix const& other) = default;
 
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
-    {
-        matrix o{other};
-        swap(*this, o);
-        return *this;
-    }
+    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+
+    // assignment operators (move)
+    matrix& operator=(matrix && other) = default;
+
+    template<class U>
+    matrix& operator=(matrix<U, Dimensions...> && other)
+    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
 
 public:
     template<class... Args>
