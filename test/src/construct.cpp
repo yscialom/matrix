@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <string>
+#include <memory>
 
 
 //
@@ -87,7 +88,7 @@ TEST(construct_init, aggregate_mixed_types)
 // --- COPY CONSTRUCTORS ---
 //
 
-// Expect matrixes to be copyiable for trivial types
+// Expect matrixes to be copyable for trivial types
 TEST(construct_copy, trivial_type)
 {
     ysc::matrix<int, 3> const m = { 1987, 04, 24 };
@@ -97,7 +98,7 @@ TEST(construct_copy, trivial_type)
     ASSERT_EQ(m_copy(2), 24);
 }
 
-// Expect matrixes to be copyiable for trivial types from a different source type
+// Expect matrixes to be copyable for trivial types from a different source type
 TEST(construct_copy, different_trivial_type)
 {
     ysc::matrix<int, 3> const m = { 1987, 04, 24 };
@@ -107,7 +108,7 @@ TEST(construct_copy, different_trivial_type)
     ASSERT_EQ(m_copy(2), 24);
 }
 
-// Expect matrixes to be copyiable for user-defined types
+// Expect matrixes to be copyable for user-defined types
 TEST(construct_copy, user_defined_type)
 {
     ysc::matrix<std::string, 3> const m = { "1987", "04", "24" };
@@ -115,4 +116,37 @@ TEST(construct_copy, user_defined_type)
     ASSERT_EQ(m_copy(0), "1987");
     ASSERT_EQ(m_copy(1), "04");
     ASSERT_EQ(m_copy(2), "24");
+}
+
+//
+// --- MOVE CONSTRUCTORS ---
+//
+
+// Expect matrixes to be movable for trivial types
+TEST(construct_move, trivial_type)
+{
+    ysc::matrix<int, 3> m = { 1987, 04, 24 };
+    auto const m_copy = std::move(m);
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be movable for trivial types from a different source type
+TEST(construct_move, different_trivial_type)
+{
+    ysc::matrix<int, 3> m = { 1987, 04, 24 };
+    ysc::matrix<long, 3> const m_copy = std::move(m);
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be movable for user-defined types
+TEST(construct_move, user_defined_type)
+{
+    ysc::matrix<std::shared_ptr<int>, 1> m = { std::make_shared<int>(0) };
+    auto const m_copy = std::move(m);
+    ASSERT_EQ(*m_copy(0), 0);
+    ASSERT_FALSE(static_cast<bool>(m(0)));
 }

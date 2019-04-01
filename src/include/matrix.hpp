@@ -3,6 +3,7 @@
 
 #include <array>
 #include <numeric>
+#include <algorithm>
 
 namespace ysc
 {
@@ -67,6 +68,12 @@ public:
 
     // move constructors
     matrix(matrix&& other)            = default;
+
+    template<class U>
+    matrix(matrix<U, Dimensions...> && other)
+    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
+
+    // assignment operators
     matrix& operator=(matrix&& other) = default;
 
     template<class U>
