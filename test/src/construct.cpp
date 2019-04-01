@@ -1,6 +1,9 @@
 #include <matrix.hpp>
-#include <gtest/gtest.h>
 #include "utils.hpp"
+
+#include <gtest/gtest.h>
+
+#include <string>
 
 // Expect matrix elements to be default-initialized (uninitialized) for trivial types
 TEST(construct_init, default_trivial_type)
@@ -42,11 +45,20 @@ TEST(construct_init, default_array_type)
     ASSERT_TRUE(m(0)[0].triggered());
 }
 
-// Expect matrix elements to be default-initialized for array types
-TEST(construct_init, )
+// Expect matrix elements to be aggregate-initializable (trival types)
+TEST(construct_init, aggregate_trivial_types)
 {
-    struct user_defined : ysc::test::SideEffect<>
-    { user_defined() { trigger(); } };
-    ysc::matrix<user_defined[1], 1> const m;
-    ASSERT_TRUE(m(0)[0].triggered());
+    ysc::matrix<int, 3> const m = { 1987, 04, 24 };
+    ASSERT_EQ(m(0), 1987);
+    ASSERT_EQ(m(1), 04);
+    ASSERT_EQ(m(2), 24);
+}
+
+// Expect matrix elements to be aggregate-initializable (user-defined types)
+TEST(construct_init, aggregate_user_defined_types)
+{
+    ysc::matrix<std::string, 3> const m = { "1987", "04", "24" };
+    ASSERT_EQ(m(0), "1987");
+    ASSERT_EQ(m(1), "04");
+    ASSERT_EQ(m(2), "24");
 }

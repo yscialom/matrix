@@ -36,7 +36,8 @@ public:
     static constexpr std::array  dimensions = { Dimensions... };
 
 private:
-    std::array<T, (Dimensions * ...)> _data;
+    static constexpr std::size_t linear_size = (Dimensions * ...);
+    std::array<T, linear_size> _data;
 
 public:
     friend void swap(matrix& lhs, matrix& rhs)
@@ -51,6 +52,11 @@ public:
     matrix& operator=(matrix&& other) = default;
 
     matrix(matrix_zero_t) : _data({}) {}
+
+    template<class ... Args>
+    matrix(Args&& ... args)
+        : _data{std::forward<Args>(args)...}
+    {}
 
     template<class U>
     matrix(matrix<U, Dimensions...> const& other) { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
