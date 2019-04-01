@@ -49,7 +49,7 @@ public:
 
 public:
     // default constructor
-    matrix()                          = default;
+    matrix() = default;
 
     // value constructors
     matrix(matrix_zero_t)
@@ -69,7 +69,7 @@ public:
     { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
 
     // move constructors
-    matrix(matrix&& other)            = default;
+    matrix(matrix && other) = default;
 
     template<class U>
     matrix(matrix<U, Dimensions...> && other)

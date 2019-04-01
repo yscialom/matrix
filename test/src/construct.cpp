@@ -222,3 +222,25 @@ TEST(assign_move, user_defined_type)
     ASSERT_EQ(m_assign(1), "04");
     ASSERT_EQ(m_assign(2), "24");
 }
+
+
+//
+// --- DESTRUCTOR ---
+//
+
+// Expect matrix elements to be destructed
+TEST(destruct, user_defined_type)
+{
+    bool trigger = false;
+    struct S {
+        S(bool& flag) : _flag(flag) {}
+        ~S() { _flag = true; }         // upon destruction: sets trigger to true
+        bool& _flag;
+    };
+
+    {
+        // trigger is false
+        ysc::matrix<S, 1> const m = { trigger };
+    }   // trigger should be toggled as m is destructed
+    ASSERT_TRUE(trigger);
+}
