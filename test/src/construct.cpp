@@ -62,3 +62,12 @@ TEST(construct_init, aggregate_user_defined_types)
     ASSERT_EQ(m(1), "04");
     ASSERT_EQ(m(2), "24");
 }
+
+// Expect matrix elements to be aggregate-initializable from mixed source types
+TEST(construct_init, aggregate_mixed_types)
+{
+    ysc::matrix<long long, 3> const m = { 1987, '\x04', 24L };
+    ASSERT_EQ(m(0), 1987);
+    ASSERT_EQ(m(1), 04);
+    ASSERT_EQ(m(2), 24);
+}
