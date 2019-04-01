@@ -118,6 +118,7 @@ TEST(construct_copy, user_defined_type)
     ASSERT_EQ(m_copy(2), "24");
 }
 
+
 //
 // --- MOVE CONSTRUCTORS ---
 //
@@ -149,4 +150,75 @@ TEST(construct_move, user_defined_type)
     auto const m_copy = std::move(m);
     ASSERT_EQ(*m_copy(0), 0);
     ASSERT_FALSE(static_cast<bool>(m(0)));
+}
+
+
+//
+// --- ASSIGNMENT OPERATORS ---
+//
+
+// Expect matrixes to be assignable for trivial types
+TEST(assign_copy, trivial_type)
+{
+    ysc::matrix<int, 3> const m = { 1987, 04, 24 };
+    ysc::matrix<int, 3> m_assign;
+    m_assign = m;
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable for trivial types from a different source type
+TEST(assign_copy, different_trivial_type)
+{
+    ysc::matrix<int, 3> const m = { 1987, 04, 24 };
+    ysc::matrix<long, 3> m_assign;
+    m_assign = m;
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable for user-defined types
+TEST(assign_copy, user_defined_type)
+{
+    ysc::matrix<std::string, 3> const m = { "1987", "04", "24" };
+    ysc::matrix<std::string, 3> m_assign;
+    m_assign = m;
+    ASSERT_EQ(m_assign(0), "1987");
+    ASSERT_EQ(m_assign(1), "04");
+    ASSERT_EQ(m_assign(2), "24");
+}
+
+// Expect matrixes to be assignable (move) for trivial types
+TEST(assign_move, trivial_type)
+{
+    ysc::matrix<int, 3> m = { 1987, 04, 24 };
+    ysc::matrix<int, 3> m_assign;
+    m_assign = std::move(m);
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable (move) for trivial types from a different source type
+TEST(assign_move, different_trivial_type)
+{
+    ysc::matrix<int, 3> m = { 1987, 04, 24 };
+    ysc::matrix<long, 3> m_assign;
+    m_assign = std::move(m);
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable (move) for user-defined types
+TEST(assign_move, user_defined_type)
+{
+    ysc::matrix<std::string, 3> m = { "1987", "04", "24" };
+    ysc::matrix<std::string, 3> m_assign;
+    m_assign = std::move(m);
+    ASSERT_EQ(m_assign(0), "1987");
+    ASSERT_EQ(m_assign(1), "04");
+    ASSERT_EQ(m_assign(2), "24");
 }

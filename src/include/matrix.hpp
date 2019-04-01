@@ -52,7 +52,9 @@ public:
     matrix()                          = default;
 
     // value constructors
-    matrix(matrix_zero_t) : _data({}) {}
+    matrix(matrix_zero_t)
+        : _data({})
+    {}
 
     template<class ... Args>
     matrix(Args&& ... args)
@@ -73,16 +75,19 @@ public:
     matrix(matrix<U, Dimensions...> && other)
     { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
 
-    // assignment operators
-    matrix& operator=(matrix&& other) = default;
+    // assignment operators (copy)
+    matrix& operator=(matrix const& other) = default;
 
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
-    {
-        matrix o{other};
-        swap(*this, o);
-        return *this;
-    }
+    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+
+    // assignment operators (move)
+    matrix& operator=(matrix && other) = default;
+
+    template<class U>
+    matrix& operator=(matrix<U, Dimensions...> && other)
+    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
 
 public:
     template<class... Args>
