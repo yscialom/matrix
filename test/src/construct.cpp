@@ -5,8 +5,13 @@
 
 #include <string>
 
+
+//
+// --- DEFAULT CONSTRUCTORS ---
+//
+
 // Expect matrix elements to be default-initialized (uninitialized) for trivial types
-TEST(construct_init, default_trivial_type)
+TEST(construct_default, default_trivial_type)
 {
     /*
      * Since reading uninitialized memory is UB, we can not rely solely on
@@ -15,6 +20,29 @@ TEST(construct_init, default_trivial_type)
     auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>();
     ASSERT_NE((*m)(0), 0);
 }
+
+// Expect matrix elements to be default-initialized for user-defined types
+TEST(construct_default, default_user_defined_type)
+{
+    struct user_defined : ysc::test::SideEffect<>
+    { user_defined() { trigger(); } };
+    ysc::matrix<user_defined, 1> const m;
+    ASSERT_TRUE(m(0).triggered());
+}
+
+// Expect matrix elements to be default-initialized for array types
+TEST(construct_default, default_array_type)
+{
+    struct user_defined : ysc::test::SideEffect<>
+    { user_defined() { trigger(); } };
+    ysc::matrix<user_defined[1], 1> const m;
+    ASSERT_TRUE(m(0)[0].triggered());
+}
+
+
+//
+// --- AGGREGATE CONSTRUCTORS ---
+//
 
 // Expect matrix elements to be zero-initialized for trivial types on demand
 TEST(construct_init, zero_trivial_type)
@@ -25,24 +53,6 @@ TEST(construct_init, zero_trivial_type)
      */
     auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>(ysc::matrix_zero);
     ASSERT_EQ((*m)(0), 0);
-}
-
-// Expect matrix elements to be default-initialized for user-defined types
-TEST(construct_init, default_user_defined_type)
-{
-    struct user_defined : ysc::test::SideEffect<>
-    { user_defined() { trigger(); } };
-    ysc::matrix<user_defined, 1> const m;
-    ASSERT_TRUE(m(0).triggered());
-}
-
-// Expect matrix elements to be default-initialized for array types
-TEST(construct_init, default_array_type)
-{
-    struct user_defined : ysc::test::SideEffect<>
-    { user_defined() { trigger(); } };
-    ysc::matrix<user_defined[1], 1> const m;
-    ASSERT_TRUE(m(0)[0].triggered());
 }
 
 // Expect matrix elements to be aggregate-initializable (trival types)
@@ -70,4 +80,39 @@ TEST(construct_init, aggregate_mixed_types)
     ASSERT_EQ(m(0), 1987);
     ASSERT_EQ(m(1), 04);
     ASSERT_EQ(m(2), 24);
+}
+
+
+//
+// --- COPY CONSTRUCTORS ---
+//
+
+// Expect matrixes to be copyiable for trivial types
+TEST(construct_copy, trivial_type)
+{
+    ysc::matrix<int, 3> const m = { 1987, 04, 24 };
+    auto const m_copy = m;
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be copyiable for trivial types from a different source type
+TEST(construct_copy, different_trivial_type)
+{
+    ysc::matrix<int, 3> const m = { 1987, 04, 24 };
+    ysc::matrix<long, 3> const m_copy = m;
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be copyiable for user-defined types
+TEST(construct_copy, user_defined_type)
+{
+    ysc::matrix<std::string, 3> const m = { "1987", "04", "24" };
+    auto const m_copy = m;
+    ASSERT_EQ(m_copy(0), "1987");
+    ASSERT_EQ(m_copy(1), "04");
+    ASSERT_EQ(m_copy(2), "24");
 }

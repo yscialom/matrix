@@ -47,10 +47,10 @@ public:
     }
 
 public:
+    // default constructor
     matrix()                          = default;
-    matrix(matrix&& other)            = default;
-    matrix& operator=(matrix&& other) = default;
 
+    // value constructors
     matrix(matrix_zero_t) : _data({}) {}
 
     template<class ... Args>
@@ -58,8 +58,16 @@ public:
         : _data{std::forward<Args>(args)...}
     {}
 
+    // copy constructors
+    matrix(matrix const& other) = default;
+
     template<class U>
-    matrix(matrix<U, Dimensions...> const& other) { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+    matrix(matrix<U, Dimensions...> const& other)
+    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+
+    // move constructors
+    matrix(matrix&& other)            = default;
+    matrix& operator=(matrix&& other) = default;
 
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
