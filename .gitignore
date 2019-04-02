@@ -1,4 +1,4 @@
 _cmake
 *.orig
 *~
-doc/html/
+html
