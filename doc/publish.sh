@@ -7,4 +7,4 @@ cp -r html/* "${GITHUB_PAGES_DIR}"/.
 git add "${GITHUB_PAGES_DIR}"
 git commit -m"Update documentation."
 git push origin gh-pages
-git checkout HEAD@{1}
+git checkout -
