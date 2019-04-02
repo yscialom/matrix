@@ -6,8 +6,8 @@
  * @copyright This project is released under GNU Lesser General Public License; see
  *            COPYING and COPYING.LESSER files attached.
  *
- * The matrix library is a header-only template library defining multi-dimensional
- * arrays of static sizes.
+ * The matrix library is a header-only template library defining a general-purpose
+ * multi-dimension container of static dimensions.
  */
 #ifndef YSC_MATRIX_HPP
 #define YSC_MATRIX_HPP
