@@ -52,7 +52,7 @@ TEST(construct_init, zero_trivial_type)
      * Since reading uninitialized memory is UB, we can not rely solely on
      * reading the value of a matrix<unsigned> element after default-init.
      */
-    auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>(ysc::matrix_zero);
+    auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>(ysc::zero);
     ASSERT_EQ((*m)(0), 0);
 }
 
@@ -63,6 +63,15 @@ TEST(construct_init, aggregate_trivial_types)
     ASSERT_EQ(m(0), 1987);
     ASSERT_EQ(m(1), 04);
     ASSERT_EQ(m(2), 24);
+}
+
+// Expect matrix elements to be aggregate-initializable (trival types, multi-dim)
+TEST(construct_init, aggregate_trivial_types_multidim)
+{
+    ysc::matrix<int, 2, 2, 2> const m = { 1, 2, 3, 4, 5, 6, 7, 8 };
+    ASSERT_EQ(m(0,0,0), 1);
+    ASSERT_EQ(m(0,0,1), 2);
+    ASSERT_EQ(m(1,1,1), 8);
 }
 
 // Expect matrix elements to be aggregate-initializable (user-defined types)
