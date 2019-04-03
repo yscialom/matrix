@@ -249,8 +249,8 @@ public: // element access
     const T& at(Coords... coordinates) const
     {
         const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
-        const bool any_of_coords_is_out_od_bound = ( (coordinates >= Dimensions) || ... );
-        if (any_of_coords_is_negative == true || any_of_coords_is_out_od_bound) {
+        const bool any_of_coords_is_out_of_bound = ( (coordinates >= Dimensions) || ... );
+        if (any_of_coords_is_negative == true || any_of_coords_is_out_of_bound == true) {
             throw std::out_of_range{"matrix::at"};
         }
         return (*this)(coordinates...);
@@ -267,8 +267,8 @@ public: // element access
     T& at(Coords... coordinates)
     {
         const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
-        const bool any_of_coords_is_out_od_bound = ( (coordinates >= Dimensions) || ... );
-        if (any_of_coords_is_negative == true || any_of_coords_is_out_od_bound) {
+        const bool any_of_coords_is_out_of_bound = ( (coordinates >= Dimensions) || ... );
+        if (any_of_coords_is_negative == true || any_of_coords_is_out_of_bound == true) {
             throw std::out_of_range{"matrix::at"};
         }
         return (*this)(coordinates...);
