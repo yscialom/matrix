@@ -71,13 +71,24 @@ TEST(access, const_with_check_outofbound)
 {
     ysc::matrix<int, 2, 2> const m{0, 1, 2, 3};
 
-    bool out_of_range_exception_catch = false;
-    try {
-        (void) m.at(-1, 0);
-    } catch (std::out_of_range&) {
-        out_of_range_exception_catch = true;
+    {
+        bool out_of_range_exception_catch = false;
+        try {
+            (void) m.at(-1, 0);
+        } catch (std::out_of_range&) {
+            out_of_range_exception_catch = true;
+        }
+        ASSERT_TRUE(out_of_range_exception_catch);
     }
-    ASSERT_TRUE(out_of_range_exception_catch);
+    {
+        bool out_of_range_exception_catch = false;
+        try {
+            (void) m.at(2, 0);
+        } catch (std::out_of_range&) {
+            out_of_range_exception_catch = true;
+        }
+        ASSERT_TRUE(out_of_range_exception_catch);
+    }
 }
 
 // Access element of a mutable matrix, with bound checking (access within bounds)
@@ -101,12 +112,23 @@ TEST(access, mutable_with_check_outofbound)
 {
     ysc::matrix<int, 2, 2> m{0, 1, 2, 3};
 
-    bool out_of_range_exception_catch = false;
-    try {
-        (void) m.at(-1, 0);
-    } catch (std::out_of_range&) {
-        out_of_range_exception_catch = true;
+    {
+        bool out_of_range_exception_catch = false;
+        try {
+            (void) m.at(-1, 0);
+        } catch (std::out_of_range&) {
+            out_of_range_exception_catch = true;
+        }
+        ASSERT_TRUE(out_of_range_exception_catch);
     }
-    ASSERT_TRUE(out_of_range_exception_catch);
+    {
+        bool out_of_range_exception_catch = false;
+        try {
+            (void) m.at(0, 2);
+        } catch (std::out_of_range&) {
+            out_of_range_exception_catch = true;
+        }
+        ASSERT_TRUE(out_of_range_exception_catch);
+    }
 }
 
