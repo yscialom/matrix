@@ -37,7 +37,7 @@ public:
     { return true == invoked; }
 };
 
-auto non_zero_memory(std::size_t size)
+static auto non_zero_memory(std::size_t size)
 {
     constexpr std::byte non_zero = static_cast<std::byte>(0xC5);
 
@@ -47,7 +47,7 @@ auto non_zero_memory(std::size_t size)
 }
 
 template <class T, class... Args>
-auto on_non_zero_memory(Args&& ...args)
+static auto on_non_zero_memory(Args&& ...args)
 {
     auto memory = non_zero_memory(sizeof(T));
     T* const naked_object = ([&]() {
