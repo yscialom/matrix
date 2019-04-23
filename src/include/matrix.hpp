@@ -236,7 +236,13 @@ public: // access operators
     template<class... Args>
     T& operator()(Args... coordinates)
     { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
+
+public: // fill matrix 
+	/**/
+	void fill( const T& value )
+	{_data.fill(value);}
 };
+
 } // namespace ysc
 
 #endif // YSC_MATRIX_HPP
