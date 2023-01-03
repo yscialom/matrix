@@ -15,6 +15,7 @@
 #include <array>
 #include <numeric>
 #include <algorithm>
+#include <exception>
 
 namespace ysc
 {
@@ -214,7 +215,7 @@ public: // assignment operators (move)
     matrix& operator=(matrix<U, Dimensions...> && other)
     { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
 
-public: // access operators
+public: // element access
     /**
      * @brief Returns a reference to the element at coordinates.
      * @param coordinates Coordinates of the element to return
@@ -222,8 +223,8 @@ public: // access operators
      * No bounds checking is performed; if @c coordinates are outside od
      * the matrix dimensions, the behavior is undefined.
      */
-    template<class... Args>
-    T const& operator()(Args... coordinates) const
+    template<class... Coords>
+    T const& operator()(Coords... coordinates) const
     { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
 
     /**
@@ -233,9 +234,45 @@ public: // access operators
      * No bounds checking is performed; if @c coordinates are outside od
      * the matrix dimensions, the behavior is undefined.
      */
-    template<class... Args>
-    T& operator()(Args... coordinates)
+    template<class... Coords>
+    T& operator()(Coords... coordinates)
     { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
+
+    /**
+     * @brief Returns a reference to the element at coordinates.
+     * @param coordinates Coordinates of the element to return
+     *
+     * If @a coordinates is not within the range of the container, an exception of type
+     * @c std::out_of_range is thrown.
+     */
+    template<class... Coords>
+    const T& at(Coords... coordinates) const
+    {
+        const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
+        const bool any_of_coords_is_out_of_bound = ( (coordinates >= Dimensions) || ... );
+        if (any_of_coords_is_negative == true || any_of_coords_is_out_of_bound == true) {
+            throw std::out_of_range{"matrix::at"};
+        }
+        return (*this)(coordinates...);
+    }
+
+    /**
+     * @brief Returns a reference to the element at coordinates.
+     * @param coordinates Coordinates of the element to return
+     *
+     * If @a coordinates is not within the range of the container, an exception of type
+     * @c std::out_of_range is thrown.
+     */
+    template<class... Coords>
+    T& at(Coords... coordinates)
+    {
+        const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
+        const bool any_of_coords_is_out_of_bound = ( (coordinates >= Dimensions) || ... );
+        if (any_of_coords_is_negative == true || any_of_coords_is_out_of_bound == true) {
+            throw std::out_of_range{"matrix::at"};
+        }
+        return (*this)(coordinates...);
+    }
 };
 } // namespace ysc
 
