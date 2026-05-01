@@ -2,3 +2,4 @@ _cmake
 *.orig
 *~
 html
+CLAUDE.md

@@ -197,7 +197,7 @@ public: // assignment operators (copy)
      */
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
-    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); return *this; }
 
 public: // assignment operators (move)
     /**
@@ -213,7 +213,7 @@ public: // assignment operators (move)
      */
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> && other)
-    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
+    { std::move(cbegin(other._data), cend(other._data), begin(_data)); return *this; }
 
 public: // element access
     /**
