@@ -87,6 +87,30 @@ private:
     std::array<T, linear_size> _data;
 
 public:
+    /** @brief Element type. */
+    using value_type             = T;
+    /** @brief Unsigned integer type for sizes and counts. */
+    using size_type              = std::size_t;
+    /** @brief Signed integer type for differences between iterators. */
+    using difference_type        = std::ptrdiff_t;
+    /** @brief Reference to element type. */
+    using reference              = T&;
+    /** @brief Const reference to element type. */
+    using const_reference        = const T&;
+    /** @brief Pointer to element type. */
+    using pointer                = T*;
+    /** @brief Const pointer to element type. */
+    using const_pointer          = const T*;
+    /** @brief Iterator over matrix elements in row-major order. */
+    using iterator               = typename std::array<T, linear_size>::iterator;
+    /** @brief Const iterator over matrix elements in row-major order. */
+    using const_iterator         = typename std::array<T, linear_size>::const_iterator;
+    /** @brief Reverse iterator. */
+    using reverse_iterator       = std::reverse_iterator<iterator>;
+    /** @brief Const reverse iterator. */
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
+public:
     /**
      * @brief Exchanges the given values.
      * @param lhs value to be swapped
