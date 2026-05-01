@@ -1,5 +1,7 @@
 # `ysc::matrix`
 
+[![CI](https://github.com/yscialom/matrix/actions/workflows/ci.yml/badge.svg)](https://github.com/yscialom/matrix/actions/workflows/ci.yml)
+
 A general-purpose multi-dimension container of static dimensions.
 
 ## Example
