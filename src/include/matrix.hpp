@@ -125,6 +125,44 @@ public: // iterators
     constexpr const_reverse_iterator rend()   const noexcept { return _data.rend(); }
     constexpr const_reverse_iterator crend()  const noexcept { return _data.crend(); }
 
+public: // capacity
+    /**
+     * @brief Returns the number of elements in the matrix (product of all dimensions).
+     *
+     * @note This function is @c static because the size is a compile-time constant.
+     */
+    static constexpr size_type size()     noexcept { return linear_size; }
+
+    /**
+     * @brief Returns the maximum number of elements the matrix can hold.
+     *
+     * Always equal to @c size() for this fixed-size container.
+     *
+     * @note This function is @c static because the value is a compile-time constant.
+     */
+    static constexpr size_type max_size() noexcept { return linear_size; }
+
+    /**
+     * @brief Returns whether the matrix has no elements.
+     *
+     * @note This function is @c static because the value is a compile-time constant.
+     */
+    static constexpr bool      empty()    noexcept { return linear_size == 0; }
+
+    /**
+     * @brief Returns a pointer to the underlying element storage.
+     *
+     * Elements are stored in row-major order (rightmost dimension is contiguous).
+     */
+    constexpr pointer       data()       noexcept { return _data.data(); }
+
+    /**
+     * @brief Returns a pointer to the underlying element storage.
+     *
+     * Elements are stored in row-major order (rightmost dimension is contiguous).
+     */
+    constexpr const_pointer data() const noexcept { return _data.data(); }
+
 public:
     /**
      * @brief Exchanges the given values.
