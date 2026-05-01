@@ -21,6 +21,9 @@ TEST(access, const_no_check_nominal)
 // Access element of a constant matrix, no bound checking (access out of bounds)
 TEST(access, const_no_check_outofbound)
 {
+#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL > 0
+    GTEST_SKIP() << "MSVC debug iterator checks intercept UB access before operator() returns";
+#endif
     ysc::matrix<int, 2, 2> const m{0, 1, 2, 3};
     try {
         (void) m(-1, -1);
@@ -48,6 +51,9 @@ TEST(access, mutable_no_check_nominal)
 // Access element of a mutable matrix, no bound checking (access out of bounds)
 TEST(access, mutable_no_check_outofbound)
 {
+#if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL > 0
+    GTEST_SKIP() << "MSVC debug iterator checks intercept UB access before operator() returns";
+#endif
     ysc::matrix<int, 2, 2> m{0, 1, 2, 3};
     try {
         (void) m(-1, -1);
