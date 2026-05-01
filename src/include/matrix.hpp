@@ -13,6 +13,7 @@
 #define YSC_MATRIX_HPP
 
 #include <array>
+#include <iterator>
 #include <numeric>
 #include <algorithm>
 #include <stdexcept>
@@ -109,6 +110,20 @@ public:
     using reverse_iterator       = std::reverse_iterator<iterator>;
     /** @brief Const reverse iterator. */
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
+public: // iterators
+    constexpr iterator               begin()        noexcept { return _data.begin(); }
+    constexpr const_iterator         begin()  const noexcept { return _data.begin(); }
+    constexpr const_iterator         cbegin() const noexcept { return _data.cbegin(); }
+    constexpr iterator               end()          noexcept { return _data.end(); }
+    constexpr const_iterator         end()    const noexcept { return _data.end(); }
+    constexpr const_iterator         cend()   const noexcept { return _data.cend(); }
+    constexpr reverse_iterator       rbegin()       noexcept { return _data.rbegin(); }
+    constexpr const_reverse_iterator rbegin() const noexcept { return _data.rbegin(); }
+    constexpr const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
+    constexpr reverse_iterator       rend()         noexcept { return _data.rend(); }
+    constexpr const_reverse_iterator rend()   const noexcept { return _data.rend(); }
+    constexpr const_reverse_iterator crend()  const noexcept { return _data.crend(); }
 
 public:
     /**

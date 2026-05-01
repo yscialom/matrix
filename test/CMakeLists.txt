@@ -13,6 +13,7 @@ add_executable(${TARGET_NAME}
     src/access.cpp
     src/assignment_returns_self.cpp
     src/construct.cpp
+    src/iterators.cpp
     src/typedefs.cpp
     src/main.cpp
 )
