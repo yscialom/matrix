@@ -15,7 +15,7 @@
 #include <array>
 #include <numeric>
 #include <algorithm>
-#include <exception>
+#include <stdexcept>
 
 namespace ysc
 {
@@ -30,8 +30,8 @@ namespace _details
     template<class TDim, class TCoord>
     auto coordinates_to_index(TDim const& dimensions, TCoord const& coords)
     {
-        std::array<std::size_t, dimensions.size()> dimension_product;
-        using std::crbegin, std::crend, std::prev;
+        std::array<std::size_t, std::tuple_size_v<TDim>> dimension_product;
+        using std::begin, std::cbegin, std::cend, std::crbegin, std::crend, std::prev;
         partial_product(crbegin(dimensions), prev(crend(dimensions)), begin(dimension_product));
         return std::inner_product(cbegin(dimension_product), cend(dimension_product), crbegin(coords), 0);
     }

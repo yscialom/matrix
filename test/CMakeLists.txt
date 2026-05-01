@@ -1,8 +1,7 @@
 ##
-# Tets framework: gtest
+# Tests framework: gtest
 #
 find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIR})
 include_directories(include)
 
 
@@ -17,8 +16,7 @@ add_executable(${TARGET_NAME}
     src/main.cpp
 )
 
-target_link_libraries(${TARGET_NAME} matrix)
-target_link_libraries(${TARGET_NAME} gtest)
+target_link_libraries(${TARGET_NAME} matrix GTest::gtest)
 
 
 ##
