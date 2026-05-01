@@ -198,7 +198,7 @@ public: // copy constructors
      */
     template<class U>
     matrix(matrix<U, Dimensions...> const& other)
-    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+    { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); }
 
 public: // move constructors
     /**
@@ -220,7 +220,7 @@ public: // move constructors
      */
     template<class U>
     matrix(matrix<U, Dimensions...> && other)
-    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
+    { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); }
 
 public: // assignment operators (copy)
     /**
@@ -236,7 +236,7 @@ public: // assignment operators (copy)
      */
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
-    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); return *this; }
+    { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
 
 public: // assignment operators (move)
     /**
@@ -252,7 +252,7 @@ public: // assignment operators (move)
      */
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> && other)
-    { std::move(cbegin(other._data), cend(other._data), begin(_data)); return *this; }
+    { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
 
 public: // element access
     /**
