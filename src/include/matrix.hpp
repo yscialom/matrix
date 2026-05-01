@@ -13,6 +13,7 @@
 #define YSC_MATRIX_HPP
 
 #include <array>
+#include <iterator>
 #include <numeric>
 #include <algorithm>
 #include <stdexcept>
@@ -110,6 +111,20 @@ public:
     /** @brief Const reverse iterator. */
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
+public: // iterators
+    constexpr iterator               begin()        noexcept { return _data.begin(); }
+    constexpr const_iterator         begin()  const noexcept { return _data.begin(); }
+    constexpr const_iterator         cbegin() const noexcept { return _data.cbegin(); }
+    constexpr iterator               end()          noexcept { return _data.end(); }
+    constexpr const_iterator         end()    const noexcept { return _data.end(); }
+    constexpr const_iterator         cend()   const noexcept { return _data.cend(); }
+    constexpr reverse_iterator       rbegin()       noexcept { return _data.rbegin(); }
+    constexpr const_reverse_iterator rbegin() const noexcept { return _data.rbegin(); }
+    constexpr const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
+    constexpr reverse_iterator       rend()         noexcept { return _data.rend(); }
+    constexpr const_reverse_iterator rend()   const noexcept { return _data.rend(); }
+    constexpr const_reverse_iterator crend()  const noexcept { return _data.crend(); }
+
 public:
     /**
      * @brief Exchanges the given values.
@@ -183,7 +198,7 @@ public: // copy constructors
      */
     template<class U>
     matrix(matrix<U, Dimensions...> const& other)
-    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
+    { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); }
 
 public: // move constructors
     /**
@@ -205,7 +220,7 @@ public: // move constructors
      */
     template<class U>
     matrix(matrix<U, Dimensions...> && other)
-    { std::move(cbegin(other._data), cend(other._data), begin(_data)); }
+    { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); }
 
 public: // assignment operators (copy)
     /**
@@ -221,7 +236,7 @@ public: // assignment operators (copy)
      */
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
-    { std::copy(cbegin(other._data), cend(other._data), begin(_data)); return *this; }
+    { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
 
 public: // assignment operators (move)
     /**
@@ -237,7 +252,7 @@ public: // assignment operators (move)
      */
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> && other)
-    { std::move(cbegin(other._data), cend(other._data), begin(_data)); return *this; }
+    { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
 
 public: // element access
     /**
