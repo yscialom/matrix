@@ -12,6 +12,7 @@ include_directories(include)
 set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
     src/access.cpp
+    src/assignment_returns_self.cpp
     src/construct.cpp
     src/main.cpp
 )
