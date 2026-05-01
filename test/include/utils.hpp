@@ -14,21 +14,15 @@ class SideEffect
     bool invoked = false;
 
 public:
-    std::enable_if_t<
-        !std::is_same_v<void, Ret>,
-        Ret
-    >
-    trigger(Ret&& ret, Args&& ...)
+    template<class R = Ret, std::enable_if_t<!std::is_same_v<void, R>, int> = 0>
+    R trigger(R&& ret, Args&&...)
     {
         invoked = true;
-        return std::forward<Ret>(ret);
+        return std::forward<R>(ret);
     }
 
-    std::enable_if_t<
-        std::is_same_v<void, Ret>,
-        Ret
-    >
-    trigger(Args&& ...)
+    template<class R = Ret, std::enable_if_t<std::is_same_v<void, R>, int> = 0>
+    void trigger(Args&&...)
     {
         invoked = true;
     }
