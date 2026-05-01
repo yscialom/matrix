@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 ##
 # general configuration
 #
-set(TARGET_NAME "ysc::matrix")
-project(${TARGET_NAME})
+project(ysc-matrix)
 
 set(VERSION_MAJOR   1   CACHE STRING "Project major version number.")
 set(VERSION_MINOR   0   CACHE STRING "Project minor version number.")
@@ -26,7 +25,7 @@ enable_testing()
 add_subdirectory(test)
 add_custom_target(check # alias for make && make test
     COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS ${TARGET_NAME}-test
+    DEPENDS matrix-test
 )
 
 
