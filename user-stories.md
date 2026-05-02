@@ -4,7 +4,7 @@
 
 | Épopée | Statut | Progression | Détail |
 |--------|--------|-------------|--------|
-| **A — Infrastructure & CI/CD** | 🔶 Partielle | 3/7 | ✅ US-001, US-002, US-003 · ⬜ US-004 à US-007 |
+| **A — Infrastructure & CI/CD** | 🔶 Partielle | 4/7 | ✅ US-001, US-002, US-003, US-004 · ⬜ US-005 à US-007 |
 | **B — Modernisation C++20** | ✅ Terminée | 3/3 | ✅ US-008, US-009, US-010 (fusionné US-019) |
 | **C — Dette technique** | 🔶 Partielle | 2/4 | ✅ US-011, US-013 · ⬜ US-012, US-014 |
 | **D — Conformité STL** | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
@@ -14,7 +14,7 @@
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/5 | ⬜ US-038 à US-042 |
 
-**Total : 12 / 42 US**
+**Total : 13 / 42 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -23,7 +23,7 @@
 | US-001 | Pipeline CI multi-plateforme | P0 | ✅ Done |
 | US-002 | Couverture de code (gcov + lcov + Codecov) | P0 | ✅ Done |
 | US-003 | Sanitizers (ASan + UBSan) | P1 | ✅ Done |
-| US-004 | clang-format + vérification CI | P1 | 🔓 Disponible |
+| US-004 | clang-format + vérification CI | P1 | ✅ Done |
 | US-005 | clang-tidy + vérification CI | P1 | 🔓 Disponible |
 | US-006 | Doc Doxygen publiée sur GitHub Pages | P1 | 🔓 Disponible |
 | US-007 | Release automation (semver + GitHub Releases) | P2 | 🔓 Disponible |
