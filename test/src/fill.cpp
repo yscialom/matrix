@@ -29,7 +29,7 @@ TEST(fill, trivial_type_overwrite_zeros)
 
 TEST(fill, trivial_type_fill_zero)
 {
-    ysc::matrix<double, 3, 3> m{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    ysc::matrix<double, 3, 3> m{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0};
     m.fill(0.0);
     for (auto v : m) {
         ASSERT_DOUBLE_EQ(v, 0.0);
