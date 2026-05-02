@@ -34,8 +34,8 @@ TEST(construct_default, default_array_type) {
     struct user_defined : ysc::test::SideEffect<> {
         user_defined() { trigger(); }
     };
-    ysc::matrix<user_defined[1], 1> const
-        m; // NOLINT(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
+    ysc::matrix<user_defined[1], 1> const m;
     ASSERT_TRUE(m(0)[0].triggered());
 }
 
