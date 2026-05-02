@@ -184,7 +184,7 @@ jobs:
                '/usr/*' \
                --output-file coverage.info \
                --gcov-tool gcov-13 \
-               --ignore-errors mismatch
+               --ignore-errors mismatch,unused
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v4
