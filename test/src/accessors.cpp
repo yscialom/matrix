@@ -87,7 +87,8 @@ TEST(accessors_swap_member, self_swap_is_stable) {
 
 TEST(accessors_swap_member, noexcept_for_nothrow_swappable) {
     static_assert(std::is_nothrow_swappable_v<int>);
-    ysc::matrix<int, 3> a, b;
+    ysc::matrix<int, 3> a;
+    ysc::matrix<int, 3> b;
     static_assert(noexcept(a.swap(b)));
 }
 

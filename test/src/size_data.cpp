@@ -7,15 +7,15 @@ using M1 = ysc::matrix<int, 7>;
 // compile-time guarantees
 static_assert(M23::size() == 6);
 static_assert(M23::max_size() == 6);
-static_assert(M23::empty() == false);
+static_assert(!M23::empty());
 static_assert(M1::size() == 7);
 
 TEST(size, equals_product_of_dimensions) {
-    EXPECT_EQ(M23::size(), 6u);
+    EXPECT_EQ(M23::size(), 6U);
 }
 
 TEST(size, single_dimension) {
-    EXPECT_EQ(M1::size(), 7u);
+    EXPECT_EQ(M1::size(), 7U);
 }
 
 TEST(max_size, equals_size) {
@@ -46,6 +46,7 @@ TEST(data, mutable_write_through) {
 
 TEST(data, contiguous_storage) {
     M23 m{1, 2, 3, 4, 5, 6};
-    for (ysc::matrix<int, 2, 3>::size_type i = 0; i < M23::size(); ++i)
+    for (ysc::matrix<int, 2, 3>::size_type i = 0; i < M23::size(); ++i) {
         EXPECT_EQ(*(m.data() + i), static_cast<int>(i + 1));
+    }
 }

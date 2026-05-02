@@ -42,8 +42,8 @@ struct Point {
 };
 
 TEST(fill, user_defined_type) {
-    ysc::matrix<Point, 3> m{Point{1, 2}, Point{3, 4}, Point{5, 6}};
-    m.fill(Point{0, 0});
+    ysc::matrix<Point, 3> m{Point{.x = 1, .y = 2}, Point{.x = 3, .y = 4}, Point{.x = 5, .y = 6}};
+    m.fill(Point{.x = 0, .y = 0});
     for (auto v : m) {
         ASSERT_EQ(v, (Point{0, 0}));
     }
