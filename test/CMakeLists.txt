@@ -14,6 +14,7 @@ add_executable(${TARGET_NAME}
     src/accessors.cpp
     src/assignment_returns_self.cpp
     src/comparison.cpp
+    src/concepts.cpp
     src/construct.cpp
     src/fill.cpp
     src/iterators.cpp
