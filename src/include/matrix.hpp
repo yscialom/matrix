@@ -208,6 +208,8 @@ public:
      *
      * @note If `T` is a trivial type, initialization may result in indeterminate values.
      */
+    // Intentional: _data is deliberately left uninitialized for trivial T to avoid the cost of
+    // zero-initialization on the hot path. Use matrix(matrix_zero_t) for zero-initialization.
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
     matrix() = default;
 
@@ -233,6 +235,8 @@ public:
      * `matrix<long, 2, 2> m{true, '\x02', 3, 4L},` initializes an order-2 matrix from the values
      * ` true`, `'\x02'`, `3` and `4L` converted to `int`.
      */
+    // False positive on forwarding templates: if Args contains a C array, decay occurs at the
+    // call site, not here.
     // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
     template <class... Args> matrix(Args&&... args) : _data{std::forward<Args>(args)...} {}
 
@@ -276,6 +280,8 @@ public:
      */
     template <class U>
         requires matrix_convertible_from<T, U>
+    // std::move is used as a range algorithm (element-wise move), not as a cast.
+    // Direct std::move(other) is impossible because T != U; per-element conversion is required.
     // NOLINTNEXTLINE(cppcoreguidelines-rvalue-reference-param-not-moved)
     matrix(matrix<U, Dimensions...>&& other) {
         std::move(other._data.cbegin(), other._data.cend(), _data.begin());
@@ -314,6 +320,8 @@ public:
      */
     template <class U>
         requires matrix_convertible_from<T, U>
+    // Same rationale as the converting move constructor: element-wise move via algorithm,
+    // T != U prevents direct std::move(other).
     // NOLINTNEXTLINE(cppcoreguidelines-rvalue-reference-param-not-moved)
     matrix& operator=(matrix<U, Dimensions...>&& other) {
         std::move(other._data.cbegin(), other._data.cend(), _data.begin());
@@ -381,6 +389,7 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...>
     T const& operator()(Coords... coordinates) const {
+        // Intentional: unchecked access on the performance path. Use at() for bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
@@ -395,6 +404,7 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...>
     T& operator()(Coords... coordinates) {
+        // Intentional: unchecked access on the performance path. Use at() for bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
