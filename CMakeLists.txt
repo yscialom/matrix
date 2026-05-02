@@ -25,6 +25,7 @@ add_subdirectory(src)
 #
 enable_testing()
 add_subdirectory(test)
+include(cmake/Coverage.cmake)
 add_custom_target(check # alias for make && make test
     COMMAND ${CMAKE_CTEST_COMMAND}
     DEPENDS matrix-test

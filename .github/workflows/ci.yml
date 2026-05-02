@@ -140,3 +140,55 @@ jobs:
 
       - name: Test
         run: ctest --test-dir build --output-on-failure --build-config ${{ matrix.build_type }}
+
+  coverage:
+    name: Coverage (Ubuntu / GCC-13 / Debug)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GCC-13, GTest and lcov
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y g++-13 libgtest-dev lcov
+
+      - name: Configure with coverage
+        env:
+          CC: gcc-13
+          CXX: g++-13
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DENABLE_COVERAGE=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Collect coverage data
+        run: |
+          lcov --capture \
+               --directory build \
+               --output-file coverage.info \
+               --gcov-tool gcov-13 \
+               --ignore-errors mismatch
+
+      - name: Filter coverage data
+        run: |
+          lcov --remove coverage.info \
+               '*/test/*' \
+               '*/_deps/*' \
+               '/usr/*' \
+               --output-file coverage.info \
+               --gcov-tool gcov-13 \
+               --ignore-errors mismatch,unused
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.info
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
