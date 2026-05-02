@@ -299,6 +299,14 @@ public: // comparison operators
     /** @brief Three-way comparison — lexicographic on the flat row-major storage. */
     friend auto operator<=>(const matrix& lhs, const matrix& rhs) = default;
 
+public: // modifiers
+    /**
+     * @brief Assigns the given value to all elements of the matrix.
+     * @param value Value to assign
+     */
+    void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>)
+    { _data.fill(value); }
+
 public: // element access
     /**
      * @brief Returns a reference to the element at coordinates.
