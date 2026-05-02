@@ -24,11 +24,8 @@ TEST(access, const_no_check_outofbound)
 #if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL > 0
     GTEST_SKIP() << "MSVC debug iterator checks intercept UB access before operator() returns";
 #endif
-#if defined(__SANITIZE_ADDRESS__)
-    GTEST_SKIP() << "ASan intercepts the intentional out-of-bounds UB in operator()";
-#endif
-#if defined(_GLIBCXX_ASSERTIONS)
-    GTEST_SKIP() << "libstdc++ hardened assertions intercept the intentional out-of-bounds UB in operator()";
+#if defined(YSC_SANITIZERS_ENABLED) || defined(_GLIBCXX_ASSERTIONS)
+    GTEST_SKIP() << "Runtime hardening (sanitizers or libstdc++ assertions) intercepts the intentional out-of-bounds UB in operator()";
 #endif
     ysc::matrix<int, 2, 2> const m{0, 1, 2, 3};
     try {
@@ -60,11 +57,8 @@ TEST(access, mutable_no_check_outofbound)
 #if defined(_ITERATOR_DEBUG_LEVEL) && _ITERATOR_DEBUG_LEVEL > 0
     GTEST_SKIP() << "MSVC debug iterator checks intercept UB access before operator() returns";
 #endif
-#if defined(__SANITIZE_ADDRESS__)
-    GTEST_SKIP() << "ASan intercepts the intentional out-of-bounds UB in operator()";
-#endif
-#if defined(_GLIBCXX_ASSERTIONS)
-    GTEST_SKIP() << "libstdc++ hardened assertions intercept the intentional out-of-bounds UB in operator()";
+#if defined(YSC_SANITIZERS_ENABLED) || defined(_GLIBCXX_ASSERTIONS)
+    GTEST_SKIP() << "Runtime hardening (sanitizers or libstdc++ assertions) intercepts the intentional out-of-bounds UB in operator()";
 #endif
     ysc::matrix<int, 2, 2> m{0, 1, 2, 3};
     try {

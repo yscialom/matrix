@@ -17,4 +17,5 @@ if(ENABLE_SANITIZERS)
     target_link_options(matrix-test PRIVATE
         -fsanitize=address,undefined
     )
+    target_compile_definitions(matrix-test PRIVATE YSC_SANITIZERS_ENABLED)
 endif()
