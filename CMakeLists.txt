@@ -24,15 +24,18 @@ add_subdirectory(src)
 ##
 # test configuration
 #
-enable_testing()
-add_subdirectory(test)
-include(cmake/Coverage.cmake)
-include(cmake/Sanitizers.cmake)
 include(cmake/ClangFormat.cmake)
-add_custom_target(check # alias for make && make test
-    COMMAND ${CMAKE_CTEST_COMMAND}
-    DEPENDS matrix-test
-)
+option(BUILD_TESTING "Build the test suite" ON)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(test)
+    include(cmake/Coverage.cmake)
+    include(cmake/Sanitizers.cmake)
+    add_custom_target(check # alias for make && make test
+        COMMAND ${CMAKE_CTEST_COMMAND}
+        DEPENDS matrix-test
+    )
+endif()
 
 
 ##
