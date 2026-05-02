@@ -222,3 +222,20 @@ jobs:
           ASAN_OPTIONS: detect_leaks=1
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
         run: ctest --test-dir build --output-on-failure
+
+  format-check:
+    name: Format Check (clang-format)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: |
+          clang-format --dry-run --Werror \
+            $(find src test -name '*.hpp' -o -name '*.cpp')
