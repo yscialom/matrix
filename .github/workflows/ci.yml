@@ -173,7 +173,8 @@ jobs:
           lcov --capture \
                --directory build \
                --output-file coverage.info \
-               --gcov-tool gcov-13
+               --gcov-tool gcov-13 \
+               --ignore-errors mismatch
 
       - name: Filter coverage data
         run: |
@@ -182,7 +183,8 @@ jobs:
                '*/_deps/*' \
                '/usr/*' \
                --output-file coverage.info \
-               --gcov-tool gcov-13
+               --gcov-tool gcov-13 \
+               --ignore-errors mismatch
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v4
