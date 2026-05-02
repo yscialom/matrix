@@ -14,10 +14,12 @@
 
 #include <array>
 #include <compare>
+#include <concepts>
 #include <iterator>
 #include <numeric>
 #include <algorithm>
 #include <stdexcept>
+#include <type_traits>
 
 namespace ysc
 {
@@ -38,6 +40,21 @@ namespace _details
         return std::inner_product(cbegin(dimension_product), cend(dimension_product), crbegin(coords), 0);
     }
 }
+
+/**
+ * @brief Satisfied when `U` is convertible to `T`.
+ * Used to constrain converting constructors and assignment operators.
+ */
+template<class T, class U>
+concept matrix_convertible_from = std::convertible_to<U, T>;
+
+/**
+ * @brief Satisfied when all types in `Coords` are integral (ignoring cv-ref qualifiers).
+ * Used to constrain `operator()` and `at()` so that floating-point or other
+ * non-integral coordinate types yield a readable diagnostic.
+ */
+template<class... Coords>
+concept integral_coordinates = (std::integral<std::remove_cvref_t<Coords>> && ...);
 
 /**
  * @brief Tag a @c matrix object to be zero-initialized.
@@ -236,6 +253,7 @@ public: // copy constructors
      * Elements of the matrix are copy-initialized from the elements of the source matrix. 
      */
     template<class U>
+        requires matrix_convertible_from<T, U>
     matrix(matrix<U, Dimensions...> const& other)
     { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); }
 
@@ -258,6 +276,7 @@ public: // move constructors
      * `other` is left in a valid but unspecified state.
      */
     template<class U>
+        requires matrix_convertible_from<T, U>
     matrix(matrix<U, Dimensions...> && other)
     { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); }
 
@@ -274,6 +293,7 @@ public: // assignment operators (copy)
      * @param  other Source matrix
      */
     template<class U>
+        requires matrix_convertible_from<T, U>
     matrix& operator=(matrix<U, Dimensions...> const& other)
     { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
 
@@ -290,6 +310,7 @@ public: // assignment operators (move)
      * @param  other Source matrix
      */
     template<class U>
+        requires matrix_convertible_from<T, U>
     matrix& operator=(matrix<U, Dimensions...> && other)
     { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
 
@@ -352,6 +373,7 @@ public: // element access
      * the matrix dimensions, the behavior is undefined.
      */
     template<class... Coords>
+        requires integral_coordinates<Coords...>
     T const& operator()(Coords... coordinates) const
     { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
 
@@ -363,6 +385,7 @@ public: // element access
      * the matrix dimensions, the behavior is undefined.
      */
     template<class... Coords>
+        requires integral_coordinates<Coords...>
     T& operator()(Coords... coordinates)
     { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
 
@@ -374,6 +397,7 @@ public: // element access
      * @c std::out_of_range is thrown.
      */
     template<class... Coords>
+        requires integral_coordinates<Coords...>
     const T& at(Coords... coordinates) const
     {
         const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
@@ -392,6 +416,7 @@ public: // element access
      * @c std::out_of_range is thrown.
      */
     template<class... Coords>
+        requires integral_coordinates<Coords...>
     T& at(Coords... coordinates)
     {
         const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
