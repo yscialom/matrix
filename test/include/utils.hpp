@@ -1,6 +1,7 @@
 #ifndef YSC_MATRIX_TEST_INCLUDE_UTILS_HPP
 #define YSC_MATRIX_TEST_INCLUDE_UTILS_HPP
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 #include <type_traits>
