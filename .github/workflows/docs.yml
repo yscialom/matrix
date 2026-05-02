@@ -1,0 +1,32 @@
+name: Docs
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    name: Build and deploy Doxygen to GitHub Pages
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y doxygen
+
+      - name: Configure
+        run: cmake -S . -B build -DBUILD_DOCUMENTATION=ON
+
+      - name: Build documentation
+        run: cmake --build build --target doc
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/html
