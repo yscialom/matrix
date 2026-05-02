@@ -307,6 +307,42 @@ public: // modifiers
     void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>)
     { _data.fill(value); }
 
+    /**
+     * @brief Exchanges the contents of this matrix with another.
+     * @param other Matrix to swap with
+     */
+    void swap(matrix& other) noexcept(std::is_nothrow_swappable_v<T>)
+    { _data.swap(other._data); }
+
+public: // element access
+    /**
+     * @brief Returns a reference to the first element in the matrix (row-major order).
+     *
+     * Calling @c front() on an empty matrix is undefined behavior.
+     */
+    constexpr reference       front()       noexcept { return _data.front(); }
+
+    /**
+     * @brief Returns a const reference to the first element in the matrix (row-major order).
+     *
+     * Calling @c front() on an empty matrix is undefined behavior.
+     */
+    constexpr const_reference front() const noexcept { return _data.front(); }
+
+    /**
+     * @brief Returns a reference to the last element in the matrix (row-major order).
+     *
+     * Calling @c back() on an empty matrix is undefined behavior.
+     */
+    constexpr reference       back()        noexcept { return _data.back(); }
+
+    /**
+     * @brief Returns a const reference to the last element in the matrix (row-major order).
+     *
+     * Calling @c back() on an empty matrix is undefined behavior.
+     */
+    constexpr const_reference back()  const noexcept { return _data.back(); }
+
 public: // element access
     /**
      * @brief Returns a reference to the element at coordinates.
