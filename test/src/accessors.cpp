@@ -28,9 +28,9 @@ TEST(accessors_front, reference_allows_mutation)
 
 TEST(accessors_front, noexcept_guaranteed)
 {
-    ysc::matrix<int, 3> m;
+    ysc::matrix<int, 3> m{1, 2, 3};
     static_assert(noexcept(m.front()));
-    const ysc::matrix<int, 3> cm;
+    const ysc::matrix<int, 3> cm{1, 2, 3};
     static_assert(noexcept(cm.front()));
 }
 
@@ -60,9 +60,9 @@ TEST(accessors_back, reference_allows_mutation)
 
 TEST(accessors_back, noexcept_guaranteed)
 {
-    ysc::matrix<int, 3> m;
+    ysc::matrix<int, 3> m{1, 2, 3};
     static_assert(noexcept(m.back()));
-    const ysc::matrix<int, 3> cm;
+    const ysc::matrix<int, 3> cm{1, 2, 3};
     static_assert(noexcept(cm.back()));
 }
 
