@@ -14,6 +14,7 @@ add_executable(${TARGET_NAME}
     src/assignment_returns_self.cpp
     src/construct.cpp
     src/iterators.cpp
+    src/size_data.cpp
     src/typedefs.cpp
     src/main.cpp
 )
