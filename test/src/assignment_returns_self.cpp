@@ -2,10 +2,8 @@
 
 #include <gtest/gtest.h>
 
-
 // Verify copy-assign from different type returns *this
-TEST(assign_returns_self, copy_different_type)
-{
+TEST(assign_returns_self, copy_different_type) {
     ysc::matrix<int, 3> m1 = {1, 2, 3};
     ysc::matrix<long, 3> m2;
     auto& ref = (m2 = m1);
@@ -13,8 +11,7 @@ TEST(assign_returns_self, copy_different_type)
 }
 
 // Verify move-assign from different type returns *this
-TEST(assign_returns_self, move_different_type)
-{
+TEST(assign_returns_self, move_different_type) {
     ysc::matrix<int, 3> m1 = {1, 2, 3};
     ysc::matrix<long, 3> m2;
     auto& ref = (m2 = std::move(m1));
@@ -22,8 +19,7 @@ TEST(assign_returns_self, move_different_type)
 }
 
 // Verify copy-assign is chainable
-TEST(assign_returns_self, chain_copy)
-{
+TEST(assign_returns_self, chain_copy) {
     ysc::matrix<int, 3> src = {1, 2, 3};
     ysc::matrix<long, 3> a, b;
     b = a = src;

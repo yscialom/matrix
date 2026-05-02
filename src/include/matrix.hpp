@@ -12,40 +12,40 @@
 #ifndef YSC_MATRIX_HPP
 #define YSC_MATRIX_HPP
 
+#include <algorithm>
 #include <array>
 #include <compare>
 #include <concepts>
 #include <iterator>
 #include <numeric>
-#include <algorithm>
 #include <stdexcept>
 #include <type_traits>
 
-namespace ysc
-{
-namespace _details
-{
-    template<class InputIt, class OutputIt>
-    OutputIt partial_product(InputIt first, InputIt last, OutputIt output)
-    { *output++ = 1; return partial_sum(first, last, output, std::multiplies<>{}); }
-
-    // cache-friendly:
-    // neighbor objects within the right-most coordinate are neighbors in memory
-    template<class TDim, class TCoord>
-    auto coordinates_to_index(TDim const& dimensions, TCoord const& coords)
-    {
-        std::array<std::size_t, std::tuple_size_v<TDim>> dimension_product;
-        using std::begin, std::cbegin, std::cend, std::crbegin, std::crend, std::prev;
-        partial_product(crbegin(dimensions), prev(crend(dimensions)), begin(dimension_product));
-        return std::inner_product(cbegin(dimension_product), cend(dimension_product), crbegin(coords), 0);
-    }
+namespace ysc {
+namespace _details {
+template <class InputIt, class OutputIt>
+OutputIt partial_product(InputIt first, InputIt last, OutputIt output) {
+    *output++ = 1;
+    return partial_sum(first, last, output, std::multiplies<>{});
 }
+
+// cache-friendly:
+// neighbor objects within the right-most coordinate are neighbors in memory
+template <class TDim, class TCoord>
+auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
+    std::array<std::size_t, std::tuple_size_v<TDim>> dimension_product;
+    using std::begin, std::cbegin, std::cend, std::crbegin, std::crend, std::prev;
+    partial_product(crbegin(dimensions), prev(crend(dimensions)), begin(dimension_product));
+    return std::inner_product(cbegin(dimension_product), cend(dimension_product), crbegin(coords),
+                              0);
+}
+} // namespace _details
 
 /**
  * @brief Satisfied when `U` is convertible to `T`.
  * Used to constrain converting constructors and assignment operators.
  */
-template<class T, class U>
+template <class T, class U>
 concept matrix_convertible_from = std::convertible_to<U, T>;
 
 /**
@@ -53,14 +53,15 @@ concept matrix_convertible_from = std::convertible_to<U, T>;
  * Used to constrain `operator()` and `at()` so that floating-point or other
  * non-integral coordinate types yield a readable diagnostic.
  */
-template<class... Coords>
+template <class... Coords>
 concept integral_coordinates = (std::integral<std::remove_cvref_t<Coords>> && ...);
 
 /**
  * @brief Tag a @c matrix object to be zero-initialized.
  * @see matrix::matrix(matrix_zero_t)
  */
-constexpr struct matrix_zero_t {} zero;
+constexpr struct matrix_zero_t {
+} zero;
 
 /**
  * @brief Multi-dimensional container encapsulating a fixed size matrix.
@@ -90,16 +91,14 @@ constexpr struct matrix_zero_t {} zero;
  * the matrix. One should take note, however, that during swap, the iterator will continue
  * to point to the same matrix element, and will thus change its value.
  */
-template<class T, std::size_t... Dimensions>
-class matrix
-{
-template<class, std::size_t...> friend class matrix;
+template <class T, std::size_t... Dimensions> class matrix {
+    template <class, std::size_t...> friend class matrix;
 
 public:
     /** @brief Order of the matrix (2D matrix have order 2, 3D order 3, etc.). */
-    static constexpr std::size_t order      = sizeof...(Dimensions);
+    static constexpr std::size_t order = sizeof...(Dimensions);
     /** @brief Dimensions of the matrix. An order-`N` matrix has `N` dimensions. */
-    static constexpr std::array  dimensions = { Dimensions... };
+    static constexpr std::array dimensions = {Dimensions...};
 
 private:
     static constexpr std::size_t linear_size = (Dimensions * ...);
@@ -107,41 +106,41 @@ private:
 
 public:
     /** @brief Element type. */
-    using value_type             = T;
+    using value_type = T;
     /** @brief Unsigned integer type for sizes and counts. */
-    using size_type              = std::size_t;
+    using size_type = std::size_t;
     /** @brief Signed integer type for differences between iterators. */
-    using difference_type        = std::ptrdiff_t;
+    using difference_type = std::ptrdiff_t;
     /** @brief Reference to element type. */
-    using reference              = T&;
+    using reference = T&;
     /** @brief Const reference to element type. */
-    using const_reference        = const T&;
+    using const_reference = const T&;
     /** @brief Pointer to element type. */
-    using pointer                = T*;
+    using pointer = T*;
     /** @brief Const pointer to element type. */
-    using const_pointer          = const T*;
+    using const_pointer = const T*;
     /** @brief Iterator over matrix elements in row-major order. */
-    using iterator               = typename std::array<T, linear_size>::iterator;
+    using iterator = typename std::array<T, linear_size>::iterator;
     /** @brief Const iterator over matrix elements in row-major order. */
-    using const_iterator         = typename std::array<T, linear_size>::const_iterator;
+    using const_iterator = typename std::array<T, linear_size>::const_iterator;
     /** @brief Reverse iterator. */
-    using reverse_iterator       = std::reverse_iterator<iterator>;
+    using reverse_iterator = std::reverse_iterator<iterator>;
     /** @brief Const reverse iterator. */
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
 public: // iterators
-    constexpr iterator               begin()        noexcept { return _data.begin(); }
-    constexpr const_iterator         begin()  const noexcept { return _data.begin(); }
-    constexpr const_iterator         cbegin() const noexcept { return _data.cbegin(); }
-    constexpr iterator               end()          noexcept { return _data.end(); }
-    constexpr const_iterator         end()    const noexcept { return _data.end(); }
-    constexpr const_iterator         cend()   const noexcept { return _data.cend(); }
-    constexpr reverse_iterator       rbegin()       noexcept { return _data.rbegin(); }
+    constexpr iterator begin() noexcept { return _data.begin(); }
+    constexpr const_iterator begin() const noexcept { return _data.begin(); }
+    constexpr const_iterator cbegin() const noexcept { return _data.cbegin(); }
+    constexpr iterator end() noexcept { return _data.end(); }
+    constexpr const_iterator end() const noexcept { return _data.end(); }
+    constexpr const_iterator cend() const noexcept { return _data.cend(); }
+    constexpr reverse_iterator rbegin() noexcept { return _data.rbegin(); }
     constexpr const_reverse_iterator rbegin() const noexcept { return _data.rbegin(); }
     constexpr const_reverse_iterator crbegin() const noexcept { return _data.crbegin(); }
-    constexpr reverse_iterator       rend()         noexcept { return _data.rend(); }
-    constexpr const_reverse_iterator rend()   const noexcept { return _data.rend(); }
-    constexpr const_reverse_iterator crend()  const noexcept { return _data.crend(); }
+    constexpr reverse_iterator rend() noexcept { return _data.rend(); }
+    constexpr const_reverse_iterator rend() const noexcept { return _data.rend(); }
+    constexpr const_reverse_iterator crend() const noexcept { return _data.crend(); }
 
 public: // capacity
     /**
@@ -149,7 +148,7 @@ public: // capacity
      *
      * @note This function is @c static because the size is a compile-time constant.
      */
-    static constexpr size_type size()     noexcept { return linear_size; }
+    static constexpr size_type size() noexcept { return linear_size; }
 
     /**
      * @brief Returns the maximum number of elements the matrix can hold.
@@ -165,14 +164,14 @@ public: // capacity
      *
      * @note This function is @c static because the value is a compile-time constant.
      */
-    static constexpr bool      empty()    noexcept { return linear_size == 0; }
+    static constexpr bool empty() noexcept { return linear_size == 0; }
 
     /**
      * @brief Returns a pointer to the underlying element storage.
      *
      * Elements are stored in row-major order (rightmost dimension is contiguous).
      */
-    constexpr pointer       data()       noexcept { return _data.data(); }
+    constexpr pointer data() noexcept { return _data.data(); }
 
     /**
      * @brief Returns a pointer to the underlying element storage.
@@ -190,13 +189,12 @@ public:
      * Swaps the elements of @a lhs and @a rhs as if:
      * @code
      using std::swap;
-     for (auto lhs_it = lhs.begin(), auto rhs_it = rhs.begin() ; lhs_it != lhs.end() ; ++lhs_it, ++rhs_it) {
-         swap(*lhs_it, *rhs_it);
+     for (auto lhs_it = lhs.begin(), auto rhs_it = rhs.begin() ; lhs_it != lhs.end() ; ++lhs_it,
+     ++rhs_it) { swap(*lhs_it, *rhs_it);
      }
      @endcode
      */
-    friend void swap(matrix& lhs, matrix& rhs)
-    {
+    friend void swap(matrix& lhs, matrix& rhs) {
         using std::swap;
         swap(lhs._data, rhs._data);
     }
@@ -215,13 +213,11 @@ public: // default constructor
      * @note If `T` is a trivial type, the matrix is zero-initialized; otherwise the default
      * constructors of its elements are called.
      */
-    matrix(matrix_zero_t)
-        : _data({})
-    {}
+    matrix(matrix_zero_t) : _data({}) {}
 
     /*
-     * @todo Code & test "As an aggregate impersonator, it can be initialized with aggregate-initialization
-     * given at most @c N initializers that are convertible to @c T"
+     * @todo Code & test "As an aggregate impersonator, it can be initialized with
+     * aggregate-initialization given at most @c N initializers that are convertible to @c T"
      */
 
 public: // aggregate constructors
@@ -233,10 +229,7 @@ public: // aggregate constructors
      * `matrix<long, 2, 2> m{true, '\x02', 3, 4L},` initializes an order-2 matrix from the values
      * ` true`, `'\x02'`, `3` and `4L` converted to `int`.
      */
-    template<class ... Args>
-    matrix(Args&& ... args)
-        : _data{std::forward<Args>(args)...}
-    {}
+    template <class... Args> matrix(Args&&... args) : _data{std::forward<Args>(args)...} {}
 
 public: // copy constructors
     /**
@@ -250,12 +243,13 @@ public: // copy constructors
      * @tparam U     Element type of the source matrix
      * @param  other Source matrix
      *
-     * Elements of the matrix are copy-initialized from the elements of the source matrix. 
+     * Elements of the matrix are copy-initialized from the elements of the source matrix.
      */
-    template<class U>
+    template <class U>
         requires matrix_convertible_from<T, U>
-    matrix(matrix<U, Dimensions...> const& other)
-    { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); }
+    matrix(matrix<U, Dimensions...> const& other) {
+        std::copy(other._data.cbegin(), other._data.cend(), _data.begin());
+    }
 
 public: // move constructors
     /**
@@ -265,7 +259,7 @@ public: // move constructors
      * Elements of the matrix are move-initialized from the elements of the source matrix.
      * `other` is left in a valid but unspecified state.
      */
-    matrix(matrix && other) = default;
+    matrix(matrix&& other) = default;
 
     /**
      * @brief Initializes the matrix with the content of another.
@@ -275,10 +269,11 @@ public: // move constructors
      * Elements of the matrix are move-initialized from the elements of the source matrix.
      * `other` is left in a valid but unspecified state.
      */
-    template<class U>
+    template <class U>
         requires matrix_convertible_from<T, U>
-    matrix(matrix<U, Dimensions...> && other)
-    { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); }
+    matrix(matrix<U, Dimensions...>&& other) {
+        std::move(other._data.cbegin(), other._data.cend(), _data.begin());
+    }
 
 public: // assignment operators (copy)
     /**
@@ -286,33 +281,37 @@ public: // assignment operators (copy)
      * @param other Source matrix
      */
     matrix& operator=(matrix const& other) = default;
-    
+
     /**
      * @brief Assigns values to a matrix.
      * @tparam U     Element type of the source matrix
      * @param  other Source matrix
      */
-    template<class U>
+    template <class U>
         requires matrix_convertible_from<T, U>
-    matrix& operator=(matrix<U, Dimensions...> const& other)
-    { std::copy(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
+    matrix& operator=(matrix<U, Dimensions...> const& other) {
+        std::copy(other._data.cbegin(), other._data.cend(), _data.begin());
+        return *this;
+    }
 
 public: // assignment operators (move)
     /**
      * @brief Replace the element with those of another matrix.
      * @param other Source matrix
      */
-    matrix& operator=(matrix && other) = default;
+    matrix& operator=(matrix&& other) = default;
 
     /**
      * @brief Replaces the element with those of another matrix.
      * @tparam U     Element type of the source matrix
      * @param  other Source matrix
      */
-    template<class U>
+    template <class U>
         requires matrix_convertible_from<T, U>
-    matrix& operator=(matrix<U, Dimensions...> && other)
-    { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
+    matrix& operator=(matrix<U, Dimensions...>&& other) {
+        std::move(other._data.cbegin(), other._data.cend(), _data.begin());
+        return *this;
+    }
 
 public: // comparison operators
     /** @brief Equality comparison — lexicographic on the flat row-major storage. */
@@ -325,15 +324,13 @@ public: // modifiers
      * @brief Assigns the given value to all elements of the matrix.
      * @param value Value to assign
      */
-    void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>)
-    { _data.fill(value); }
+    void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) { _data.fill(value); }
 
     /**
      * @brief Exchanges the contents of this matrix with another.
      * @param other Matrix to swap with
      */
-    void swap(matrix& other) noexcept(std::is_nothrow_swappable_v<T>)
-    { _data.swap(other._data); }
+    void swap(matrix& other) noexcept(std::is_nothrow_swappable_v<T>) { _data.swap(other._data); }
 
 public: // element access
     /**
@@ -341,7 +338,7 @@ public: // element access
      *
      * Calling @c front() on an empty matrix is undefined behavior.
      */
-    constexpr reference       front()       noexcept { return _data.front(); }
+    constexpr reference front() noexcept { return _data.front(); }
 
     /**
      * @brief Returns a const reference to the first element in the matrix (row-major order).
@@ -355,14 +352,14 @@ public: // element access
      *
      * Calling @c back() on an empty matrix is undefined behavior.
      */
-    constexpr reference       back()        noexcept { return _data.back(); }
+    constexpr reference back() noexcept { return _data.back(); }
 
     /**
      * @brief Returns a const reference to the last element in the matrix (row-major order).
      *
      * Calling @c back() on an empty matrix is undefined behavior.
      */
-    constexpr const_reference back()  const noexcept { return _data.back(); }
+    constexpr const_reference back() const noexcept { return _data.back(); }
 
 public: // element access
     /**
@@ -372,10 +369,11 @@ public: // element access
      * No bounds checking is performed; if @c coordinates are outside od
      * the matrix dimensions, the behavior is undefined.
      */
-    template<class... Coords>
+    template <class... Coords>
         requires integral_coordinates<Coords...>
-    T const& operator()(Coords... coordinates) const
-    { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
+    T const& operator()(Coords... coordinates) const {
+        return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
+    }
 
     /**
      * @brief Returns a reference to the element at coordinates.
@@ -384,10 +382,11 @@ public: // element access
      * No bounds checking is performed; if @c coordinates are outside od
      * the matrix dimensions, the behavior is undefined.
      */
-    template<class... Coords>
+    template <class... Coords>
         requires integral_coordinates<Coords...>
-    T& operator()(Coords... coordinates)
-    { return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})]; }
+    T& operator()(Coords... coordinates) {
+        return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
+    }
 
     /**
      * @brief Returns a reference to the element at coordinates.
@@ -396,12 +395,11 @@ public: // element access
      * If @a coordinates is not within the range of the container, an exception of type
      * @c std::out_of_range is thrown.
      */
-    template<class... Coords>
+    template <class... Coords>
         requires integral_coordinates<Coords...>
-    const T& at(Coords... coordinates) const
-    {
-        const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
-        const bool any_of_coords_is_out_of_bound = ( (coordinates >= Dimensions) || ... );
+    const T& at(Coords... coordinates) const {
+        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
+        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
         if (any_of_coords_is_negative == true || any_of_coords_is_out_of_bound == true) {
             throw std::out_of_range{"matrix::at"};
         }
@@ -415,12 +413,11 @@ public: // element access
      * If @a coordinates is not within the range of the container, an exception of type
      * @c std::out_of_range is thrown.
      */
-    template<class... Coords>
+    template <class... Coords>
         requires integral_coordinates<Coords...>
-    T& at(Coords... coordinates)
-    {
-        const bool any_of_coords_is_negative = ( (coordinates < 0) || ... );
-        const bool any_of_coords_is_out_of_bound = ( (coordinates >= Dimensions) || ... );
+    T& at(Coords... coordinates) {
+        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
+        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
         if (any_of_coords_is_negative == true || any_of_coords_is_out_of_bound == true) {
             throw std::out_of_range{"matrix::at"};
         }
