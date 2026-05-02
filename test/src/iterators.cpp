@@ -13,24 +13,24 @@ static_assert(std::contiguous_iterator<M::const_iterator>);
 TEST(iterators, begin_end_mutable_range_for) {
     M m{1, 2, 3, 4, 5, 6};
     int sum = 0;
-    for (auto& v : m)
+    for (auto& v : m) {
         sum += v;
+    }
     EXPECT_EQ(sum, 21);
 }
 
 TEST(iterators, begin_end_const_range_for) {
     const M m{1, 2, 3, 4, 5, 6};
     int sum = 0;
-    for (const auto& v : m)
+    for (const auto& v : m) {
         sum += v;
+    }
     EXPECT_EQ(sum, 21);
 }
 
 TEST(iterators, cbegin_cend) {
     M m{10, 20, 30, 40, 50, 60};
-    int sum = 0;
-    for (auto it = m.cbegin(); it != m.cend(); ++it)
-        sum += *it;
+    const int sum = std::accumulate(m.cbegin(), m.cend(), 0);
     EXPECT_EQ(sum, 210);
 }
 
@@ -70,22 +70,11 @@ TEST(iterators, crbegin_crend) {
 
 TEST(iterators, begin_end_write_through_iterator) {
     M m{1, 2, 3, 4, 5, 6};
-    for (auto& v : m)
+    for (auto& v : m) {
         v *= 2;
-    auto it = m.begin();
-    EXPECT_EQ(*it, 2);
-    ++it;
-    EXPECT_EQ(*it, 4);
-    ++it;
-    EXPECT_EQ(*it, 6);
-    ++it;
-    EXPECT_EQ(*it, 8);
-    ++it;
-    EXPECT_EQ(*it, 10);
-    ++it;
-    EXPECT_EQ(*it, 12);
-    ++it;
-    EXPECT_EQ(it, m.end());
+    }
+    const std::array<int, 6> expected{2, 4, 6, 8, 10, 12};
+    EXPECT_TRUE(std::ranges::equal(m, expected));
 }
 
 TEST(iterators, ranges_sort) {
