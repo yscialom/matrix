@@ -12,6 +12,7 @@ set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
     src/access.cpp
     src/assignment_returns_self.cpp
+    src/comparison.cpp
     src/construct.cpp
     src/iterators.cpp
     src/size_data.cpp

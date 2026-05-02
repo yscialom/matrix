@@ -13,6 +13,7 @@
 #define YSC_MATRIX_HPP
 
 #include <array>
+#include <compare>
 #include <iterator>
 #include <numeric>
 #include <algorithm>
@@ -291,6 +292,12 @@ public: // assignment operators (move)
     template<class U>
     matrix& operator=(matrix<U, Dimensions...> && other)
     { std::move(other._data.cbegin(), other._data.cend(), _data.begin()); return *this; }
+
+public: // comparison operators
+    /** @brief Equality comparison — lexicographic on the flat row-major storage. */
+    friend bool operator==(const matrix& lhs, const matrix& rhs) = default;
+    /** @brief Three-way comparison — lexicographic on the flat row-major storage. */
+    friend auto operator<=>(const matrix& lhs, const matrix& rhs) = default;
 
 public: // element access
     /**
