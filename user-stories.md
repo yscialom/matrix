@@ -8,13 +8,13 @@
 | **B — Modernisation C++20** | ✅ Terminée | 3/3 | ✅ US-008, US-009, US-010 (fusionné US-019) |
 | **C — Dette technique** | ✅ Terminée | 4/4 | ✅ US-011, US-012, US-013, US-014 |
 | **D — Conformité STL** | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
-| **E — Comparaison & I/O** | 🔶 Partielle | 4/7 | ✅ US-019, US-021, US-022, US-023 · ⬜ US-020, US-024, US-025 |
+| **E — Comparaison & I/O** | 🔶 Partielle | 5/7 | ✅ US-019, US-021, US-022, US-023, US-024 · ⬜ US-020, US-025 |
 | **F — Arithmétique** | ⬜ Non démarrée | 0/4 | ⬜ US-026 à US-029 |
 | **G — Algorithmes** | ⬜ Non démarrée | 0/5 | ⬜ US-030 à US-034 |
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 21 / 43 US**
+**Total : 22 / 43 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -665,8 +665,8 @@ constexpr matrix<T, N, N> identity();
 - Utilise `<<` de `T` (donc T doit être streamable, mais SFINAE/concept friendly : pas de hard error si T pas streamable, simplement opérateur indisponible)
 
 ### Critères d'acceptation
-- [ ] `std::cout << matrix<int,2,2>{1,2,3,4}` → `[[1, 2], [3, 4]]`
-- [ ] Test `ostream.cpp`
+- [x] `std::cout << matrix<int,2,2>{1,2,3,4}` → `[[1, 2], [3, 4]]`
+- [x] Test `ostream.cpp`
 
 ---
 

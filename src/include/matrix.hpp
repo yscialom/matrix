@@ -17,11 +17,40 @@
 #include <compare>
 #include <concepts>
 #include <iterator>
+#include <ostream>
 #include <stdexcept>
 #include <type_traits>
 
 namespace ysc {
 namespace detail {
+
+template <class T>
+concept ostream_streamable = requires(std::ostream& os, const T& v) { os << v; };
+
+// Print a hyperslice of a matrix starting at `it`, covering dimension `dim_idx` onward.
+// Returns an iterator past the last element printed.
+// NOLINTNEXTLINE(misc-no-recursion)
+template <class It, class Dims>
+It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_idx) {
+    os << '[';
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+    const std::size_t count = dims[dim_idx];
+    const bool last_dim = (dim_idx + 1 == dims.size());
+    for (std::size_t i = 0; i < count; ++i) {
+        if (i > 0) {
+            os << ", ";
+        }
+        if (last_dim) {
+            os << *it++;
+        } else {
+            // NOLINTNEXTLINE(misc-no-recursion)
+            it = print_recursive(os, it, dims, dim_idx + 1);
+        }
+    }
+    os << ']';
+    return it;
+}
+
 // cache-friendly: neighbor objects within the right-most coordinate are neighbors in memory
 template <class TDim, class TCoord>
 constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
@@ -521,6 +550,39 @@ constexpr matrix<T, N, N> identity() {
         m(i, i) = T{1};
     }
     return m;
+}
+
+/**
+ * @defgroup ysc_io I/O
+ * @brief Stream output for `ysc::matrix`.
+ */
+
+/**
+ * @brief Writes a matrix to an output stream.
+ * @tparam T    Element type — must be writable to `std::ostream` via `operator<<`
+ * @tparam Dims Dimensions of the matrix
+ * @param  os   Destination stream
+ * @param  m    Matrix to print
+ * @return @a os
+ *
+ * Produces nested bracket notation: `[e0, e1, ...]` for 1D,
+ * `[[e00, e01], [e10, e11]]` for 2D, and so on recursively.
+ *
+ * This overload only participates in overload resolution when `T` is streamable,
+ * so it never causes a hard error for non-streamable element types.
+ *
+ * @code
+ * ysc::matrix<int, 2, 2> m{1, 2, 3, 4};
+ * std::cout << m;  // [[1, 2], [3, 4]]
+ * @endcode
+ *
+ * @ingroup ysc_io
+ */
+template <class T, std::size_t... Dims>
+    requires detail::ostream_streamable<T>
+std::ostream& operator<<(std::ostream& os, const matrix<T, Dims...>& m) {
+    detail::print_recursive(os, m.cbegin(), matrix<T, Dims...>::dimensions, std::size_t{0});
+    return os;
 }
 
 } // namespace ysc
