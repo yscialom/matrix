@@ -1,6 +1,11 @@
+# Building
 _cmake
+/build
+
+# Editing
 *.orig
 *~
-html
-CLAUDE.md
+
+# LLM
+/CLAUDE.md
 /.claude
