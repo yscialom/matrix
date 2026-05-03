@@ -80,11 +80,25 @@ jobs:
       - name: Generate CHANGELOG
         run: git cliff --tag "$GITHUB_REF_NAME" --output CHANGELOG.md
 
-      - name: Extract release notes
-        run: git cliff --tag "$GITHUB_REF_NAME" --unreleased --strip all --output release-notes.md
+      - name: Prepare release assets
+        run: |
+          gzip -c src/include/matrix.hpp > matrix.hpp.gz
+          cat > ysc-matrix.cmake <<EOF
+          include(FetchContent)
+          FetchContent_Declare(
+              ysc-matrix
+              GIT_REPOSITORY https://github.com/yscialom/matrix.git
+              GIT_TAG        ${GITHUB_REF_NAME}
+          )
+          FetchContent_MakeAvailable(ysc-matrix)
+          # Then in your target: target_link_libraries(your_target PRIVATE ysc::matrix)
+          EOF
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: release-notes.md
-          files: CHANGELOG.md
+          body_path: CHANGELOG.md
+          files: |
+            CHANGELOG.md
+            matrix.hpp.gz
+            ysc-matrix.cmake
