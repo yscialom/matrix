@@ -58,16 +58,38 @@ The CHANGELOG is generated automatically from these messages on each release via
 
 ## Releasing
 
-Releases are automated via `.github/workflows/release.yml`. To cut a release:
+`release.sh` at the root of the repository semi-automates the release process.
+It requires `git` and `gh` (GitHub CLI, authenticated).
 
-1. Update `VERSION_MAJOR`, `VERSION_MINOR`, and `VERSION_PATCH` in `CMakeLists.txt`.
-2. Merge the version bump PR into `develop`.
-3. Push a tag matching `vMAJOR.MINOR.PATCH`:
+### Step 1 — Prepare the release
 
 ```bash
-git tag v1.2.3
-git push origin v1.2.3
+./release.sh prepare M.m.p
 ```
 
-The CI will verify that the tag matches the version declared in `CMakeLists.txt`, run the tests,
-generate the CHANGELOG, and publish the GitHub Release automatically.
+This:
+- creates branch `release/vM.m.p` from the current branch
+- bumps `VERSION_MAJOR/MINOR/PATCH` in `CMakeLists.txt`
+- commits (title `Release vM.m.p`, body = epic dashboard from `user-stories.md`)
+- opens a PR `release/vM.m.p` → `master`
+
+### Step 2 — Merge the PR (manual)
+
+Wait for CI to be green, then merge the PR into `master` (merge commit).
+
+### Step 3 — Finalize the release
+
+```bash
+./release.sh finalize M.m.p
+```
+
+This:
+- creates and pushes the signed tag `vM.m.p` on `master`
+- opens a PR `master` → `develop` to bring the tag into `develop`'s history
+
+### Step 4 — Merge the back-merge PR (manual)
+
+Merge the `master` → `develop` PR (merge commit).
+
+The CI triggered by the tag handles the rest: version verification, build,
+CHANGELOG generation, and GitHub Release publication.
