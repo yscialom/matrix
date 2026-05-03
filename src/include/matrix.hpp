@@ -21,7 +21,7 @@
 #include <type_traits>
 
 namespace ysc {
-namespace _details {
+namespace detail {
 // cache-friendly: neighbor objects within the right-most coordinate are neighbors in memory
 template <class TDim, class TCoord>
 constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
@@ -37,7 +37,7 @@ constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords
     }
     return index;
 }
-} // namespace _details
+} // namespace detail
 
 /**
  * @brief Satisfied when `U` is convertible to `T`.
@@ -421,7 +421,7 @@ public:
     constexpr T const& operator()(Coords... coordinates) const {
         // Intentional: unchecked access on the performance path. Use at() for bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-        return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
+        return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
 
     /**
@@ -436,7 +436,7 @@ public:
     constexpr T& operator()(Coords... coordinates) {
         // Intentional: unchecked access on the performance path. Use at() for bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-        return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
+        return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
 
     /**
