@@ -468,19 +468,23 @@ template <class T, std::size_t... D> constexpr matrix<T, D...> full(const T& v) 
 
 /**
  * @brief Returns a matrix with all elements set to @c T{1}.
- * @tparam T  Element type
+ * @tparam T  Element type — must support construction from integer literal @c 1
  * @tparam D  Dimensions
  */
-template <class T, std::size_t... D> constexpr matrix<T, D...> ones() {
+template <class T, std::size_t... D>
+    requires requires { T{1}; }
+constexpr matrix<T, D...> ones() {
     return full<T, D...>(T{1});
 }
 
 /**
  * @brief Returns the N×N identity matrix (diagonal = 1, rest = 0).
- * @tparam T  Element type
+ * @tparam T  Element type — must support construction from integer literal @c 1
  * @tparam N  Dimension
  */
-template <class T, std::size_t N> constexpr matrix<T, N, N> identity() {
+template <class T, std::size_t N>
+    requires requires { T{1}; }
+constexpr matrix<T, N, N> identity() {
     auto m = zeros<T, N, N>();
     for (std::size_t i = 0; i < N; ++i) {
         m(i, i) = T{1};
