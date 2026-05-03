@@ -20,7 +20,8 @@
 #include <ostream>
 #include <stdexcept>
 #include <type_traits>
-#if __has_include(<format>)
+// Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h incompatibility
+#if __has_include(<format>) && (!defined(__clang__) || __clang_major__ >= 17)
 #include <format>
 #include <sstream>
 #endif

@@ -4,6 +4,7 @@
 
 #if defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
 #include <format>
+#include <sstream>
 
 TEST(formatter, format_1d) {
     // Acceptance criterion from US-025: std::format("{}", matrix<int,2>{1,2}) → "[1, 2]"
