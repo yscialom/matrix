@@ -16,6 +16,7 @@
 #include <array>
 #include <compare>
 #include <concepts>
+#include <functional>
 #include <iterator>
 #include <ostream>
 #include <stdexcept>
@@ -591,6 +592,39 @@ std::ostream& operator<<(std::ostream& os, const matrix<T, Dims...>& m) {
 }
 
 } // namespace ysc
+
+/**
+ * @defgroup ysc_hash Hash support
+ * @brief `std::hash` specialization for `ysc::matrix`.
+ */
+
+/**
+ * @brief Specialization of `std::hash` for `ysc::matrix`.
+ * @tparam T  Element type — must be hashable via `std::hash<T>`
+ * @tparam D  Dimensions of the matrix
+ *
+ * Combines element hashes using the boost::hash_combine mixing strategy,
+ * so that two matrices with the same elements in the same order produce
+ * equal hashes, and matrices differing in at least one element are very
+ * likely to produce different hashes.
+ *
+ * @code
+ * std::unordered_set<ysc::matrix<int, 3>> s;
+ * s.insert({1, 2, 3});
+ * @endcode
+ *
+ * @ingroup ysc_hash
+ */
+template <class T, std::size_t... D> struct std::hash<ysc::matrix<T, D...>> {
+    std::size_t operator()(const ysc::matrix<T, D...>& m) const noexcept {
+        std::size_t h = 0;
+        std::hash<T> hasher;
+        for (const auto& v : m) {
+            h ^= hasher(v) + 0x9e3779b9 + (h << 6) + (h >> 2);
+        }
+        return h;
+    }
+};
 
 #if defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
 
