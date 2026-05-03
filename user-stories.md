@@ -12,9 +12,9 @@
 | **F — Arithmétique** | ⬜ Non démarrée | 0/4 | ⬜ US-026 à US-029 |
 | **G — Algorithmes** | ⬜ Non démarrée | 0/5 | ⬜ US-030 à US-034 |
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
-| **I — Finition & release** | ⬜ Non démarrée | 0/5 | ⬜ US-038 à US-042 |
+| **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 19 / 42 US**
+**Total : 19 / 43 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -76,6 +76,21 @@
 - Chaque PR doit laisser le build vert et les tests verts
 - Pas de breaking change sans bump majeur
 
+### Définition of Done (DoD) — critères transverses
+
+Toute US est considérée **Done** quand, en plus de ses critères d'acceptation propres :
+
+- Build et tests verts (`cmake --build build --target check`)
+- Aucun avertissement clang-format (`cmake --build build --target format-check`)
+- Aucun avertissement clang-tidy (`cmake --build build --target lint`)
+- **Documentation :** toute fonction publique (membre ou libre) ajoutée ou modifiée est documentée avec Doxygen :
+  - `@brief` — description en une phrase
+  - `@tparam` pour chaque paramètre template (si applicable)
+  - `@param` pour chaque paramètre de fonction (si applicable)
+  - `@return` si la valeur de retour est non-void
+  - Un exemple compilable dans `@code`…`@endcode`
+- Toute nouvelle fonction est rattachée à un groupe `@ingroup` existant (ou un nouveau groupe `@defgroup` créé), afin d'être accessible depuis la page principale de la doc Doxygen en ≤ 2 clics
+
 ---
 
 ## Épopées et dépendances
@@ -120,6 +135,7 @@ EPIC I — Finition & release
   US-040 (README + examples)
   US-041 (100% coverage gate)
   US-042 (release v2.0.0)
+  US-043 (documentation API complète)
 ```
 
 ---
@@ -991,3 +1007,54 @@ Reshape = juste un changement de vue, zero-copy.
 - [ ] Release v2.0.0 visible sur GitHub
 - [ ] Doc à jour, badges verts
 - [ ] CHANGELOG complet
+
+---
+
+## US-043 — Documentation Doxygen complète de l'API publique
+
+**Priorité :** P1 — **Dépend de :** US-006, US-023 (toutes les US d'API déjà mergées) — **Bloque :** US-042
+
+### Story
+En tant qu'utilisateur de la bibliothèque, je veux que chaque fonction publique soit documentée avec Doxygen (description, paramètres, exemple de code) et accessible en ≤ 2 clics depuis la page principale de la doc.
+
+### Spécification technique
+
+**Contenu de chaque documentation :**
+- `@brief` — une phrase décrivant le comportement
+- `@tparam` pour chaque paramètre template (si applicable)
+- `@param[in]`/`@param[out]` pour chaque paramètre de fonction (si applicable)
+- `@return` si la valeur de retour est non-void
+- `@throws` si une exception peut être levée
+- Un exemple compilable dans `@code`…`@endcode`
+
+**Organisation par groupes (`@defgroup` / `@ingroup`) :**
+
+| Groupe | Contenu |
+|--------|---------|
+| `construction` | Constructeurs, `operator=`, factories (`zeros`, `ones`, `full`, `identity`) |
+| `element_access` | `operator()`, `at()` |
+| `iterators` | `begin`, `end`, `cbegin`, `cend`, `rbegin`, `rend`, et variantes const |
+| `capacity` | `size`, `max_size`, `empty`, `data` |
+| `modifiers` | `fill`, `swap` |
+| `comparison` | `operator==`, `operator<=>` |
+
+**Page principale (`@mainpage`) :**
+- Fichier `docs/mainpage.dox` (ou bloc `@mainpage` dans `matrix.hpp`)
+- Courte description de la bibliothèque
+- Tableau listant les 6 groupes avec liens (`@ref`)
+- Exemple "Quick Start" complet
+
+**Vérification Doxygen :**
+- `WARN_AS_ERROR = YES` dans `Doxyfile` pour que tout warning devienne une erreur
+- `cmake --build build --target doc` doit se terminer sans aucun avertissement
+
+**Job CI :**
+- Étendre le job `docs` (US-006) avec `WARN_AS_ERROR = YES` en CI
+- Ou ajouter une étape `doxygen-check` dédiée (sans déploiement)
+
+### Critères d'acceptation
+- [ ] Chaque fonction publique de `matrix.hpp` possède `@brief`, `@tparam`/`@param`/`@return`/`@throws` selon applicable, et un exemple `@code`…`@endcode`
+- [ ] Toutes les fonctions sont rattachées à l'un des 6 groupes ci-dessus via `@ingroup`
+- [ ] La page `@mainpage` liste les 6 groupes ; chaque groupe est accessible en 1 clic depuis la page principale
+- [ ] `cmake --build build --target doc` produit zéro avertissement Doxygen
+- [ ] La CI est rouge si un avertissement Doxygen est introduit (`WARN_AS_ERROR = YES`)
