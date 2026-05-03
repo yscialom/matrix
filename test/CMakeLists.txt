@@ -20,6 +20,7 @@ add_executable(${TARGET_NAME}
     src/fill.cpp
     src/nested_init.cpp
     src/iterators.cpp
+    src/ostream.cpp
     src/size_data.cpp
     src/typedefs.cpp
     src/main.cpp
