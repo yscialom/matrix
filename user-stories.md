@@ -6,7 +6,7 @@
 |--------|--------|-------------|--------|
 | **A — Infrastructure & CI/CD** | ✅ Terminée | 7/7 | ✅ US-001, US-002, US-003, US-004, US-005, US-006, US-007 |
 | **B — Modernisation C++20** | ✅ Terminée | 3/3 | ✅ US-008, US-009, US-010 (fusionné US-019) |
-| **C — Dette technique** | 🔶 Partielle | 3/4 | ✅ US-011, US-012, US-013 · ⬜ US-014 |
+| **C — Dette technique** | ✅ Terminée | 4/4 | ✅ US-011, US-012, US-013, US-014 |
 | **D — Conformité STL** | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
 | **E — Comparaison & I/O** | 🔶 Partielle | 4/7 | ✅ US-019, US-021, US-022, US-023 · ⬜ US-020, US-024, US-025 |
 | **F — Arithmétique** | ⬜ Non démarrée | 0/4 | ⬜ US-026 à US-029 |
@@ -14,7 +14,7 @@
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 20 / 43 US**
+**Total : 21 / 43 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -423,8 +423,8 @@ C'est de l'**UB** (function returning non-void sans return). Idem pour la versio
 - Pas de breaking change utilisateur (namespace interne)
 
 ### Critères d'acceptation
-- [ ] Tous les usages renommés
-- [ ] Build vert
+- [x] Tous les usages renommés
+- [x] Build vert
 
 ---
 
