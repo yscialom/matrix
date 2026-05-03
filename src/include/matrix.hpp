@@ -75,7 +75,7 @@ constexpr struct matrix_zero_t {
  * a struct holding a C-style array `T[Dimensions][...]` as its only non-static
  * data member. Unlike a C-style array, it doesn't decay to `T*` automatically.
  * As an aggregate impersonator, it can be initialized with aggregate-initialization
- * given at most @c N initializers that are convertible to @c T:
+ * given exactly @c linear_size initializers that are convertible to @c T:
  * `ysc::matrix<int, 3, 2> m = {1,2,3,4,5,6};`.
  *
  * The struct combines the performance and accessibility of a C-style array with
@@ -221,24 +221,23 @@ public:
      */
     matrix(matrix_zero_t /*zero*/) : _data({}) {}
 
-    /*
-     * @todo Code & test "As an aggregate impersonator, it can be initialized with
-     * aggregate-initialization given at most @c N initializers that are convertible to @c T"
-     */
-
     // aggregate constructors
     /**
      * @brief Initializes the matrix following the rules of aggregate initialization.
-     * @tparam Args... Source types
-     * @param args...  Source values
+     * @tparam Args... Source types (must all be convertible to @c T)
+     * @param args...  Source values (must be exactly @c linear_size values)
      *
-     * `matrix<long, 2, 2> m{true, '\x02', 3, 4L},` initializes an order-2 matrix from the values
-     * ` true`, `'\x02'`, `3` and `4L` converted to `int`.
+     * `matrix<long, 2, 2> m{true, '\x02', 3, 4L}` initializes an order-2 matrix from the values
+     * `true`, `'\x02'`, `3` and `4L` converted to `long`.
+     * Partial initialization (fewer than `linear_size` values) is not supported; use
+     * `matrix(matrix_zero_t)` to zero-initialize.
      */
-    // False positive on forwarding templates: if Args contains a C array, decay occurs at the
-    // call site, not here.
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
-    template <class... Args> matrix(Args&&... args) : _data{std::forward<Args>(args)...} {}
+    template <class... Args>
+        requires(sizeof...(Args) == linear_size) && (std::convertible_to<Args, T> && ...) &&
+                (sizeof...(Args) > 0)
+    constexpr explicit(sizeof...(Args) == 1) matrix(Args&&... args)
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+        : _data{static_cast<T>(std::forward<Args>(args))...} {}
 
     // copy constructors
     /**

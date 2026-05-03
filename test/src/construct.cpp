@@ -140,7 +140,7 @@ TEST(construct_move, different_trivial_type) {
 
 // Expect matrixes to be movable for user-defined types
 TEST(construct_move, user_defined_type) {
-    ysc::matrix<std::shared_ptr<int>, 1> m = {std::make_shared<int>(0)};
+    ysc::matrix<std::shared_ptr<int>, 1> m{std::make_shared<int>(0)};
     auto const m_copy = std::move(m);
     ASSERT_EQ(*m_copy(0), 0);
     ASSERT_FALSE(
@@ -212,6 +212,31 @@ TEST(assign_move, user_defined_type) {
 }
 
 //
+// --- CONSTRAINED VARIADIC CONSTRUCTOR ---
+//
+
+// Exact count: exactly linear_size initializers required
+static_assert(std::is_constructible_v<ysc::matrix<int, 3>, int, int, int>);
+static_assert(!std::is_constructible_v<ysc::matrix<int, 3>, int, int>);
+static_assert(!std::is_constructible_v<ysc::matrix<int, 3>, int, int, int, int>);
+
+// Type constraint: all initializers must be convertible to T
+static_assert(!std::is_constructible_v<ysc::matrix<int, 2>, int, std::string>);
+
+// Single-element matrix: explicit to prevent accidental implicit conversions
+static_assert(!std::is_convertible_v<int, ysc::matrix<int, 1>>);
+static_assert(std::is_constructible_v<ysc::matrix<int, 1>, int>);
+
+// Copy constructor takes precedence over variadic when copying a matrix
+TEST(construct_init, copy_not_variadic) {
+    ysc::matrix<int, 3> const m1 = {1, 2, 3};
+    ysc::matrix<int, 3> const m2 = m1; // must call copy ctor, not variadic
+    ASSERT_EQ(m2(0), 1);
+    ASSERT_EQ(m2(1), 2);
+    ASSERT_EQ(m2(2), 3);
+}
+
+//
 // --- DESTRUCTOR ---
 //
 
@@ -231,7 +256,7 @@ TEST(destruct, user_defined_type) {
 
     {
         // trigger is false
-        ysc::matrix<S, 1> const m = {trigger};
+        ysc::matrix<S, 1> const m{trigger};
     } // trigger should be toggled as m is destructed
     ASSERT_TRUE(trigger);
 }

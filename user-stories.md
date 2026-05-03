@@ -6,15 +6,15 @@
 |--------|--------|-------------|--------|
 | **A — Infrastructure & CI/CD** | ✅ Terminée | 7/7 | ✅ US-001, US-002, US-003, US-004, US-005, US-006, US-007 |
 | **B — Modernisation C++20** | ✅ Terminée | 3/3 | ✅ US-008, US-009, US-010 (fusionné US-019) |
-| **C — Dette technique** | 🔶 Partielle | 2/4 | ✅ US-011, US-013 · ⬜ US-012, US-014 |
+| **C — Dette technique** | 🔶 Partielle | 3/4 | ✅ US-011, US-012, US-013 · ⬜ US-014 |
 | **D — Conformité STL** | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
-| **E — Comparaison & I/O** | 🔶 Partielle | 1/7 | ✅ US-019 · ⬜ US-020 à US-025 |
+| **E — Comparaison & I/O** | 🔶 Partielle | 2/7 | ✅ US-019, US-021 · ⬜ US-020, US-022 à US-025 |
 | **F — Arithmétique** | ⬜ Non démarrée | 0/4 | ⬜ US-026 à US-029 |
 | **G — Algorithmes** | ⬜ Non démarrée | 0/5 | ⬜ US-030 à US-034 |
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/5 | ⬜ US-038 à US-042 |
 
-**Total : 16 / 42 US**
+**Total : 18 / 42 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
