@@ -8,13 +8,13 @@
 | **B — Modernisation C++20** | ✅ Terminée | 3/3 | ✅ US-008, US-009, US-010 (fusionné US-019) |
 | **C — Dette technique** | 🔶 Partielle | 3/4 | ✅ US-011, US-012, US-013 · ⬜ US-014 |
 | **D — Conformité STL** | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
-| **E — Comparaison & I/O** | 🔶 Partielle | 3/7 | ✅ US-019, US-021, US-023 · ⬜ US-020, US-022, US-024, US-025 |
+| **E — Comparaison & I/O** | 🔶 Partielle | 4/7 | ✅ US-019, US-021, US-022, US-023 · ⬜ US-020, US-024, US-025 |
 | **F — Arithmétique** | ⬜ Non démarrée | 0/4 | ⬜ US-026 à US-029 |
 | **G — Algorithmes** | ⬜ Non démarrée | 0/5 | ⬜ US-030 à US-034 |
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 19 / 43 US**
+**Total : 20 / 43 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -621,9 +621,9 @@ Permet : `matrix<int,2,3> m{{1,2,3},{4,5,6}};`
 - N-D : non couvert par cette US (complexité disproportionnée — alternative : factory `make_matrix`)
 
 ### Critères d'acceptation
-- [ ] Init 2D fonctionne
-- [ ] Mauvaise taille → `std::length_error`
-- [ ] Test `nested_init.cpp`
+- [x] Init 2D fonctionne
+- [x] Mauvaise taille → `std::length_error`
+- [x] Test `nested_init.cpp`
 
 ---
 
