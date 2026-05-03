@@ -568,6 +568,233 @@ public:
         return lhs /= rhs;
     }
 
+    // scalar arithmetic operators
+    /**
+     * @brief Multiplies every element of this matrix by scalar @a s and assigns the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *= Scalar`
+     * @param  s      Scalar multiplier
+     * @return @c *this
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * m *= 2;  // m == ysc::matrix<int, 3>{2, 4, 6}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator*=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a *= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a *= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Divides every element of this matrix by scalar @a s and assigns the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a /= Scalar`
+     * @param  s      Scalar divisor
+     * @return @c *this
+     *
+     * @code
+     * ysc::matrix<int, 3> m{6, 4, 2};
+     * m /= 2;  // m == ysc::matrix<int, 3>{3, 2, 1}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator/=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a /= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a /= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Adds scalar @a s to every element of this matrix and assigns the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a += Scalar`
+     * @param  s      Scalar addend
+     * @return @c *this
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * m += 10;  // m == ysc::matrix<int, 3>{11, 12, 13}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator+=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a += b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a += s; });
+        return *this;
+    }
+
+    /**
+     * @brief Subtracts scalar @a s from every element of this matrix and assigns the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a -= Scalar`
+     * @param  s      Scalar subtrahend
+     * @return @c *this
+     *
+     * @code
+     * ysc::matrix<int, 3> m{11, 12, 13};
+     * m -= 10;  // m == ysc::matrix<int, 3>{1, 2, 3}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator-=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a -= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a -= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Returns the element-wise product of a matrix and a scalar.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *= Scalar`
+     * @param  lhs    Matrix operand
+     * @param  s      Scalar multiplier
+     * @return New matrix with each element multiplied by @a s
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * auto r = m * 2;  // r == ysc::matrix<int, 3>{2, 4, 6}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    [[nodiscard]] friend matrix operator*(matrix lhs, const Scalar& s)
+        requires requires(T a, const Scalar& b) { a *= b; }
+    {
+        return lhs *= s;
+    }
+
+    /**
+     * @brief Returns the element-wise product of a scalar and a matrix (commutative).
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *= Scalar`
+     * @param  s      Scalar multiplier
+     * @param  rhs    Matrix operand
+     * @return New matrix with each element multiplied by @a s
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * auto r = 2 * m;  // r == ysc::matrix<int, 3>{2, 4, 6}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    [[nodiscard]] friend matrix operator*(const Scalar& s, matrix rhs)
+        requires requires(T a, const Scalar& b) { a *= b; }
+    {
+        return rhs *= s;
+    }
+
+    /**
+     * @brief Returns a new matrix with every element divided by scalar @a s.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a /= Scalar`
+     * @param  lhs    Matrix operand
+     * @param  s      Scalar divisor
+     * @return New matrix with each element divided by @a s
+     *
+     * @code
+     * ysc::matrix<int, 3> m{6, 4, 2};
+     * auto r = m / 2;  // r == ysc::matrix<int, 3>{3, 2, 1}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    [[nodiscard]] friend matrix operator/(matrix lhs, const Scalar& s)
+        requires requires(T a, const Scalar& b) { a /= b; }
+    {
+        return lhs /= s;
+    }
+
+    /**
+     * @brief Returns a new matrix with scalar @a s added to every element.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a += Scalar`
+     * @param  lhs    Matrix operand
+     * @param  s      Scalar addend
+     * @return New matrix with @a s added to each element
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * auto r = m + 10;  // r == ysc::matrix<int, 3>{11, 12, 13}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    [[nodiscard]] friend matrix operator+(matrix lhs, const Scalar& s)
+        requires requires(T a, const Scalar& b) { a += b; }
+    {
+        return lhs += s;
+    }
+
+    /**
+     * @brief Returns a new matrix with scalar @a s subtracted from every element.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a -= Scalar`
+     * @param  lhs    Matrix operand
+     * @param  s      Scalar subtrahend
+     * @return New matrix with @a s subtracted from each element
+     *
+     * @code
+     * ysc::matrix<int, 3> m{11, 12, 13};
+     * auto r = m - 10;  // r == ysc::matrix<int, 3>{1, 2, 3}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    [[nodiscard]] friend matrix operator-(matrix lhs, const Scalar& s)
+        requires requires(T a, const Scalar& b) { a -= b; }
+    {
+        return lhs -= s;
+    }
+
+    // unary arithmetic operators
+    /**
+     * @brief Returns a copy of the matrix (unary plus).
+     * @return Copy of @c *this, unchanged
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * auto r = +m;  // r == m
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    [[nodiscard]] matrix operator+() const { return *this; }
+
+    /**
+     * @brief Returns a matrix with all elements negated (unary minus).
+     * @return New matrix where each element @c e is replaced by @c -e
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, -2, 3};
+     * auto r = -m;  // r == ysc::matrix<int, 3>{-1, 2, -3}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    [[nodiscard]] matrix operator-() const
+        requires requires(const T& a) { -a; }
+    {
+        matrix result(zero);
+        std::transform(cbegin(), cend(), result.begin(), [](const T& a) -> T { return -a; });
+        return result;
+    }
+
     // modifiers
     /**
      * @brief Assigns the given value to all elements of the matrix.
