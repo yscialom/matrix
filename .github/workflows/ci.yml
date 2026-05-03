@@ -1,0 +1,259 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  build:
+    name: ${{ matrix.os }} / ${{ matrix.compiler }} / ${{ matrix.build_type }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Ubuntu 24.04 — GCC 12
+          - os: ubuntu-24.04
+            compiler: gcc-12
+            cc: gcc-12
+            cxx: g++-12
+            packages: g++-12 libgtest-dev
+            build_type: Debug
+          - os: ubuntu-24.04
+            compiler: gcc-12
+            cc: gcc-12
+            cxx: g++-12
+            packages: g++-12 libgtest-dev
+            build_type: Release
+
+          # Ubuntu 24.04 — GCC 13
+          - os: ubuntu-24.04
+            compiler: gcc-13
+            cc: gcc-13
+            cxx: g++-13
+            packages: g++-13 libgtest-dev
+            build_type: Debug
+          - os: ubuntu-24.04
+            compiler: gcc-13
+            cc: gcc-13
+            cxx: g++-13
+            packages: g++-13 libgtest-dev
+            build_type: Release
+
+          # Ubuntu 24.04 — Clang 15
+          - os: ubuntu-24.04
+            compiler: clang-15
+            cc: clang-15
+            cxx: clang++-15
+            packages: clang-15 libgtest-dev
+            build_type: Debug
+          - os: ubuntu-24.04
+            compiler: clang-15
+            cc: clang-15
+            cxx: clang++-15
+            packages: clang-15 libgtest-dev
+            build_type: Release
+
+          # Ubuntu 24.04 — Clang 17
+          - os: ubuntu-24.04
+            compiler: clang-17
+            cc: clang-17
+            cxx: clang++-17
+            packages: clang-17 libgtest-dev
+            build_type: Debug
+          - os: ubuntu-24.04
+            compiler: clang-17
+            cc: clang-17
+            cxx: clang++-17
+            packages: clang-17 libgtest-dev
+            build_type: Release
+
+          # macOS 14 — Apple Clang
+          - os: macos-14
+            compiler: appleclang
+            cc: clang
+            cxx: clang++
+            build_type: Debug
+          - os: macos-14
+            compiler: appleclang
+            cc: clang
+            cxx: clang++
+            build_type: Release
+
+          # Windows 2022 — MSVC
+          - os: windows-2022
+            compiler: msvc
+            build_type: Debug
+          - os: windows-2022
+            compiler: msvc
+            build_type: Release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install compiler and GTest (Ubuntu)
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y ccache ${{ matrix.packages }}
+
+      - name: Install GTest (macOS)
+        if: startsWith(matrix.os, 'macos')
+        run: brew install googletest ccache
+
+      - name: Install GTest (Windows)
+        if: startsWith(matrix.os, 'windows')
+        run: vcpkg install gtest:x64-windows
+        shell: pwsh
+
+      - name: Cache ccache
+        if: runner.os != 'Windows'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ github.sha }}
+          restore-keys: |
+            ccache-${{ matrix.os }}-${{ matrix.compiler }}-${{ matrix.build_type }}-
+
+      - name: Configure (Unix)
+        if: runner.os != 'Windows'
+        env:
+          CC: ${{ matrix.cc }}
+          CXX: ${{ matrix.cxx }}
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+
+      - name: Configure (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmake -S . -B build `
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} `
+            -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake"
+        shell: pwsh
+
+      - name: Build
+        run: cmake --build build --parallel --config ${{ matrix.build_type }}
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure --build-config ${{ matrix.build_type }}
+
+  coverage:
+    name: Coverage (Ubuntu / GCC-13 / Debug)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GCC-13, GTest and lcov
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y g++-13 libgtest-dev lcov
+
+      - name: Configure with coverage
+        env:
+          CC: gcc-13
+          CXX: g++-13
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DENABLE_COVERAGE=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Collect coverage data
+        run: |
+          lcov --capture \
+               --directory build \
+               --output-file coverage.info \
+               --gcov-tool gcov-13 \
+               --ignore-errors mismatch
+
+      - name: Filter coverage data
+        run: |
+          lcov --remove coverage.info \
+               '*/test/*' \
+               '*/_deps/*' \
+               '/usr/*' \
+               --output-file coverage.info \
+               --gcov-tool gcov-13 \
+               --ignore-errors mismatch,unused
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: coverage.info
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  sanitizers:
+    name: Sanitizers (Ubuntu / Clang-17 / Debug)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Clang-17 and GTest
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y clang-17 libgtest-dev
+
+      - name: Configure with sanitizers
+        env:
+          CC: clang-17
+          CXX: clang++-17
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DENABLE_SANITIZERS=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run tests
+        env:
+          ASAN_OPTIONS: detect_leaks=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: ctest --test-dir build --output-on-failure
+
+  format-check:
+    name: Format Check (clang-format)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: |
+          clang-format --dry-run --Werror \
+            $(find src test -name '*.hpp' -o -name '*.cpp')
+
+  lint:
+    name: Lint (clang-tidy)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-tidy and GTest
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y clang-tidy libgtest-dev
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Run clang-tidy
+        run: run-clang-tidy -p build

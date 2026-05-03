@@ -1,0 +1,262 @@
+#include "utils.hpp"
+#include <matrix.hpp>
+
+#include <gtest/gtest.h>
+
+#include <memory>
+#include <string>
+
+//
+// --- DEFAULT CONSTRUCTORS ---
+//
+
+// Expect matrix elements to be default-initialized (uninitialized) for trivial types
+TEST(construct_default, default_trivial_type) {
+    /*
+     * Since reading uninitialized memory is UB, we can not rely solely on
+     * reading the value of a matrix<unsigned> element after default-init.
+     */
+    auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>();
+    ASSERT_NE((*m)(0), 0);
+}
+
+// Expect matrix elements to be default-initialized for user-defined types
+TEST(construct_default, default_user_defined_type) {
+    struct user_defined : ysc::test::SideEffect<> {
+        user_defined() { trigger(); }
+    };
+    ysc::matrix<user_defined, 1> const m;
+    ASSERT_TRUE(m(0).triggered());
+}
+
+// Expect matrix elements to be default-initialized for array types
+TEST(construct_default, default_array_type) {
+    struct user_defined : ysc::test::SideEffect<> {
+        user_defined() { trigger(); }
+    };
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
+    ysc::matrix<user_defined[1], 1> const m;
+    ASSERT_TRUE(m(0)[0].triggered());
+}
+
+//
+// --- AGGREGATE CONSTRUCTORS ---
+//
+
+// Expect matrix elements to be zero-initialized for trivial types on demand
+TEST(construct_init, zero_trivial_type) {
+    /*
+     * Since reading uninitialized memory is UB, we can not rely solely on
+     * reading the value of a matrix<unsigned> element after default-init.
+     */
+    auto const m = ysc::test::on_non_zero_memory<ysc::matrix<unsigned, 1>>(ysc::zero);
+    ASSERT_EQ((*m)(0), 0);
+}
+
+// Expect matrix elements to be aggregate-initializable (trival types)
+TEST(construct_init, aggregate_trivial_types) {
+    ysc::matrix<int, 3> const m = {1987, 04, 24};
+    ASSERT_EQ(m(0), 1987);
+    ASSERT_EQ(m(1), 04);
+    ASSERT_EQ(m(2), 24);
+}
+
+// Expect matrix elements to be aggregate-initializable (trival types, multi-dim)
+TEST(construct_init, aggregate_trivial_types_multidim) {
+    ysc::matrix<int, 2, 2, 2> const m = {1, 2, 3, 4, 5, 6, 7, 8};
+    ASSERT_EQ(m(0, 0, 0), 1);
+    ASSERT_EQ(m(0, 0, 1), 2);
+    ASSERT_EQ(m(1, 1, 1), 8);
+}
+
+// Expect matrix elements to be aggregate-initializable (user-defined types)
+TEST(construct_init, aggregate_user_defined_types) {
+    ysc::matrix<std::string, 3> const m = {"1987", "04", "24"};
+    ASSERT_EQ(m(0), "1987");
+    ASSERT_EQ(m(1), "04");
+    ASSERT_EQ(m(2), "24");
+}
+
+// Expect matrix elements to be aggregate-initializable from mixed source types
+TEST(construct_init, aggregate_mixed_types) {
+    ysc::matrix<long long, 3> const m = {1987, '\x04', 24L};
+    ASSERT_EQ(m(0), 1987);
+    ASSERT_EQ(m(1), 04);
+    ASSERT_EQ(m(2), 24);
+}
+
+//
+// --- COPY CONSTRUCTORS ---
+//
+
+// Expect matrixes to be copyable for trivial types
+TEST(construct_copy, trivial_type) {
+    ysc::matrix<int, 3> const m = {1987, 04, 24};
+    auto const m_copy = m;
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be copyable for trivial types from a different source type
+TEST(construct_copy, different_trivial_type) {
+    ysc::matrix<int, 3> const m = {1987, 04, 24};
+    ysc::matrix<long, 3> const m_copy = m;
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be copyable for user-defined types
+TEST(construct_copy, user_defined_type) {
+    ysc::matrix<std::string, 3> const m = {"1987", "04", "24"};
+    const auto& m_copy = m;
+    ASSERT_EQ(m_copy(0), "1987");
+    ASSERT_EQ(m_copy(1), "04");
+    ASSERT_EQ(m_copy(2), "24");
+}
+
+//
+// --- MOVE CONSTRUCTORS ---
+//
+
+// Expect matrixes to be movable for trivial types
+TEST(construct_move, trivial_type) {
+    ysc::matrix<int, 3> m = {1987, 04, 24};
+    auto const m_copy = std::move(m); // NOLINT(performance-move-const-arg)
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be movable for trivial types from a different source type
+TEST(construct_move, different_trivial_type) {
+    ysc::matrix<int, 3> m = {1987, 04, 24};
+    ysc::matrix<long, 3> const m_copy = std::move(m); // NOLINT(performance-move-const-arg)
+    ASSERT_EQ(m_copy(0), 1987);
+    ASSERT_EQ(m_copy(1), 04);
+    ASSERT_EQ(m_copy(2), 24);
+}
+
+// Expect matrixes to be movable for user-defined types
+TEST(construct_move, user_defined_type) {
+    ysc::matrix<std::shared_ptr<int>, 1> m{std::make_shared<int>(0)};
+    auto const m_copy = std::move(m);
+    ASSERT_EQ(*m_copy(0), 0);
+    ASSERT_FALSE(
+        static_cast<bool>(m(0))); // NOLINT(bugprone-use-after-move,clang-analyzer-cplusplus.Move)
+}
+
+//
+// --- ASSIGNMENT OPERATORS ---
+//
+
+// Expect matrixes to be assignable for trivial types
+TEST(assign_copy, trivial_type) {
+    ysc::matrix<int, 3> const m = {1987, 04, 24};
+    ysc::matrix<int, 3> m_assign;
+    m_assign = m;
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable for trivial types from a different source type
+TEST(assign_copy, different_trivial_type) {
+    ysc::matrix<int, 3> const m = {1987, 04, 24};
+    ysc::matrix<long, 3> m_assign;
+    m_assign = m;
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable for user-defined types
+TEST(assign_copy, user_defined_type) {
+    ysc::matrix<std::string, 3> const m = {"1987", "04", "24"};
+    ysc::matrix<std::string, 3> m_assign;
+    m_assign = m;
+    ASSERT_EQ(m_assign(0), "1987");
+    ASSERT_EQ(m_assign(1), "04");
+    ASSERT_EQ(m_assign(2), "24");
+}
+
+// Expect matrixes to be assignable (move) for trivial types
+TEST(assign_move, trivial_type) {
+    ysc::matrix<int, 3> m = {1987, 04, 24};
+    ysc::matrix<int, 3> m_assign;
+    m_assign = std::move(m); // NOLINT(performance-move-const-arg)
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable (move) for trivial types from a different source type
+TEST(assign_move, different_trivial_type) {
+    ysc::matrix<int, 3> m = {1987, 04, 24};
+    ysc::matrix<long, 3> m_assign;
+    m_assign = std::move(m); // NOLINT(performance-move-const-arg)
+    ASSERT_EQ(m_assign(0), 1987);
+    ASSERT_EQ(m_assign(1), 04);
+    ASSERT_EQ(m_assign(2), 24);
+}
+
+// Expect matrixes to be assignable (move) for user-defined types
+TEST(assign_move, user_defined_type) {
+    ysc::matrix<std::string, 3> m = {"1987", "04", "24"};
+    ysc::matrix<std::string, 3> m_assign;
+    m_assign = std::move(m);
+    ASSERT_EQ(m_assign(0), "1987");
+    ASSERT_EQ(m_assign(1), "04");
+    ASSERT_EQ(m_assign(2), "24");
+}
+
+//
+// --- CONSTRAINED VARIADIC CONSTRUCTOR ---
+//
+
+// Exact count: exactly linear_size initializers required
+static_assert(std::is_constructible_v<ysc::matrix<int, 3>, int, int, int>);
+static_assert(!std::is_constructible_v<ysc::matrix<int, 3>, int, int>);
+static_assert(!std::is_constructible_v<ysc::matrix<int, 3>, int, int, int, int>);
+
+// Type constraint: all initializers must be convertible to T
+static_assert(!std::is_constructible_v<ysc::matrix<int, 2>, int, std::string>);
+
+// Single-element matrix: explicit to prevent accidental implicit conversions
+static_assert(!std::is_convertible_v<int, ysc::matrix<int, 1>>);
+static_assert(std::is_constructible_v<ysc::matrix<int, 1>, int>);
+
+// Copy constructor takes precedence over variadic when copying a matrix
+TEST(construct_init, copy_not_variadic) {
+    ysc::matrix<int, 3> const m1 = {1, 2, 3};
+    ysc::matrix<int, 3> const m2 = m1; // must call copy ctor, not variadic
+    ASSERT_EQ(m2(0), 1);
+    ASSERT_EQ(m2(1), 2);
+    ASSERT_EQ(m2(2), 3);
+}
+
+//
+// --- DESTRUCTOR ---
+//
+
+// Expect matrix elements to be destructed
+TEST(destruct, user_defined_type) {
+    bool trigger = false;
+    struct S {
+        S(bool& flag)
+            : _flag(flag) {}   // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+        ~S() { _flag = true; } // upon destruction: sets trigger to true
+        S(const S&) = delete;
+        S& operator=(const S&) = delete;
+        S(S&&) = delete;
+        S& operator=(S&&) = delete;
+        bool& _flag; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+    };
+
+    {
+        // trigger is false
+        ysc::matrix<S, 1> const m{trigger};
+    } // trigger should be toggled as m is destructed
+    ASSERT_TRUE(trigger);
+}

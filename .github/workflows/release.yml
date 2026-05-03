@@ -1,0 +1,91 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  verify-version:
+    name: Verify CMake version matches tag
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check VERSION_* in CMakeLists.txt matches tag
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          TAG_MAJOR=$(echo "$VERSION" | cut -d. -f1)
+          TAG_MINOR=$(echo "$VERSION" | cut -d. -f2)
+          TAG_PATCH=$(echo "$VERSION" | cut -d. -f3)
+
+          CMAKE_MAJOR=$(grep -oP 'set\(VERSION_MAJOR\s+\K\d+' CMakeLists.txt)
+          CMAKE_MINOR=$(grep -oP 'set\(VERSION_MINOR\s+\K\d+' CMakeLists.txt)
+          CMAKE_PATCH=$(grep -oP 'set\(VERSION_PATCH\s+\K\d+' CMakeLists.txt)
+
+          echo "Tag: $TAG_MAJOR.$TAG_MINOR.$TAG_PATCH"
+          echo "CMake: $CMAKE_MAJOR.$CMAKE_MINOR.$CMAKE_PATCH"
+
+          if [ "$TAG_MAJOR" != "$CMAKE_MAJOR" ] \
+          || [ "$TAG_MINOR" != "$CMAKE_MINOR" ] \
+          || [ "$TAG_PATCH" != "$CMAKE_PATCH" ]; then
+            echo "ERROR: version mismatch between tag ($VERSION) and CMakeLists.txt ($CMAKE_MAJOR.$CMAKE_MINOR.$CMAKE_PATCH)"
+            exit 1
+          fi
+
+  build-and-test:
+    name: Build and test (Ubuntu / GCC-13 / Release)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GCC-13 and GTest
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y g++-13 libgtest-dev
+
+      - name: Configure
+        env:
+          CC: gcc-13
+          CXX: g++-13
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-24.04
+    needs: [verify-version, build-and-test]
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install git-cliff
+        run: |
+          curl -sSfL \
+            "https://github.com/orhun/git-cliff/releases/download/v2.13.1/git-cliff-2.13.1-x86_64-unknown-linux-musl.tar.gz" \
+            | tar -xz --strip-components=1 -C /usr/local/bin \
+                "git-cliff-2.13.1-x86_64-unknown-linux-musl/git-cliff"
+
+      - name: Generate CHANGELOG
+        run: git cliff --tag "$GITHUB_REF_NAME" --output CHANGELOG.md
+
+      - name: Extract release notes
+        run: git cliff --tag "$GITHUB_REF_NAME" --unreleased --strip all --output release-notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: release-notes.md
+          files: CHANGELOG.md
