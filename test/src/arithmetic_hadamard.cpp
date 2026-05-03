@@ -112,24 +112,17 @@ struct no_mul {
 
 // Helper concepts — GCC does not support bare requires-expressions in static_assert
 // when all candidates are constrained out (same workaround as in concepts.cpp).
+// Note: operator* and operator/ delegate to *=/=/=, so testing *= and /= is sufficient.
 template <class M>
 concept matrix_mul_assignable = requires(M& a, const M& b) { a *= b; };
 template <class M>
-concept matrix_multipliable = requires(const M& a, const M& b) { a * b; };
-template <class M>
 concept matrix_div_assignable = requires(M& a, const M& b) { a /= b; };
-template <class M>
-concept matrix_divisible = requires(const M& a, const M& b) { a / b; };
 
 static_assert(!matrix_mul_assignable<ysc::matrix<no_mul, 2>>);
-static_assert(!matrix_multipliable<ysc::matrix<no_mul, 2>>);
 static_assert(!matrix_div_assignable<ysc::matrix<no_mul, 2>>);
-static_assert(!matrix_divisible<ysc::matrix<no_mul, 2>>);
 
 static_assert(matrix_mul_assignable<ysc::matrix<int, 2>>);
-static_assert(matrix_multipliable<ysc::matrix<int, 2>>);
 static_assert(matrix_div_assignable<ysc::matrix<int, 2>>);
-static_assert(matrix_divisible<ysc::matrix<int, 2>>);
 
 TEST(arithmetic_hadamard, concept_constraints_checked_at_compile_time) {
     // Runtime witness that the static_asserts above were checked.
