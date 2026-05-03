@@ -4,35 +4,92 @@
 [![codecov](https://codecov.io/gh/yscialom/matrix/graph/badge.svg)](https://codecov.io/gh/yscialom/matrix)
 [![docs](https://github.com/yscialom/matrix/actions/workflows/docs.yml/badge.svg)](https://yscialom.github.io/matrix/)
 
-A general-purpose multi-dimension container of static dimensions. Requires **C++20** (`__cplusplus >= 202002L`).
+A **header-only C++20** template library providing a general-purpose multi-dimensional
+container with static dimensions. Inspired by `std::array`, it extends it to N dimensions
+while keeping the same zero-overhead, `constexpr`-friendly design.
 
-## Example
+Full API reference: [yscialom.github.io/matrix](https://yscialom.github.io/matrix/)
 
+---
 
-    #include <matrix.hpp>
-    #include <iostream>
-    #include <string>
+## Installation
 
-    int main()
-    {
-        ysc::matrix<int, 3, 3> const data = {
-            1, 2, 3,
-            4, 5, 6,
-            7, 8, 9
-        };
+### CMake FetchContent (recommended)
 
-        std::cout << data(0, 0) + data(1, 1) + data(2, 2) << '\n';
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    ysc-matrix
+    GIT_REPOSITORY https://github.com/yscialom/matrix.git
+    GIT_TAG        v1.0.0
+)
+FetchContent_MakeAvailable(ysc-matrix)
 
-        ysc::matrix<std::string, 3, 3> data_as_string;
-        for (int i=0 ; i < data_as_string.dimensions[0] ; ++i) {
-            for (int j=0 ; j < data_as_string.dimensions[1] ; ++j) {
-                data_as_string(i, j) = std::to_string(data(i, j));
-            }
-        }
+target_link_libraries(my_target PRIVATE ysc::matrix)
+```
 
-        std::cout << "|_log(data(1, 1))_| is " << data_as_string(1, 1).size() << ".\n";
-    }
-    
-## Feature
+### Manual
 
-todo...
+Copy `src/include/matrix.hpp` into your project and add its directory to your include path.
+
+---
+
+## Quick Start
+
+```cpp
+#include <matrix.hpp>
+#include <iostream>
+
+int main()
+{
+    // A 3×3 matrix of integers, aggregate-initialized
+    ysc::matrix<int, 3, 3> m = {
+        1, 2, 3,
+        4, 5, 6,
+        7, 8, 9
+    };
+
+    // Unchecked element access (performance path)
+    std::cout << m(1, 1) << '\n';  // 5
+
+    // Bounds-checked access (throws std::out_of_range if out of bounds)
+    std::cout << m.at(2, 2) << '\n';  // 9
+
+    // Compile-time metadata
+    static_assert(m.order == 2);
+    static_assert(m.dimensions[0] == 3);
+    static_assert(m.size() == 9);
+
+    // Range-based for loop (row-major order)
+    for (int& x : m)
+        x *= 2;
+
+    // Works with any type, any number of dimensions
+    ysc::matrix<double, 2, 3, 4> tensor;  // 3D, 24 elements
+}
+```
+
+---
+
+## Features
+
+- **N-dimensional** — any number of dimensions, all sizes fixed at compile time
+- **STL-compatible** — `begin`/`end`, `size()`, `data()`, `front()`, `back()`, `fill()`, `swap()`
+- **Two access policies** — unchecked `operator()` (fast path) and bounds-checked `at()`
+- **Aggregate initialization** — `matrix<int, 2, 3> m = {1, 2, 3, 4, 5, 6};`
+- **Type conversion** — constructors and assignment from `matrix<U, Dims...>` when `U` converts to `T`
+- **Comparison** — `==` and `<=>` (lexicographic, row-major order)
+- **Compile-time metadata** — `order`, `dimensions`, `size()`, `empty()` all `static constexpr`
+- **Zero-init tag** — `matrix<T, Dims...> m{ysc::zero};` for explicit zero-initialization
+- **Zero overhead** — storage is `std::array<T, N>`, no heap, no virtual dispatch, no indirection
+
+---
+
+## Building and Testing
+
+```bash
+cmake -S . -B build
+cmake --build build --target check
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full development guide.
