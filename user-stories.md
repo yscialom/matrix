@@ -9,12 +9,12 @@
 | **C — Dette technique** | ✅ Terminée | 4/4 | ✅ US-011, US-012, US-013, US-014 |
 | **D — Conformité STL** | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
 | **E — Comparaison & I/O** | ✅ Terminée | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
-| **F — Arithmétique** | ⬜ Non démarrée | 0/4 | ⬜ US-026 à US-029 |
+| **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ⬜ Non démarrée | 0/5 | ⬜ US-030 à US-034 |
 | **H — Vues & reshape** | ⬜ Non démarrée | 0/3 | ⬜ US-035 à US-037 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 24 / 43 US**
+**Total : 28 / 43 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
