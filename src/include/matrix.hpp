@@ -22,16 +22,17 @@
 
 namespace ysc {
 namespace _details {
-// cache-friendly: neighbor objects within the right-most coordinate are neighbors in memory
+// Row-major index: index = c[0]*D[1]*…*D[N-1] + c[1]*D[2]*…*D[N-1] + … + c[N-1]
+// Evaluated right-to-left; `stride` is the product of all dimensions already visited.
 template <class TDim, class TCoord>
 constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
     std::size_t index = 0;
-    std::size_t stride = 1;
-    auto d_it = dimensions.crbegin();
-    auto c_it = coords.crbegin();
-    for (; d_it != dimensions.crend(); ++d_it, ++c_it) {
-        index += static_cast<std::size_t>(*c_it) * stride;
-        stride *= *d_it;
+    std::size_t stride = 1; // stride = product(D[k] for all k already visited)
+    auto dim = dimensions.crbegin();
+    auto coord = coords.crbegin();
+    for (; dim != dimensions.crend(); ++dim, ++coord) {
+        index += static_cast<std::size_t>(*coord) * stride;
+        stride *= *dim;
     }
     return index;
 }
