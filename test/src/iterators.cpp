@@ -3,6 +3,7 @@
 #include <concepts>
 #include <gtest/gtest.h>
 #include <iterator>
+#include <numeric>
 #include <ranges>
 
 using M = ysc::matrix<int, 2, 3>;

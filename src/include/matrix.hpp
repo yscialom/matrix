@@ -17,27 +17,23 @@
 #include <compare>
 #include <concepts>
 #include <iterator>
-#include <numeric>
 #include <stdexcept>
 #include <type_traits>
 
 namespace ysc {
 namespace _details {
-template <class InputIt, class OutputIt>
-OutputIt partial_product(const InputIt& first, const InputIt& last, OutputIt output) {
-    *output++ = 1;
-    return partial_sum(first, last, output, std::multiplies<>{});
-}
-
-// cache-friendly:
-// neighbor objects within the right-most coordinate are neighbors in memory
+// cache-friendly: neighbor objects within the right-most coordinate are neighbors in memory
 template <class TDim, class TCoord>
-auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
-    std::array<std::size_t, std::tuple_size_v<TDim>> dimension_product{};
-    using std::begin, std::cbegin, std::cend, std::crbegin, std::crend, std::prev;
-    partial_product(crbegin(dimensions), prev(crend(dimensions)), begin(dimension_product));
-    return std::inner_product(cbegin(dimension_product), cend(dimension_product), crbegin(coords),
-                              std::size_t{0});
+constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
+    std::size_t index = 0;
+    std::size_t stride = 1;
+    auto d_it = dimensions.crbegin();
+    auto c_it = coords.crbegin();
+    for (; d_it != dimensions.crend(); ++d_it, ++c_it) {
+        index += static_cast<std::size_t>(*c_it) * stride;
+        stride *= *d_it;
+    }
+    return index;
 }
 } // namespace _details
 
@@ -219,7 +215,7 @@ public:
      * @note If `T` is a trivial type, the matrix is zero-initialized; otherwise the default
      * constructors of its elements are called.
      */
-    matrix(matrix_zero_t /*zero*/) : _data({}) {}
+    constexpr matrix(matrix_zero_t /*zero*/) : _data({}) {}
 
     // aggregate constructors
     /**
@@ -341,7 +337,9 @@ public:
      * @brief Assigns the given value to all elements of the matrix.
      * @param value Value to assign
      */
-    void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) { _data.fill(value); }
+    constexpr void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) {
+        _data.fill(value);
+    }
 
     /**
      * @brief Exchanges the contents of this matrix with another.
@@ -387,7 +385,7 @@ public:
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
-    T const& operator()(Coords... coordinates) const {
+    constexpr T const& operator()(Coords... coordinates) const {
         // Intentional: unchecked access on the performance path. Use at() for bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
@@ -402,7 +400,7 @@ public:
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
-    T& operator()(Coords... coordinates) {
+    constexpr T& operator()(Coords... coordinates) {
         // Intentional: unchecked access on the performance path. Use at() for bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[_details::coordinates_to_index(dimensions, std::array{coordinates...})];
@@ -444,6 +442,50 @@ public:
         return (*this)(coordinates...);
     }
 };
+
+/**
+ * @brief Returns a matrix with all elements zero-initialized.
+ * @tparam T  Element type
+ * @tparam D  Dimensions
+ */
+template <class T, std::size_t... D> constexpr matrix<T, D...> zeros() noexcept {
+    return matrix<T, D...>(zero);
+}
+
+/**
+ * @brief Returns a matrix with all elements set to @a v.
+ * @tparam T  Element type
+ * @tparam D  Dimensions
+ * @param  v  Value to fill
+ */
+template <class T, std::size_t... D> constexpr matrix<T, D...> full(const T& v) {
+    auto m = zeros<T, D...>();
+    m.fill(v);
+    return m;
+}
+
+/**
+ * @brief Returns a matrix with all elements set to @c T{1}.
+ * @tparam T  Element type
+ * @tparam D  Dimensions
+ */
+template <class T, std::size_t... D> constexpr matrix<T, D...> ones() {
+    return full<T, D...>(T{1});
+}
+
+/**
+ * @brief Returns the N×N identity matrix (diagonal = 1, rest = 0).
+ * @tparam T  Element type
+ * @tparam N  Dimension
+ */
+template <class T, std::size_t N> constexpr matrix<T, N, N> identity() {
+    auto m = zeros<T, N, N>();
+    for (std::size_t i = 0; i < N; ++i) {
+        m(i, i) = T{1};
+    }
+    return m;
+}
+
 } // namespace ysc
 
 #endif // YSC_MATRIX_HPP
