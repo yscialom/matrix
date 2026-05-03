@@ -18,6 +18,8 @@ add_executable(${TARGET_NAME}
     src/construct.cpp
     src/factories.cpp
     src/fill.cpp
+    src/formatter.cpp
+    src/hash.cpp
     src/nested_init.cpp
     src/iterators.cpp
     src/ostream.cpp

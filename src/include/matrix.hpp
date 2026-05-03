@@ -16,10 +16,16 @@
 #include <array>
 #include <compare>
 #include <concepts>
+#include <functional>
 #include <iterator>
 #include <ostream>
 #include <stdexcept>
 #include <type_traits>
+// Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h incompatibility
+#if __has_include(<format>) && (!defined(__clang__) || __clang_major__ >= 17)
+#include <format>
+#include <sstream>
+#endif
 
 namespace ysc {
 namespace detail {
@@ -586,5 +592,72 @@ std::ostream& operator<<(std::ostream& os, const matrix<T, Dims...>& m) {
 }
 
 } // namespace ysc
+
+/**
+ * @defgroup ysc_hash Hash support
+ * @brief `std::hash` specialization for `ysc::matrix`.
+ */
+
+/**
+ * @brief Specialization of `std::hash` for `ysc::matrix`.
+ * @tparam T  Element type — must be hashable via `std::hash<T>`
+ * @tparam D  Dimensions of the matrix
+ *
+ * Combines element hashes using the boost::hash_combine mixing strategy,
+ * so that two matrices with the same elements in the same order produce
+ * equal hashes, and matrices differing in at least one element are very
+ * likely to produce different hashes.
+ *
+ * @code
+ * std::unordered_set<ysc::matrix<int, 3>> s;
+ * s.insert({1, 2, 3});
+ * @endcode
+ *
+ * @ingroup ysc_hash
+ */
+template <class T, std::size_t... D> struct std::hash<ysc::matrix<T, D...>> {
+    std::size_t operator()(const ysc::matrix<T, D...>& m) const noexcept {
+        std::size_t h = 0;
+        std::hash<T> hasher;
+        for (const auto& v : m) {
+            h ^= hasher(v) + 0x9e3779b9 + (h << 6) + (h >> 2);
+        }
+        return h;
+    }
+};
+
+#if defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
+
+/**
+ * @brief Specialization of @c std::formatter for @c ysc::matrix.
+ * @tparam T     Element type — must be streamable via @c operator<<(std::ostream&, const T&)
+ * @tparam D     Dimensions of the matrix
+ * @tparam CharT Character type for the format context
+ *
+ * Enables `std::format("{}", m)` and produces the same nested-bracket output as
+ * `operator<<`: `[e0, e1, …]` for 1D, `[[e00, e01], [e10, e11]]` for 2D, and so on.
+ *
+ * Only available when the @c <format> library feature is present
+ * (@c __cpp_lib_format ≥ 201907L).
+ *
+ * @code
+ * ysc::matrix<int, 2, 2> m{1, 2, 3, 4};
+ * std::string s = std::format("{}", m);  // "[[1, 2], [3, 4]]"
+ * @endcode
+ *
+ * @ingroup ysc_io
+ */
+template <class T, std::size_t... D, class CharT>
+    requires ysc::detail::ostream_streamable<T>
+struct std::formatter<ysc::matrix<T, D...>, CharT> : std::formatter<std::string, CharT> {
+    template <class FormatContext>
+    auto format(const ysc::matrix<T, D...>& m, FormatContext& ctx) const {
+        std::ostringstream oss;
+        oss << m;
+        return std::formatter<std::string, CharT>::format(oss.str(), ctx);
+    }
+};
+
+#endif // defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
 
 #endif // YSC_MATRIX_HPP
