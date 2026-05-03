@@ -237,6 +237,37 @@ public:
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
         : _data{static_cast<T>(std::forward<Args>(args))...} {}
 
+    // nested initializer_list constructor (2D only)
+    /**
+     * @brief Initializes a 2D matrix from a nested initializer list.
+     * @tparam D1 Deduced from @c order; constrained to 2 (do not specify explicitly).
+     * @param init Row-major nested initializer list; must have exactly @c dimensions[0] rows,
+     *             each of exactly @c dimensions[1] elements.
+     *
+     * @throws std::length_error if the number of rows or the size of any row does not match.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{{1, 2, 3}, {4, 5, 6}};
+     * assert(m(1, 2) == 6);
+     * @endcode
+     */
+    template <std::size_t D1 = order>
+        requires(D1 == 2)
+    matrix(std::initializer_list<std::initializer_list<T>> init) : _data{} {
+        if (init.size() != dimensions[0]) {
+            throw std::length_error{"matrix: wrong number of rows"};
+        }
+        auto it = _data.begin();
+        for (auto const& row_list : init) {
+            if (row_list.size() != dimensions[1]) {
+                throw std::length_error{"matrix: wrong number of columns"};
+            }
+            for (auto const& val : row_list) {
+                *it++ = val;
+            }
+        }
+    }
+
     // copy constructors
     /**
      * @brief Initializes the matrix as a copy of another.
