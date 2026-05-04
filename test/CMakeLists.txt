@@ -10,12 +10,7 @@ include_directories(include)
 #
 set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
-    src/access.cpp
     src/accessors.cpp
-    src/arithmetic_elementwise.cpp
-    src/arithmetic_hadamard.cpp
-    src/arithmetic_scalar.cpp
-    src/arithmetic_unary.cpp
     src/assignment_returns_self.cpp
     src/comparison.cpp
     src/concepts.cpp
