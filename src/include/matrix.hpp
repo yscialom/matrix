@@ -803,7 +803,7 @@ public:
 
     /**
      * @brief Applies a function to every element in place.
-     * @tparam F Callable type — must accept `T&`
+     * @tparam F Callable type — must satisfy `std::invocable<F, T&>`
      * @param  f Function to apply to each element
      *
      * Visits every element in row-major order and calls @a f with a reference to the element.
@@ -817,7 +817,8 @@ public:
      *
      * @ingroup ysc_algorithms
      */
-    template <std::invocable<T&> F>
+    template <class F>
+        requires std::invocable<F, T&>
     void apply(F f) {
         for (T& v : _data) {
             std::invoke(f, v);
@@ -826,7 +827,7 @@ public:
 
     /**
      * @brief Returns a new matrix obtained by applying a function to every element.
-     * @tparam F  Callable type — must accept `const T&`
+     * @tparam F  Callable type — must satisfy `std::invocable<F, const T&>`
      * @param  f  Function to apply to each element
      * @return A new matrix whose element type is `std::invoke_result_t<F, const T&>`
      *         and whose dimensions are identical to @c *this.
@@ -841,7 +842,8 @@ public:
      *
      * @ingroup ysc_algorithms
      */
-    template <std::invocable<const T&> F>
+    template <class F>
+        requires std::invocable<F, const T&>
     [[nodiscard]] auto map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
         matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
         std::transform(_data.cbegin(), _data.cend(), result.begin(),
