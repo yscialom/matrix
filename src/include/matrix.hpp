@@ -18,6 +18,7 @@
 #include <concepts>
 #include <functional>
 #include <iterator>
+#include <numeric>
 #include <ostream>
 #include <stdexcept>
 #include <type_traits>
@@ -849,6 +850,105 @@ public:
         std::transform(_data.cbegin(), _data.cend(), result.begin(),
                        [&f](const T& v) { return std::invoke(f, v); });
         return result;
+    }
+
+    /**
+     * @brief Returns the sum of all elements.
+     * @tparam U  Deduced as @c T; do not specify explicitly.
+     * @return Sum of all elements, starting from @c T{}
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * assert(m.sum() == 6);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class U = T>
+        requires std::same_as<U, T>
+    [[nodiscard]] constexpr U sum() const
+        requires std::default_initializable<T> && requires(T a, const T& b) { a += b; }
+    {
+        return std::accumulate(cbegin(), cend(), U{},
+                               [](U acc, const U& v) -> U { return acc += v; });
+    }
+
+    /**
+     * @brief Returns the smallest element.
+     * @tparam U  Deduced as @c T; do not specify explicitly.
+     * @return Minimum element in row-major order
+     *
+     * @code
+     * ysc::matrix<int, 3> m{3, 1, 2};
+     * assert(m.min() == 1);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class U = T>
+        requires std::same_as<U, T>
+    [[nodiscard]] constexpr U min() const
+        requires(linear_size > 0) && std::totally_ordered<T>
+    {
+        return std::ranges::min(_data);
+    }
+
+    /**
+     * @brief Returns the largest element.
+     * @tparam U  Deduced as @c T; do not specify explicitly.
+     * @return Maximum element in row-major order
+     *
+     * @code
+     * ysc::matrix<int, 3> m{3, 1, 2};
+     * assert(m.max() == 3);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class U = T>
+        requires std::same_as<U, T>
+    [[nodiscard]] constexpr U max() const
+        requires(linear_size > 0) && std::totally_ordered<T>
+    {
+        return std::ranges::max(_data);
+    }
+
+    /**
+     * @brief Returns @c true if every element converts to @c true.
+     * @return @c true iff all elements are truthy
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * assert(m.all() == true);
+     * ysc::matrix<int, 3> n{1, 0, 3};
+     * assert(n.all() == false);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    [[nodiscard]] constexpr bool all() const
+        requires std::convertible_to<T, bool>
+    {
+        return std::ranges::all_of(_data, [](const T& v) { return static_cast<bool>(v); });
+    }
+
+    /**
+     * @brief Returns @c true if at least one element converts to @c true.
+     * @return @c true iff at least one element is truthy
+     *
+     * @code
+     * ysc::matrix<int, 3> m{0, 0, 3};
+     * assert(m.any() == true);
+     * ysc::matrix<int, 3> n{0, 0, 0};
+     * assert(n.any() == false);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    [[nodiscard]] constexpr bool any() const
+        requires std::convertible_to<T, bool>
+    {
+        return std::ranges::any_of(_data, [](const T& v) { return static_cast<bool>(v); });
     }
 
     // modifiers
