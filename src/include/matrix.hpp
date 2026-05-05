@@ -795,6 +795,60 @@ public:
         return result;
     }
 
+    // algorithms
+    /**
+     * @defgroup ysc_algorithms Algorithms
+     * @brief Element-wise functional algorithms on @c ysc::matrix.
+     */
+
+    /**
+     * @brief Applies a function to every element in place.
+     * @tparam F Callable type — must accept `T&`
+     * @param  f Function to apply to each element
+     *
+     * Visits every element in row-major order and calls @a f with a reference to the element.
+     * @a f may modify the element; the matrix is mutated in place.
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * m.apply([](int& v) { v *= 2; });
+     * // m == ysc::matrix<int, 3>{2, 4, 6}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::invocable<T&> F>
+    void apply(F f) {
+        for (T& v : _data) {
+            std::invoke(f, v);
+        }
+    }
+
+    /**
+     * @brief Returns a new matrix obtained by applying a function to every element.
+     * @tparam F  Callable type — must accept `const T&`
+     * @param  f  Function to apply to each element
+     * @return A new matrix whose element type is `std::invoke_result_t<F, const T&>`
+     *         and whose dimensions are identical to @c *this.
+     *
+     * Does not modify the original matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * auto s = m.map([](int v) { return std::to_string(v); });
+     * // s is ysc::matrix<std::string, 3>{"1", "2", "3"}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::invocable<const T&> F>
+    [[nodiscard]] auto map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
+        matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
+        std::transform(_data.cbegin(), _data.cend(), result.begin(),
+                       [&f](const T& v) { return std::invoke(f, v); });
+        return result;
+    }
+
     // modifiers
     /**
      * @brief Assigns the given value to all elements of the matrix.
