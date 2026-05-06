@@ -12,6 +12,7 @@ set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
     src/access.cpp
     src/accessors.cpp
+    src/algorithms.cpp
     src/arithmetic_elementwise.cpp
     src/arithmetic_hadamard.cpp
     src/arithmetic_scalar.cpp
@@ -24,9 +25,11 @@ add_executable(${TARGET_NAME}
     src/fill.cpp
     src/formatter.cpp
     src/hash.cpp
+    src/instantiation.cpp
     src/nested_init.cpp
     src/iterators.cpp
     src/ostream.cpp
+    src/reductions.cpp
     src/size_data.cpp
     src/typedefs.cpp
     src/main.cpp
