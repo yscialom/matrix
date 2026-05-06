@@ -6,10 +6,10 @@
 static_assert(ysc::matrix<int, 3>{1, 2, 3}.sum() == 6);
 static_assert(ysc::matrix<int, 3>{3, 1, 2}.min() == 1);
 static_assert(ysc::matrix<int, 3>{3, 1, 2}.max() == 3);
-static_assert(ysc::matrix<int, 3>{1, 2, 3}.all() == true);
-static_assert(ysc::matrix<int, 3>{1, 0, 3}.all() == false);
-static_assert(ysc::matrix<int, 3>{0, 0, 3}.any() == true);
-static_assert(ysc::matrix<int, 3>{0, 0, 0}.any() == false);
+static_assert(ysc::matrix<int, 3>{1, 2, 3}.all());
+static_assert(!ysc::matrix<int, 3>{1, 0, 3}.all());
+static_assert(ysc::matrix<int, 3>{0, 0, 3}.any());
+static_assert(!ysc::matrix<int, 3>{0, 0, 0}.any());
 
 TEST(reductions, sum_1d) {
     ysc::matrix<int, 4> m{1, 2, 3, 4};

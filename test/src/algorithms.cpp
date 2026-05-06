@@ -73,7 +73,7 @@ TEST(MatrixMap, WorksOn2DMatrix) {
 }
 
 TEST(MatrixMap, WorksWithFloatToDouble) {
-    ysc::matrix<float, 3> m{1.0f, 2.0f, 3.0f};
+    ysc::matrix<float, 3> m{1.0F, 2.0F, 3.0F};
     auto result = m.map([](float v) -> double { return static_cast<double>(v) * 0.5; });
     static_assert(std::is_same_v<decltype(result), ysc::matrix<double, 3>>);
     EXPECT_DOUBLE_EQ(result(0), 0.5);
