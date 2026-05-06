@@ -7,3 +7,5 @@
 template class ysc::matrix<int, 3, 4>;
 template class ysc::matrix<double, 2, 3, 4>;
 template class ysc::matrix<float, 10>;
+struct Scalar {};
+template class ysc::matrix<struct Scalar, 1>;
