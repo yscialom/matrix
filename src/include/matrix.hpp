@@ -1110,6 +1110,38 @@ constexpr matrix<T, N, N> identity() {
 }
 
 /**
+ * @defgroup ysc_linalg Linear algebra
+ * @brief Linear algebra operations on @c ysc::matrix.
+ */
+
+/**
+ * @brief Returns the transpose of a 2D matrix.
+ * @tparam T  Element type
+ * @tparam R  Number of rows of the input matrix
+ * @tparam C  Number of columns of the input matrix
+ * @param  m  Matrix to transpose
+ * @return New @c matrix<T,C,R> where `result(j, i) == m(i, j)` for all valid @a i, @a j
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+ * auto t = ysc::transpose(m);  // t is ysc::matrix<int, 3, 2>
+ * // t(0,0)==1, t(0,1)==4, t(1,0)==2, t(1,1)==5, t(2,0)==3, t(2,1)==6
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class T, std::size_t R, std::size_t C>
+[[nodiscard]] constexpr matrix<T, C, R> transpose(const matrix<T, R, C>& m) {
+    matrix<T, C, R> result(zero);
+    for (std::size_t i = 0; i < R; ++i) {
+        for (std::size_t j = 0; j < C; ++j) {
+            result(j, i) = m(i, j);
+        }
+    }
+    return result;
+}
+
+/**
  * @defgroup ysc_io I/O
  * @brief Stream output for `ysc::matrix`.
  */
