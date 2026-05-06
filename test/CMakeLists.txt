@@ -30,6 +30,7 @@ add_executable(${TARGET_NAME}
     src/iterators.cpp
     src/ostream.cpp
     src/reductions.cpp
+    src/transpose.cpp
     src/size_data.cpp
     src/typedefs.cpp
     src/main.cpp
