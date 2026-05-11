@@ -1142,6 +1142,38 @@ template <class T, std::size_t R, std::size_t C>
 }
 
 /**
+ * @brief Computes the matrix product of two 2D matrices.
+ * @tparam T  Element type — must support `operator*` and `operator+=`
+ * @tparam M  Number of rows of @a a and the result
+ * @tparam N  Shared inner dimension (columns of @a a, rows of @a b)
+ * @tparam P  Number of columns of @a b and the result
+ * @param  a  Left-hand matrix of size M×N
+ * @param  b  Right-hand matrix of size N×P
+ * @return New @c matrix<T,M,P> equal to the matrix product `a × b`
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> a{1, 2, 3, 4, 5, 6};
+ * ysc::matrix<int, 3, 2> b{7, 8, 9, 10, 11, 12};
+ * auto c = ysc::matmul(a, b);  // c is ysc::matrix<int, 2, 2>
+ * // c(0,0) == 58, c(0,1) == 64, c(1,0) == 139, c(1,1) == 154
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class T, std::size_t M, std::size_t N, std::size_t P>
+[[nodiscard]] constexpr matrix<T, M, P> matmul(const matrix<T, M, N>& a, const matrix<T, N, P>& b) {
+    matrix<T, M, P> result(zero);
+    for (std::size_t i = 0; i < M; ++i) {
+        for (std::size_t k = 0; k < N; ++k) {
+            for (std::size_t j = 0; j < P; ++j) {
+                result(i, j) += a(i, k) * b(k, j);
+            }
+        }
+    }
+    return result;
+}
+
+/**
  * @defgroup ysc_io I/O
  * @brief Stream output for `ysc::matrix`.
  */
