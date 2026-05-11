@@ -28,6 +28,7 @@ add_executable(${TARGET_NAME}
     src/instantiation.cpp
     src/nested_init.cpp
     src/iterators.cpp
+    src/dot.cpp
     src/matmul.cpp
     src/ostream.cpp
     src/reductions.cpp
