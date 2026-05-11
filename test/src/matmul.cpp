@@ -67,6 +67,20 @@ TEST(MatrixMatmul, WorksWithDouble) {
     EXPECT_DOUBLE_EQ(c(1, 1), 2.0);
 }
 
+TEST(MatrixMatmul, MixedTypes) {
+    // [[1,2,3],[4,5,6]] * [[1.5,2.5],[3.5,4.5],[5.5,6.5]]
+    // row 0: [1*1.5+2*3.5+3*5.5, 1*2.5+2*4.5+3*6.5] = [25.0, 31.0]
+    // row 1: [4*1.5+5*3.5+6*5.5, 4*2.5+5*4.5+6*6.5] = [56.5, 71.5]
+    ysc::matrix<int, 2, 3> a{1, 2, 3, 4, 5, 6};
+    ysc::matrix<double, 3, 2> b{1.5, 2.5, 3.5, 4.5, 5.5, 6.5};
+    auto c = ysc::matmul(a, b);
+    static_assert(std::is_same_v<decltype(c), ysc::matrix<double, 2, 2>>);
+    EXPECT_DOUBLE_EQ(c(0, 0), 25.0);
+    EXPECT_DOUBLE_EQ(c(0, 1), 31.0);
+    EXPECT_DOUBLE_EQ(c(1, 0), 56.5);
+    EXPECT_DOUBLE_EQ(c(1, 1), 71.5);
+}
+
 // constexpr verification
 static_assert([] {
     ysc::matrix<int, 2, 2> a{1, 2, 3, 4};

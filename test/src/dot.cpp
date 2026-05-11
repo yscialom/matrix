@@ -45,6 +45,15 @@ TEST(MatrixDot, Orthogonal) {
     EXPECT_EQ(ysc::dot(a, b), 0);
 }
 
+TEST(MatrixDot, MixedTypes) {
+    // 1*0.5 + 2*1.0 + 3*1.5 = 0.5 + 2.0 + 4.5 = 7.0
+    ysc::matrix<int, 3> a{1, 2, 3};
+    ysc::matrix<double, 3> b{0.5, 1.0, 1.5};
+    auto s = ysc::dot(a, b);
+    static_assert(std::is_same_v<decltype(s), double>);
+    EXPECT_DOUBLE_EQ(s, 7.0);
+}
+
 // constexpr verification
 static_assert([] {
     ysc::matrix<int, 3> a{1, 2, 3};
