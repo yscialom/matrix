@@ -1174,6 +1174,31 @@ template <class T, std::size_t M, std::size_t N, std::size_t P>
 }
 
 /**
+ * @brief Returns the dot product of two 1D matrices (vectors) of the same length.
+ * @tparam T Element type — must support `operator*` and `operator+=`
+ * @tparam N Number of elements
+ * @param  a First vector
+ * @param  b Second vector
+ * @return Scalar value `sum(a[i] * b[i])` for `i` in `[0, N)`
+ *
+ * @code
+ * ysc::matrix<int, 3> a{1, 2, 3};
+ * ysc::matrix<int, 3> b{4, 5, 6};
+ * int r = ysc::dot(a, b);  // r == 32
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class T, std::size_t N>
+[[nodiscard]] constexpr T dot(const matrix<T, N>& a, const matrix<T, N>& b) {
+    T result{};
+    for (std::size_t i = 0; i < N; ++i) {
+        result += a(i) * b(i);
+    }
+    return result;
+}
+
+/**
  * @defgroup ysc_io I/O
  * @brief Stream output for `ysc::matrix`.
  */
