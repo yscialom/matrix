@@ -1143,26 +1143,30 @@ template <class T, std::size_t R, std::size_t C>
 
 /**
  * @brief Computes the matrix product of two 2D matrices.
- * @tparam T  Element type — must support `operator*` and `operator+=`
+ * @tparam Ta Element type of @a a — must be multipliable with @a Tb
+ * @tparam Tb Element type of @a b — must be multipliable with @a Ta
  * @tparam M  Number of rows of @a a and the result
  * @tparam N  Shared inner dimension (columns of @a a, rows of @a b)
  * @tparam P  Number of columns of @a b and the result
  * @param  a  Left-hand matrix of size M×N
  * @param  b  Right-hand matrix of size N×P
- * @return New @c matrix<T,M,P> equal to the matrix product `a × b`
+ * @return New @c matrix<Tc,M,P> where `Tc = decltype(Ta{} * Tb{})`, equal to the matrix product `a
+ * × b`
  *
  * @code
- * ysc::matrix<int, 2, 3> a{1, 2, 3, 4, 5, 6};
- * ysc::matrix<int, 3, 2> b{7, 8, 9, 10, 11, 12};
- * auto c = ysc::matmul(a, b);  // c is ysc::matrix<int, 2, 2>
- * // c(0,0) == 58, c(0,1) == 64, c(1,0) == 139, c(1,1) == 154
+ * ysc::matrix<int, 2, 3>    a{1, 2, 3, 4, 5, 6};
+ * ysc::matrix<double, 3, 2> b{1.5, 0.0, 0.0, 2.5, 0.0, 0.0};
+ * auto c = ysc::matmul(a, b);  // c is ysc::matrix<double, 2, 2>
  * @endcode
  *
  * @ingroup ysc_linalg
  */
-template <class T, std::size_t M, std::size_t N, std::size_t P>
-[[nodiscard]] constexpr matrix<T, M, P> matmul(const matrix<T, M, N>& a, const matrix<T, N, P>& b) {
-    matrix<T, M, P> result(zero);
+template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&>
+[[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& a, const matrix<Tb, N, P>& b)
+    -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M, P> {
+    using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
+    matrix<Tc, M, P> result(zero);
     for (std::size_t i = 0; i < M; ++i) {
         for (std::size_t k = 0; k < N; ++k) {
             for (std::size_t j = 0; j < P; ++j) {
@@ -1175,23 +1179,28 @@ template <class T, std::size_t M, std::size_t N, std::size_t P>
 
 /**
  * @brief Returns the dot product of two 1D matrices (vectors) of the same length.
- * @tparam T Element type — must support `operator*` and `operator+=`
- * @tparam N Number of elements
- * @param  a First vector
- * @param  b Second vector
- * @return Scalar value `sum(a[i] * b[i])` for `i` in `[0, N)`
+ * @tparam Ta Element type of @a a — must be multipliable with @a Tb
+ * @tparam Tb Element type of @a b — must be multipliable with @a Ta
+ * @tparam N  Number of elements
+ * @param  a  First vector
+ * @param  b  Second vector
+ * @return Scalar value `Tc` where `Tc = decltype(Ta{} * Tb{})`, equal to `sum(a[i] * b[i])` for `i`
+ * in `[0, N)`
  *
  * @code
- * ysc::matrix<int, 3> a{1, 2, 3};
- * ysc::matrix<int, 3> b{4, 5, 6};
- * int r = ysc::dot(a, b);  // r == 32
+ * ysc::matrix<int, 3>    a{1, 2, 3};
+ * ysc::matrix<double, 3> b{0.5, 1.0, 1.5};
+ * double r = ysc::dot(a, b);  // r == 7.0
  * @endcode
  *
  * @ingroup ysc_linalg
  */
-template <class T, std::size_t N>
-[[nodiscard]] constexpr T dot(const matrix<T, N>& a, const matrix<T, N>& b) {
-    T result{};
+template <class Ta, class Tb, std::size_t N>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&>
+[[nodiscard]] constexpr auto dot(const matrix<Ta, N>& a, const matrix<Tb, N>& b)
+    -> std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> {
+    using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
+    Tc result{};
     for (std::size_t i = 0; i < N; ++i) {
         result += a(i) * b(i);
     }
