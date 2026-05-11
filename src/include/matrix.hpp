@@ -820,7 +820,7 @@ public:
      */
     template <class F>
         requires std::invocable<F, T&>
-    void apply(F f) {
+    constexpr void apply(F f) {
         for (T& v : _data) {
             std::invoke(f, v);
         }
@@ -845,7 +845,8 @@ public:
      */
     template <class F>
         requires std::invocable<F, const T&>
-    [[nodiscard]] auto map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
+    [[nodiscard]] constexpr auto map(F f) const
+        -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
         matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
         std::transform(_data.cbegin(), _data.cend(), result.begin(),
                        [&f](const T& v) { return std::invoke(f, v); });
@@ -855,7 +856,7 @@ public:
     /**
      * @brief Returns the sum of all elements.
      * @tparam U  Deduced as @c T; do not specify explicitly.
-     * @return Sum of all elements, starting from @c T{}
+     * @return Sum of all elements, with the accumulator initialized to @c T{}
      *
      * @code
      * ysc::matrix<int, 3> m{1, 2, 3};
@@ -1162,7 +1163,9 @@ template <class T, std::size_t R, std::size_t C>
  * @ingroup ysc_linalg
  */
 template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
-    requires std::invocable<std::multiplies<>, const Ta&, const Tb&>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
+             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
+                      const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& a, const matrix<Tb, N, P>& b)
     -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M, P> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
@@ -1196,7 +1199,9 @@ template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
  * @ingroup ysc_linalg
  */
 template <class Ta, class Tb, std::size_t N>
-    requires std::invocable<std::multiplies<>, const Ta&, const Tb&>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
+             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
+                      const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto dot(const matrix<Ta, N>& a, const matrix<Tb, N>& b)
     -> std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;

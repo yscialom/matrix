@@ -2,6 +2,18 @@
 #include <gtest/gtest.h>
 #include <string>
 
+// constexpr static checks
+static_assert([] {
+    ysc::matrix<int, 3> m{1, 2, 3};
+    m.apply([](int& v) { v *= 2; });
+    return m == ysc::matrix<int, 3>{2, 4, 6};
+}());
+static_assert([] {
+    ysc::matrix<int, 3> m{1, 2, 3};
+    auto r = m.map([](int v) { return v * 2; });
+    return r == ysc::matrix<int, 3>{2, 4, 6};
+}());
+
 // --- apply ---
 
 TEST(MatrixApply, MutatesElementsInPlace) {
