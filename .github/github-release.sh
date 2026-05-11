@@ -70,7 +70,7 @@ phase_prepare() {
 
     echo "==> Extraction du tableau de bord des épopées..."
     local dashboard
-    dashboard=$(sed -n '/^## Vue par épopée/,/^## EPIC/{/^## EPIC/d; /^## Vue par/d; p}' user-stories.md)
+    dashboard=$(sed -n '/^## Vue par épopée/,/^## EPIC/{/^## EPIC/d; /^## Vue par/d; p}' doc/user-stories.md)
 
     echo "==> Commit..."
     git add CMakeLists.txt

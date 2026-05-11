@@ -18,6 +18,7 @@
 #include <concepts>
 #include <functional>
 #include <iterator>
+#include <numeric>
 #include <ostream>
 #include <stdexcept>
 #include <type_traits>
@@ -795,6 +796,162 @@ public:
         return result;
     }
 
+    // algorithms
+    /**
+     * @defgroup ysc_algorithms Algorithms
+     * @brief Element-wise functional algorithms on @c ysc::matrix.
+     */
+
+    /**
+     * @brief Applies a function to every element in place.
+     * @tparam F Callable type — must satisfy `std::invocable<F, T&>`
+     * @param  f Function to apply to each element
+     *
+     * Visits every element in row-major order and calls @a f with a reference to the element.
+     * @a f may modify the element; the matrix is mutated in place.
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * m.apply([](int& v) { v *= 2; });
+     * // m == ysc::matrix<int, 3>{2, 4, 6}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class F>
+        requires std::invocable<F, T&>
+    constexpr void apply(F f) {
+        for (T& v : _data) {
+            std::invoke(f, v);
+        }
+    }
+
+    /**
+     * @brief Returns a new matrix obtained by applying a function to every element.
+     * @tparam F  Callable type — must satisfy `std::invocable<F, const T&>`
+     * @param  f  Function to apply to each element
+     * @return A new matrix whose element type is `std::invoke_result_t<F, const T&>`
+     *         and whose dimensions are identical to @c *this.
+     *
+     * Does not modify the original matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * auto s = m.map([](int v) { return std::to_string(v); });
+     * // s is ysc::matrix<std::string, 3>{"1", "2", "3"}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class F>
+        requires std::invocable<F, const T&>
+    [[nodiscard]] constexpr auto
+    map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
+        matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
+        std::transform(_data.cbegin(), _data.cend(), result.begin(),
+                       [&f](const T& v) { return std::invoke(f, v); });
+        return result;
+    }
+
+    /**
+     * @brief Returns the sum of all elements.
+     * @tparam U  Deduced as @c T; do not specify explicitly.
+     * @return Sum of all elements, with the accumulator initialized to @c T{}
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * assert(m.sum() == 6);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class U = T>
+        requires std::same_as<U, T>
+    [[nodiscard]] constexpr U sum() const
+        requires std::default_initializable<T> && requires(T a, const T& b) { a += b; }
+    {
+        return std::accumulate(cbegin(), cend(), U{},
+                               [](U acc, const U& v) -> U { return acc += v; });
+    }
+
+    /**
+     * @brief Returns the smallest element.
+     * @tparam U  Deduced as @c T; do not specify explicitly.
+     * @return Minimum element in row-major order
+     *
+     * @code
+     * ysc::matrix<int, 3> m{3, 1, 2};
+     * assert(m.min() == 1);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class U = T>
+        requires std::same_as<U, T>
+    [[nodiscard]] constexpr U min() const
+        requires(linear_size > 0) && std::totally_ordered<T>
+    {
+        return std::ranges::min(_data);
+    }
+
+    /**
+     * @brief Returns the largest element.
+     * @tparam U  Deduced as @c T; do not specify explicitly.
+     * @return Maximum element in row-major order
+     *
+     * @code
+     * ysc::matrix<int, 3> m{3, 1, 2};
+     * assert(m.max() == 3);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <class U = T>
+        requires std::same_as<U, T>
+    [[nodiscard]] constexpr U max() const
+        requires(linear_size > 0) && std::totally_ordered<T>
+    {
+        return std::ranges::max(_data);
+    }
+
+    /**
+     * @brief Returns @c true if every element converts to @c true.
+     * @return @c true iff all elements are truthy
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * assert(m.all() == true);
+     * ysc::matrix<int, 3> n{1, 0, 3};
+     * assert(n.all() == false);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    [[nodiscard]] constexpr bool all() const
+        requires std::convertible_to<T, bool>
+    {
+        return std::ranges::all_of(_data, [](const T& v) { return static_cast<bool>(v); });
+    }
+
+    /**
+     * @brief Returns @c true if at least one element converts to @c true.
+     * @return @c true iff at least one element is truthy
+     *
+     * @code
+     * ysc::matrix<int, 3> m{0, 0, 3};
+     * assert(m.any() == true);
+     * ysc::matrix<int, 3> n{0, 0, 0};
+     * assert(n.any() == false);
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    [[nodiscard]] constexpr bool any() const
+        requires std::convertible_to<T, bool>
+    {
+        return std::ranges::any_of(_data, [](const T& v) { return static_cast<bool>(v); });
+    }
+
     // modifiers
     /**
      * @brief Assigns the given value to all elements of the matrix.
@@ -951,6 +1108,108 @@ constexpr matrix<T, N, N> identity() {
         m(i, i) = T{1};
     }
     return m;
+}
+
+/**
+ * @defgroup ysc_linalg Linear algebra
+ * @brief Linear algebra operations on @c ysc::matrix.
+ */
+
+/**
+ * @brief Returns the transpose of a 2D matrix.
+ * @tparam T  Element type
+ * @tparam R  Number of rows of the input matrix
+ * @tparam C  Number of columns of the input matrix
+ * @param  m  Matrix to transpose
+ * @return New @c matrix<T,C,R> where `result(j, i) == m(i, j)` for all valid @a i, @a j
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+ * auto t = ysc::transpose(m);  // t is ysc::matrix<int, 3, 2>
+ * // t(0,0)==1, t(0,1)==4, t(1,0)==2, t(1,1)==5, t(2,0)==3, t(2,1)==6
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class T, std::size_t R, std::size_t C>
+[[nodiscard]] constexpr matrix<T, C, R> transpose(const matrix<T, R, C>& m) {
+    matrix<T, C, R> result(zero);
+    for (std::size_t i = 0; i < R; ++i) {
+        for (std::size_t j = 0; j < C; ++j) {
+            result(j, i) = m(i, j);
+        }
+    }
+    return result;
+}
+
+/**
+ * @brief Computes the matrix product of two 2D matrices.
+ * @tparam Ta Element type of @a a — must be multipliable with @a Tb
+ * @tparam Tb Element type of @a b — must be multipliable with @a Ta
+ * @tparam M  Number of rows of @a a and the result
+ * @tparam N  Shared inner dimension (columns of @a a, rows of @a b)
+ * @tparam P  Number of columns of @a b and the result
+ * @param  a  Left-hand matrix of size M×N
+ * @param  b  Right-hand matrix of size N×P
+ * @return New @c matrix<Tc,M,P> where `Tc = decltype(Ta{} * Tb{})`, equal to the matrix product `a
+ * × b`
+ *
+ * @code
+ * ysc::matrix<int, 2, 3>    a{1, 2, 3, 4, 5, 6};
+ * ysc::matrix<double, 3, 2> b{1.5, 0.0, 0.0, 2.5, 0.0, 0.0};
+ * auto c = ysc::matmul(a, b);  // c is ysc::matrix<double, 2, 2>
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
+                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
+                          const Ta& a, const Tb& b) { tc += a * b; }
+[[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& a, const matrix<Tb, N, P>& b)
+    -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M, P> {
+    using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
+    matrix<Tc, M, P> result(zero);
+    for (std::size_t i = 0; i < M; ++i) {
+        for (std::size_t k = 0; k < N; ++k) {
+            for (std::size_t j = 0; j < P; ++j) {
+                result(i, j) += a(i, k) * b(k, j);
+            }
+        }
+    }
+    return result;
+}
+
+/**
+ * @brief Returns the dot product of two 1D matrices (vectors) of the same length.
+ * @tparam Ta Element type of @a a — must be multipliable with @a Tb
+ * @tparam Tb Element type of @a b — must be multipliable with @a Ta
+ * @tparam N  Number of elements
+ * @param  a  First vector
+ * @param  b  Second vector
+ * @return Scalar value `Tc` where `Tc = decltype(Ta{} * Tb{})`, equal to `sum(a[i] * b[i])` for `i`
+ * in `[0, N)`
+ *
+ * @code
+ * ysc::matrix<int, 3>    a{1, 2, 3};
+ * ysc::matrix<double, 3> b{0.5, 1.0, 1.5};
+ * double r = ysc::dot(a, b);  // r == 7.0
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class Ta, class Tb, std::size_t N>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
+                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
+                          const Ta& a, const Tb& b) { tc += a * b; }
+[[nodiscard]] constexpr auto dot(const matrix<Ta, N>& a, const matrix<Tb, N>& b)
+    -> std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> {
+    using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
+    Tc result{};
+    for (std::size_t i = 0; i < N; ++i) {
+        result += a(i) * b(i);
+    }
+    return result;
 }
 
 /**
