@@ -105,6 +105,18 @@ TEST(matrix_view_at, out_of_range_too_large) {
     EXPECT_THROW((void)v.at(2, 0), std::out_of_range);
 }
 
+TEST(matrix_view_at, out_of_range_negative_mutable) {
+    ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+    ysc::matrix_view<int, 2, 3> v = m;
+    EXPECT_THROW((void)v.at(-1, 0), std::out_of_range);
+}
+
+TEST(matrix_view_at, out_of_range_too_large_mutable) {
+    ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+    ysc::matrix_view<int, 2, 3> v = m;
+    EXPECT_THROW((void)v.at(2, 0), std::out_of_range);
+}
+
 TEST(matrix_view_at, const_nominal_read) {
     ysc::matrix<int, 3> m{10, 20, 30};
     const ysc::matrix_view<int, 3> v = m;
