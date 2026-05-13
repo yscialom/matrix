@@ -28,6 +28,9 @@
 #include <sstream>
 #endif
 
+#include <matrix_detail.hpp>
+#include <matrix_view.hpp>
+
 namespace ysc {
 namespace detail {
 
@@ -58,21 +61,6 @@ It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_id
     return it;
 }
 
-// cache-friendly: neighbor objects within the right-most coordinate are neighbors in memory
-template <class TDim, class TCoord>
-constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords) {
-    // Row-major index: index = c[0]*D[1]*…*D[N-1] + c[1]*D[2]*…*D[N-1] + … + c[N-1]
-    // Evaluated right-to-left; `stride` is the product of all dimensions already visited.
-    std::size_t index = 0;
-    std::size_t stride = 1;
-    auto dim = dimensions.crbegin();
-    auto coord = coords.crbegin();
-    for (; dim != dimensions.crend(); ++dim, ++coord) {
-        index += static_cast<std::size_t>(*coord) * stride;
-        stride *= *dim;
-    }
-    return index;
-}
 } // namespace detail
 
 /**
@@ -81,14 +69,6 @@ constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords
  */
 template <class T, class U>
 concept matrix_convertible_from = std::convertible_to<U, T>;
-
-/**
- * @brief Satisfied when all types in `Coords` are integral (ignoring cv-ref qualifiers).
- * Used to constrain `operator()` and `at()` so that floating-point or other
- * non-integral coordinate types yield a readable diagnostic.
- */
-template <class... Coords>
-concept integral_coordinates = (std::integral<std::remove_cvref_t<Coords>> && ...);
 
 /**
  * @brief Tag a @c matrix object to be zero-initialized.
@@ -845,8 +825,8 @@ public:
      */
     template <class F>
         requires std::invocable<F, const T&>
-    [[nodiscard]] constexpr auto
-    map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
+    [[nodiscard]] constexpr auto map(F f) const
+        -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
         matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
         std::transform(_data.cbegin(), _data.cend(), result.begin(),
                        [&f](const T& v) { return std::invoke(f, v); });
@@ -1061,6 +1041,223 @@ public:
         }
         return (*this)(coordinates...);
     }
+
+    // ─── views (slice / row / col) ───────────────────────────────────────────
+
+    /**
+     * @brief Returns a non-owning view over a hyperslice of the matrix.
+     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral to fix it.
+     * @param  specs Per-dimension specs.  Missing trailing specs are implicitly @c ysc::all.
+     * @return @c matrix_view<T,contiguous,KeptDims...> if fixed dims form a prefix;
+     *         @c matrix_view<T,strided,KeptDims...> otherwise.
+     * @throws std::out_of_range if any fixed index is out of bounds for its dimension.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4, 5> m{};
+     * auto v0 = m.slice(1);            // contiguous: row 1 across all 4×5 columns
+     * auto v1 = m.slice(ysc::all, 2);  // strided: column 2 across all 3×5 rows
+     * auto v2 = m.slice();             // contiguous: view over the whole matrix
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <typename... Specs>
+        requires(sizeof...(Specs) <= order) &&
+                ((std::same_as<Specs, all_t> || std::integral<Specs>) && ...) &&
+                (sizeof...(Specs) < order || (std::same_as<Specs, all_t> || ...))
+    [[nodiscard]] constexpr auto slice(Specs... specs) & {
+        using PaddedT = detail::pad_right_with_all_t<order, Specs...>;
+        using KeptDims = typename detail::filter_kept_dims<PaddedT, Dimensions...>::type;
+        constexpr bool is_prefix = detail::is_prefix_slice_v<PaddedT>;
+        using Storage = std::conditional_t<is_prefix, contiguous, strided>;
+        using ViewT = detail::make_matrix_view_t<T, Storage, KeptDims>;
+
+        std::array<std::size_t, order> spec_vals{};
+        {
+            std::size_t i = 0;
+            (
+                [&](auto s) {
+                    using S = std::remove_cvref_t<decltype(s)>;
+                    if constexpr (!detail::is_all_v<S>) {
+                        auto idx = static_cast<std::size_t>(s);
+                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                        if (idx >= dimensions[i]) {
+                            throw std::out_of_range("slice: index out of range");
+                        }
+                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                        spec_vals[i] = idx;
+                    }
+                    ++i;
+                }(specs),
+                ...);
+        }
+
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        auto* base = _data.data() + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
+        if constexpr (is_prefix) {
+            return ViewT{base};
+        } else {
+            return ViewT{base, detail::slice_helper<PaddedT>::strides(dimensions)};
+        }
+    }
+
+    /**
+     * @brief Returns a non-owning const view over a hyperslice of the matrix.
+     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral to fix it.
+     * @param  specs Per-dimension specs.  Missing trailing specs are implicitly @c ysc::all.
+     * @return @c matrix_view<const T,contiguous,KeptDims...> or
+     *         @c matrix_view<const T,strided,KeptDims...>.
+     * @throws std::out_of_range if any fixed index is out of bounds for its dimension.
+     *
+     * @code
+     * const ysc::matrix<int, 3, 4> m{};
+     * auto v = m.slice(1);  // const view of row 1
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <typename... Specs>
+        requires(sizeof...(Specs) <= order) &&
+                ((std::same_as<Specs, all_t> || std::integral<Specs>) && ...) &&
+                (sizeof...(Specs) < order || (std::same_as<Specs, all_t> || ...))
+    [[nodiscard]] constexpr auto slice(Specs... specs) const& {
+        using PaddedT = detail::pad_right_with_all_t<order, Specs...>;
+        using KeptDims = typename detail::filter_kept_dims<PaddedT, Dimensions...>::type;
+        constexpr bool is_prefix = detail::is_prefix_slice_v<PaddedT>;
+        using Storage = std::conditional_t<is_prefix, contiguous, strided>;
+        using ViewT = detail::make_matrix_view_t<const T, Storage, KeptDims>;
+
+        std::array<std::size_t, order> spec_vals{};
+        {
+            std::size_t i = 0;
+            (
+                [&](auto s) {
+                    using S = std::remove_cvref_t<decltype(s)>;
+                    if constexpr (!detail::is_all_v<S>) {
+                        auto idx = static_cast<std::size_t>(s);
+                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                        if (idx >= dimensions[i]) {
+                            throw std::out_of_range("slice: index out of range");
+                        }
+                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                        spec_vals[i] = idx;
+                    }
+                    ++i;
+                }(specs),
+                ...);
+        }
+
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        const auto* base =
+            _data.data() + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
+        if constexpr (is_prefix) {
+            return ViewT{base};
+        } else {
+            return ViewT{base, detail::slice_helper<PaddedT>::strides(dimensions)};
+        }
+    }
+
+    /**
+     * @brief Returns a contiguous view over row @a i (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @param i  Row index (0-based).
+     * @return @c matrix_view<T,contiguous,C> where @c C = @c dimensions[1]
+     * @throws std::out_of_range if @a i >= @c dimensions[0].
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{};
+     * auto r = m.row(1);  // contiguous view of row 1 — 4 elements
+     * r(2) = 99;          // writes m(1, 2)
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto row(std::size_t i) & {
+        if (i >= dimensions[0]) {
+            throw std::out_of_range("row: index out of range");
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return matrix_view<T, contiguous, dimensions[1]>{_data.data() + (i * dimensions[1])};
+    }
+
+    /**
+     * @brief Returns a const contiguous view over row @a i (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @param i  Row index (0-based).
+     * @return @c matrix_view<const T,contiguous,C> where @c C = @c dimensions[1]
+     * @throws std::out_of_range if @a i >= @c dimensions[0].
+     *
+     * @code
+     * const ysc::matrix<int, 3, 4> m{};
+     * auto r = m.row(1);
+     * assert(r(0) == m(1, 0));
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto row(std::size_t i) const& {
+        if (i >= dimensions[0]) {
+            throw std::out_of_range("row: index out of range");
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return matrix_view<const T, contiguous, dimensions[1]>{_data.data() + (i * dimensions[1])};
+    }
+
+    /**
+     * @brief Returns a strided view over column @a j (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @param j  Column index (0-based).
+     * @return @c matrix_view<T,strided,R> where @c R = @c dimensions[0], stride = @c dimensions[1]
+     * @throws std::out_of_range if @a j >= @c dimensions[1].
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{};
+     * auto c = m.col(2);  // strided view of column 2 — 3 elements, stride 4
+     * c(1) = 99;          // writes m(1, 2)
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto col(std::size_t j) & {
+        if (j >= dimensions[1]) {
+            throw std::out_of_range("col: index out of range");
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return matrix_view<T, strided, dimensions[0]>{_data.data() + j,
+                                                      std::array<std::size_t, 1>{dimensions[1]}};
+    }
+
+    /**
+     * @brief Returns a const strided view over column @a j (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @param j  Column index (0-based).
+     * @return @c matrix_view<const T,strided,R> where @c R = @c dimensions[0]
+     * @throws std::out_of_range if @a j >= @c dimensions[1].
+     *
+     * @code
+     * const ysc::matrix<int, 3, 4> m{};
+     * auto c = m.col(2);
+     * assert(c(1) == m(1, 2));
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto col(std::size_t j) const& {
+        if (j >= dimensions[1]) {
+            throw std::out_of_range("col: index out of range");
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return matrix_view<const T, strided, dimensions[0]>{
+            _data.data() + j, std::array<std::size_t, 1>{dimensions[1]}};
+    }
 };
 
 /**
@@ -1164,8 +1361,8 @@ template <class T, std::size_t R, std::size_t C>
  */
 template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
     requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
-                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
-                          const Ta& a, const Tb& b) { tc += a * b; }
+             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
+                      const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& a, const matrix<Tb, N, P>& b)
     -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M, P> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
@@ -1200,8 +1397,8 @@ template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
  */
 template <class Ta, class Tb, std::size_t N>
     requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
-                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
-                          const Ta& a, const Tb& b) { tc += a * b; }
+             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
+                      const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto dot(const matrix<Ta, N>& a, const matrix<Tb, N>& b)
     -> std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
