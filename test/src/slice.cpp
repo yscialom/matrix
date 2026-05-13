@@ -203,6 +203,15 @@ TEST(slice_conversion, strided_view_mutation_via_converted_view) {
     EXPECT_EQ(m(0), 77);
 }
 
+TEST(slice_conversion, contiguous_2d_to_strided_implicit) {
+    ysc::matrix<int, 3, 4> m{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    auto cv = m.slice(); // matrix_view<int, contiguous, 3, 4>
+    ysc::matrix_view<int, ysc::strided, 3, 4> sv = cv;
+    EXPECT_EQ(sv(0, 0), 0);
+    EXPECT_EQ(sv(1, 2), 6);
+    EXPECT_EQ(sv(2, 3), 11);
+}
+
 // ─── row() / col() ────────────────────────────────────────────────────────────
 
 TEST(slice_row, row_reads_correctly) {
@@ -233,6 +242,12 @@ TEST(slice_row, const_row_read) {
     EXPECT_EQ(r(3), 4);
 }
 
+TEST(slice_row, const_row_out_of_range) {
+    const ysc::matrix<int, 3, 4> m{};
+    EXPECT_THROW((void)m.row(3), std::out_of_range);
+    EXPECT_NO_THROW((void)m.row(2));
+}
+
 TEST(slice_col, col_reads_correctly) {
     ysc::matrix<int, 3, 4> m{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     auto c = m.col(1); // column 1: m(0,1)=1, m(1,1)=5, m(2,1)=9
@@ -259,6 +274,12 @@ TEST(slice_col, const_col_read) {
     EXPECT_EQ(c(0), 1);
     EXPECT_EQ(c(1), 5);
     EXPECT_EQ(c(2), 9);
+}
+
+TEST(slice_col, const_col_out_of_range) {
+    const ysc::matrix<int, 3, 4> m{};
+    EXPECT_THROW((void)m.col(4), std::out_of_range);
+    EXPECT_NO_THROW((void)m.col(3));
 }
 
 // row/col restricted to order==2 — verified at compile time.
