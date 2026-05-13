@@ -3,11 +3,11 @@
  * @author Yankel Scialom (YSC) <yankel-pro@scialom.org>
  * @date 2019
  *
- * @copyright This project is released under GNU Lesser General Public License; see
- *            COPYING and COPYING.LESSER files attached.
+ * @copyright This project is released under GNU Lesser General Public License;
+ * see COPYING and COPYING.LESSER files attached.
  *
- * The matrix library is a header-only template library defining a general-purpose
- * multi-dimension container of static dimensions.
+ * The matrix library is a header-only template library defining a
+ * general-purpose multi-dimension container of static dimensions.
  */
 #ifndef YSC_MATRIX_HPP
 #define YSC_MATRIX_HPP
@@ -22,7 +22,8 @@
 #include <ostream>
 #include <stdexcept>
 #include <type_traits>
-// Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h incompatibility
+// Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
+// incompatibility
 #if __has_include(<format>) && (!defined(__clang__) || __clang_major__ >= 17)
 #include <format>
 #include <sstream>
@@ -37,8 +38,8 @@ namespace detail {
 template <class T>
 concept ostream_streamable = requires(std::ostream& os, const T& v) { os << v; };
 
-// Print a hyperslice of a matrix starting at `it`, covering dimension `dim_idx` onward.
-// Returns an iterator past the last element printed.
+// Print a hyperslice of a matrix starting at `it`, covering dimension `dim_idx`
+// onward. Returns an iterator past the last element printed.
 // NOLINTNEXTLINE(misc-no-recursion)
 template <class It, class Dims>
 It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_idx) {
@@ -82,36 +83,39 @@ constexpr struct matrix_zero_t {
  * @tparam T          Element type
  * @tparam Dimentions Dimensions of the matrix
  *
- * `matrix<T, 2, 5, 9>` is an order 3  matrix of @c T elements; its dimensions are
- * 2 by 5 by 9 (90 @c T elements in total).
+ * `matrix<T, 2, 5, 9>` is an order 3  matrix of @c T elements; its dimensions
+ * are 2 by 5 by 9 (90 @c T elements in total).
  *
  * This container is a class type with the semantics of an aggregate similar to
  * a struct holding a C-style array `T[Dimensions][...]` as its only non-static
  * data member. Unlike a C-style array, it doesn't decay to `T*` automatically.
- * As an aggregate impersonator, it can be initialized with aggregate-initialization
- * given exactly @c linear_size initializers that are convertible to @c T:
- * `ysc::matrix<int, 3, 2> m = {1,2,3,4,5,6};`.
+ * As an aggregate impersonator, it can be initialized with
+ * aggregate-initialization given exactly @c linear_size initializers that are
+ * convertible to @c T: `ysc::matrix<int, 3, 2> m = {1,2,3,4,5,6};`.
  *
  * The struct combines the performance and accessibility of a C-style array with
- * the benefits of a standard container, such as knowing its own size, supporting
- * assignment, random access iterators, etc.
+ * the benefits of a standard container, such as knowing its own size,
+ * supporting assignment, random access iterators, etc.
  *
  * @todo Requirements (Container, etc.)
  *
  * @todo Special case when one dimension is 0.
  *
  * ### Iterator invalidation
- * As a rule, iterators to aa matrix are never invalidated throughout the lifetime of
- * the matrix. One should take note, however, that during swap, the iterator will continue
- * to point to the same matrix element, and will thus change its value.
+ * As a rule, iterators to aa matrix are never invalidated throughout the
+ * lifetime of the matrix. One should take note, however, that during swap, the
+ * iterator will continue to point to the same matrix element, and will thus
+ * change its value.
  */
 template <class T, std::size_t... Dimensions> class matrix {
     template <class, std::size_t...> friend class matrix;
 
 public:
-    /** @brief Order of the matrix (2D matrix have order 2, 3D order 3, etc.). */
+    /** @brief Order of the matrix (2D matrix have order 2, 3D order 3, etc.).
+     */
     static constexpr std::size_t order = sizeof...(Dimensions);
-    /** @brief Dimensions of the matrix. An order-`N` matrix has `N` dimensions. */
+    /** @brief Dimensions of the matrix. An order-`N` matrix has `N` dimensions.
+     */
     static constexpr std::array dimensions = {Dimensions...};
 
 private:
@@ -162,9 +166,11 @@ public:
 
     // capacity
     /**
-     * @brief Returns the number of elements in the matrix (product of all dimensions).
+     * @brief Returns the number of elements in the matrix (product of all
+     * dimensions).
      *
-     * @note This function is @c static because the size is a compile-time constant.
+     * @note This function is @c static because the size is a compile-time
+     * constant.
      */
     static constexpr size_type size() noexcept { return linear_size; }
 
@@ -173,28 +179,32 @@ public:
      *
      * Always equal to @c size() for this fixed-size container.
      *
-     * @note This function is @c static because the value is a compile-time constant.
+     * @note This function is @c static because the value is a compile-time
+     * constant.
      */
     static constexpr size_type max_size() noexcept { return linear_size; }
 
     /**
      * @brief Returns whether the matrix has no elements.
      *
-     * @note This function is @c static because the value is a compile-time constant.
+     * @note This function is @c static because the value is a compile-time
+     * constant.
      */
     static constexpr bool empty() noexcept { return linear_size == 0; }
 
     /**
      * @brief Returns a pointer to the underlying element storage.
      *
-     * Elements are stored in row-major order (rightmost dimension is contiguous).
+     * Elements are stored in row-major order (rightmost dimension is
+     * contiguous).
      */
     constexpr pointer data() noexcept { return _data.data(); }
 
     /**
      * @brief Returns a pointer to the underlying element storage.
      *
-     * Elements are stored in row-major order (rightmost dimension is contiguous).
+     * Elements are stored in row-major order (rightmost dimension is
+     * contiguous).
      */
     [[nodiscard]] constexpr const_pointer data() const noexcept { return _data.data(); }
 
@@ -206,7 +216,8 @@ public:
      * Swaps the elements of @a lhs and @a rhs as if:
      * @code
      using std::swap;
-     for (auto lhs_it = lhs.begin(), auto rhs_it = rhs.begin() ; lhs_it != lhs.end() ; ++lhs_it,
+     for (auto lhs_it = lhs.begin(), auto rhs_it = rhs.begin() ; lhs_it !=
+     lhs.end() ; ++lhs_it,
      ++rhs_it) { swap(*lhs_it, *rhs_it);
      }
      @endcode
@@ -220,31 +231,35 @@ public:
     /**
      * @brief Initializes the matrix.
      *
-     * @note If `T` is a trivial type, initialization may result in indeterminate values.
+     * @note If `T` is a trivial type, initialization may result in
+     * indeterminate values.
      */
-    // Intentional: _data is deliberately left uninitialized for trivial T to avoid the cost of
-    // zero-initialization on the hot path. Use matrix(matrix_zero_t) for zero-initialization.
+    // Intentional: _data is deliberately left uninitialized for trivial T to
+    // avoid the cost of zero-initialization on the hot path. Use
+    // matrix(matrix_zero_t) for zero-initialization.
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
     matrix() = default;
 
     /**
-     * @brief Initializes the matrix following the rules of default initialization.
+     * @brief Initializes the matrix following the rules of default
+     * initialization.
      *
-     * @note If `T` is a trivial type, the matrix is zero-initialized; otherwise the default
-     * constructors of its elements are called.
+     * @note If `T` is a trivial type, the matrix is zero-initialized; otherwise
+     * the default constructors of its elements are called.
      */
     constexpr matrix(matrix_zero_t /*zero*/) : _data({}) {}
 
     // aggregate constructors
     /**
-     * @brief Initializes the matrix following the rules of aggregate initialization.
+     * @brief Initializes the matrix following the rules of aggregate
+     * initialization.
      * @tparam Args... Source types (must all be convertible to @c T)
      * @param args...  Source values (must be exactly @c linear_size values)
      *
-     * `matrix<long, 2, 2> m{true, '\x02', 3, 4L}` initializes an order-2 matrix from the values
-     * `true`, `'\x02'`, `3` and `4L` converted to `long`.
-     * Partial initialization (fewer than `linear_size` values) is not supported; use
-     * `matrix(matrix_zero_t)` to zero-initialize.
+     * `matrix<long, 2, 2> m{true, '\x02', 3, 4L}` initializes an order-2 matrix
+     * from the values `true`, `'\x02'`, `3` and `4L` converted to `long`.
+     * Partial initialization (fewer than `linear_size` values) is not
+     * supported; use `matrix(matrix_zero_t)` to zero-initialize.
      */
     template <class... Args>
         requires(sizeof...(Args) == linear_size) && (std::convertible_to<Args, T> && ...) &&
@@ -256,11 +271,13 @@ public:
     // nested initializer_list constructor (2D only)
     /**
      * @brief Initializes a 2D matrix from a nested initializer list.
-     * @tparam D1 Deduced from @c order; constrained to 2 (do not specify explicitly).
-     * @param init Row-major nested initializer list; must have exactly @c dimensions[0] rows,
-     *             each of exactly @c dimensions[1] elements.
+     * @tparam D1 Deduced from @c order; constrained to 2 (do not specify
+     * explicitly).
+     * @param init Row-major nested initializer list; must have exactly @c
+     * dimensions[0] rows, each of exactly @c dimensions[1] elements.
      *
-     * @throws std::length_error if the number of rows or the size of any row does not match.
+     * @throws std::length_error if the number of rows or the size of any row
+     * does not match.
      *
      * @code
      * ysc::matrix<int, 2, 3> m{{1, 2, 3}, {4, 5, 6}};
@@ -296,7 +313,8 @@ public:
      * @tparam U     Element type of the source matrix
      * @param  other Source matrix
      *
-     * Elements of the matrix are copy-initialized from the elements of the source matrix.
+     * Elements of the matrix are copy-initialized from the elements of the
+     * source matrix.
      */
     template <class U>
         requires matrix_convertible_from<T, U>
@@ -309,8 +327,8 @@ public:
      * @brief Initializes the matrix with the content of another.
      * @param other Source matrix
      *
-     * Elements of the matrix are move-initialized from the elements of the source matrix.
-     * `other` is left in a valid but unspecified state.
+     * Elements of the matrix are move-initialized from the elements of the
+     * source matrix. `other` is left in a valid but unspecified state.
      */
     matrix(matrix&& other) = default;
 
@@ -319,13 +337,14 @@ public:
      * @tparam U     Element type of the source matrix
      * @param  other Source matrix
      *
-     * Elements of the matrix are move-initialized from the elements of the source matrix.
-     * `other` is left in a valid but unspecified state.
+     * Elements of the matrix are move-initialized from the elements of the
+     * source matrix. `other` is left in a valid but unspecified state.
      */
     template <class U>
         requires matrix_convertible_from<T, U>
-    // std::move is used as a range algorithm (element-wise move), not as a cast.
-    // Direct std::move(other) is impossible because T != U; per-element conversion is required.
+    // std::move is used as a range algorithm (element-wise move), not as a
+    // cast. Direct std::move(other) is impossible because T != U; per-element
+    // conversion is required.
     // NOLINTNEXTLINE(cppcoreguidelines-rvalue-reference-param-not-moved)
     matrix(matrix<U, Dimensions...>&& other) {
         std::move(other._data.cbegin(), other._data.cend(), _data.begin());
@@ -364,8 +383,8 @@ public:
      */
     template <class U>
         requires matrix_convertible_from<T, U>
-    // Same rationale as the converting move constructor: element-wise move via algorithm,
-    // T != U prevents direct std::move(other).
+    // Same rationale as the converting move constructor: element-wise move via
+    // algorithm, T != U prevents direct std::move(other).
     // NOLINTNEXTLINE(cppcoreguidelines-rvalue-reference-param-not-moved)
     matrix& operator=(matrix<U, Dimensions...>&& other) {
         std::move(other._data.cbegin(), other._data.cend(), _data.begin());
@@ -376,9 +395,13 @@ public:
     ~matrix() = default;
 
     // comparison operators
-    /** @brief Equality comparison — lexicographic on the flat row-major storage. */
+    /** @brief Equality comparison — lexicographic on the flat row-major
+     * storage.
+     */
     friend bool operator==(const matrix& lhs, const matrix& rhs) = default;
-    /** @brief Three-way comparison — lexicographic on the flat row-major storage. */
+    /** @brief Three-way comparison — lexicographic on the flat row-major
+     * storage.
+     */
     friend auto operator<=>(const matrix& lhs, const matrix& rhs) = default;
 
     // arithmetic operators
@@ -408,7 +431,8 @@ public:
     }
 
     /**
-     * @brief Subtracts @a other from this matrix element-wise and assigns the result.
+     * @brief Subtracts @a other from this matrix element-wise and assigns the
+     * result.
      * @param other Matrix to subtract
      * @return @c *this
      *
@@ -466,12 +490,13 @@ public:
     }
 
     /**
-     * @brief Multiplies this matrix by @a other element-wise (Hadamard product) and assigns.
+     * @brief Multiplies this matrix by @a other element-wise (Hadamard product)
+     * and assigns.
      * @param other Matrix to multiply by
      * @return @c *this
      *
-     * @note This is the Hadamard (element-wise) product, not the matrix product.
-     *       The matrix product will be available as @c ysc::matmul.
+     * @note This is the Hadamard (element-wise) product, not the matrix
+     * product. The matrix product will be available as @c ysc::matmul.
      *
      * @code
      * ysc::matrix<int, 2> a{2, 3}, b{4, 5};
@@ -489,7 +514,8 @@ public:
     }
 
     /**
-     * @brief Divides this matrix by @a other element-wise and assigns the result.
+     * @brief Divides this matrix by @a other element-wise and assigns the
+     * result.
      * @param other Divisor matrix
      * @return @c *this
      *
@@ -514,8 +540,8 @@ public:
      * @param rhs Right-hand matrix
      * @return New matrix containing element-wise products
      *
-     * @note This is the Hadamard (element-wise) product, not the matrix product.
-     *       The matrix product will be available as @c ysc::matmul.
+     * @note This is the Hadamard (element-wise) product, not the matrix
+     * product. The matrix product will be available as @c ysc::matmul.
      *
      * @code
      * ysc::matrix<int, 2> a{2, 3}, b{4, 5};
@@ -551,8 +577,10 @@ public:
 
     // scalar arithmetic operators
     /**
-     * @brief Multiplies every element of this matrix by scalar @a s and assigns the result.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *= Scalar`
+     * @brief Multiplies every element of this matrix by scalar @a s and assigns
+     * the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *=
+     * Scalar`
      * @param  s      Scalar multiplier
      * @return @c *this
      *
@@ -573,8 +601,10 @@ public:
     }
 
     /**
-     * @brief Divides every element of this matrix by scalar @a s and assigns the result.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a /= Scalar`
+     * @brief Divides every element of this matrix by scalar @a s and assigns
+     * the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a /=
+     * Scalar`
      * @param  s      Scalar divisor
      * @return @c *this
      *
@@ -595,8 +625,10 @@ public:
     }
 
     /**
-     * @brief Adds scalar @a s to every element of this matrix and assigns the result.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a += Scalar`
+     * @brief Adds scalar @a s to every element of this matrix and assigns the
+     * result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a +=
+     * Scalar`
      * @param  s      Scalar addend
      * @return @c *this
      *
@@ -617,8 +649,10 @@ public:
     }
 
     /**
-     * @brief Subtracts scalar @a s from every element of this matrix and assigns the result.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a -= Scalar`
+     * @brief Subtracts scalar @a s from every element of this matrix and
+     * assigns the result.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a -=
+     * Scalar`
      * @param  s      Scalar subtrahend
      * @return @c *this
      *
@@ -640,7 +674,8 @@ public:
 
     /**
      * @brief Returns the element-wise product of a matrix and a scalar.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *= Scalar`
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *=
+     * Scalar`
      * @param  lhs    Matrix operand
      * @param  s      Scalar multiplier
      * @return New matrix with each element multiplied by @a s
@@ -660,8 +695,10 @@ public:
     }
 
     /**
-     * @brief Returns the element-wise product of a scalar and a matrix (commutative).
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *= Scalar`
+     * @brief Returns the element-wise product of a scalar and a matrix
+     * (commutative).
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a *=
+     * Scalar`
      * @param  s      Scalar multiplier
      * @param  rhs    Matrix operand
      * @return New matrix with each element multiplied by @a s
@@ -682,7 +719,8 @@ public:
 
     /**
      * @brief Returns a new matrix with every element divided by scalar @a s.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a /= Scalar`
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a /=
+     * Scalar`
      * @param  lhs    Matrix operand
      * @param  s      Scalar divisor
      * @return New matrix with each element divided by @a s
@@ -703,7 +741,8 @@ public:
 
     /**
      * @brief Returns a new matrix with scalar @a s added to every element.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a += Scalar`
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a +=
+     * Scalar`
      * @param  lhs    Matrix operand
      * @param  s      Scalar addend
      * @return New matrix with @a s added to each element
@@ -723,8 +762,10 @@ public:
     }
 
     /**
-     * @brief Returns a new matrix with scalar @a s subtracted from every element.
-     * @tparam Scalar Scalar type — must support compound assignment: `T a; a -= Scalar`
+     * @brief Returns a new matrix with scalar @a s subtracted from every
+     * element.
+     * @tparam Scalar Scalar type — must support compound assignment: `T a; a -=
+     * Scalar`
      * @param  lhs    Matrix operand
      * @param  s      Scalar subtrahend
      * @return New matrix with @a s subtracted from each element
@@ -787,7 +828,8 @@ public:
      * @tparam F Callable type — must satisfy `std::invocable<F, T&>`
      * @param  f Function to apply to each element
      *
-     * Visits every element in row-major order and calls @a f with a reference to the element.
+     * Visits every element in row-major order and calls @a f with a reference
+     * to the element.
      * @a f may modify the element; the matrix is mutated in place.
      *
      * @code
@@ -807,11 +849,12 @@ public:
     }
 
     /**
-     * @brief Returns a new matrix obtained by applying a function to every element.
+     * @brief Returns a new matrix obtained by applying a function to every
+     * element.
      * @tparam F  Callable type — must satisfy `std::invocable<F, const T&>`
      * @param  f  Function to apply to each element
-     * @return A new matrix whose element type is `std::invoke_result_t<F, const T&>`
-     *         and whose dimensions are identical to @c *this.
+     * @return A new matrix whose element type is `std::invoke_result_t<F, const
+     * T&>` and whose dimensions are identical to @c *this.
      *
      * Does not modify the original matrix.
      *
@@ -825,8 +868,8 @@ public:
      */
     template <class F>
         requires std::invocable<F, const T&>
-    [[nodiscard]] constexpr auto
-    map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
+    [[nodiscard]] constexpr auto map(F f) const
+        -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
         matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
         std::transform(_data.cbegin(), _data.cend(), result.begin(),
                        [&f](const T& v) { return std::invoke(f, v); });
@@ -949,28 +992,32 @@ public:
 
     // element access
     /**
-     * @brief Returns a reference to the first element in the matrix (row-major order).
+     * @brief Returns a reference to the first element in the matrix (row-major
+     * order).
      *
      * Calling @c front() on an empty matrix is undefined behavior.
      */
     constexpr reference front() noexcept { return _data.front(); }
 
     /**
-     * @brief Returns a const reference to the first element in the matrix (row-major order).
+     * @brief Returns a const reference to the first element in the matrix
+     * (row-major order).
      *
      * Calling @c front() on an empty matrix is undefined behavior.
      */
     [[nodiscard]] constexpr const_reference front() const noexcept { return _data.front(); }
 
     /**
-     * @brief Returns a reference to the last element in the matrix (row-major order).
+     * @brief Returns a reference to the last element in the matrix (row-major
+     * order).
      *
      * Calling @c back() on an empty matrix is undefined behavior.
      */
     constexpr reference back() noexcept { return _data.back(); }
 
     /**
-     * @brief Returns a const reference to the last element in the matrix (row-major order).
+     * @brief Returns a const reference to the last element in the matrix
+     * (row-major order).
      *
      * Calling @c back() on an empty matrix is undefined behavior.
      */
@@ -986,7 +1033,8 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...>
     constexpr T const& operator()(Coords... coordinates) const {
-        // Intentional: unchecked access on the performance path. Use at() for bounds checking.
+        // Intentional: unchecked access on the performance path. Use at() for
+        // bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
@@ -1001,7 +1049,8 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...>
     constexpr T& operator()(Coords... coordinates) {
-        // Intentional: unchecked access on the performance path. Use at() for bounds checking.
+        // Intentional: unchecked access on the performance path. Use at() for
+        // bounds checking.
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
@@ -1010,7 +1059,8 @@ public:
      * @brief Returns a reference to the element at coordinates.
      * @param coordinates Coordinates of the element to return
      *
-     * If @a coordinates is not within the range of the container, an exception of type
+     * If @a coordinates is not within the range of the container, an exception
+     * of type
      * @c std::out_of_range is thrown.
      */
     template <class... Coords>
@@ -1028,7 +1078,8 @@ public:
      * @brief Returns a reference to the element at coordinates.
      * @param coordinates Coordinates of the element to return
      *
-     * If @a coordinates is not within the range of the container, an exception of type
+     * If @a coordinates is not within the range of the container, an exception
+     * of type
      * @c std::out_of_range is thrown.
      */
     template <class... Coords>
@@ -1046,17 +1097,22 @@ public:
 
     /**
      * @brief Returns a non-owning view over a hyperslice of the matrix.
-     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral to fix it.
-     * @param  specs Per-dimension specs.  Missing trailing specs are implicitly @c ysc::all.
-     * @return @c matrix_view<T,contiguous,KeptDims...> if fixed dims form a prefix;
+     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral
+     * to fix it.
+     * @param  specs Per-dimension specs.  Missing trailing specs are implicitly
+     * @c ysc::all.
+     * @return @c matrix_view<T,contiguous,KeptDims...> if fixed dims form a
+     * prefix;
      *         @c matrix_view<T,strided,KeptDims...> otherwise.
-     * @throws std::out_of_range if any fixed index is out of bounds for its dimension.
+     * @throws std::out_of_range if any fixed index is out of bounds for its
+     * dimension.
      *
      * @code
      * ysc::matrix<int, 3, 4, 5> m{};
-     * auto v0 = m.slice(1);            // contiguous: row 1 across all 4×5 columns
-     * auto v1 = m.slice(ysc::all, 2);  // strided: column 2 across all 3×5 rows
-     * auto v2 = m.slice();             // contiguous: view over the whole matrix
+     * auto v0 = m.slice(1);            // contiguous: row 1 across all 4×5
+     * columns auto v1 = m.slice(ysc::all, 2);  // strided: column 2 across all
+     * 3×5 rows auto v2 = m.slice();             // contiguous: view over the
+     * whole matrix
      * @endcode
      *
      * @ingroup ysc_view
@@ -1103,11 +1159,14 @@ public:
 
     /**
      * @brief Returns a non-owning const view over a hyperslice of the matrix.
-     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral to fix it.
-     * @param  specs Per-dimension specs.  Missing trailing specs are implicitly @c ysc::all.
+     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral
+     * to fix it.
+     * @param  specs Per-dimension specs.  Missing trailing specs are implicitly
+     * @c ysc::all.
      * @return @c matrix_view<const T,contiguous,KeptDims...> or
      *         @c matrix_view<const T,strided,KeptDims...>.
-     * @throws std::out_of_range if any fixed index is out of bounds for its dimension.
+     * @throws std::out_of_range if any fixed index is out of bounds for its
+     * dimension.
      *
      * @code
      * const ysc::matrix<int, 3, 4> m{};
@@ -1159,7 +1218,8 @@ public:
 
     /**
      * @brief Returns a contiguous view over row @a i (2D matrices only).
-     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify
+     * explicitly.
      * @param i  Row index (0-based).
      * @return @c matrix_view<T,contiguous,C> where @c C = @c dimensions[1]
      * @throws std::out_of_range if @a i >= @c dimensions[0].
@@ -1184,9 +1244,11 @@ public:
 
     /**
      * @brief Returns a const contiguous view over row @a i (2D matrices only).
-     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify
+     * explicitly.
      * @param i  Row index (0-based).
-     * @return @c matrix_view<const T,contiguous,C> where @c C = @c dimensions[1]
+     * @return @c matrix_view<const T,contiguous,C> where @c C = @c
+     * dimensions[1]
      * @throws std::out_of_range if @a i >= @c dimensions[0].
      *
      * @code
@@ -1209,9 +1271,12 @@ public:
 
     /**
      * @brief Returns a strided view over column @a j (2D matrices only).
-     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify
+     * explicitly.
      * @param j  Column index (0-based).
-     * @return @c matrix_view<T,strided,R> where @c R = @c dimensions[0], stride = @c dimensions[1]
+     * @return @c matrix_view<T,strided,R> where @c R = @c dimensions[0], stride
+     * =
+     * @c dimensions[1]
      * @throws std::out_of_range if @a j >= @c dimensions[1].
      *
      * @code
@@ -1235,7 +1300,8 @@ public:
 
     /**
      * @brief Returns a const strided view over column @a j (2D matrices only).
-     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify
+     * explicitly.
      * @param j  Column index (0-based).
      * @return @c matrix_view<const T,strided,R> where @c R = @c dimensions[0]
      * @throws std::out_of_range if @a j >= @c dimensions[1].
@@ -1318,7 +1384,8 @@ constexpr matrix<T, N, N> identity() {
  * @tparam R  Number of rows of the input matrix
  * @tparam C  Number of columns of the input matrix
  * @param  m  Matrix to transpose
- * @return New @c matrix<T,C,R> where `result(j, i) == m(i, j)` for all valid @a i, @a j
+ * @return New @c matrix<T,C,R> where `result(j, i) == m(i, j)` for all valid @a
+ * i, @a j
  *
  * @code
  * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
@@ -1348,8 +1415,8 @@ template <class T, std::size_t R, std::size_t C>
  * @tparam P  Number of columns of @a b and the result
  * @param  a  Left-hand matrix of size M×N
  * @param  b  Right-hand matrix of size N×P
- * @return New @c matrix<Tc,M,P> where `Tc = decltype(Ta{} * Tb{})`, equal to the matrix product `a
- * × b`
+ * @return New @c matrix<Tc,M,P> where `Tc = decltype(Ta{} * Tb{})`, equal to
+ * the matrix product `a × b`
  *
  * @code
  * ysc::matrix<int, 2, 3>    a{1, 2, 3, 4, 5, 6};
@@ -1361,8 +1428,8 @@ template <class T, std::size_t R, std::size_t C>
  */
 template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
     requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
-                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
-                          const Ta& a, const Tb& b) { tc += a * b; }
+             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
+                      const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& a, const matrix<Tb, N, P>& b)
     -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M, P> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
@@ -1378,14 +1445,15 @@ template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
 }
 
 /**
- * @brief Returns the dot product of two 1D matrices (vectors) of the same length.
+ * @brief Returns the dot product of two 1D matrices (vectors) of the same
+ * length.
  * @tparam Ta Element type of @a a — must be multipliable with @a Tb
  * @tparam Tb Element type of @a b — must be multipliable with @a Ta
  * @tparam N  Number of elements
  * @param  a  First vector
  * @param  b  Second vector
- * @return Scalar value `Tc` where `Tc = decltype(Ta{} * Tb{})`, equal to `sum(a[i] * b[i])` for `i`
- * in `[0, N)`
+ * @return Scalar value `Tc` where `Tc = decltype(Ta{} * Tb{})`, equal to
+ * `sum(a[i] * b[i])` for `i` in `[0, N)`
  *
  * @code
  * ysc::matrix<int, 3>    a{1, 2, 3};
@@ -1397,8 +1465,8 @@ template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
  */
 template <class Ta, class Tb, std::size_t N>
     requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
-                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
-                          const Ta& a, const Tb& b) { tc += a * b; }
+             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
+                      const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto dot(const matrix<Ta, N>& a, const matrix<Tb, N>& b)
     -> std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
@@ -1416,7 +1484,8 @@ template <class Ta, class Tb, std::size_t N>
 
 /**
  * @brief Writes a matrix to an output stream.
- * @tparam T    Element type — must be writable to `std::ostream` via `operator<<`
+ * @tparam T    Element type — must be writable to `std::ostream` via
+ * `operator<<`
  * @tparam Dims Dimensions of the matrix
  * @param  os   Destination stream
  * @param  m    Matrix to print
@@ -1425,8 +1494,8 @@ template <class Ta, class Tb, std::size_t N>
  * Produces nested bracket notation: `[e0, e1, ...]` for 1D,
  * `[[e00, e01], [e10, e11]]` for 2D, and so on recursively.
  *
- * This overload only participates in overload resolution when `T` is streamable,
- * so it never causes a hard error for non-streamable element types.
+ * This overload only participates in overload resolution when `T` is
+ * streamable, so it never causes a hard error for non-streamable element types.
  *
  * @code
  * ysc::matrix<int, 2, 2> m{1, 2, 3, 4};
@@ -1481,12 +1550,14 @@ template <class T, std::size_t... D> struct std::hash<ysc::matrix<T, D...>> {
 
 /**
  * @brief Specialization of @c std::formatter for @c ysc::matrix.
- * @tparam T     Element type — must be streamable via @c operator<<(std::ostream&, const T&)
+ * @tparam T     Element type — must be streamable via @c
+ * operator<<(std::ostream&, const T&)
  * @tparam D     Dimensions of the matrix
  * @tparam CharT Character type for the format context
  *
  * Enables `std::format("{}", m)` and produces the same nested-bracket output as
- * `operator<<`: `[e0, e1, …]` for 1D, `[[e00, e01], [e10, e11]]` for 2D, and so on.
+ * `operator<<`: `[e0, e1, …]` for 1D, `[[e00, e01], [e10, e11]]` for 2D, and so
+ * on.
  *
  * Only available when the @c <format> library feature is present
  * (@c __cpp_lib_format ≥ 201907L).
