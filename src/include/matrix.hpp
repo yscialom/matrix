@@ -825,8 +825,8 @@ public:
      */
     template <class F>
         requires std::invocable<F, const T&>
-    [[nodiscard]] constexpr auto map(F f) const
-        -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
+    [[nodiscard]] constexpr auto
+    map(F f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...> {
         matrix<std::invoke_result_t<F, const T&>, Dimensions...> result(zero);
         std::transform(_data.cbegin(), _data.cend(), result.begin(),
                        [&f](const T& v) { return std::invoke(f, v); });
@@ -1361,8 +1361,8 @@ template <class T, std::size_t R, std::size_t C>
  */
 template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
     requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
-             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
-                      const Tb& b) { tc += a * b; }
+                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
+                          const Ta& a, const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& a, const matrix<Tb, N, P>& b)
     -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M, P> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
@@ -1397,8 +1397,8 @@ template <class Ta, class Tb, std::size_t M, std::size_t N, std::size_t P>
  */
 template <class Ta, class Tb, std::size_t N>
     requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
-             requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc, const Ta& a,
-                      const Tb& b) { tc += a * b; }
+                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
+                          const Ta& a, const Tb& b) { tc += a * b; }
 [[nodiscard]] constexpr auto dot(const matrix<Ta, N>& a, const matrix<Tb, N>& b)
     -> std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> {
     using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
