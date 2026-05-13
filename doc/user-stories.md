@@ -11,10 +11,10 @@
 | **E — Comparaison & I/O** | ✅ Terminée | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
-| **H — Vues & reshape** | 🔄 En cours | 1/3 | ✅ US-035, ⬜ US-036, ⬜ US-037 |
+| **H — Vues & reshape** | 🔄 En cours | 1/4 | ✅ US-035, ⬜ US-036, ⬜ US-037, ⬜ US-044 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 34 / 43 US**
+**Total : 34 / 44 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -878,21 +878,31 @@ constexpr T dot(const matrix<T, N>& a, const matrix<T, N>& b);
 
 ---
 
-## US-036 — Slicing / submatrix
+## US-036 — `slice()` générique N-D
 
-**Priorité :** P2 — **Dépend de :** US-035
+**Priorité :** P2 — **Dépend de :** US-035 — **Bloque :** US-037, US-044
 
 ### Spécification
-- Pour matrices 2D uniquement (extension N-D = autre US)
-- Méthode `m.row(i)` retourne `matrix_view<T, C>`
-- Méthode `m.col(j)` retourne `matrix_view<T, R>` — **mais col n'est pas contiguë** → nécessite stride. Décision : `col()` retourne `strided_matrix_view` (nouvelle classe avec stride). Autre option plus simple : `col()` copie dans `matrix<T, R>` (no view).
-  - **Choix retenu :** `col()` retourne **copie** `matrix<T, R>` (simplicité ; perf acceptable). `row()` retourne `matrix_view` (zero-copy).
+- API `m.slice(spec0, spec1, ...)` — chaque argument : `ysc::all` (conserver) ou un entier (fixer)
+- **Padding `all` à droite** : si `sizeof...(Specs) < order`, complétion implicite par `all` (`m.slice(0)` sur 3D ≡ `m.slice(0, all, all)`)
+- Refonte de `matrix_view` en template `<T, Storage, Dims…>` avec deux **spécialisations partielles** :
+  - `matrix_view<T, contiguous, …>` — anciennement `matrix_view<T, …>` (US-035, breaking change)
+  - `matrix_view<T, strided, …>` — nouvelle, pour les vues non-contiguës
+- `slice()` choisit `contiguous` si les dims fixées forment un préfixe, `strided` sinon
+- Conversion implicite `contiguous` → `strided` (toute vue contiguë s'utilise comme strided)
+- `slice()` **lève** `std::out_of_range` si un index fixé est hors-bornes
+- Aliases ergonomiques `m.row(i)` ≡ `slice(i)` et `m.col(j)` ≡ `slice(all, j)`, contraints à `order == 2`
+
+**Spécification détaillée :** voir `doc/US-036.md`.
 
 ### Critères d'acceptation
-- [ ] `m.row(0)` est un view
-- [ ] `m.col(0)` est une copie
-- [ ] Modif via `m.row(0)(j)` reflétée dans `m`
-- [ ] Documentation explicite sur la différence
+- [ ] `m.slice(i, all, all)` retourne `matrix_view<T, contiguous, …>`
+- [ ] `m.slice(all, j, all)` retourne `matrix_view<T, strided, …>`
+- [ ] `m.slice(0)` sur 3D ≡ `m.slice(0, all, all)` ; `m.slice()` = vue complète
+- [ ] `m.slice(idx_hors_bornes, …)` lève `std::out_of_range`
+- [ ] Conversion implicite contiguous → strided testée
+- [ ] Mutation via vue reflétée dans la matrice d'origine
+- [ ] `row()` / `col()` refusés à la compilation pour `order ≠ 2`
 
 ---
 
@@ -1058,3 +1068,40 @@ En tant qu'utilisateur de la bibliothèque, je veux que chaque fonction publique
 - [ ] La page `@mainpage` liste les 6 groupes ; chaque groupe est accessible en 1 clic depuis la page principale
 - [ ] `cmake --build build --target doc` produit zéro avertissement Doxygen
 - [ ] La CI est rouge si un avertissement Doxygen est introduit (`WARN_AS_ERROR = YES`)
+
+---
+
+## US-044 — Constructeur `matrix(matrix_view)` (owning ← view)
+
+**Priorité :** P2 — **Dépend de :** US-036 — **Épopée :** H
+
+### Story
+En tant qu'utilisateur de `ysc::matrix`, je veux pouvoir reconstruire une matrice owning à partir d'une vue (contiguë ou strided), de manière à matérialiser un résultat de `slice()`, `row()`, `col()` ou `reshape()` en une nouvelle matrice indépendante.
+
+### Spécification
+```cpp
+template <class T, std::size_t... Dims> class matrix {
+    // ...
+    template <class Storage>
+    explicit matrix(const matrix_view<T, Storage, Dims...>& v);
+};
+
+// Usage :
+ysc::matrix<int, 3, 4> m{/*...*/};
+auto v  = m.slice(ysc::all, 0);   // matrix_view<int, strided, 3>
+auto m2 = ysc::matrix(v);          // matrix<int, 3>, copie owning
+```
+
+- Deux surcharges (sélection par `Storage`) :
+  - `contiguous` : copie via `std::copy(v.begin(), v.end(), _data.begin())`.
+  - `strided` : copie élément par élément via `operator()` (pas d'itérateurs sur strided dans US-036).
+- Constructeur **`explicit`** pour éviter les conversions implicites surprises.
+- Pas d'allocation, pas d'exception (en dehors de celles éventuelles du copy ctor de `T`).
+
+### Critères d'acceptation
+- [ ] `auto m2 = ysc::matrix(v);` compile pour `v` issu de `slice(...)`, `row(...)`, `col(...)`.
+- [ ] `m2` est indépendant : mutation de `m2` n'affecte pas la matrice source, et vice-versa.
+- [ ] Surcharge `contiguous` testée (copie de `m.slice(i, all, all)`).
+- [ ] Surcharge `strided` testée (copie de `m.col(j)`).
+- [ ] Constructeur Doxygen-documenté (`@brief`, `@tparam`, `@param`, `@code`…`@endcode`, `@ingroup`).
+- [ ] Build et tests verts, pas de warning clang-format ni clang-tidy.
