@@ -94,9 +94,9 @@ jobs:
 
       - name: Install compiler and GTest (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y ccache ${{ matrix.packages }}
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: ccache ${{ matrix.packages }}
 
       - name: Install GTest (macOS)
         if: startsWith(matrix.os, 'macos')
@@ -149,9 +149,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install GCC-13, GTest and lcov
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y g++-13 libgtest-dev lcov
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: g++-13 libgtest-dev lcov
 
       - name: Configure with coverage
         env:
@@ -201,9 +201,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Clang-17 and GTest
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y clang-17 libgtest-dev
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: clang-17 libgtest-dev
 
       - name: Configure with sanitizers
         env:
@@ -231,9 +231,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install clang-format
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y clang-format
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: clang-format
 
       - name: Check formatting
         run: |
@@ -248,9 +248,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install clang-tidy and GTest
-        run: |
-          sudo apt-get update -q
-          sudo apt-get install -y clang-tidy libgtest-dev
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: clang-tidy libgtest-dev
 
       - name: Configure
         run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
