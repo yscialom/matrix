@@ -11,7 +11,7 @@
 | **E — Comparaison & I/O** | ✅ Terminée | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
-| **H — Vues & reshape** | 🔄 En cours | 1/4 | ✅ US-035, ⬜ US-036, ⬜ US-037, ⬜ US-044 |
+| **H — Vues & reshape** | 🔄 En cours | 2/4 | ✅ US-035, ✅ US-036, ⬜ US-037, ⬜ US-044 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
 **Total : 34 / 44 US**
@@ -896,13 +896,13 @@ constexpr T dot(const matrix<T, N>& a, const matrix<T, N>& b);
 **Spécification détaillée :** voir `doc/US-036.md`.
 
 ### Critères d'acceptation
-- [ ] `m.slice(i, all, all)` retourne `matrix_view<T, contiguous, …>`
-- [ ] `m.slice(all, j, all)` retourne `matrix_view<T, strided, …>`
-- [ ] `m.slice(0)` sur 3D ≡ `m.slice(0, all, all)` ; `m.slice()` = vue complète
-- [ ] `m.slice(idx_hors_bornes, …)` lève `std::out_of_range`
-- [ ] Conversion implicite contiguous → strided testée
-- [ ] Mutation via vue reflétée dans la matrice d'origine
-- [ ] `row()` / `col()` refusés à la compilation pour `order ≠ 2`
+- [x] `m.slice(i, all, all)` retourne `matrix_view<T, contiguous, …>`
+- [x] `m.slice(all, j, all)` retourne `matrix_view<T, strided, …>`
+- [x] `m.slice(0)` sur 3D ≡ `m.slice(0, all, all)` ; `m.slice()` = vue complète
+- [x] `m.slice(idx_hors_bornes, …)` lève `std::out_of_range`
+- [x] Conversion implicite contiguous → strided testée
+- [x] Mutation via vue reflétée dans la matrice d'origine
+- [x] `row()` / `col()` refusés à la compilation pour `order ≠ 2`
 
 ---
 
