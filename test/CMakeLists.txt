@@ -30,6 +30,10 @@ add_executable(${TARGET_NAME}
     src/iterators.cpp
     src/dot.cpp
     src/matmul.cpp
+    src/matrix_from_view.cpp
+    src/matrix_view.cpp
+    src/reshape.cpp
+    src/slice.cpp
     src/ostream.cpp
     src/reductions.cpp
     src/transpose.cpp
