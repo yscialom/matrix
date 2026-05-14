@@ -31,6 +31,7 @@ add_executable(${TARGET_NAME}
     src/dot.cpp
     src/matmul.cpp
     src/matrix_view.cpp
+    src/reshape.cpp
     src/slice.cpp
     src/ostream.cpp
     src/reductions.cpp
