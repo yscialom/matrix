@@ -81,6 +81,21 @@ constexpr auto coordinates_to_index(TDim const& dimensions, TCoord const& coords
     return index;
 }
 
+// Inverse of coordinates_to_index: converts a flat row-major index to multi-dimensional
+// coordinates. Rightmost coordinate varies fastest (row-major).
+template <std::size_t N>
+constexpr std::array<std::size_t, N> index_to_coordinates(std::array<std::size_t, N> dims,
+                                                          std::size_t k) noexcept {
+    std::array<std::size_t, N> coords{};
+    auto it_c = coords.rbegin();
+    auto it_d = dims.crbegin();
+    for (; it_c != coords.rend(); ++it_c, ++it_d) {
+        *it_c = k % *it_d;
+        k /= *it_d;
+    }
+    return coords;
+}
+
 // ─── slice metaprogramming helpers ───────────────────────────────────────────
 
 /** @brief True iff @c S is @c ysc::all_t. */
