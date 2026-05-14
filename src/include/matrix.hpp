@@ -21,6 +21,7 @@
 #include <numeric>
 #include <ostream>
 #include <stdexcept>
+#include <tuple>
 #include <type_traits>
 // Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
 // incompatibility
@@ -348,6 +349,51 @@ public:
     // NOLINTNEXTLINE(cppcoreguidelines-rvalue-reference-param-not-moved)
     matrix(matrix<U, Dimensions...>&& other) {
         std::move(other._data.cbegin(), other._data.cend(), _data.begin());
+    }
+
+    // constructors from matrix_view
+    /**
+     * @brief Constructs an owning matrix by copying elements from a contiguous view.
+     * @param v Contiguous view to copy from
+     *
+     * Elements are copied with @c std::copy. The resulting matrix is independent of @p v:
+     * mutations to either do not affect the other.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+     * auto row0 = m.row(0);                    // contiguous view of row 0
+     * auto m2   = ysc::matrix<int, 4>(row0);   // owning copy
+     * m2(0) = 99;                              // does not affect m
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    explicit matrix(const matrix_view<T, contiguous, Dimensions...>& v) {
+        std::copy(v.begin(), v.end(), _data.begin());
+    }
+
+    /**
+     * @brief Constructs an owning matrix by copying elements from a strided view.
+     * @param v Strided view to copy from
+     *
+     * Elements are copied one by one via @c operator(). The resulting matrix is independent
+     * of @p v: mutations to either do not affect the other.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+     * auto col1 = m.col(1);                    // strided view of column 1
+     * auto m2   = ysc::matrix<int, 3>(col1);   // owning copy
+     * m2(0) = 99;                              // does not affect m
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    explicit matrix(const matrix_view<T, strided, Dimensions...>& v) {
+        std::size_t k = 0;
+        for (auto& elem : _data) {
+            const auto coords = detail::index_to_coordinates(dimensions, k++);
+            elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
+        }
     }
 
     // assignment operators (copy)

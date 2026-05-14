@@ -11,10 +11,10 @@
 | **E — Comparaison & I/O** | ✅ Terminée | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
-| **H — Vues & reshape** | 🔄 En cours | 3/4 | ✅ US-035, ✅ US-036, ✅ US-037, ⬜ US-044 |
+| **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
-**Total : 34 / 44 US**
+**Total : 35 / 44 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -1099,9 +1099,9 @@ auto m2 = ysc::matrix(v);          // matrix<int, 3>, copie owning
 - Pas d'allocation, pas d'exception (en dehors de celles éventuelles du copy ctor de `T`).
 
 ### Critères d'acceptation
-- [ ] `auto m2 = ysc::matrix(v);` compile pour `v` issu de `slice(...)`, `row(...)`, `col(...)`.
-- [ ] `m2` est indépendant : mutation de `m2` n'affecte pas la matrice source, et vice-versa.
-- [ ] Surcharge `contiguous` testée (copie de `m.slice(i, all, all)`).
-- [ ] Surcharge `strided` testée (copie de `m.col(j)`).
-- [ ] Constructeur Doxygen-documenté (`@brief`, `@tparam`, `@param`, `@code`…`@endcode`, `@ingroup`).
-- [ ] Build et tests verts, pas de warning clang-format ni clang-tidy.
+- [x] `auto m2 = ysc::matrix(v);` compile pour `v` issu de `slice(...)`, `row(...)`, `col(...)`.
+- [x] `m2` est indépendant : mutation de `m2` n'affecte pas la matrice source, et vice-versa.
+- [x] Surcharge `contiguous` testée (copie de `m.slice(i, all, all)`).
+- [x] Surcharge `strided` testée (copie de `m.col(j)`).
+- [x] Constructeur Doxygen-documenté (`@brief`, `@tparam`, `@param`, `@code`…`@endcode`, `@ingroup`).
+- [x] Build et tests verts, pas de warning clang-format ni clang-tidy.
