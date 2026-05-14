@@ -11,7 +11,7 @@
 | **E — Comparaison & I/O** | ✅ Terminée | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
-| **H — Vues & reshape** | 🔄 En cours | 2/4 | ✅ US-035, ✅ US-036, ⬜ US-037, ⬜ US-044 |
+| **H — Vues & reshape** | 🔄 En cours | 3/4 | ✅ US-035, ✅ US-036, ✅ US-037, ⬜ US-044 |
 | **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
 
 **Total : 34 / 44 US**
@@ -920,8 +920,8 @@ matrix_view<T, linear_size> flatten();
 Reshape = juste un changement de vue, zero-copy.
 
 ### Critères d'acceptation
-- [ ] `static_assert((NewD * ...) == linear_size)` à la compilation
-- [ ] Mutation via reshape reflétée
+- [x] `static_assert((NewD * ...) == linear_size)` à la compilation
+- [x] Mutation via reshape reflétée
 
 ---
 

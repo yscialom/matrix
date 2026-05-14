@@ -1324,6 +1324,82 @@ public:
         return matrix_view<const T, strided, dimensions[0]>{
             _data.data() + j, std::array<std::size_t, 1>{dimensions[1]}};
     }
+
+    /**
+     * @brief Returns a non-owning view over the same data reinterpreted with new dimensions.
+     * @tparam NewD New dimensions; their product must equal @c linear_size.
+     * @return @c matrix_view<T, contiguous, NewD...>
+     *
+     * Zero-copy: the view and the matrix share the same memory.
+     * Mutation through the view is reflected in the original matrix.
+     *
+     * @code
+     * ysc::matrix<int, 2, 6> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+     * auto v = m.reshape<3, 4>();  // view m as 3x4
+     * v(0, 0) = 99;               // also sets m(0, 0)
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t... NewD>
+    [[nodiscard]] constexpr matrix_view<T, contiguous, NewD...> reshape() & noexcept {
+        static_assert((NewD * ...) == linear_size,
+                      "reshape: product of new dimensions must equal linear_size");
+        return matrix_view<T, contiguous, NewD...>{_data.data()};
+    }
+
+    /**
+     * @brief Returns a const non-owning view over the same data reinterpreted with new dimensions.
+     * @tparam NewD New dimensions; their product must equal @c linear_size.
+     * @return @c matrix_view<const T, contiguous, NewD...>
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * auto v = m.reshape<6>();  // matrix_view<const int, contiguous, 6>
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t... NewD>
+    [[nodiscard]] constexpr matrix_view<const T, contiguous, NewD...> reshape() const& noexcept {
+        static_assert((NewD * ...) == linear_size,
+                      "reshape: product of new dimensions must equal linear_size");
+        return matrix_view<const T, contiguous, NewD...>{_data.data()};
+    }
+
+    /**
+     * @brief Returns a 1D non-owning view over all elements in row-major order.
+     * @return @c matrix_view<T, contiguous, linear_size>
+     *
+     * Equivalent to @c reshape<linear_size>(). Zero-copy.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * auto v = m.flatten();  // matrix_view<int, contiguous, 6>
+     * assert(v(3) == m(1, 0));
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] constexpr matrix_view<T, contiguous, linear_size> flatten() & noexcept {
+        return matrix_view<T, contiguous, linear_size>{_data.data()};
+    }
+
+    /**
+     * @brief Returns a const 1D non-owning view over all elements in row-major order.
+     * @return @c matrix_view<const T, contiguous, linear_size>
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * auto v = m.flatten();  // matrix_view<const int, contiguous, 6>
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] constexpr matrix_view<const T, contiguous, linear_size>
+    flatten() const& noexcept {
+        return matrix_view<const T, contiguous, linear_size>{_data.data()};
+    }
 };
 
 /**
