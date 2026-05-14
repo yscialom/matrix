@@ -73,10 +73,13 @@ TEST(matrix_from_view, contiguous_mutation_of_source_does_not_affect_copy) {
 
 TEST(matrix_from_view, contiguous_from_slice) {
     ysc::matrix<int, 2, 3, 4> m{};
-    for (std::size_t i = 0; i < 2; ++i)
-        for (std::size_t j = 0; j < 3; ++j)
-            for (std::size_t k = 0; k < 4; ++k)
+    for (std::size_t i = 0; i < 2; ++i) {
+        for (std::size_t j = 0; j < 3; ++j) {
+            for (std::size_t k = 0; k < 4; ++k) {
                 m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+            }
+        }
+    }
     auto v = m.slice(1); // contiguous view of m[1]: a 3×4 slice
     auto m2 = ysc::matrix<int, 3, 4>(v);
     EXPECT_EQ(m2(0, 0), m(1, 0, 0));
@@ -86,15 +89,20 @@ TEST(matrix_from_view, contiguous_from_slice) {
 
 TEST(matrix_from_view, contiguous_2d_explicit) {
     ysc::matrix<int, 2, 3, 4> m{};
-    for (std::size_t i = 0; i < 2; ++i)
-        for (std::size_t j = 0; j < 3; ++j)
-            for (std::size_t k = 0; k < 4; ++k)
+    for (std::size_t i = 0; i < 2; ++i) {
+        for (std::size_t j = 0; j < 3; ++j) {
+            for (std::size_t k = 0; k < 4; ++k) {
                 m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+            }
+        }
+    }
     auto v = m.slice(0); // contiguous view of m[0]: matrix_view<int, contiguous, 3, 4>
     ysc::matrix<int, 3, 4> m2(v);
-    for (std::size_t j = 0; j < 3; ++j)
-        for (std::size_t k = 0; k < 4; ++k)
+    for (std::size_t j = 0; j < 3; ++j) {
+        for (std::size_t k = 0; k < 4; ++k) {
             EXPECT_EQ(m2(j, k), m(std::size_t{0}, j, k));
+        }
+    }
 }
 
 // ─── strided view (from col) ──────────────────────────────────────────────────
@@ -133,17 +141,22 @@ TEST(matrix_from_view, strided_from_slice_all_fixed) {
 
 TEST(matrix_from_view, strided_2d_from_3d_slice) {
     ysc::matrix<int, 2, 3, 4> m{};
-    for (std::size_t i = 0; i < 2; ++i)
-        for (std::size_t j = 0; j < 3; ++j)
-            for (std::size_t k = 0; k < 4; ++k)
+    for (std::size_t i = 0; i < 2; ++i) {
+        for (std::size_t j = 0; j < 3; ++j) {
+            for (std::size_t k = 0; k < 4; ++k) {
                 m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+            }
+        }
+    }
     // slice(ysc::all, 1) → spec (all_t, 1, all_t): keeps dims 0 and 2, fixes dim 1 at 1
     // result: matrix_view<int, strided, 2, 4>
     auto v = m.slice(ysc::all, 1);
     ysc::matrix<int, 2, 4> m2(v);
-    for (std::size_t i = 0; i < 2; ++i)
-        for (std::size_t k = 0; k < 4; ++k)
+    for (std::size_t i = 0; i < 2; ++i) {
+        for (std::size_t k = 0; k < 4; ++k) {
             EXPECT_EQ(m2(i, k), m(i, std::size_t{1}, k));
+        }
+    }
 }
 
 // ─── CTAD ─────────────────────────────────────────────────────────────────────
