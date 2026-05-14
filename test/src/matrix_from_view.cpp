@@ -94,7 +94,7 @@ TEST(matrix_from_view, contiguous_2d_explicit) {
     ysc::matrix<int, 3, 4> m2(v);
     for (std::size_t j = 0; j < 3; ++j)
         for (std::size_t k = 0; k < 4; ++k)
-            EXPECT_EQ(m2(j, k), m(0, j, k));
+            EXPECT_EQ(m2(j, k), m(std::size_t{0}, j, k));
 }
 
 // ─── strided view (from col) ──────────────────────────────────────────────────
@@ -143,7 +143,7 @@ TEST(matrix_from_view, strided_2d_from_3d_slice) {
     ysc::matrix<int, 2, 4> m2(v);
     for (std::size_t i = 0; i < 2; ++i)
         for (std::size_t k = 0; k < 4; ++k)
-            EXPECT_EQ(m2(i, k), m(i, 1, k));
+            EXPECT_EQ(m2(i, k), m(i, std::size_t{1}, k));
 }
 
 // ─── CTAD ─────────────────────────────────────────────────────────────────────
