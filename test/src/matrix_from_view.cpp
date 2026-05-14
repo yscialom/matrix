@@ -1,6 +1,7 @@
 #include <matrix.hpp>
 #include <matrix_view.hpp>
 
+#include <array>
 #include <gtest/gtest.h>
 #include <type_traits>
 
@@ -14,6 +15,35 @@ static_assert(
 static_assert(
     !std::is_convertible_v<ysc::matrix_view<int, ysc::contiguous, 4>, ysc::matrix<int, 4>>);
 static_assert(!std::is_convertible_v<ysc::matrix_view<int, ysc::strided, 3>, ysc::matrix<int, 3>>);
+
+// ─── detail::index_to_coordinates (compile-time) ─────────────────────────────
+
+static_assert(ysc::detail::index_to_coordinates(std::array<std::size_t, 1>{3}, std::size_t{0}) ==
+              std::array<std::size_t, 1>{0});
+static_assert(ysc::detail::index_to_coordinates(std::array<std::size_t, 2>{3, 4}, std::size_t{5}) ==
+              std::array<std::size_t, 2>{1, 1}); // 5 = 1×4 + 1
+static_assert(ysc::detail::index_to_coordinates(std::array<std::size_t, 2>{3, 4},
+                                                std::size_t{11}) ==
+              std::array<std::size_t, 2>{2, 3});
+
+// ─── detail::index_to_coordinates (runtime) ──────────────────────────────────
+
+TEST(detail_index_to_coordinates, 1d) {
+    EXPECT_EQ((ysc::detail::index_to_coordinates(std::array<std::size_t, 1>{3}, std::size_t{0})),
+              (std::array<std::size_t, 1>{0}));
+    EXPECT_EQ((ysc::detail::index_to_coordinates(std::array<std::size_t, 1>{3}, std::size_t{2})),
+              (std::array<std::size_t, 1>{2}));
+}
+
+TEST(detail_index_to_coordinates, 2d_row_major) {
+    EXPECT_EQ((ysc::detail::index_to_coordinates(std::array<std::size_t, 2>{3, 4}, std::size_t{0})),
+              (std::array<std::size_t, 2>{0, 0}));
+    EXPECT_EQ((ysc::detail::index_to_coordinates(std::array<std::size_t, 2>{3, 4}, std::size_t{5})),
+              (std::array<std::size_t, 2>{1, 1}));
+    EXPECT_EQ(
+        (ysc::detail::index_to_coordinates(std::array<std::size_t, 2>{3, 4}, std::size_t{11})),
+        (std::array<std::size_t, 2>{2, 3}));
+}
 
 // ─── contiguous view (from row) ───────────────────────────────────────────────
 
@@ -54,6 +84,19 @@ TEST(matrix_from_view, contiguous_from_slice) {
     EXPECT_EQ(m2(2, 3), m(1, 2, 3));
 }
 
+TEST(matrix_from_view, contiguous_2d_explicit) {
+    ysc::matrix<int, 2, 3, 4> m{};
+    for (std::size_t i = 0; i < 2; ++i)
+        for (std::size_t j = 0; j < 3; ++j)
+            for (std::size_t k = 0; k < 4; ++k)
+                m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+    auto v = m.slice(0); // contiguous view of m[0]: matrix_view<int, contiguous, 3, 4>
+    ysc::matrix<int, 3, 4> m2(v);
+    for (std::size_t j = 0; j < 3; ++j)
+        for (std::size_t k = 0; k < 4; ++k)
+            EXPECT_EQ(m2(j, k), m(0, j, k));
+}
+
 // ─── strided view (from col) ──────────────────────────────────────────────────
 
 TEST(matrix_from_view, strided_from_col_copies_values) {
@@ -86,6 +129,21 @@ TEST(matrix_from_view, strided_from_slice_all_fixed) {
     EXPECT_EQ(m2(0), m(0, 1));
     EXPECT_EQ(m2(1), m(1, 1));
     EXPECT_EQ(m2(2), m(2, 1));
+}
+
+TEST(matrix_from_view, strided_2d_from_3d_slice) {
+    ysc::matrix<int, 2, 3, 4> m{};
+    for (std::size_t i = 0; i < 2; ++i)
+        for (std::size_t j = 0; j < 3; ++j)
+            for (std::size_t k = 0; k < 4; ++k)
+                m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+    // slice(ysc::all, 1) → spec (all_t, 1, all_t): keeps dims 0 and 2, fixes dim 1 at 1
+    // result: matrix_view<int, strided, 2, 4>
+    auto v = m.slice(ysc::all, 1);
+    ysc::matrix<int, 2, 4> m2(v);
+    for (std::size_t i = 0; i < 2; ++i)
+        for (std::size_t k = 0; k < 4; ++k)
+            EXPECT_EQ(m2(i, k), m(i, 1, k));
 }
 
 // ─── CTAD ─────────────────────────────────────────────────────────────────────
