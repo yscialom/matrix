@@ -21,6 +21,7 @@
 #include <numeric>
 #include <ostream>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 // Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
@@ -1106,16 +1107,31 @@ public:
      * @param coordinates Coordinates of the element to return
      *
      * If @a coordinates is not within the range of the container, an exception
-     * of type
-     * @c std::out_of_range is thrown.
+     * of type @c std::out_of_range is thrown with a message of the form:
+     * @code
+     * "matrix::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     * @endcode
+     * where @c c is the offending coordinate value, @c i is the dimension index,
+     * and @c s is the size of that dimension.
+     *
+     * @throws std::out_of_range if any coordinate is negative or exceeds the
+     * dimension size
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     [[nodiscard]] const T& at(Coords... coordinates) const {
-        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coordinates)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coordinates...);
     }
@@ -1125,16 +1141,31 @@ public:
      * @param coordinates Coordinates of the element to return
      *
      * If @a coordinates is not within the range of the container, an exception
-     * of type
-     * @c std::out_of_range is thrown.
+     * of type @c std::out_of_range is thrown with a message of the form:
+     * @code
+     * "matrix::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     * @endcode
+     * where @c c is the offending coordinate value, @c i is the dimension index,
+     * and @c s is the size of that dimension.
+     *
+     * @throws std::out_of_range if any coordinate is negative or exceeds the
+     * dimension size
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     T& at(Coords... coordinates) {
-        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coordinates)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coordinates...);
     }
