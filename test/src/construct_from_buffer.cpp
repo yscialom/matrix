@@ -13,6 +13,7 @@ TEST(construct_from_array, basic) {
 
 TEST(construct_from_array, values_are_moved) {
     std::array<int, 3> arr{10, 20, 30};
+    // NOLINTNEXTLINE(performance-move-const-arg) -- demonstrates move ctor; trivial copy is fine
     ysc::matrix<int, 3> m(std::move(arr));
     EXPECT_EQ(m(0), 10);
     EXPECT_EQ(m(1), 20);
@@ -26,21 +27,21 @@ TEST(construct_from_array, 2d) {
 }
 
 TEST(construct_from_span, basic) {
-    int buf[3] = {4, 5, 6};
-    ysc::matrix<int, 3> m(std::span<const int, 3>{buf, 3});
+    std::array<int, 3> buf{4, 5, 6};
+    ysc::matrix<int, 3> m(std::span<const int, 3>{buf.data(), 3});
     EXPECT_EQ(m(0), 4);
 }
 
 TEST(construct_from_span, copies_not_aliases) {
-    int buf[3] = {7, 8, 9};
-    ysc::matrix<int, 3> m(std::span<const int, 3>{buf, 3});
+    std::array<int, 3> buf{7, 8, 9};
+    ysc::matrix<int, 3> m(std::span<const int, 3>{buf.data(), 3});
     buf[0] = 99;
     EXPECT_EQ(m(0), 7); // m is independent of buf
 }
 
 TEST(construct_from_span, 2d) {
-    int buf[6] = {1, 2, 3, 4, 5, 6};
-    ysc::matrix<int, 2, 3> m(std::span<const int, 6>{buf, 6});
+    std::array<int, 6> buf{1, 2, 3, 4, 5, 6};
+    ysc::matrix<int, 2, 3> m(std::span<const int, 6>{buf.data(), 6});
     EXPECT_EQ(m(0, 0), 1);
     EXPECT_EQ(m(1, 2), 6);
 }
