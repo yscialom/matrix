@@ -20,6 +20,7 @@
 #include <iterator>
 #include <numeric>
 #include <ostream>
+#include <span>
 #include <stdexcept>
 #include <string>
 #include <tuple>
@@ -393,6 +394,38 @@ public:
             const auto coords = detail::index_to_coordinates(dimensions, k++);
             elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
         }
+    }
+
+    // constructors from std::array and std::span
+    /**
+     * @brief Constructs from a @c std::array.
+     * @param data Array of exactly @c linear_size elements to move into the matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3> m(std::array<int, 3>{1, 2, 3});
+     * assert(m(0) == 1);
+     * @endcode
+     *
+     * @ingroup ysc_matrix
+     */
+    explicit matrix(std::array<T, linear_size> data) noexcept(
+        std::is_nothrow_move_constructible_v<T>)
+        : _data(std::move(data)) {}
+
+    /**
+     * @brief Constructs from a @c std::span.
+     * @param data Span of exactly @c linear_size elements; copied into the matrix.
+     *
+     * @code
+     * int buf[3] = {4, 5, 6};
+     * ysc::matrix<int, 3> m(std::span<const int, 3>{buf, 3});
+     * assert(m(0) == 4);
+     * @endcode
+     *
+     * @ingroup ysc_matrix
+     */
+    explicit matrix(std::span<const T, linear_size> data) {
+        std::copy(data.begin(), data.end(), _data.begin());
     }
 
     // assignment operators (copy)
@@ -1510,6 +1543,31 @@ constexpr matrix<T, N, N> identity() {
         m(i, i) = T{1};
     }
     return m;
+}
+
+/**
+ * @brief Returns a matrix filled by calling @a f(i) for each linear index @a i.
+ * @tparam T    Element type
+ * @tparam Dims Dimensions of the result matrix
+ * @tparam F    Callable type — must satisfy @c std::invocable<F, std::size_t>
+ * @param  f    Generator callable: @c f(i) must be convertible to @c T
+ * @return New @c matrix<T, Dims...> where element at linear index @a i equals @c f(i)
+ *
+ * @code
+ * auto m = ysc::generate<int, 3>([](std::size_t i) { return static_cast<int>(i * 2); });
+ * // m == ysc::matrix<int, 3>{0, 2, 4}
+ * @endcode
+ *
+ * @ingroup ysc_matrix
+ */
+template <class T, std::size_t... Dims, std::invocable<std::size_t> F>
+[[nodiscard]] constexpr matrix<T, Dims...> generate(F f) {
+    matrix<T, Dims...> result;
+    for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        result.begin()[i] = f(i);
+    }
+    return result;
 }
 
 /**
