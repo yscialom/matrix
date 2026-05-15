@@ -12,9 +12,11 @@
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| **I — Finition & release** | ⬜ Non démarrée | 0/6 | ⬜ US-038 à US-043 |
+| **I — Packaging & préparation v1.0.0** | ⬜ Non démarrée | 0/10 | ⬜ US-038, US-040 à US-043, US-045 à US-049 |
+| **J — Ergonomie & finition** | ⬜ Non démarrée | 0/11 | ⬜ US-039, US-050 à US-059 |
+| **K — Extensions post-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
 
-**Total : 35 / 44 US**
+**Total : 38 / 68 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -27,6 +29,51 @@
 | US-005 | clang-tidy + vérification CI | P1 | ✅ Done |
 | US-006 | Doc Doxygen publiée sur GitHub Pages | P1 | ✅ Done |
 | US-007 | Release automation (semver + GitHub Releases) | P2 | ✅ Done |
+
+## EPIC I — Packaging & préparation v1.0.0
+
+| US | Titre | Priorité | Statut |
+|----|-------|----------|--------|
+| US-038 | Cas particulier dimension 0 | P2 | ⬜ À faire |
+| US-040 | Dossier `examples/` enrichi | P1 | ⬜ À faire |
+| US-041 | Gate couverture 100 % | P1 | ⬜ À faire |
+| US-042 | Tag `v1.0.0` | P0 (final) | ⬜ À faire |
+| US-043 | Documentation Doxygen complète | P1 | ⬜ À faire |
+| US-045 | Packaging CMake : cible `ysc-matrix`, alias, install, find_package | P0 | ⬜ À faire |
+| US-046 | Correctifs docs + `.gitignore` | P0 | ⬜ À faire |
+| US-047 | README marketing + `mainpage.md` v1 | P0 | ⬜ À faire |
+| US-048 | Job CI consumer test | P0 | ⬜ À faire |
+| US-049 | Amalgamation auto-générée par CI | P0 | ⬜ À faire |
+
+## EPIC J — Ergonomie & finition
+
+| US | Titre | Priorité | Statut |
+|----|-------|----------|--------|
+| US-039 | Suite de benchmarks (Google Benchmark) | P1 | ⬜ À faire |
+| US-050 | Cookbook Doxygen | P1 | ⬜ À faire |
+| US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ⬜ À faire |
+| US-052 | `matrix_view` : I/O, ctor const, vues composables | P1 | ⬜ À faire |
+| US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ⬜ À faire |
+| US-054 | `matrix::rows()` / `cols()` + `matmul` vecteur 1D | P1 | ⬜ À faire |
+| US-055 | `CHANGELOG.md` versionné | P1 | ⬜ À faire |
+| US-056 | Messages d'exception détaillés dans `at()` | P1 | ⬜ À faire |
+| US-057 | Centraliser `NOLINTNEXTLINE` dans `matrix.hpp` | P1 | ⬜ À faire |
+| US-058 | Optimiser `matrix(matrix_view<strided>)` | P1 | ⬜ À faire |
+| US-059 | `operator-()` `constexpr` + hash combine 64-bit | P1 | ⬜ À faire |
+
+## EPIC K — Extensions post-v1
+
+| US | Titre | Priorité | Statut |
+|----|-------|----------|--------|
+| US-060 | Réductions par axe (`sum<Axis>()`, etc.) | P2 | ⬜ À faire |
+| US-061 | `submatrix` : extraction d'un sous-bloc N-D | P2 | ⬜ À faire |
+| US-062 | `enumerate()` : itérateur de coordonnées | P2 | ⬜ À faire |
+| US-063 | Opérateurs bit-à-bit pour types entiers | P2 | ⬜ À faire |
+| US-064 | Test ASan : détection de vue dangling | P2 | ⬜ À faire |
+| US-065 | Tests de référence linalg (valeurs pré-calculées) | P2 | ⬜ À faire |
+| US-066 | CI Windows : cache vcpkg | P2 | ⬜ À faire |
+| US-067 | Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ⬜ À faire |
+| US-068 | Migration guide : promesse de stabilité SemVer v1.0.0 | P2 | ⬜ À faire |
 
 ---
 
@@ -129,13 +176,39 @@ EPIC G — Algorithmes
 EPIC H — Vues & reshape
   US-035 (matrix_view) → US-036 (slice/submatrix) → US-037 (reshape)
 
-EPIC I — Finition & release
+EPIC I — Packaging & préparation v1.0.0
   US-038 (zero-dim edge case)
-  US-039 (benchmarks)
-  US-040 (README + examples)
+  US-046 (doc fixes + .gitignore)
+  US-045 (CMake packaging) → US-047 (README), US-048 (CI consumer), US-049 (amalgamation)
+  US-040 (examples) → dépend US-045
   US-041 (100% coverage gate)
-  US-042 (release v2.0.0)
-  US-043 (documentation API complète)
+  US-043 (Doxygen) → US-050 (cookbook, EPIC J)
+  US-047 (README) → US-042 (tag v1.0.0)
+  US-049 (amalgamation) → US-042
+
+EPIC J — Ergonomie & finition
+  US-039 (benchmarks)
+  US-050 (cookbook) → dépend US-043
+  US-051 (strided iterators) → US-052, US-058
+  US-052 (view I/O + composables)
+  US-053 (constructeurs additionnels)
+  US-054 (rows/cols + matmul 1D) → dépend US-036, US-033
+  US-055 (CHANGELOG)
+  US-056 (at() messages)
+  US-057 (NOLINT centralisé)
+  US-058 (optim ctor strided) → dépend US-051
+  US-059 (operator-() + hash 64-bit)
+
+EPIC K — Extensions post-v1
+  US-060 (réductions par axe) → dépend US-031
+  US-061 (submatrix) → dépend US-036
+  US-062 (enumerate) → dépend US-016
+  US-063 (bitwise) → dépend US-026
+  US-064 (ASan dangling view) → dépend US-035, US-003
+  US-065 (linalg reference) → dépend US-033, US-034
+  US-066 (CI Windows cache)
+  US-067 (hygiène repo)
+  US-068 (migration guide) → dépend US-042
 ```
 
 ---
@@ -925,7 +998,7 @@ Reshape = juste un changement de vue, zero-copy.
 
 ---
 
-# EPIC I — Finition & release
+# EPIC I — Packaging & préparation v1.0.0
 
 ## US-038 — Cas particulier dimension 0
 
@@ -944,44 +1017,28 @@ Reshape = juste un changement de vue, zero-copy.
 
 ---
 
-## US-039 — Suite de benchmarks (Google Benchmark)
+## US-040 — Dossier `examples/` enrichi
 
-**Priorité :** P2 — **Dépend de :** US-026, US-031, US-033
+**Priorité :** P1 — **Dépend de :** US-045 — **Épopée :** I
 
-### Spécification
-- Nouveau dossier `bench/`
-- Dépendance via `FetchContent` : `google/benchmark`
-- Benchmarks :
-  - Construction (zeros vs default)
-  - Element access (operator() vs at)
-  - Iteration (range-for vs index)
-  - Arithmétique (m+m, m*m hadamard, matmul)
-  - Comparaison vs `std::array` brut
-- Job CI optionnel `benchmark` (déclenché manuellement via `workflow_dispatch`)
-- Résultats archivés en artefact
+### Story
+En tant que développeur C++ qui découvre la bibliothèque, je veux trouver des exemples progressifs et compilables couvrant toutes les fonctionnalités majeures.
 
-### Critères d'acceptation
-- [ ] `cmake --build build --target bench && ./build/bench/matrix-bench` fonctionne
-- [ ] Pas de régression vs `std::array` brut sur opérations équivalentes (overhead < 5 %)
-
----
-
-## US-040 — Réécriture du README + dossier examples/
-
-**Priorité :** P1 — **Dépend de :** US-018, US-023, US-026, US-033
-
-### Spécification
-- README sections : Introduction, Installation, Quick Start, Features, Examples, API overview, Building from source, Contributing
-- Badges : CI, Codecov, Doc, License, C++ standard
-- Dossier `examples/` avec :
-  - `01_basics.cpp` — construction, accès
-  - `02_arithmetic.cpp` — opérations
-  - `03_linalg.cpp` — transpose, matmul
-  - `04_views.cpp` — vues et slicing
-- Cible CMake `examples` (option `BUILD_EXAMPLES=ON`, par défaut `OFF`)
+### Spécification technique
+- Dossier `examples/` avec 6 fichiers :
+  - `01_basics.cpp` — construction, accès, itération
+  - `02_arithmetic.cpp` — element-wise + scalaire + Hadamard + linalg
+  - `03_views.cpp` — slice, row, col, reshape, flatten
+  - `04_algorithms.cpp` — apply, map, réductions
+  - `05_interop_stl.cpp` — std::ranges, std::sort, std::format, unordered_set
+  - `06_linear_algebra.cpp` — résolution Ax=b illustrant dot, transpose, matmul
+- Option CMake : `YSC_MATRIX_BUILD_EXAMPLES=OFF` (préfixe YSC_MATRIX_)
+- Chaque exemple se compile et s'exécute de manière autonome
+- Job CI optionnel qui compile les exemples avec `YSC_MATRIX_BUILD_EXAMPLES=ON`
 
 ### Critères d'acceptation
-- [ ] Tous les exemples compilent et tournent
+- [ ] Tous les 6 exemples compilent et tournent sans erreur
+- [ ] Option CMake `YSC_MATRIX_BUILD_EXAMPLES=OFF` par défaut
 - [ ] Job CI compile les examples (option ON)
 
 ---
@@ -1002,27 +1059,31 @@ Reshape = juste un changement de vue, zero-copy.
 
 ---
 
-## US-042 — Release v2.0.0
+## US-042 — Tag `v1.0.0`
 
-**Priorité :** P0 (final) — **Dépend de :** toutes les US précédentes
+**Priorité :** P0 (final) — **Dépend de :** toutes US P0 et P1 — **Épopée :** I
 
-### Spécification
-- Bump version `CMakeLists.txt` : MAJOR=2, MINOR=0, PATCH=0
-- CHANGELOG.md généré
-- Tag `v2.0.0` créé sur `develop`
-- Workflow release (US-007) déclenché → release GitHub publiée
-- Annonce dans README
+### Story
+En tant que mainteneur, je veux bumper la version à `v1.0.0` une fois que toutes les US P0 et P1 sont satisfaisantes, en déclenchant manuellement le tag après revue subjective.
+
+### Spécification technique
+- Bump version `CMakeLists.txt` : MAJOR=1, MINOR=0, PATCH=0
+- CHANGELOG.md généré (US-055) et à jour
+- Tag `v1.0.0` créé manuellement par Yankel sur `develop` après revue
+- Workflow release (US-007) déclenché → release GitHub publiée avec `matrix-amalgamated.hpp` (US-049)
+- Doc à jour, badges verts
 
 ### Critères d'acceptation
-- [ ] Release v2.0.0 visible sur GitHub
-- [ ] Doc à jour, badges verts
-- [ ] CHANGELOG complet
+- [ ] Release `v1.0.0` visible sur GitHub avec asset `matrix-amalgamated.hpp`
+- [ ] CHANGELOG.md complet
+- [ ] Badges CI, Codecov, Docs tous verts
+- [ ] `find_package(ysc-matrix 1.0 CONFIG REQUIRED)` fonctionne (US-045)
 
 ---
 
 ## US-043 — Documentation Doxygen complète de l'API publique
 
-**Priorité :** P1 — **Dépend de :** US-006, US-023 (toutes les US d'API déjà mergées) — **Bloque :** US-042
+**Priorité :** P1 — **Dépend de :** US-006, US-023 (toutes les US d'API déjà mergées) — **Bloque :** US-042 — **Épopée :** I
 
 ### Story
 En tant qu'utilisateur de la bibliothèque, je veux que chaque fonction publique soit documentée avec Doxygen (description, paramètres, exemple de code) et accessible en ≤ 2 clics depuis la page principale de la doc.
@@ -1037,37 +1098,188 @@ En tant qu'utilisateur de la bibliothèque, je veux que chaque fonction publique
 - `@throws` si une exception peut être levée
 - Un exemple compilable dans `@code`…`@endcode`
 
-**Organisation par groupes (`@defgroup` / `@ingroup`) :**
+**Options Doxyfile :**
+- `GENERATE_TREEVIEW = YES` (navigation latérale)
+- `USE_MATHJAX = YES` (formules LaTeX dans la doc)
+- `WARN_AS_ERROR = YES` pour que tout warning devienne une erreur
+
+**Organisation par groupes (`@defgroup` / `@ingroup`) — organisés par cas d'usage :**
 
 | Groupe | Contenu |
 |--------|---------|
-| `construction` | Constructeurs, `operator=`, factories (`zeros`, `ones`, `full`, `identity`) |
-| `element_access` | `operator()`, `at()` |
-| `iterators` | `begin`, `end`, `cbegin`, `cend`, `rbegin`, `rend`, et variantes const |
-| `capacity` | `size`, `max_size`, `empty`, `data` |
-| `modifiers` | `fill`, `swap` |
-| `comparison` | `operator==`, `operator<=>` |
+| `ysc_construction` | Constructeurs, `operator=`, factories |
+| `ysc_access` | `operator()`, `at()` |
+| `ysc_iterators` | `begin`, `end`, `cbegin`, `cend`, `rbegin`, `rend`, variantes const |
+| `ysc_capacity` | `size`, `max_size`, `empty`, `data` |
+| `ysc_modifiers` | `fill`, `swap` |
+| `ysc_comparison` | `operator==`, `operator<=>` |
+| `ysc_arithmetic` | `operator+`, `-`, `*`, `/`, scalaires, Hadamard, unaires |
+| `ysc_algorithms` | `apply`, `map`, `sum`, `min`, `max`, `all`, `any` |
+| `ysc_linalg` | `transpose`, `matmul`, `dot` |
+| `ysc_views` | `slice`, `row`, `col`, `reshape`, `flatten`, `ysc::all`, `ysc::contiguous`, `ysc::strided` |
+| `ysc_io` | `operator<<`, `std::formatter` |
+| `ysc_hash` | `std::hash` |
 
 **Page principale (`@mainpage`) :**
-- Fichier `docs/mainpage.dox` (ou bloc `@mainpage` dans `matrix.hpp`)
-- Courte description de la bibliothèque
-- Tableau listant les 6 groupes avec liens (`@ref`)
+- Fichier `doc/mainpage.md`
+- Courte description de la bibliothèque, mention de `ysc::all` (sentinel) dans le groupe Views & slicing
+- Tableau listant les 12 groupes avec liens (`@ref`)
 - Exemple "Quick Start" complet
-
-**Vérification Doxygen :**
-- `WARN_AS_ERROR = YES` dans `Doxyfile` pour que tout warning devienne une erreur
-- `cmake --build build --target doc` doit se terminer sans aucun avertissement
+- Lien proéminent vers Cookbook (US-050) et `examples/`
+- Section « Non-goals » : broadcasting, SIMD/blocking, dimensions dynamiques, constructeur depuis `initializer_list` runtime
 
 **Job CI :**
 - Étendre le job `docs` (US-006) avec `WARN_AS_ERROR = YES` en CI
 - Ou ajouter une étape `doxygen-check` dédiée (sans déploiement)
 
 ### Critères d'acceptation
-- [ ] Chaque fonction publique de `matrix.hpp` possède `@brief`, `@tparam`/`@param`/`@return`/`@throws` selon applicable, et un exemple `@code`…`@endcode`
-- [ ] Toutes les fonctions sont rattachées à l'un des 6 groupes ci-dessus via `@ingroup`
-- [ ] La page `@mainpage` liste les 6 groupes ; chaque groupe est accessible en 1 clic depuis la page principale
+- [ ] Chaque fonction publique de `matrix.hpp`, `matrix_view.hpp`, `matrix_detail.hpp` possède `@brief`, `@tparam`/`@param`/`@return`/`@throws` selon applicable, et un exemple `@code`…`@endcode`
+- [ ] Toutes les fonctions sont rattachées à l'un des 12 groupes ci-dessus via `@ingroup`
+- [ ] La page `@mainpage` liste les 12 groupes ; chaque groupe est accessible en 1 clic depuis la page principale
 - [ ] `cmake --build build --target doc` produit zéro avertissement Doxygen
 - [ ] La CI est rouge si un avertissement Doxygen est introduit (`WARN_AS_ERROR = YES`)
+- [ ] `GENERATE_TREEVIEW = YES` et `USE_MATHJAX = YES` actifs dans `Doxyfile.in`
+
+---
+
+---
+
+## US-045 — Packaging CMake : cible `ysc-matrix`, alias, install, `find_package`
+
+**Priorité :** P0 — **Dépend de :** rien — **Bloque :** US-047, US-048, US-049 — **Épopée :** I
+
+### Story
+En tant qu'utilisateur, je veux pouvoir intégrer `ysc::matrix` dans mon projet via `find_package(ysc-matrix CONFIG REQUIRED)` ou `FetchContent`, avec la cible CMake `ysc::matrix` correctement nommée et les features C++20 propagées.
+
+### Spécification technique
+- `src/CMakeLists.txt` : renommer cible `matrix` → `ysc-matrix`, ajouter `add_library(ysc::matrix ALIAS ysc-matrix)`, ajouter `target_compile_features(ysc-matrix INTERFACE cxx_std_20)`
+- `CMakeLists.txt` racine : `project(ysc-matrix VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH} LANGUAGES CXX)`
+- Mode consumer-only (auto-désactivation quand la lib est sous-projet `FetchContent`) :
+  ```cmake
+  if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+      set(YSC_MATRIX_IS_TOP_LEVEL ON)
+  endif()
+  option(YSC_MATRIX_BUILD_TESTING   "Build tests"         ${YSC_MATRIX_IS_TOP_LEVEL})
+  option(YSC_MATRIX_BUILD_DOCUMENTATION "Build Doxygen doc" ${YSC_MATRIX_IS_TOP_LEVEL})
+  option(YSC_MATRIX_BUILD_EXAMPLES  "Build examples"      OFF)
+  ```
+- Générer et installer `ysc-matrixConfig.cmake` + `ysc-matrixConfigVersion.cmake` via `CMakePackageConfigHelpers`
+- `install(TARGETS ysc-matrix EXPORT ysc-matrixTargets)` + `install(FILES ...)` pour les 3 headers (`matrix.hpp`, `matrix_view.hpp`, `matrix_detail.hpp`) dans `include/ysc/`
+- Documenter dans README : `find_package(ysc-matrix CONFIG REQUIRED)` + `target_link_libraries(my_target PRIVATE ysc::matrix)`
+
+### Critères d'acceptation
+- [ ] `target_link_libraries(my_target PRIVATE ysc::matrix)` fonctionne via `FetchContent`
+- [ ] `cmake --install build && find_package(ysc-matrix CONFIG REQUIRED)` fonctionne
+- [ ] `find_package(ysc-matrix 0.7 CONFIG REQUIRED)` vérifie la contrainte de version
+- [ ] Quand consommé via `FetchContent`, les tests/docs de ysc::matrix ne se déclenchent PAS dans le projet hôte
+- [ ] README mis à jour avec les deux méthodes d'intégration
+
+---
+
+## US-046 — Correctifs documentaires et `.gitignore`
+
+**Priorité :** P0 — **Dépend de :** rien — **Épopée :** I
+
+### Story
+En tant que contributeur, je veux que la documentation de release et le `.gitignore` soient cohérents avec l'état réel du repo.
+
+### Spécification technique
+- `CONTRIBUTING.md` : remplacer `./release.sh prepare M.m.p` par `./.github/github-release.sh prepare M.m.p` (et `finalize`)
+- `.gitignore` : remplacer `/build` par `/build*/`
+- `doc/Doxyfile.in` : supprimer ou corriger `EXAMPLE_PATH = @PROJECT_SOURCE_DIR@/doc/sample` (répertoire inexistant → avertissement Doxygen)
+
+### Critères d'acceptation
+- [ ] `./.github/github-release.sh prepare X.Y.Z` est la commande documentée dans `CONTRIBUTING.md`
+- [ ] `build-cov/` et autres `build*/` n'apparaissent plus en untracked dans `git status`
+- [ ] `cmake --build build --target doc` ne produit aucun avertissement sur `EXAMPLE_PATH`
+
+---
+
+## US-047 — README et `mainpage.md` : positionnement marketing v1
+
+**Priorité :** P0 — **Dépend de :** US-045 — **Bloque :** US-042 — **Épopée :** I
+
+### Story
+En tant que développeur C++ qui découvre le projet sur GitHub, je veux comprendre en moins de 30 secondes si `ysc::matrix` est fait pour moi.
+
+### Spécification technique
+
+**Tagline retenue :** *"The N-dimensional `std::array` you've been waiting for."*
+**Sous-titre :** *"Header-only C++20. Fixed-size. Zero overhead. STL-native."*
+
+**Structure cible du README :**
+1. Titre + tagline + badges (CI, codecov, docs, License: LGPL-3.0, C++20)
+2. Hero 3 bullets :
+   - **Truly zero-overhead** — `sizeof(matrix<T, D...>) == sizeof(T) × (D₁ × … × Dₙ)`
+   - **`constexpr` everywhere** — dimensions, factories, `transpose`, `matmul`, `dot`
+   - **STL-native, batteries included** — iterators, ranges, `format`, `hash`, `<=>`, arithmetic, slicing, linear algebra
+3. « At a glance » — bloc de code ~15 lignes (construction, `slice`, `matmul`, `format`)
+4. « Why `ysc::matrix`? » — tableau comparatif : `std::array<std::array<>>` × `std::mdspan` × `Eigen::Matrix`
+5. « Choose `ysc::matrix` if… / Look elsewhere if… »
+6. Installation — `FetchContent` + `find_package` (US-045)
+7. Pitfalls (init non-zero pour types triviaux, `*` = Hadamard ≠ `matmul`, durée de vie des vues, comparaison inter-dimensions = compile-error)
+8. API overview — lien vers doc Doxygen + lien `examples/`
+9. License (badge SPDX + section)
+
+**`mainpage.md` :**
+- Même tagline, hero, bloc "At a glance"
+- Groupes Doxygen organisés par cas d'usage (cf. US-043)
+- Lien proéminent vers Cookbook (US-050) et `examples/`
+- Section « Non-goals » : broadcasting, SIMD/blocking, dimensions dynamiques, constructeur depuis `initializer_list` runtime
+
+### Critères d'acceptation
+- [ ] README contient tagline, hero 3 bullets, tableau comparatif 4 colonnes, sections Choose/Look-elsewhere, Pitfalls (≥ 4 items), badge licence SPDX
+- [ ] `mainpage.md` utilise la même tagline et hero
+- [ ] Tous les snippets du README compilent (vérifiés manuellement ou via job CI)
+- [ ] `doc` CI verte (US-043 `WARN_AS_ERROR = YES`)
+
+---
+
+## US-048 — Job CI « consumer test »
+
+**Priorité :** P0 — **Dépend de :** US-045 — **Épopée :** I
+
+### Story
+En tant que mainteneur, je veux qu'un job CI vérifie automatiquement qu'un projet externe peut consommer `ysc::matrix` via `FetchContent`.
+
+### Spécification technique
+- Nouveau job `consumer-test` dans `.github/workflows/ci.yml`
+- Crée un dossier temporaire `consumer_test/` avec un `CMakeLists.txt` minimal
+- `FetchContent_Declare` la lib via le SHA du commit courant (`github.sha`)
+- Cible `consumer` : programme incluant `<matrix.hpp>`, construisant `matrix<int,2,3>`, accédant à `m(0,0)`
+- `cmake configure + build + ctest` sur Ubuntu/GCC uniquement
+- Dossier `consumer_test/` ajouté à `.gitignore`
+
+### Critères d'acceptation
+- [ ] Job `consumer-test` vert sur `develop`
+- [ ] Le job échoue si l'alias `ysc::matrix` est absent ou mal configuré
+- [ ] Le job échoue si `cxx_std_20` n'est pas propagé et que le consumer utilise des concepts C++20
+
+---
+
+## US-049 — Amalgamation auto-générée par la CI
+
+**Priorité :** P0 — **Dépend de :** US-007 — **Bloque :** US-042 — **Épopée :** I
+
+### Story
+En tant qu'utilisateur qui veut une intégration minimale, je veux pouvoir télécharger un seul fichier header `matrix-amalgamated.hpp` depuis la release GitHub.
+
+### Spécification technique
+- Script `utils/amalgamate.py` versionné dans le repo :
+  - Concatène `matrix_detail.hpp` + `matrix_view.hpp` + `matrix.hpp` (dans cet ordre)
+  - Supprime les `#include` internes (`#include <matrix_detail.hpp>`, `#include <matrix_view.hpp>`)
+  - Conserve tous les `#include` système (`<algorithm>`, `<array>`, etc.)
+  - Encadre chaque section d'un commentaire balise (`// === BEGIN matrix_detail.hpp ===`)
+- Résultat : `matrix-amalgamated.hpp` — drop-in, `#include <matrix-amalgamated.hpp>` suffit
+- Le workflow `release.yml` invoque `python3 utils/amalgamate.py -o matrix-amalgamated.hpp` et joint le fichier comme asset de release
+- L'ancien `matrix.hpp.gz` (incomplet, ne contient pas les 3 headers) est remplacé dans les assets
+- **Aucun** fichier amalgamé checké dans le repo (ajouté à `.gitignore`)
+
+### Critères d'acceptation
+- [ ] `python3 utils/amalgamate.py` produit un fichier `matrix-amalgamated.hpp`
+- [ ] `g++ -std=c++20 -x c++ matrix-amalgamated.hpp /dev/null` compile sans erreur
+- [ ] Job CI `release` joint `matrix-amalgamated.hpp` en asset de release
+- [ ] L'ancien `matrix.hpp.gz` incomplet est remplacé ou supprimé des assets
 
 ---
 
@@ -1105,3 +1317,492 @@ auto m2 = ysc::matrix(v);          // matrix<int, 3>, copie owning
 - [x] Surcharge `strided` testée (copie de `m.col(j)`).
 - [x] Constructeur Doxygen-documenté (`@brief`, `@tparam`, `@param`, `@code`…`@endcode`, `@ingroup`).
 - [x] Build et tests verts, pas de warning clang-format ni clang-tidy.
+
+---
+
+# EPIC J — Ergonomie & finition
+
+## US-039 — Suite de benchmarks (Google Benchmark)
+
+**Priorité :** P1 — **Dépend de :** US-026, US-031, US-033 — **Épopée :** J *(déplacée de EPIC I)*
+
+### Spécification
+- Nouveau dossier `bench/`
+- Dépendance via `FetchContent` : `google/benchmark`
+- Benchmarks :
+  - Construction (zeros vs default)
+  - Element access (operator() vs at)
+  - Iteration (range-for vs index)
+  - Arithmétique (m+m, m*m hadamard, matmul)
+  - Comparaison vs `std::array` brut
+- Job CI optionnel `benchmark` (déclenché manuellement via `workflow_dispatch`)
+- Résultats archivés en artefact
+
+### Critères d'acceptation
+- [ ] `cmake --build build --target bench && ./build/bench/matrix-bench` fonctionne
+- [ ] Pas de régression vs `std::array` brut sur opérations équivalentes (overhead < 5 %)
+
+---
+
+## US-050 — Cookbook Doxygen
+
+**Priorité :** P1 — **Dépend de :** US-043 — **Épopée :** J
+
+### Story
+En tant qu'utilisateur, je veux trouver des recettes pratiques pour les opérations courantes sans avoir à lire l'API complète.
+
+### Spécification technique
+- Nouveau fichier `doc/cookbook.md` déclaré comme page Doxygen (`\page cookbook Cookbook`)
+- Recettes minimum :
+  - « Iterating over rows and columns »
+  - « Filling and transforming a matrix »
+  - « Comparing matrices element-wise vs lexicographic »
+  - « Working with views: contiguous vs strided »
+  - « Interop with `std::ranges`, `std::format`, `std::hash` »
+  - « Solving Ax=b with dot, transpose, matmul »
+- `doc/Doxyfile.in` : activer `GENERATE_TREEVIEW = YES` et `USE_MATHJAX = YES`
+- Lien proéminent vers le Cookbook depuis `mainpage.md` et `README.md`
+
+### Critères d'acceptation
+- [ ] `cmake --build build --target doc` inclut la page Cookbook
+- [ ] Chaque recette contient un exemple de code compilable (vérifié manuellement)
+- [ ] Le Cookbook est accessible en 1 clic depuis la `@mainpage`
+- [ ] `GENERATE_TREEVIEW = YES` et `USE_MATHJAX = YES` actifs dans `Doxyfile.in`
+
+---
+
+## US-051 — `matrix_view` : itérateurs strided, `front`/`back`/`fill`
+
+**Priorité :** P1 — **Dépend de :** US-036 — **Bloque :** US-052, US-058 — **Épopée :** J
+
+### Story
+En tant qu'utilisateur, je veux itérer sur une `matrix_view<T, strided, N>` avec les algorithmes STL (`std::ranges`, `std::accumulate`) et accéder à `front()`/`back()`.
+
+### Spécification technique
+- Spécialisation `matrix_view<T, strided, N>` (1D) :
+  - Ajouter un `strided_iterator` (random-access, pas contiguous) : `operator*`, `operator++`, `operator--`, `operator+(n)`, `operator-(n)`, `operator-(it)`
+  - Membres : `begin()`, `end()`, `cbegin()`, `cend()`, `size()`, `front()`, `back()`, `fill(value)`
+- Pour vues strided N-D (N > 1) : rendre `front()` et `back()` disponibles (`(*this)(0,...,0)` et `(*this)(last,...,last)`)
+- `fill()` sur strided : boucle sur indices, pas d'accès linéaire au buffer
+
+### Critères d'acceptation
+- [ ] `for (auto& v : col_view)` compile et fonctionne pour `col_view` issu de `m.col(j)`
+- [ ] `std::accumulate(v.begin(), v.end(), 0)` fonctionne sur une vue 1D strided
+- [ ] `std::ranges::sort(v)` compile (random-access iterator)
+- [ ] `v.fill(42)` fonctionne sur une vue strided
+- [ ] `v.front()` et `v.back()` disponibles sur toute vue strided
+
+---
+
+## US-052 — `matrix_view` : I/O, ctor const, vues composables
+
+**Priorité :** P1 — **Dépend de :** US-051 — **Épopée :** J
+
+### Story
+En tant qu'utilisateur, je veux afficher une `matrix_view`, créer une vue read-only depuis une `const matrix&`, et chaîner des appels de slicing sur une vue.
+
+### Spécification technique
+- `operator<<` pour `matrix_view<T, contiguous, ...>` (délègue au helper `detail::print_recursive`)
+- `std::formatter` pour `matrix_view<T, contiguous, ...>` (avec guard `__cpp_lib_format`)
+- Ctor `matrix_view<const T, contiguous, ...>(const matrix<T, ...>&)` — conversion **explicite**, permet de créer une vue read-only depuis une `const matrix&`
+- Alias : `template<class T, std::size_t... D> using const_matrix_view = matrix_view<const T, contiguous, D...>`
+- `slice()`, `row()`, `col()` ajoutés sur `matrix_view<T, contiguous, ...>` (composabilité)
+
+### Critères d'acceptation
+- [ ] `std::cout << m.row(0)` compile et affiche la vue
+- [ ] `std::format("{}", m.row(0))` compile (sous guard)
+- [ ] `const matrix<int,3,3> cm{...}; const_matrix_view<int,3,3> v{cm};` compile
+- [ ] `v.slice(1)` sur une `matrix_view<T, contiguous, ...>` retourne une nouvelle vue
+- [ ] `const_matrix_view<int,3>` est un alias valide
+
+---
+
+## US-053 — Constructeurs additionnels : `std::array`, `std::span`, générateur
+
+**Priorité :** P1 — **Dépend de :** US-021 — **Épopée :** J
+
+### Story
+En tant qu'utilisateur, je veux construire une matrice depuis un buffer existant (`std::array`, `std::span`) ou une fonction génératrice.
+
+### Spécification technique
+- `explicit matrix(std::array<T, linear_size> data)` — copie depuis `std::array`
+- `explicit matrix(std::span<const T, linear_size> data)` — copie depuis span (C++20)
+- Factory libre :
+  ```cpp
+  template<class T, std::size_t... D, std::invocable<std::size_t> F>
+  constexpr matrix<std::invoke_result_t<F, std::size_t>, D...>
+  generate(F f);  // f(linear_index) appelé pour chaque élément
+  ```
+- Variante multi-index (ordre des arguments = ordre des dimensions) :
+  ```cpp
+  template<class T, std::size_t... D, class F>
+    requires std::invocable<F, decltype((void(D), std::size_t{}))...>
+  constexpr matrix<std::invoke_result_t<F, ...>, D...>
+  generate(F f);  // f(i0, i1, ...) pour matrice N-D
+  ```
+
+### Critères d'acceptation
+- [ ] `matrix<int,3> m(std::array<int,3>{1,2,3})` compile et fonctionne
+- [ ] `matrix<int,3> m(std::span<const int,3>{buf, 3})` compile
+- [ ] `auto m = ysc::generate<int,3,3>([](std::size_t i, std::size_t j){ return int(i+j); })` compile
+- [ ] Tests dans `test/src/construct_from_buffer.cpp`
+
+---
+
+## US-054 — `matrix::rows()` / `cols()` + `matmul` vecteur 1D
+
+**Priorité :** P1 — **Dépend de :** US-036, US-033, US-051 — **Épopée :** J
+
+### Story
+En tant qu'utilisateur, je veux itérer sur les lignes et colonnes d'une matrice 2D comme sur un range, et multiplier une matrice 2D par un vecteur 1D.
+
+### Spécification technique
+- `m.rows()` (contrainte `order == 2`) : retourne un `std::ranges::view` de `matrix_view<T, contiguous, C>` (une vue par ligne)
+- `m.cols()` (contrainte `order == 2`) : retourne un `std::ranges::view` de `matrix_view<T, strided, R>` (une vue par colonne)
+- Surcharge `matmul` pour vecteur 1D :
+  ```cpp
+  template<class T, std::size_t M, std::size_t N>
+  constexpr matrix<T, M> matmul(const matrix<T, M, N>& mat, const matrix<T, N>& vec);
+  ```
+
+### Critères d'acceptation
+- [ ] `for (auto row_view : m.rows())` compile sur une `matrix<T, R, C>` (2D)
+- [ ] `for (auto col_view : m.cols())` compile sur une `matrix<T, R, C>` (2D)
+- [ ] `m.rows()` et `m.cols()` refusés à la compilation pour `order ≠ 2`
+- [ ] `matmul(matrix<int,2,3>{...}, matrix<int,3>{...})` retourne `matrix<int,2>`
+- [ ] Tests dans `test/src/rows_cols.cpp` et tests additionnels dans `test/src/matmul.cpp`
+
+---
+
+## US-055 — `CHANGELOG.md` versionné
+
+**Priorité :** P1 — **Dépend de :** US-007 — **Épopée :** J
+
+### Story
+En tant qu'utilisateur arrivant sur le repo GitHub, je veux voir l'historique des changements directement dans le dépôt sans aller sur la page Releases.
+
+### Spécification technique
+- `CHANGELOG.md` initialisé à la racine avec toutes les releases existantes (générées via `git-cliff --config cliff.toml`)
+- Format : sections `## [v0.x.0] - YYYY-MM-DD` avec sous-sections feat / fix / chore
+- Le workflow `release.yml` met à jour `CHANGELOG.md` après chaque release et commit sur `develop` :
+  ```yaml
+  - name: Update CHANGELOG
+    run: |
+      git-cliff --config cliff.toml --output CHANGELOG.md
+      git add CHANGELOG.md
+      git commit -m "chore(release): update CHANGELOG for ${{ github.ref_name }}"
+      git push origin develop
+  ```
+
+### Critères d'acceptation
+- [ ] `CHANGELOG.md` présent à la racine du repo, lisible via GitHub
+- [ ] Contient les releases v0.1.0 à v0.6.0 au minimum
+- [ ] Workflow `release.yml` met à jour et commit `CHANGELOG.md` à chaque nouvelle release
+
+---
+
+## US-056 — Messages d'exception détaillés dans `at()`
+
+**Priorité :** P1 — **Dépend de :** rien — **Épopée :** J
+
+### Story
+En tant que développeur qui débogue, je veux que `matrix::at()` et `matrix_view::at()` indiquent la coordonnée fautive et la taille de la dimension dans le message d'exception.
+
+### Spécification technique
+- `matrix::at()` (`matrix.hpp`, deux surcharges) : message format `"matrix::at: coordinate N is out of bounds for dimension K (size=S)"`
+- `matrix_view::at()` (`matrix_view.hpp`, deux surcharges) : même format `"matrix_view::at: coordinate N is out of bounds for dimension K (size=S)"`
+- Construction du message : `std::to_string` (ou `std::format` avec guard)
+- Impact performance nul (uniquement sur le chemin exception)
+
+### Critères d'acceptation
+- [ ] `try { m.at(99); } catch (const std::out_of_range& e) { ... }` — `e.what()` contient `"99"` et la taille de la dimension
+- [ ] Format du message documenté dans `@throws` Doxygen
+- [ ] Tests dans `test/src/access.cpp`
+
+---
+
+## US-057 — Centraliser les `NOLINTNEXTLINE` dans `matrix.hpp`
+
+**Priorité :** P1 — **Dépend de :** rien — **Épopée :** J
+
+### Story
+En tant que mainteneur, je veux réduire le bruit visuel des ~19 suppressions clang-tidy dans `matrix.hpp`.
+
+### Spécification technique
+
+Deux options (choisir celle qui minimise le diff) :
+
+**Option A :** désactiver `cppcoreguidelines-pro-bounds-pointer-arithmetic` et `cppcoreguidelines-pro-bounds-constant-array-index` dans `.clang-tidy` sous `src/include/` avec justification commentée.
+
+**Option B :** centraliser les calculs d'index dans des helpers `detail::` (déjà partiellement fait avec `coordinates_to_index`, `index_to_coordinates`) et mettre un seul `NOLINTNEXTLINE` par helper.
+
+Résultat attendu : `grep -c NOLINT src/include/matrix.hpp` ≤ 5 (au lieu de ~19).
+
+### Critères d'acceptation
+- [ ] `grep -c NOLINT src/include/matrix.hpp` retourne ≤ 5
+- [ ] Aucune suppression orpheline (toutes justifiées par un commentaire)
+- [ ] CI clang-tidy reste verte
+
+---
+
+## US-058 — Optimiser `matrix(matrix_view<strided>)`
+
+**Priorité :** P1 — **Dépend de :** US-044, US-051 — **Épopée :** J
+
+### Story
+En tant que mainteneur, je veux que le constructeur `matrix(matrix_view<strided>)` itère en O(N) plutôt que de recalculer les coordonnées via `index_to_coordinates` pour chaque élément.
+
+### Spécification technique
+- Remplacer la boucle `for i in [0, linear_size) → index_to_coordinates(i) → std::apply → operator()` par `std::copy(v.begin(), v.end(), _data.begin())` en utilisant les itérateurs strided de US-051
+- Le constructeur `contiguous` reste inchangé (déjà optimal via `std::copy`)
+
+### Critères d'acceptation
+- [ ] Le ctor strided utilise les itérateurs (pas de `index_to_coordinates` en boucle)
+- [ ] Tests existants `test/src/matrix_from_view.cpp` restent verts
+- [ ] `constexpr` préservé si les itérateurs strided sont `constexpr`
+
+---
+
+## US-059 — `operator-()` `constexpr` + hash combine 64-bit
+
+**Priorité :** P1 — **Dépend de :** rien — **Épopée :** J
+
+### Story
+En tant qu'utilisateur, je veux que l'opérateur unaire `-` soit `constexpr` et que la fonction de hash ait une bonne distribution sur les plateformes 64-bit.
+
+### Spécification technique
+
+**`operator-()` unaire :**
+```cpp
+[[nodiscard]] constexpr matrix operator-() const
+    noexcept(noexcept(-std::declval<T const&>())) {
+    return map([](const T& v) { return -v; });
+}
+```
+(Actuellement sans `constexpr` ni `noexcept` conditionnel — `matrix.hpp:858-864`)
+
+**Hash combine 64-bit :**
+Remplacer dans `std::hash<ysc::matrix<T,D...>>::operator()` :
+```cpp
+// Avant (seed 32-bit, distribution sub-optimale sur 64-bit) :
+h ^= hasher(v) + 0x9e3779b9 + (h << 6) + (h >> 2);
+// Après (constante de Knuth 64-bit, Boost 1.81+) :
+h ^= hasher(v) + 0x9E3779B97F4A7C15ULL + (h << 12) + (h >> 4);
+```
+
+### Critères d'acceptation
+- [ ] `static_assert((-matrix<int,2>{1,-1})(0) == -1)` passe (constexpr)
+- [ ] `static_assert((-matrix<int,2>{1,-1})(1) == 1)` passe
+- [ ] Tests existants `test/src/hash.cpp` restent verts
+- [ ] `noexcept` de `operator-()` se propage correctement (testé avec un type dont `operator-` est noexcept)
+
+---
+
+# EPIC K — Extensions post-v1
+
+## US-060 — Réductions par axe (`sum<Axis>()`, etc.)
+
+**Priorité :** P2 — **Dépend de :** US-031 — **Épopée :** K
+
+### Story
+En tant qu'utilisateur, je veux calculer la somme, le min, le max d'une matrice selon un axe donné, en obtenant une matrice de dimension inférieure.
+
+### Spécification technique
+- `template<std::size_t Axis> constexpr auto sum() const -> matrix<T, /* dims sans Axis */>`
+- Idem pour `min<Axis>()` et `max<Axis>()`
+- Implémentation : métaprogrammation pour déduire les dimensions résultantes (supprimer la dimension `Axis` du pack `Dims...`)
+- Contrainte : `static_assert(Axis < order)`
+
+### Critères d'acceptation
+- [ ] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<0>()` == `matrix<int,3>{5,7,9}` (somme par colonnes)
+- [ ] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<1>()` == `matrix<int,2>{6,15}` (somme par lignes)
+- [ ] Erreur de compilation si `Axis >= order`
+- [ ] Tests dans `test/src/reductions_axis.cpp`
+
+---
+
+## US-061 — `submatrix` : extraction d'un sous-bloc N-D
+
+**Priorité :** P2 — **Dépend de :** US-036 — **Épopée :** K
+
+### Story
+En tant qu'utilisateur travaillant sur du traitement d'image ou des noyaux de convolution, je veux extraire un sous-bloc d'une matrice N-D.
+
+### Spécification technique
+```cpp
+template<std::size_t... NewD>
+matrix_view<T, strided, NewD...>
+submatrix(std::array<std::size_t, order> origin) const;
+```
+- Contrainte compile-time : `sizeof...(NewD) == order`
+- Vérification runtime : `origin[i] + NewD[i] <= Dims[i]` pour chaque `i`, sinon `std::out_of_range`
+- Retourne une vue strided (strides calculés sur la matrice source)
+
+### Critères d'acceptation
+- [ ] `m.submatrix<2,2>({1,1})` sur une `matrix<int,4,4>` retourne une vue 2×2 correcte
+- [ ] Mutation via la vue se reflète dans la matrice source
+- [ ] `m.submatrix<3,3>({2,2})` sur une `matrix<int,4,4>` lève `std::out_of_range`
+- [ ] Tests dans `test/src/submatrix.cpp`
+
+---
+
+## US-062 — `enumerate()` : itérateur de coordonnées
+
+**Priorité :** P2 — **Dépend de :** US-016 — **Épopée :** K
+
+### Story
+En tant qu'utilisateur, je veux itérer sur les éléments d'une matrice avec leurs coordonnées multi-dimensionnelles (façon `np.ndenumerate`).
+
+### Spécification technique
+- `m.enumerate()` : retourne un range de `std::pair<std::array<std::size_t, order>, T&>`
+- Parcours row-major (cohérent avec l'itérateur linéaire)
+- Implémentation : adaptateur sur l'itérateur linéaire, conversion `linear_index → coordinates` via `detail::index_to_coordinates`
+
+### Critères d'acceptation
+- [ ] `for (auto& [coords, val] : m.enumerate())` compile
+- [ ] `coords` est un `std::array<std::size_t, order>` correct pour chaque élément
+- [ ] Mutation via `val` se reflète dans `m`
+- [ ] Tests dans `test/src/enumerate.cpp`
+
+---
+
+## US-063 — Opérateurs bit-à-bit pour types entiers
+
+**Priorité :** P2 — **Dépend de :** US-026 — **Épopée :** K
+
+### Story
+En tant qu'utilisateur travaillant sur des masques binaires (image, cryptographie), je veux appliquer des opérateurs bit-à-bit sur des `matrix<unsigned, ...>`.
+
+### Spécification technique
+- Opérateurs membres : `operator&=`, `operator|=`, `operator^=`
+- Opérateurs scalaires : `operator<<=`, `operator>>=` (shift par un entier)
+- Opérateur unaire : `operator~` (NOT bit-à-bit)
+- Opérateurs binaires friends : `operator&`, `operator|`, `operator^`
+- Contrainte : `requires std::integral<T>` sur chaque opérateur
+- Implémentation : `std::transform` comme pour les opérateurs arithmétiques
+
+### Critères d'acceptation
+- [ ] `matrix<unsigned,3>{1,2,3} & matrix<unsigned,3>{3,3,3}` compile et retourne `{1,2,3}`
+- [ ] `~matrix<unsigned,3>{0,0,0}` retourne matrice de `~0u`
+- [ ] Erreur de compilation pour `matrix<double,3>` (non-integral)
+- [ ] Tests dans `test/src/arithmetic_bitwise.cpp`
+
+---
+
+## US-064 — Test ASan : détection de vue dangling
+
+**Priorité :** P2 — **Dépend de :** US-035, US-003 — **Épopée :** K
+
+### Story
+En tant que mainteneur, je veux qu'un test sous ASan détecte une utilisation de `matrix_view` après destruction de la matrice source, pour valider le comportement attendu (UB → crash sous sanitizer).
+
+### Spécification technique
+- Fichier `test/src/matrix_view_lifetime.cpp`, compilé uniquement si `YSC_SANITIZERS_ENABLED`
+- Scénario : construire une `matrix_view` sur une matrice locale dans une sous-scope, laisser la matrice être détruite, accéder à la vue → use-after-free détecté par ASan
+- Le test est **intentionnellement un crash** sous ASan (use-after-free). Il doit être exclu du run normal et inclus dans un test dédié sous sanitizers
+- Utiliser `GTEST_SKIP()` si `!defined(YSC_SANITIZERS_ENABLED)` pour ne pas bloquer le build normal
+
+### Critères d'acceptation
+- [ ] Le fichier compile avec `ENABLE_SANITIZERS=ON`
+- [ ] Le test est skippé sans `ENABLE_SANITIZERS`
+- [ ] Le comportement UB est documenté dans la docstring Doxygen de `matrix_view`
+
+---
+
+## US-065 — Tests de référence linalg (valeurs pré-calculées)
+
+**Priorité :** P2 — **Dépend de :** US-033, US-034 — **Épopée :** K
+
+### Story
+En tant que mainteneur, je veux quelques tests de sanité qui comparent les résultats numériques de `matmul` et `dot` à des valeurs de référence.
+
+### Spécification technique
+- Nouveau fichier `test/src/linalg_reference.cpp`
+- Valeurs de référence hard-codées (calculées avec Numpy ou à la main, pas de dépendance runtime)
+- Matrices de test :
+  - `matmul` : 2×2, 2×3×3×2, matrice identité × matrice quelconque
+  - `dot` : 3 paires de vecteurs 1D
+  - `transpose` : 2×3 → vérification symétrie
+- Pas de dépendance externe (Numpy, Eigen) dans les tests
+
+### Critères d'acceptation
+- [ ] `matmul(A, B) == expected_AB` pour ≥ 3 paires de matrices
+- [ ] `dot(a, b) == expected` pour ≥ 3 paires de vecteurs
+- [ ] `transpose(transpose(m)) == m` pour ≥ 2 matrices
+- [ ] Tous les résultats vérifiés via `static_assert` quand `constexpr`
+
+---
+
+## US-066 — CI Windows : cache vcpkg
+
+**Priorité :** P2 — **Dépend de :** US-001 — **Épopée :** K
+
+### Story
+En tant que mainteneur, je veux que la CI Windows ne retélécharge pas `vcpkg`/`gtest` à chaque run pour accélérer les builds.
+
+### Spécification technique
+- Ajouter `actions/cache@v4` sur `vcpkg_installed/` (ou le dossier d'install vcpkg) dans le job Windows
+- Key : hash du fichier de manifest vcpkg ou de la commande `vcpkg install gtest:x64-windows`
+- Restore-keys : fallback sur un cache partiel
+
+### Critères d'acceptation
+- [ ] Second run CI Windows avec code identique : step `vcpkg install` skippé (cache hit affiché)
+- [ ] Temps CI Windows réduit d'au moins 30 secondes sur cache chaud
+
+---
+
+## US-067 — Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot
+
+**Priorité :** P2 — **Dépend de :** rien — **Épopée :** K
+
+### Story
+En tant que contributeur externe, je veux que le projet respecte les conventions OSS standards et facilite la contribution.
+
+### Spécification technique
+- `.editorconfig` à la racine :
+  - `indent_style = space`, `indent_size = 4` pour C++ et CMake
+  - `indent_size = 2` pour YAML, JSON, Markdown
+  - `end_of_line = lf`, `charset = utf-8`, `trim_trailing_whitespace = true`, `insert_final_newline = true`
+  - Cohérent avec `.clang-format`
+- `SECURITY.md` : instructions pour reporter des vulnérabilités via GitHub Issue (surface réduite : lib sans I/O, header-only)
+- `CODE_OF_CONDUCT.md` : Contributor Covenant v2.1 (texte standard, adapté au nom du projet)
+- `.github/dependabot.yml` :
+  ```yaml
+  version: 2
+  updates:
+    - package-ecosystem: "github-actions"
+      directory: "/"
+      schedule:
+        interval: "monthly"
+  ```
+
+### Critères d'acceptation
+- [ ] `.editorconfig` présent et cohérent avec `.clang-format` (même indent_size)
+- [ ] `SECURITY.md` présent avec instructions claires
+- [ ] `CODE_OF_CONDUCT.md` présent (Contributor Covenant v2.1)
+- [ ] `.github/dependabot.yml` présent avec config `github-actions`
+
+---
+
+## US-068 — Migration guide : promesse de stabilité SemVer v1.0.0
+
+**Priorité :** P2 — **Dépend de :** US-042 — **Épopée :** K
+
+### Story
+En tant qu'utilisateur adoptant la lib depuis une version v0.x, je veux comprendre les garanties de stabilité et les changements breaking introduits en v1.0.0.
+
+### Spécification technique
+- Nouveau fichier `doc/migration.md`
+- Contenu :
+  - **Promesse SemVer depuis v1.0.0** : API publique = tout hors `ysc::detail::`. `ysc::detail::` peut changer en patch.
+  - **Changements breaking depuis v0.x :**
+    - Renommage cible CMake `matrix` → `ysc-matrix`, alias `ysc::matrix` (US-045)
+    - Changement de valeur de hash (US-059) : les `std::unordered_set<matrix<...>>` sérialisés avant v1.0.0 sont invalidés
+  - **Instructions de migration** pour chaque changement (avant/après)
+- Lien depuis `README.md` section Installation et depuis `mainpage.md`
+
+### Critères d'acceptation
+- [ ] `doc/migration.md` présent et lisible depuis le repo GitHub
+- [ ] Tous les changements breaking v0.x → v1.0.0 listés avec instructions
+- [ ] La promesse SemVer (API publique vs `ysc::detail::`) est explicitement documentée
+- [ ] Lien vers `doc/migration.md` depuis `README.md` et `mainpage.md`
