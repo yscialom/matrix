@@ -21,6 +21,7 @@ add_executable(${TARGET_NAME}
     src/comparison.cpp
     src/concepts.cpp
     src/construct.cpp
+    src/construct_from_buffer.cpp
     src/factories.cpp
     src/fill.cpp
     src/formatter.cpp

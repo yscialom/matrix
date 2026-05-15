@@ -13,10 +13,10 @@
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | ⬜ Non démarrée | 0/10 | ⬜ US-038, US-040 à US-043, US-045 à US-049 |
-| **J — Ergonomie & finition** | ⬜ Non démarrée | 0/11 | ⬜ US-039, US-050 à US-059 |
+| **J — Ergonomie & finition** | 🔄 En cours | 1/11 | ✅ US-053, ⬜ US-039, US-050 à US-052, US-054 à US-059 |
 | **K — Extensions post-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
 
-**Total : 38 / 68 US**
+**Total : 39 / 68 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -53,7 +53,7 @@
 | US-050 | Cookbook Doxygen | P1 | ⬜ À faire |
 | US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ⬜ À faire |
 | US-052 | `matrix_view` : I/O, ctor const, vues composables | P1 | ⬜ À faire |
-| US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ⬜ À faire |
+| US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ✅ Done |
 | US-054 | `matrix::rows()` / `cols()` + `matmul` vecteur 1D | P1 | ⬜ À faire |
 | US-055 | `CHANGELOG.md` versionné | P1 | ⬜ À faire |
 | US-056 | Messages d'exception détaillés dans `at()` | P1 | ⬜ À faire |
