@@ -13,7 +13,7 @@
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | ⬜ Non démarrée | 0/10 | ⬜ US-038, US-040 à US-043, US-045 à US-049 |
-| **J — Ergonomie & finition** | 🔄 En cours | 2/11 | ✅ US-055 à ✅ US-057, ⬜ US-039, US-050 à US-054, US-059 |
+| **J — Ergonomie & finition** | 🔄 En cours | 3/11 | ✅ US-055 à ✅ US-057, ✅ US-039, US-050 à US-054, US-059 |
 
 **Total : 39 / 68 US**
 
@@ -48,7 +48,7 @@
 
 | US | Titre | Priorité | Statut |
 |----|-------|----------|--------|
-| US-039 | Suite de benchmarks (Google Benchmark) | P1 | ⬜ À faire |
+| US-039 | Suite de benchmarks (Google Benchmark) | P1 | ✅ Done |
 | US-050 | Cookbook Doxygen | P1 | ⬜ À faire |
 | US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ⬜ À faire |
 | US-052 | `matrix_view` : I/O, ctor const, vues composables | P1 | ⬜ À faire |
