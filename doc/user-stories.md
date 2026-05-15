@@ -13,7 +13,7 @@
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | ⬜ Non démarrée | 0/10 | ⬜ US-038, US-040 à US-043, US-045 à US-049 |
-| **J — Ergonomie & finition** | ⬜ Non démarrée | 0/11 | ⬜ US-039, US-050 à US-059 |
+| **J — Ergonomie & finition** | 🔄 En cours | 1/11 | ✅ US-059, ⬜ US-039, US-050 à US-058 |
 | **K — Extensions post-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
 
 **Total : 38 / 68 US**
@@ -59,7 +59,7 @@
 | US-056 | Messages d'exception détaillés dans `at()` | P1 | ⬜ À faire |
 | US-057 | Centraliser `NOLINTNEXTLINE` dans `matrix.hpp` | P1 | ⬜ À faire |
 | US-058 | Optimiser `matrix(matrix_view<strided>)` | P1 | ⬜ À faire |
-| US-059 | `operator-()` `constexpr` + hash combine 64-bit | P1 | ⬜ À faire |
+| US-059 | `operator-()` `constexpr` + hash combine 64-bit | P1 | ✅ Done |
 
 ## EPIC K — Extensions post-v1
 
