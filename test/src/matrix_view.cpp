@@ -252,3 +252,143 @@ TEST(matrix_view_1d, single_coord_access) {
     EXPECT_EQ(v(2), 30);
     EXPECT_EQ(v(4), 50);
 }
+
+// ─── strided iterator (US-051) ────────────────────────────────────────────────
+
+// Verify random_access_iterator concept is satisfied on strided iterator
+static_assert(std::random_access_iterator<ysc::matrix_view<int, ysc::strided, 3>::iterator>);
+static_assert(std::random_access_iterator<ysc::matrix_view<int, ysc::strided, 3>::const_iterator>);
+
+TEST(matrix_view_strided_iterators, range_for_over_column) {
+    ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col = m.col(1); // column 1: m(0,1)=2, m(1,1)=6, m(2,1)=10
+    int sum = 0;
+    for (auto& v : col) {
+        sum += v;
+    }
+    EXPECT_EQ(sum, 2 + 6 + 10);
+}
+
+TEST(matrix_view_strided_iterators, range_for_write_reflects_in_matrix) {
+    ysc::matrix<int, 3, 4> m{};
+    auto col = m.col(2);
+    for (auto& v : col) {
+        v = 7;
+    }
+    EXPECT_EQ(m(0, 2), 7);
+    EXPECT_EQ(m(1, 2), 7);
+    EXPECT_EQ(m(2, 2), 7);
+    // Other columns not touched
+    EXPECT_EQ(m(0, 0), 0);
+    EXPECT_EQ(m(1, 3), 0);
+}
+
+TEST(matrix_view_strided_iterators, accumulate_on_1d_strided_view) {
+    ysc::matrix<int, 4, 3> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col = m.col(0); // column 0: 1, 4, 7, 10
+    const int total = std::accumulate(col.begin(), col.end(), 0);
+    EXPECT_EQ(total, 1 + 4 + 7 + 10);
+}
+
+TEST(matrix_view_strided_iterators, cbegin_cend_const_view) {
+    const ysc::matrix<int, 3, 3> m{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    const auto row = m.row(1); // row 1: 4, 5, 6
+    const int total = std::accumulate(row.cbegin(), row.cend(), 0);
+    EXPECT_EQ(total, 4 + 5 + 6);
+}
+
+TEST(matrix_view_strided_iterators, ranges_sort_on_strided_view) {
+    ysc::matrix<int, 4, 1> m{5, 3, 1, 4};
+    auto col = m.col(0); // strided view: elements m(0,0)..m(3,0)
+    std::ranges::sort(col);
+    EXPECT_EQ(m(0, 0), 1);
+    EXPECT_EQ(m(1, 0), 3);
+    EXPECT_EQ(m(2, 0), 4);
+    EXPECT_EQ(m(3, 0), 5);
+}
+
+TEST(matrix_view_strided_iterators, distance_equals_size) {
+    ysc::matrix<int, 5, 2> m{};
+    auto col = m.col(0);
+    EXPECT_EQ(std::distance(col.begin(), col.end()), static_cast<std::ptrdiff_t>(col.size()));
+}
+
+// ─── strided front() / back() (US-051) ───────────────────────────────────────
+
+TEST(matrix_view_strided_accessors, front_1d_strided) {
+    ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col = m.col(1); // column 1: m(0,1)=2, m(1,1)=6, m(2,1)=10
+    EXPECT_EQ(col.front(), m(0, 1));
+}
+
+TEST(matrix_view_strided_accessors, back_1d_strided) {
+    ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col = m.col(1); // column 1: last element is m(2,1)=10
+    EXPECT_EQ(col.back(), m(2, 1));
+}
+
+TEST(matrix_view_strided_accessors, front_write_reflects) {
+    ysc::matrix<int, 3, 4> m{};
+    auto col = m.col(2);
+    col.front() = 42;
+    EXPECT_EQ(m(0, 2), 42);
+}
+
+TEST(matrix_view_strided_accessors, back_write_reflects) {
+    ysc::matrix<int, 3, 4> m{};
+    auto col = m.col(2);
+    col.back() = 99;
+    EXPECT_EQ(m(2, 2), 99);
+}
+
+TEST(matrix_view_strided_accessors, front_back_2d_strided_view) {
+    ysc::matrix<int, 2, 3, 4> m{};
+    // Set known values
+    m(0, 0, 0) = 1;
+    m(1, 2, 3) = 42;
+    auto sv = m.slice(ysc::all, ysc::all, 0); // 2x3 strided view, fixing last dim at 0
+    EXPECT_EQ(sv.front(), m(0, 0, 0));
+    EXPECT_EQ(sv.back(), m(1, 2, 0));
+}
+
+// ─── strided fill() (US-051) ─────────────────────────────────────────────────
+
+TEST(matrix_view_strided_fill, fill_column_reflects_in_matrix) {
+    ysc::matrix<int, 4, 3> m{};
+    auto col = m.col(1);
+    col.fill(5);
+    // Column 1 is all 5
+    EXPECT_EQ(m(0, 1), 5);
+    EXPECT_EQ(m(1, 1), 5);
+    EXPECT_EQ(m(2, 1), 5);
+    EXPECT_EQ(m(3, 1), 5);
+    // Other columns untouched
+    EXPECT_EQ(m(0, 0), 0);
+    EXPECT_EQ(m(0, 2), 0);
+}
+
+TEST(matrix_view_strided_fill, fill_row_reflects_in_matrix) {
+    ysc::matrix<int, 3, 4> m{};
+    auto row = m.row(2);
+    row.fill(99);
+    EXPECT_EQ(m(2, 0), 99);
+    EXPECT_EQ(m(2, 1), 99);
+    EXPECT_EQ(m(2, 2), 99);
+    EXPECT_EQ(m(2, 3), 99);
+    // Other rows untouched
+    EXPECT_EQ(m(0, 0), 0);
+}
+
+TEST(matrix_view_strided_fill, fill_2d_strided_view) {
+    ysc::matrix<int, 2, 3, 4> m{};
+    auto sv = m.slice(ysc::all, ysc::all, 0); // 2x3 strided view
+    sv.fill(7);
+    EXPECT_EQ(m(0, 0, 0), 7);
+    EXPECT_EQ(m(0, 1, 0), 7);
+    EXPECT_EQ(m(0, 2, 0), 7);
+    EXPECT_EQ(m(1, 0, 0), 7);
+    EXPECT_EQ(m(1, 2, 0), 7);
+    // Dim index != 0 untouched
+    EXPECT_EQ(m(0, 0, 1), 0);
+    EXPECT_EQ(m(1, 1, 3), 0);
+}
