@@ -21,7 +21,6 @@
 #include <string>
 #include <tuple>
 
-
 #include <matrix_detail.hpp>
 
 namespace ysc {
