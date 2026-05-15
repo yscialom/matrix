@@ -18,7 +18,9 @@
 #include <compare>
 #include <iterator>
 #include <stdexcept>
+#include <string>
 #include <tuple>
+
 
 #include <matrix_detail.hpp>
 
@@ -426,7 +428,11 @@ public:
      * @tparam Coords Integral coordinate types
      * @param coords  Coordinates of the element
      * @return Const reference to the element
-     * @throws std::out_of_range if any coordinate is negative or out of bounds
+     * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
+     *         of the form:
+     *         @code
+     *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     *         @endcode
      *
      * @code
      * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
@@ -439,10 +445,18 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...>
     [[nodiscard]] const T& at(Coords... coords) const {
-        const bool any_of_coords_is_negative = ((coords < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coords >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix_view::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coords)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix_view::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coords...);
     }
@@ -453,7 +467,11 @@ public:
      * @tparam Coords Integral coordinate types
      * @param coords  Coordinates of the element
      * @return Mutable reference to the element
-     * @throws std::out_of_range if any coordinate is negative or out of bounds
+     * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
+     *         of the form:
+     *         @code
+     *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     *         @endcode
      *
      * @code
      * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
@@ -467,10 +485,18 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...>
     T& at(Coords... coords) {
-        const bool any_of_coords_is_negative = ((coords < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coords >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix_view::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coords)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix_view::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coords...);
     }
@@ -974,7 +1000,11 @@ public:
      * @tparam Coords Integral coordinate types
      * @param coords  Coordinates of the element
      * @return Const reference to the element
-     * @throws std::out_of_range if any coordinate is negative or out of bounds
+     * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
+     *         of the form:
+     *         @code
+     *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     *         @endcode
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
@@ -987,11 +1017,18 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...> && (sizeof...(Coords) == sizeof...(Dimensions))
     [[nodiscard]] const T& at(Coords... coords) const {
-        const bool any_of_coords_is_negative = ((coords < 0) || ...);
-        const bool any_of_coords_is_out_of_bound =
-            ((static_cast<std::size_t>(coords) >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix_view::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coords)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix_view::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coords...);
     }
@@ -1002,7 +1039,11 @@ public:
      * @tparam Coords Integral coordinate types
      * @param coords  Coordinates of the element
      * @return Mutable reference to the element
-     * @throws std::out_of_range if any coordinate is negative or out of bounds
+     * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
+     *         of the form:
+     *         @code
+     *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     *         @endcode
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
@@ -1016,11 +1057,18 @@ public:
     template <class... Coords>
         requires integral_coordinates<Coords...> && (sizeof...(Coords) == sizeof...(Dimensions))
     [[nodiscard]] T& at(Coords... coords) {
-        const bool any_of_coords_is_negative = ((coords < 0) || ...);
-        const bool any_of_coords_is_out_of_bound =
-            ((static_cast<std::size_t>(coords) >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix_view::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coords)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix_view::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coords...);
     }

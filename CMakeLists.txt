@@ -39,6 +39,15 @@ endif()
 
 
 ##
+# benchmark configuration
+#
+option(BUILD_BENCHMARKS "Build benchmarks" OFF)
+if(BUILD_BENCHMARKS)
+    add_subdirectory(bench)
+endif()
+
+
+##
 # doc generation
 #
 find_package(Doxygen)
