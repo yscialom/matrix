@@ -2,6 +2,7 @@
 #include <matrix.hpp>
 
 #include <gtest/gtest.h>
+#include <string>
 
 //
 // --- ELEMENT ACCESS ---
@@ -134,5 +135,79 @@ TEST(access, mutable_with_check_outofbound) {
             out_of_range_exception_catch = true;
         }
         ASSERT_TRUE(out_of_range_exception_catch);
+    }
+}
+
+// at() exception message contains the offending coordinate value
+TEST(access, at_message_contains_coordinate) {
+    ysc::matrix<int, 3, 4> m{ysc::zero};
+    try {
+        (void)m.at(0, 7);
+        FAIL() << "Expected std::out_of_range";
+    } catch (const std::out_of_range& e) {
+        const std::string what{e.what()};
+        ASSERT_NE(what.find('7'), std::string::npos) << "message: " << what;
+    }
+}
+
+// at() exception message contains the dimension size
+TEST(access, at_message_contains_dimension_size) {
+    ysc::matrix<int, 3, 4> m{ysc::zero};
+    try {
+        (void)m.at(0, 7);
+        FAIL() << "Expected std::out_of_range";
+    } catch (const std::out_of_range& e) {
+        const std::string what{e.what()};
+        ASSERT_NE(what.find('4'), std::string::npos) << "message: " << what;
+    }
+}
+
+// at() const exception message contains the offending coordinate value
+TEST(access, at_const_message_contains_coordinate) {
+    const ysc::matrix<int, 2, 5> m{ysc::zero};
+    try {
+        (void)m.at(9, 0);
+        FAIL() << "Expected std::out_of_range";
+    } catch (const std::out_of_range& e) {
+        const std::string what{e.what()};
+        ASSERT_NE(what.find('9'), std::string::npos) << "message: " << what;
+    }
+}
+
+// at() const exception message contains the dimension size
+TEST(access, at_const_message_contains_dimension_size) {
+    const ysc::matrix<int, 2, 5> m{ysc::zero};
+    try {
+        (void)m.at(9, 0);
+        FAIL() << "Expected std::out_of_range";
+    } catch (const std::out_of_range& e) {
+        const std::string what{e.what()};
+        ASSERT_NE(what.find('2'), std::string::npos) << "message: " << what;
+    }
+}
+
+// matrix_view::at() exception message contains the offending coordinate value
+TEST(access, view_at_message_contains_coordinate) {
+    ysc::matrix<int, 3, 4> m{ysc::zero};
+    ysc::matrix_view<int, ysc::contiguous, 3, 4> v = m;
+    try {
+        (void)v.at(0, 10);
+        FAIL() << "Expected std::out_of_range";
+    } catch (const std::out_of_range& e) {
+        const std::string what{e.what()};
+        ASSERT_NE(what.find("10"), std::string::npos) << "message: " << what;
+    }
+}
+
+// matrix_view::at() exception message contains the dimension size
+TEST(access, view_at_message_contains_dimension_size) {
+    ysc::matrix<int, 3, 4> m{ysc::zero};
+    ysc::matrix_view<int, ysc::contiguous, 3, 4> v = m;
+    try {
+        (void)v.at(0, 10);
+        FAIL() << "Expected std::out_of_range";
+    } catch (const std::out_of_range& e) {
+        const std::string what{e.what()};
+        ASSERT_NE(what.find('4'), std::string::npos) << "message: " << what;
     }
 }
