@@ -15,9 +15,11 @@
 
 #include <algorithm>
 #include <array>
+#include <compare>
 #include <iterator>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 
 #include <matrix_detail.hpp>
 
@@ -580,6 +582,206 @@ public:
     /** @brief Const pointer to element type. */
     using const_pointer = const T*;
 
+    // ─── strided iterator (random-access, 1-D views) ─────────────────────────
+
+    /**
+     * @brief Random-access iterator over a 1-D strided view.
+     *
+     * Advances by @c _stride elements per step.  Satisfies
+     * `std::random_access_iterator` (but not `std::contiguous_iterator`).
+     *
+     * @ingroup ysc_view
+     */
+    struct iterator {
+        /** @brief Iterator category: random-access (not contiguous). */
+        using iterator_category = std::random_access_iterator_tag;
+        /** @brief Element type. */
+        using value_type = T;
+        /** @brief Signed difference type. */
+        using difference_type = std::ptrdiff_t;
+        /** @brief Pointer type. */
+        using pointer = T*;
+        /** @brief Reference type. */
+        using reference = T&;
+
+        T* _ptr;             ///< Pointer to current element
+        std::size_t _stride; ///< Stride in number of T elements
+
+        /** @brief Dereference. */
+        reference operator*() const noexcept { return *_ptr; }
+        /** @brief Arrow. */
+        pointer operator->() const noexcept { return _ptr; }
+
+        /** @brief Pre-increment. */
+        iterator& operator++() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr += static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Post-increment. */
+        iterator operator++(int) noexcept {
+            auto tmp = *this;
+            ++(*this);
+            return tmp;
+        }
+        /** @brief Pre-decrement. */
+        iterator& operator--() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr -= static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Post-decrement. */
+        iterator operator--(int) noexcept {
+            auto tmp = *this;
+            --(*this);
+            return tmp;
+        }
+
+        /** @brief Advance by @p n steps. */
+        iterator& operator+=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr += n * static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Retreat by @p n steps. */
+        iterator& operator-=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr -= n * static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Iterator + n. */
+        [[nodiscard]] iterator operator+(difference_type n) const noexcept {
+            auto tmp = *this;
+            return tmp += n;
+        }
+        /** @brief n + iterator. */
+        [[nodiscard]] friend iterator operator+(difference_type n, iterator it) noexcept {
+            return it + n;
+        }
+        /** @brief Iterator - n. */
+        [[nodiscard]] iterator operator-(difference_type n) const noexcept {
+            auto tmp = *this;
+            return tmp -= n;
+        }
+        /** @brief Distance between iterators. */
+        [[nodiscard]] difference_type operator-(const iterator& other) const noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            return (_ptr - other._ptr) / static_cast<difference_type>(_stride);
+        }
+        /** @brief Subscript. */
+        reference operator[](difference_type n) const noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            return *(_ptr + (n * static_cast<difference_type>(_stride)));
+        }
+
+        /** @brief Equality comparison. */
+        bool operator==(const iterator& other) const noexcept = default;
+        /** @brief Three-way comparison (by pointer address). */
+        [[nodiscard]] auto operator<=>(const iterator& other) const noexcept {
+            return _ptr <=> other._ptr;
+        }
+    };
+
+    /**
+     * @brief Const random-access iterator over a 1-D strided view.
+     * @ingroup ysc_view
+     */
+    struct const_iterator {
+        /** @brief Iterator category: random-access (not contiguous). */
+        using iterator_category = std::random_access_iterator_tag;
+        /** @brief Element type. */
+        using value_type = T;
+        /** @brief Signed difference type. */
+        using difference_type = std::ptrdiff_t;
+        /** @brief Pointer type. */
+        using pointer = const T*;
+        /** @brief Reference type. */
+        using reference = const T&;
+
+        const T* _ptr = nullptr; ///< Pointer to current element
+        std::size_t _stride = 0; ///< Stride in number of T elements
+
+        const_iterator() noexcept = default;
+        const_iterator(const T* ptr, std::size_t stride) noexcept : _ptr{ptr}, _stride{stride} {}
+        // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+        const_iterator(iterator it) noexcept : _ptr{it._ptr}, _stride{it._stride} {}
+
+        /** @brief Dereference. */
+        reference operator*() const noexcept { return *_ptr; }
+        /** @brief Arrow. */
+        pointer operator->() const noexcept { return _ptr; }
+
+        /** @brief Pre-increment. */
+        const_iterator& operator++() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr += static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Post-increment. */
+        const_iterator operator++(int) noexcept {
+            auto tmp = *this;
+            ++(*this);
+            return tmp;
+        }
+        /** @brief Pre-decrement. */
+        const_iterator& operator--() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr -= static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Post-decrement. */
+        const_iterator operator--(int) noexcept {
+            auto tmp = *this;
+            --(*this);
+            return tmp;
+        }
+
+        /** @brief Advance by @p n steps. */
+        const_iterator& operator+=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr += n * static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Retreat by @p n steps. */
+        const_iterator& operator-=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            _ptr -= n * static_cast<difference_type>(_stride);
+            return *this;
+        }
+        /** @brief Iterator + n. */
+        [[nodiscard]] const_iterator operator+(difference_type n) const noexcept {
+            auto tmp = *this;
+            return tmp += n;
+        }
+        /** @brief n + const_iterator. */
+        [[nodiscard]] friend const_iterator operator+(difference_type n,
+                                                      const_iterator it) noexcept {
+            return it + n;
+        }
+        /** @brief Iterator - n. */
+        [[nodiscard]] const_iterator operator-(difference_type n) const noexcept {
+            auto tmp = *this;
+            return tmp -= n;
+        }
+        /** @brief Distance between iterators. */
+        [[nodiscard]] difference_type operator-(const const_iterator& other) const noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            return (_ptr - other._ptr) / static_cast<difference_type>(_stride);
+        }
+        /** @brief Subscript. */
+        reference operator[](difference_type n) const noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+            return *(_ptr + (n * static_cast<difference_type>(_stride)));
+        }
+
+        /** @brief Equality comparison. */
+        bool operator==(const const_iterator& other) const noexcept = default;
+        /** @brief Three-way comparison (by pointer address). */
+        [[nodiscard]] auto operator<=>(const const_iterator& other) const noexcept {
+            return _ptr <=> other._ptr;
+        }
+    };
+
     // ─── construction ────────────────────────────────────────────────────────
 
     matrix_view() = delete;
@@ -642,6 +844,89 @@ public:
      * @ingroup ysc_view
      */
     [[nodiscard]] static constexpr bool empty() noexcept { return linear_size == 0; }
+
+    // ─── iterators (1-D strided views only) ──────────────────────────────────
+
+    /**
+     * @brief Returns an iterator to the first element of a 1-D strided view.
+     * @return Iterator to the first element
+     *
+     * Only available for 1-D views (@c order == 1).
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+     * auto col = m.col(1);  // strided view of column 1
+     * int sum = std::accumulate(col.begin(), col.end(), 0);
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    iterator begin() noexcept
+        requires(order == 1)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+        return {_ptr, _strides[0]};
+    }
+
+    /**
+     * @brief Returns a const iterator to the first element of a 1-D strided view.
+     * @return Const iterator to the first element
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] const_iterator begin() const noexcept
+        requires(order == 1)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+        return {_ptr, _strides[0]};
+    }
+
+    /**
+     * @brief Returns a const iterator to the first element of a 1-D strided view.
+     * @return Const iterator to the first element
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] const_iterator cbegin() const noexcept
+        requires(order == 1)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+        return {_ptr, _strides[0]};
+    }
+
+    /**
+     * @brief Returns an iterator past the last element of a 1-D strided view.
+     * @return Iterator past the last element
+     * @ingroup ysc_view
+     */
+    iterator end() noexcept
+        requires(order == 1)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return {_ptr + static_cast<difference_type>(linear_size * _strides[0]), _strides[0]};
+    }
+
+    /**
+     * @brief Returns a const iterator past the last element of a 1-D strided view.
+     * @return Const iterator past the last element
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] const_iterator end() const noexcept
+        requires(order == 1)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return {_ptr + static_cast<difference_type>(linear_size * _strides[0]), _strides[0]};
+    }
+
+    /**
+     * @brief Returns a const iterator past the last element of a 1-D strided view.
+     * @return Const iterator past the last element
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] const_iterator cend() const noexcept
+        requires(order == 1)
+    {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return {_ptr + static_cast<difference_type>(linear_size * _strides[0]), _strides[0]};
+    }
 
     // ─── element access ──────────────────────────────────────────────────────
 
@@ -785,6 +1070,85 @@ public:
             }
         }
         return (*this)(coords...);
+    }
+
+    // ─── modifiers ───────────────────────────────────────────────────────────
+
+    /**
+     * @brief Returns a reference to the first element (all coordinates zero).
+     *
+     * Calling @c front() on an empty view is undefined behavior.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+     * auto col = m.col(1);
+     * assert(col.front() == m(0, 1));
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    constexpr reference front() noexcept { return (*this)(((void)Dimensions, std::size_t{0})...); }
+
+    /**
+     * @brief Returns a const reference to the first element (all coordinates zero).
+     *
+     * Calling @c front() on an empty view is undefined behavior.
+     *
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] constexpr const_reference front() const noexcept {
+        return (*this)(((void)Dimensions, std::size_t{0})...);
+    }
+
+    /**
+     * @brief Returns a reference to the last element (each coordinate at its maximum).
+     *
+     * Calling @c back() on an empty view is undefined behavior.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+     * auto col = m.col(1);
+     * assert(col.back() == m(2, 1));
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    constexpr reference back() noexcept { return (*this)((Dimensions - 1)...); }
+
+    /**
+     * @brief Returns a const reference to the last element (each coordinate at its maximum).
+     *
+     * Calling @c back() on an empty view is undefined behavior.
+     *
+     * @ingroup ysc_view
+     */
+    [[nodiscard]] constexpr const_reference back() const noexcept {
+        return (*this)((Dimensions - 1)...);
+    }
+
+    /**
+     * @brief Assigns @p value to every element of the strided view.
+     * @param value Value to assign
+     *
+     * Iterates over all logical indices and writes through @c operator(),
+     * so each element is visited exactly once regardless of strides.
+     * Modifications are reflected in the underlying @c matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{};
+     * auto col = m.col(2);
+     * col.fill(7);
+     * assert(m(1, 2) == 7);
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    constexpr void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) {
+        for (std::size_t k = 0; k < linear_size; ++k) {
+            const auto coords = detail::index_to_coordinates(dimensions, k);
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            std::apply([&](auto... c) { (*this)(c...) = value; }, coords);
+        }
     }
 };
 

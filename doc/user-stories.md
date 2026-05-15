@@ -51,7 +51,7 @@
 |----|-------|----------|--------|
 | US-039 | Suite de benchmarks (Google Benchmark) | P1 | ✅ Done |
 | US-050 | Cookbook Doxygen | P1 | ⬜ À faire |
-| US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ⬜ À faire |
+| US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ✅ Done |
 | US-052 | `matrix_view` : I/O, ctor const, vues composables | P1 | ⬜ À faire |
 | US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ✅ Done |
 | US-054 | `matrix::rows()` / `cols()` + `matmul` vecteur 1D | P1 | ⬜ À faire |
@@ -1386,11 +1386,11 @@ En tant qu'utilisateur, je veux itérer sur une `matrix_view<T, strided, N>` ave
 - `fill()` sur strided : boucle sur indices, pas d'accès linéaire au buffer
 
 ### Critères d'acceptation
-- [ ] `for (auto& v : col_view)` compile et fonctionne pour `col_view` issu de `m.col(j)`
-- [ ] `std::accumulate(v.begin(), v.end(), 0)` fonctionne sur une vue 1D strided
-- [ ] `std::ranges::sort(v)` compile (random-access iterator)
-- [ ] `v.fill(42)` fonctionne sur une vue strided
-- [ ] `v.front()` et `v.back()` disponibles sur toute vue strided
+- [x] `for (auto& v : col_view)` compile et fonctionne pour `col_view` issu de `m.col(j)`
+- [x] `std::accumulate(v.begin(), v.end(), 0)` fonctionne sur une vue 1D strided
+- [x] `std::ranges::sort(v)` compile (random-access iterator)
+- [x] `v.fill(42)` fonctionne sur une vue strided
+- [x] `v.front()` et `v.back()` disponibles sur toute vue strided
 
 ---
 
