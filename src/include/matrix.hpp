@@ -887,12 +887,10 @@ public:
      *
      * @ingroup ysc_arithmetic
      */
-    [[nodiscard]] matrix operator-() const
+    [[nodiscard]] constexpr matrix operator-() const noexcept(noexcept(-std::declval<T const&>()))
         requires requires(const T& a) { -a; }
     {
-        matrix result(zero);
-        std::transform(cbegin(), cend(), result.begin(), [](const T& a) -> T { return -a; });
-        return result;
+        return map([](const T& v) { return -v; });
     }
 
     // algorithms
@@ -1737,7 +1735,7 @@ template <class T, std::size_t... D> struct std::hash<ysc::matrix<T, D...>> {
         std::size_t h = 0;
         std::hash<T> hasher;
         for (const auto& v : m) {
-            h ^= hasher(v) + 0x9e3779b9 + (h << 6) + (h >> 2);
+            h ^= hasher(v) + 0x9E3779B97F4A7C15ULL + (h << 12) + (h >> 4);
         }
         return h;
     }
