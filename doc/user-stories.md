@@ -13,10 +13,10 @@
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | ⬜ Non démarrée | 0/10 | ⬜ US-038, US-040 à US-043, US-045 à US-049 |
-| **J — Ergonomie & finition** | 🔄 En cours | 1/11 | ✅ US-059, ⬜ US-039, US-050 à US-058 |
+| **J — Ergonomie & finition** | 🔄 En cours | 6/11 | ✅ US-053, ✅ US-055 à ✅ US-057, ✅ US-059, ✅ US-039, US-050 à US-052, US-054, US-058 |
 | **K — Extensions post-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
 
-**Total : 38 / 68 US**
+**Total : 39 / 68 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -49,15 +49,15 @@
 
 | US | Titre | Priorité | Statut |
 |----|-------|----------|--------|
-| US-039 | Suite de benchmarks (Google Benchmark) | P1 | ⬜ À faire |
+| US-039 | Suite de benchmarks (Google Benchmark) | P1 | ✅ Done |
 | US-050 | Cookbook Doxygen | P1 | ⬜ À faire |
 | US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ⬜ À faire |
 | US-052 | `matrix_view` : I/O, ctor const, vues composables | P1 | ⬜ À faire |
-| US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ⬜ À faire |
+| US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ✅ Done |
 | US-054 | `matrix::rows()` / `cols()` + `matmul` vecteur 1D | P1 | ⬜ À faire |
-| US-055 | `CHANGELOG.md` versionné | P1 | ⬜ À faire |
-| US-056 | Messages d'exception détaillés dans `at()` | P1 | ⬜ À faire |
-| US-057 | Centraliser `NOLINTNEXTLINE` dans `matrix.hpp` | P1 | ⬜ À faire |
+| US-055 | `CHANGELOG.md` versionné | P1 | ✅ Done |
+| US-056 | Messages d'exception détaillés dans `at()` | P1 | ✅ Done |
+| US-057 | Centraliser `NOLINTNEXTLINE` dans `matrix.hpp` | P1 | ✅ Done |
 | US-058 | Optimiser `matrix(matrix_view<strided>)` | P1 | ⬜ À faire |
 | US-059 | `operator-()` `constexpr` + hash combine 64-bit | P1 | ✅ Done |
 
@@ -1495,9 +1495,9 @@ En tant qu'utilisateur arrivant sur le repo GitHub, je veux voir l'historique de
   ```
 
 ### Critères d'acceptation
-- [ ] `CHANGELOG.md` présent à la racine du repo, lisible via GitHub
-- [ ] Contient les releases v0.1.0 à v0.6.0 au minimum
-- [ ] Workflow `release.yml` met à jour et commit `CHANGELOG.md` à chaque nouvelle release
+- [x] `CHANGELOG.md` présent à la racine du repo, lisible via GitHub
+- [x] Contient les releases v0.2.0 à v0.6.0 (premières releases disponibles dans l'historique git)
+- [x] Workflow `release.yml` met à jour et commit `CHANGELOG.md` à chaque nouvelle release
 
 ---
 

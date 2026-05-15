@@ -20,7 +20,9 @@
 #include <iterator>
 #include <numeric>
 #include <ostream>
+#include <span>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 // Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
@@ -45,7 +47,6 @@ concept ostream_streamable = requires(std::ostream& os, const T& v) { os << v; }
 template <class It, class Dims>
 It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_idx) {
     os << '[';
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
     const std::size_t count = dims[dim_idx];
     const bool last_dim = (dim_idx + 1 == dims.size());
     for (std::size_t i = 0; i < count; ++i) {
@@ -266,7 +267,6 @@ public:
         requires(sizeof...(Args) == linear_size) && (std::convertible_to<Args, T> && ...) &&
                 (sizeof...(Args) > 0)
     constexpr explicit(sizeof...(Args) == 1) matrix(Args&&... args)
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
         : _data{static_cast<T>(std::forward<Args>(args))...} {}
 
     // nested initializer_list constructor (2D only)
@@ -394,6 +394,38 @@ public:
             const auto coords = detail::index_to_coordinates(dimensions, k++);
             elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
         }
+    }
+
+    // constructors from std::array and std::span
+    /**
+     * @brief Constructs from a @c std::array.
+     * @param data Array of exactly @c linear_size elements to move into the matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3> m(std::array<int, 3>{1, 2, 3});
+     * assert(m(0) == 1);
+     * @endcode
+     *
+     * @ingroup ysc_matrix
+     */
+    explicit matrix(std::array<T, linear_size> data) noexcept(
+        std::is_nothrow_move_constructible_v<T>)
+        : _data(std::move(data)) {}
+
+    /**
+     * @brief Constructs from a @c std::span.
+     * @param data Span of exactly @c linear_size elements; copied into the matrix.
+     *
+     * @code
+     * int buf[3] = {4, 5, 6};
+     * ysc::matrix<int, 3> m(std::span<const int, 3>{buf, 3});
+     * assert(m(0) == 4);
+     * @endcode
+     *
+     * @ingroup ysc_matrix
+     */
+    explicit matrix(std::span<const T, linear_size> data) {
+        std::copy(data.begin(), data.end(), _data.begin());
     }
 
     // assignment operators (copy)
@@ -1079,7 +1111,6 @@ public:
     constexpr T const& operator()(Coords... coordinates) const {
         // Intentional: unchecked access on the performance path. Use at() for
         // bounds checking.
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
 
@@ -1095,7 +1126,6 @@ public:
     constexpr T& operator()(Coords... coordinates) {
         // Intentional: unchecked access on the performance path. Use at() for
         // bounds checking.
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
 
@@ -1104,16 +1134,31 @@ public:
      * @param coordinates Coordinates of the element to return
      *
      * If @a coordinates is not within the range of the container, an exception
-     * of type
-     * @c std::out_of_range is thrown.
+     * of type @c std::out_of_range is thrown with a message of the form:
+     * @code
+     * "matrix::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     * @endcode
+     * where @c c is the offending coordinate value, @c i is the dimension index,
+     * and @c s is the size of that dimension.
+     *
+     * @throws std::out_of_range if any coordinate is negative or exceeds the
+     * dimension size
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     [[nodiscard]] const T& at(Coords... coordinates) const {
-        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coordinates)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coordinates...);
     }
@@ -1123,16 +1168,31 @@ public:
      * @param coordinates Coordinates of the element to return
      *
      * If @a coordinates is not within the range of the container, an exception
-     * of type
-     * @c std::out_of_range is thrown.
+     * of type @c std::out_of_range is thrown with a message of the form:
+     * @code
+     * "matrix::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
+     * @endcode
+     * where @c c is the offending coordinate value, @c i is the dimension index,
+     * and @c s is the size of that dimension.
+     *
+     * @throws std::out_of_range if any coordinate is negative or exceeds the
+     * dimension size
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     T& at(Coords... coordinates) {
-        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coordinates)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coordinates...);
     }
@@ -1180,11 +1240,9 @@ public:
                     using S = std::remove_cvref_t<decltype(s)>;
                     if constexpr (!detail::is_all_v<S>) {
                         auto idx = static_cast<std::size_t>(s);
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         if (idx >= dimensions[i]) {
                             throw std::out_of_range("slice: index out of range");
                         }
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         spec_vals[i] = idx;
                     }
                     ++i;
@@ -1192,7 +1250,6 @@ public:
                 ...);
         }
 
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         auto* base = _data.data() + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
         if constexpr (is_prefix) {
             return ViewT{base};
@@ -1238,11 +1295,9 @@ public:
                     using S = std::remove_cvref_t<decltype(s)>;
                     if constexpr (!detail::is_all_v<S>) {
                         auto idx = static_cast<std::size_t>(s);
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         if (idx >= dimensions[i]) {
                             throw std::out_of_range("slice: index out of range");
                         }
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         spec_vals[i] = idx;
                     }
                     ++i;
@@ -1250,7 +1305,6 @@ public:
                 ...);
         }
 
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const auto* base =
             _data.data() + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
         if constexpr (is_prefix) {
@@ -1282,7 +1336,6 @@ public:
         if (i >= dimensions[0]) {
             throw std::out_of_range("row: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<T, contiguous, dimensions[1]>{_data.data() + (i * dimensions[1])};
     }
 
@@ -1309,7 +1362,6 @@ public:
         if (i >= dimensions[0]) {
             throw std::out_of_range("row: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<const T, contiguous, dimensions[1]>{_data.data() + (i * dimensions[1])};
     }
 
@@ -1337,7 +1389,6 @@ public:
         if (j >= dimensions[1]) {
             throw std::out_of_range("col: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<T, strided, dimensions[0]>{_data.data() + j,
                                                       std::array<std::size_t, 1>{dimensions[1]}};
     }
@@ -1364,7 +1415,6 @@ public:
         if (j >= dimensions[1]) {
             throw std::out_of_range("col: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<const T, strided, dimensions[0]>{
             _data.data() + j, std::array<std::size_t, 1>{dimensions[1]}};
     }
@@ -1491,6 +1541,31 @@ constexpr matrix<T, N, N> identity() {
         m(i, i) = T{1};
     }
     return m;
+}
+
+/**
+ * @brief Returns a matrix filled by calling @a f(i) for each linear index @a i.
+ * @tparam T    Element type
+ * @tparam Dims Dimensions of the result matrix
+ * @tparam F    Callable type — must satisfy @c std::invocable<F, std::size_t>
+ * @param  f    Generator callable: @c f(i) must be convertible to @c T
+ * @return New @c matrix<T, Dims...> where element at linear index @a i equals @c f(i)
+ *
+ * @code
+ * auto m = ysc::generate<int, 3>([](std::size_t i) { return static_cast<int>(i * 2); });
+ * // m == ysc::matrix<int, 3>{0, 2, 4}
+ * @endcode
+ *
+ * @ingroup ysc_matrix
+ */
+template <class T, std::size_t... Dims, std::invocable<std::size_t> F>
+[[nodiscard]] constexpr matrix<T, Dims...> generate(F f) {
+    matrix<T, Dims...> result;
+    for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        result.begin()[i] = f(i);
+    }
+    return result;
 }
 
 /**
