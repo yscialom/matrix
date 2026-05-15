@@ -392,3 +392,36 @@ TEST(matrix_view_strided_fill, fill_2d_strided_view) {
     EXPECT_EQ(m(0, 0, 1), 0);
     EXPECT_EQ(m(1, 1, 3), 0);
 }
+
+// ─── strided iterator arithmetic & comparison ─────────────────────────────────
+
+TEST(matrix_view_strided_iterators, iterator_minus_n_retreat) {
+    ysc::matrix<int, 4, 3> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col = m.col(0); // column 0: 1, 4, 7, 10
+    auto it = col.end() - 2;
+    EXPECT_EQ(*it, 7); // third element (index 2)
+}
+
+TEST(matrix_view_strided_iterators, iterator_minus_assign_retreat) {
+    ysc::matrix<int, 4, 3> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col = m.col(0); // column 0: 1, 4, 7, 10
+    auto it = col.end();
+    it -= 1;
+    EXPECT_EQ(*it, 10); // last element
+}
+
+TEST(matrix_view_strided_iterators, iterator_three_way_comparison) {
+    // Tests matrix_view<int, strided, 3> and matrix_view<int, strided, 4> specializations
+    ysc::matrix<int, 3, 4> m{};
+    auto col3 = m.col(0); // 3-element strided view
+    auto a3 = col3.begin();
+    auto b3 = col3.begin() + 1;
+    EXPECT_TRUE((a3 <=> b3) < 0);
+    EXPECT_TRUE((b3 <=> a3) > 0);
+
+    ysc::matrix<int, 4, 3> m2{};
+    auto col4 = m2.col(0); // 4-element strided view
+    auto a4 = col4.begin();
+    auto b4 = col4.begin() + 1;
+    EXPECT_TRUE((a4 <=> b4) < 0); // NOLINT(misc-redundant-expression)
+}

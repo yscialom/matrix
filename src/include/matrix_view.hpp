@@ -646,7 +646,7 @@ public:
         /** @brief Subscript. */
         reference operator[](difference_type n) const noexcept {
             // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            return *(_ptr + n * static_cast<difference_type>(_stride));
+            return *(_ptr + (n * static_cast<difference_type>(_stride)));
         }
 
         /** @brief Equality comparison. */
@@ -746,7 +746,7 @@ public:
         /** @brief Subscript. */
         reference operator[](difference_type n) const noexcept {
             // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
-            return *(_ptr + n * static_cast<difference_type>(_stride));
+            return *(_ptr + (n * static_cast<difference_type>(_stride)));
         }
 
         /** @brief Equality comparison. */
