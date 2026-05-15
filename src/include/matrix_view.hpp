@@ -588,8 +588,8 @@ public:
         pointer operator->() const noexcept { return _ptr; }
 
         /** @brief Pre-increment. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         iterator& operator++() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr += static_cast<difference_type>(_stride);
             return *this;
         }
@@ -600,8 +600,8 @@ public:
             return tmp;
         }
         /** @brief Pre-decrement. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         iterator& operator--() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr -= static_cast<difference_type>(_stride);
             return *this;
         }
@@ -613,14 +613,14 @@ public:
         }
 
         /** @brief Advance by @p n steps. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         iterator& operator+=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr += n * static_cast<difference_type>(_stride);
             return *this;
         }
         /** @brief Retreat by @p n steps. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         iterator& operator-=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr -= n * static_cast<difference_type>(_stride);
             return *this;
         }
@@ -640,6 +640,7 @@ public:
         }
         /** @brief Distance between iterators. */
         [[nodiscard]] difference_type operator-(const iterator& other) const noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             return (_ptr - other._ptr) / static_cast<difference_type>(_stride);
         }
         /** @brief Subscript. */
@@ -686,8 +687,8 @@ public:
         pointer operator->() const noexcept { return _ptr; }
 
         /** @brief Pre-increment. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const_iterator& operator++() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr += static_cast<difference_type>(_stride);
             return *this;
         }
@@ -698,8 +699,8 @@ public:
             return tmp;
         }
         /** @brief Pre-decrement. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const_iterator& operator--() noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr -= static_cast<difference_type>(_stride);
             return *this;
         }
@@ -711,14 +712,14 @@ public:
         }
 
         /** @brief Advance by @p n steps. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const_iterator& operator+=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr += n * static_cast<difference_type>(_stride);
             return *this;
         }
         /** @brief Retreat by @p n steps. */
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const_iterator& operator-=(difference_type n) noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             _ptr -= n * static_cast<difference_type>(_stride);
             return *this;
         }
@@ -739,6 +740,7 @@ public:
         }
         /** @brief Distance between iterators. */
         [[nodiscard]] difference_type operator-(const const_iterator& other) const noexcept {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
             return (_ptr - other._ptr) / static_cast<difference_type>(_stride);
         }
         /** @brief Subscript. */
