@@ -373,26 +373,33 @@ public:
     }
 
     /**
-     * @brief Constructs an owning matrix by copying elements from a strided view.
+     * @brief Constructs an owning matrix by copying elements from a strided view using its
+     *        iterators.
      * @param v Strided view to copy from
      *
-     * Elements are copied one by one via @c operator(). The resulting matrix is independent
-     * of @p v: mutations to either do not affect the other.
+     * For 1-D strided views, elements are copied via the view's random-access iterators
+     * (@c std::copy(v.begin(), v.end(), ...)), which is O(N).  For higher-order strided views,
+     * elements are copied one by one via @c index_to_coordinates and @c operator().
+     * The resulting matrix is independent of @p v: mutations to either do not affect the other.
      *
      * @code
      * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
      * auto col1 = m.col(1);                    // strided view of column 1
-     * auto m2   = ysc::matrix<int, 3>(col1);   // owning copy
+     * auto m2   = ysc::matrix<int, 3>(col1);   // owning copy via iterators
      * m2(0) = 99;                              // does not affect m
      * @endcode
      *
      * @ingroup ysc_view
      */
     explicit matrix(const matrix_view<T, strided, Dimensions...>& v) {
-        std::size_t k = 0;
-        for (auto& elem : _data) {
-            const auto coords = detail::index_to_coordinates(dimensions, k++);
-            elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
+        if constexpr (sizeof...(Dimensions) == 1) {
+            std::copy(v.begin(), v.end(), _data.begin());
+        } else {
+            std::size_t k = 0;
+            for (auto& elem : _data) {
+                const auto coords = detail::index_to_coordinates(dimensions, k++);
+                elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
+            }
         }
     }
 
