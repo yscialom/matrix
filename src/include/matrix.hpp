@@ -1439,8 +1439,8 @@ public:
         requires(D == 2)
     [[nodiscard]] constexpr auto rows() & {
         return std::ranges::views::transform(
-            std::views::iota(std::size_t{0}, std::get<0>(dimensions)),
-            [this](std::size_t i) { return this->row(i); });
+            std::views::iota(0, static_cast<int>(std::get<0>(dimensions))),
+            [this](int i) { return this->row(static_cast<std::size_t>(i)); });
     }
 
     /**
@@ -1462,8 +1462,8 @@ public:
         requires(D == 2)
     [[nodiscard]] constexpr auto rows() const& {
         return std::ranges::views::transform(
-            std::views::iota(std::size_t{0}, std::get<0>(dimensions)),
-            [this](std::size_t i) { return this->row(i); });
+            std::views::iota(0, static_cast<int>(std::get<0>(dimensions))),
+            [this](int i) { return this->row(static_cast<std::size_t>(i)); });
     }
 
     /**
@@ -1485,8 +1485,8 @@ public:
         requires(D == 2)
     [[nodiscard]] constexpr auto cols() & {
         return std::ranges::views::transform(
-            std::views::iota(std::size_t{0}, std::get<1>(dimensions)),
-            [this](std::size_t j) { return this->col(j); });
+            std::views::iota(0, static_cast<int>(std::get<1>(dimensions))),
+            [this](int j) { return this->col(static_cast<std::size_t>(j)); });
     }
 
     /**
@@ -1508,8 +1508,8 @@ public:
         requires(D == 2)
     [[nodiscard]] constexpr auto cols() const& {
         return std::ranges::views::transform(
-            std::views::iota(std::size_t{0}, std::get<1>(dimensions)),
-            [this](std::size_t j) { return this->col(j); });
+            std::views::iota(0, static_cast<int>(std::get<1>(dimensions))),
+            [this](int j) { return this->col(static_cast<std::size_t>(j)); });
     }
 
     /**
