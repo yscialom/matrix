@@ -1438,8 +1438,9 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto rows() & {
-        return std::views::iota(std::size_t{0}, std::get<0>(dimensions)) |
-               std::views::transform([this](std::size_t i) { return this->row(i); });
+        return std::ranges::views::transform(
+            std::views::iota(std::size_t{0}, std::get<0>(dimensions)),
+            [this](std::size_t i) { return this->row(i); });
     }
 
     /**
@@ -1460,8 +1461,9 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto rows() const& {
-        return std::views::iota(std::size_t{0}, std::get<0>(dimensions)) |
-               std::views::transform([this](std::size_t i) { return this->row(i); });
+        return std::ranges::views::transform(
+            std::views::iota(std::size_t{0}, std::get<0>(dimensions)),
+            [this](std::size_t i) { return this->row(i); });
     }
 
     /**
@@ -1482,8 +1484,9 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto cols() & {
-        return std::views::iota(std::size_t{0}, std::get<1>(dimensions)) |
-               std::views::transform([this](std::size_t j) { return this->col(j); });
+        return std::ranges::views::transform(
+            std::views::iota(std::size_t{0}, std::get<1>(dimensions)),
+            [this](std::size_t j) { return this->col(j); });
     }
 
     /**
@@ -1504,8 +1507,9 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto cols() const& {
-        return std::views::iota(std::size_t{0}, std::get<1>(dimensions)) |
-               std::views::transform([this](std::size_t j) { return this->col(j); });
+        return std::ranges::views::transform(
+            std::views::iota(std::size_t{0}, std::get<1>(dimensions)),
+            [this](std::size_t j) { return this->col(j); });
     }
 
     /**
