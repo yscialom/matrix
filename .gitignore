@@ -1,7 +1,6 @@
 # Building
 _cmake
-/build
-/build-cov
+/build*/
 
 # Editing
 *.orig

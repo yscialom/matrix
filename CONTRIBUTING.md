@@ -58,13 +58,13 @@ The CHANGELOG is generated automatically from these messages on each release via
 
 ## Releasing
 
-`release.sh` at the root of the repository semi-automates the release process.
+`.github/github-release.sh` at the root of the repository semi-automates the release process.
 It requires `git` and `gh` (GitHub CLI, authenticated).
 
 ### Step 1 — Prepare the release
 
 ```bash
-./release.sh prepare M.m.p
+./.github/github-release.sh prepare M.m.p
 ```
 
 This:
@@ -80,7 +80,7 @@ Wait for CI to be green, then merge the PR into `master` (merge commit).
 ### Step 3 — Finalize the release
 
 ```bash
-./release.sh finalize M.m.p
+./.github/github-release.sh finalize M.m.p
 ```
 
 This:
