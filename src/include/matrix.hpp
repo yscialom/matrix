@@ -36,35 +36,6 @@
 #include <matrix_view.hpp>
 
 namespace ysc {
-namespace detail {
-
-template <class T>
-concept ostream_streamable = requires(std::ostream& os, const T& v) { os << v; };
-
-// Print a hyperslice of a matrix starting at `it`, covering dimension `dim_idx`
-// onward. Returns an iterator past the last element printed.
-// NOLINTNEXTLINE(misc-no-recursion)
-template <class It, class Dims>
-It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_idx) {
-    os << '[';
-    const std::size_t count = dims[dim_idx];
-    const bool last_dim = (dim_idx + 1 == dims.size());
-    for (std::size_t i = 0; i < count; ++i) {
-        if (i > 0) {
-            os << ", ";
-        }
-        if (last_dim) {
-            os << *it++;
-        } else {
-            // NOLINTNEXTLINE(misc-no-recursion)
-            it = print_recursive(os, it, dims, dim_idx + 1);
-        }
-    }
-    os << ']';
-    return it;
-}
-
-} // namespace detail
 
 /**
  * @brief Satisfied when `U` is convertible to `T`.
