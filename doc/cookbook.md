@@ -145,7 +145,6 @@ non-owning views — pointer + static shape, no allocation. Use them like
 
 ```cpp
 #include <matrix.hpp>
-#include <matrix_view.hpp>
 #include <iostream>
 
 int main()

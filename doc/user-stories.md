@@ -13,7 +13,7 @@
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 1/10 | ✅ US-046, ⬜ US-038, US-040 à US-043, US-045, US-047 à US-049 |
-| **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050, ✅ US-051 à ✅ US-059 |
+| **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
 
 **Total : 44 / 69 US**
