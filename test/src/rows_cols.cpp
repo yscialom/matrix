@@ -17,7 +17,7 @@ TEST(MatrixRows, RowValuesAreCorrect) {
     // row 0: {1,2,3}, row 1: {4,5,6}
     ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
     auto row_range = m.rows();
-    auto it = row_range.begin();
+    auto* it = row_range.begin();
     auto row0 = *it++;
     auto row1 = *it;
     EXPECT_EQ(row0(0), 1);
@@ -82,7 +82,7 @@ TEST(MatrixCols, ColValuesAreCorrect) {
     // col 0: {1,4}, col 1: {2,5}, col 2: {3,6}
     ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
     auto col_range = m.cols();
-    auto it = col_range.begin();
+    auto* it = col_range.begin();
     auto col0 = *it++;
     auto col1 = *it++;
     auto col2 = *it;

@@ -1438,16 +1438,16 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto rows() & {
-        return std::ranges::views::transform(
-            std::views::iota(0, static_cast<int>(std::get<0>(dimensions))),
-            [this](int i) { return this->row(static_cast<std::size_t>(i)); });
+        return [this]<std::size_t... Is>(std::index_sequence<Is...>) {
+            return std::array{this->row(Is)...};
+        }(std::make_index_sequence<dimensions[0]>{});
     }
 
     /**
      * @brief Returns a range of const contiguous row views (2D matrices only).
      * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
-     * @return A range of @c matrix_view<const T,contiguous,C> where @c C = @c dimensions[1],
-     *         one per row in order (row 0, row 1, …).
+     * @return A @c std::array of @c matrix_view<const T,contiguous,C> where @c C = @c
+     * dimensions[1], one per row in order (row 0, row 1, …).
      *
      * @code
      * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
@@ -1461,15 +1461,15 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto rows() const& {
-        return std::ranges::views::transform(
-            std::views::iota(0, static_cast<int>(std::get<0>(dimensions))),
-            [this](int i) { return this->row(static_cast<std::size_t>(i)); });
+        return [this]<std::size_t... Is>(std::index_sequence<Is...>) {
+            return std::array{this->row(Is)...};
+        }(std::make_index_sequence<dimensions[0]>{});
     }
 
     /**
      * @brief Returns a range of strided column views (2D matrices only).
      * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
-     * @return A range of @c matrix_view<T,strided,R> where @c R = @c dimensions[0],
+     * @return A @c std::array of @c matrix_view<T,strided,R> where @c R = @c dimensions[0],
      *         one per column in order (col 0, col 1, …).
      *
      * @code
@@ -1484,15 +1484,15 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto cols() & {
-        return std::ranges::views::transform(
-            std::views::iota(0, static_cast<int>(std::get<1>(dimensions))),
-            [this](int j) { return this->col(static_cast<std::size_t>(j)); });
+        return [this]<std::size_t... Js>(std::index_sequence<Js...>) {
+            return std::array{this->col(Js)...};
+        }(std::make_index_sequence<dimensions[1]>{});
     }
 
     /**
      * @brief Returns a range of const strided column views (2D matrices only).
      * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
-     * @return A range of @c matrix_view<const T,strided,R> where @c R = @c dimensions[0],
+     * @return A @c std::array of @c matrix_view<const T,strided,R> where @c R = @c dimensions[0],
      *         one per column in order (col 0, col 1, …).
      *
      * @code
@@ -1507,9 +1507,9 @@ public:
     template <std::size_t D = order>
         requires(D == 2)
     [[nodiscard]] constexpr auto cols() const& {
-        return std::ranges::views::transform(
-            std::views::iota(0, static_cast<int>(std::get<1>(dimensions))),
-            [this](int j) { return this->col(static_cast<std::size_t>(j)); });
+        return [this]<std::size_t... Js>(std::index_sequence<Js...>) {
+            return std::array{this->col(Js)...};
+        }(std::make_index_sequence<dimensions[1]>{});
     }
 
     /**
