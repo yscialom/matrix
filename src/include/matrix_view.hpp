@@ -17,9 +17,16 @@
 #include <array>
 #include <compare>
 #include <iterator>
+#include <ostream>
 #include <stdexcept>
 #include <string>
 #include <tuple>
+// Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
+// incompatibility
+#if __has_include(<format>) && (!defined(__clang__) || __clang_major__ >= 17)
+#include <format>
+#include <sstream>
+#endif
 
 #include <matrix_detail.hpp>
 
@@ -136,6 +143,27 @@ public:
      */
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
     constexpr matrix_view(matrix<T, Dimensions...>& m) noexcept : _ptr{m.data()} {}
+
+    /**
+     * @brief Constructs a read-only view over a @c const matrix.
+     * @tparam U Non-const element type (deduced; @c T must be @c const @c U).
+     * @param  m Const matrix to view.
+     *
+     * Allows creating a @c matrix_view<const T, contiguous, Dims...> (i.e. a
+     * @c const_matrix_view) from a @c const @c matrix<T, Dims...>&, mirroring
+     * how @c std::string_view can be constructed from a @c const @c std::string&.
+     *
+     * @code
+     * const ysc::matrix<int, 3> m{1, 2, 3};
+     * ysc::matrix_view<const int, ysc::contiguous, 3> v{m};
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <class U>
+        requires std::same_as<T, const U>
+    // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+    constexpr matrix_view(const matrix<U, Dimensions...>& m) noexcept : _ptr{m.data()} {}
 
     /**
      * @brief Constructs a view from a raw pointer to a contiguous sequence of elements.
@@ -519,6 +547,112 @@ public:
      */
     constexpr void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) {
         std::fill(begin(), end(), value);
+    }
+
+    // ─── views (slice / row / col) ────────────────────────────────────────────
+
+    /**
+     * @brief Returns a non-owning sub-view over a hyperslice of this view.
+     * @tparam Specs Spec types: @c ysc::all_t to keep a dimension, any integral to fix it.
+     * @param  specs Per-dimension specs. Missing trailing specs are implicitly @c ysc::all.
+     * @return @c matrix_view<T,contiguous,KeptDims...> if fixed dims form a prefix;
+     *         @c matrix_view<T,strided,KeptDims...> otherwise.
+     * @throws std::out_of_range if any fixed index is out of bounds for its dimension.
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{};
+     * auto row0 = m.row(0);        // matrix_view<int, contiguous, 4>
+     * auto sub = row0.slice(2);    // matrix_view<int, contiguous, 2> — last 2 elements
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <typename... Specs>
+        requires(sizeof...(Specs) <= order) &&
+                ((std::same_as<Specs, all_t> || std::integral<Specs>) && ...) &&
+                (sizeof...(Specs) < order || (std::same_as<Specs, all_t> || ...))
+    [[nodiscard]] constexpr auto slice(Specs... specs) const {
+        using PaddedT = detail::pad_right_with_all_t<order, Specs...>;
+        using KeptDims = typename detail::filter_kept_dims<PaddedT, Dimensions...>::type;
+        constexpr bool is_prefix = detail::is_prefix_slice_v<PaddedT>;
+        using Storage = std::conditional_t<is_prefix, contiguous, strided>;
+        using ViewT = detail::make_matrix_view_t<T, Storage, KeptDims>;
+
+        std::array<std::size_t, order> spec_vals{};
+        {
+            std::size_t i = 0;
+            (
+                [&](auto s) {
+                    using S = std::remove_cvref_t<decltype(s)>;
+                    if constexpr (!detail::is_all_v<S>) {
+                        auto idx = static_cast<std::size_t>(s);
+                        if (idx >= dimensions[i]) {
+                            throw std::out_of_range("slice: index out of range");
+                        }
+                        spec_vals[i] = idx;
+                    }
+                    ++i;
+                }(specs),
+                ...);
+        }
+
+        auto* base = _ptr + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
+        if constexpr (is_prefix) {
+            return ViewT{base};
+        } else {
+            return ViewT{base, detail::slice_helper<PaddedT>::strides(dimensions)};
+        }
+    }
+
+    /**
+     * @brief Returns a contiguous sub-view over row @a i (2D views only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @param i  Row index (0-based).
+     * @return @c matrix_view<T,contiguous,C> where @c C = @c dimensions[1]
+     * @throws std::out_of_range if @a i >= @c dimensions[0].
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{};
+     * auto v2d = m.flatten().reshape<3, 4>();
+     * auto r   = v2d.row(1);  // contiguous view of row 1 — 4 elements
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto row(std::size_t i) const {
+        if (i >= dimensions[0]) {
+            throw std::out_of_range("row: index out of range");
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return matrix_view<T, contiguous, dimensions[1]>{_ptr + (i * dimensions[1])};
+    }
+
+    /**
+     * @brief Returns a strided sub-view over column @a j (2D views only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @param j  Column index (0-based).
+     * @return @c matrix_view<T,strided,R> where @c R = @c dimensions[0], stride = @c dimensions[1]
+     * @throws std::out_of_range if @a j >= @c dimensions[1].
+     *
+     * @code
+     * ysc::matrix<int, 3, 4> m{};
+     * auto v2d = m.flatten().reshape<3, 4>();
+     * auto c   = v2d.col(2);  // strided view of column 2 — 3 elements, stride 4
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto col(std::size_t j) const {
+        if (j >= dimensions[1]) {
+            throw std::out_of_range("col: index out of range");
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return matrix_view<T, strided, dimensions[0]>{_ptr + j,
+                                                      std::array<std::size_t, 1>{dimensions[1]}};
     }
 };
 
@@ -1178,6 +1312,70 @@ matrix_view<T, contiguous, Dimensions...>::operator matrix_view<T, strided, Dime
     return matrix_view<T, strided, Dimensions...>{_ptr, strides};
 }
 
+/**
+ * @brief Writes a contiguous matrix view to an output stream.
+ * @tparam T    Element type — must be writable to @c std::ostream via @c operator<<
+ * @tparam Dims Dimensions of the view
+ * @param  os   Destination stream
+ * @param  v    View to print
+ * @return @a os
+ *
+ * Produces nested bracket notation: @c [e0, e1, ...] for 1D,
+ * @c [[e00, e01], [e10, e11]] for 2D, and so on recursively.
+ * The output format is identical to that of @c operator<<(ostream, matrix).
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+ * std::cout << m.row(0);  // [1, 2, 3]
+ * @endcode
+ *
+ * @ingroup ysc_io
+ */
+template <class T, std::size_t... Dims>
+    requires detail::ostream_streamable<T>
+std::ostream& operator<<(std::ostream& os, const matrix_view<T, contiguous, Dims...>& v) {
+    detail::print_recursive(os, v.cbegin(), matrix_view<T, contiguous, Dims...>::dimensions,
+                            std::size_t{0});
+    return os;
+}
+
 } // namespace ysc
+
+#if defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
+#if !defined(__clang__) || __clang_major__ >= 17
+
+/**
+ * @brief Specialization of @c std::formatter for @c ysc::matrix_view (contiguous).
+ * @tparam T     Element type — must be streamable via @c operator<<(std::ostream&, const T&)
+ * @tparam Dims  Dimensions of the view
+ * @tparam CharT Character type for the format context
+ *
+ * Enables @c std::format("{}", v) and produces the same nested-bracket output as
+ * @c operator<<: @c [e0, e1, ...] for 1D, @c [[e00, e01], [e10, e11]] for 2D, etc.
+ *
+ * Only available when the @c <format> library feature is present
+ * (@c __cpp_lib_format >= 201907L) and the compiler is not Clang < 17.
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+ * std::string s = std::format("{}", m.row(0));  // "[1, 2, 3]"
+ * @endcode
+ *
+ * @ingroup ysc_io
+ */
+template <class T, std::size_t... Dims, class CharT>
+    requires ysc::detail::ostream_streamable<T>
+struct std::formatter<ysc::matrix_view<T, ysc::contiguous, Dims...>, CharT>
+    : std::formatter<std::string, CharT> {
+    template <class FormatContext>
+    auto format(const ysc::matrix_view<T, ysc::contiguous, Dims...>& v, FormatContext& ctx) const {
+        std::ostringstream oss;
+        oss << v;
+        return std::formatter<std::string, CharT>::format(oss.str(), ctx);
+    }
+};
+
+#endif // !defined(__clang__) || __clang_major__ >= 17
+#endif // defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
 
 #endif // YSC_MATRIX_VIEW_HPP
