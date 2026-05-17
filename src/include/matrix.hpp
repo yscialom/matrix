@@ -1745,24 +1745,31 @@ template <class Ta, class Tb, std::size_t N>
 
 /**
  * @brief Multiply a matrix by a column vector.
- * @tparam T Element type
- * @tparam M Number of rows of the matrix
- * @tparam N Number of columns of the matrix (= size of the vector)
+ * @tparam Ta Element type of @a mat — must be multipliable with @a Tb
+ * @tparam Tb Element type of @a vec — must be multipliable with @a Ta
+ * @tparam M  Number of rows of @a mat and the result
+ * @tparam N  Number of columns of @a mat (= size of @a vec)
  * @param mat The M×N matrix
  * @param vec The column vector of size N
- * @return The result vector of size M
+ * @return New @c matrix<Tc,M> where `Tc = decltype(Ta{} * Tb{})`, equal to
+ * the matrix-vector product `mat × vec`
  *
  * @code
  * ysc::matrix<int, 2, 3> A{1, 0, 0, 0, 1, 0};
- * ysc::matrix<int, 3> v{1, 2, 3};
- * auto r = ysc::matmul(A, v); // matrix<int,2>{1,2}
+ * ysc::matrix<double, 3> v{1.0, 2.0, 3.0};
+ * auto r = ysc::matmul(A, v); // matrix<double,2>{1.0,2.0}
  * @endcode
  *
  * @ingroup ysc_linalg
  */
-template <class T, std::size_t M, std::size_t N>
-[[nodiscard]] constexpr matrix<T, M> matmul(const matrix<T, M, N>& mat, const matrix<T, N>& vec) {
-    matrix<T, M> result(zero);
+template <class Ta, class Tb, std::size_t M, std::size_t N>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
+                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
+                          const Ta& a, const Tb& b) { tc += a * b; }
+[[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& mat, const matrix<Tb, N>& vec)
+    -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M> {
+    using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
+    matrix<Tc, M> result(zero);
     for (std::size_t i = 0; i < M; ++i) {
         for (std::size_t k = 0; k < N; ++k) {
             result(i) += mat(i, k) * vec(k);
