@@ -99,6 +99,16 @@ TEST(MatrixMatmulVec, ReturnTypeIsCorrect) {
     (void)r;
 }
 
+TEST(MatrixMatmulVec, MixedTypes) {
+    // int matrix × double vector → double vector
+    ysc::matrix<int, 2, 3> mat{1, 2, 3, 4, 5, 6};
+    ysc::matrix<double, 3> vec{0.5, 1.0, 1.5};
+    auto r = ysc::matmul(mat, vec);
+    static_assert(std::is_same_v<decltype(r), ysc::matrix<double, 2>>);
+    EXPECT_DOUBLE_EQ(r(0), 1 * 0.5 + 2 * 1.0 + 3 * 1.5); // 7.0
+    EXPECT_DOUBLE_EQ(r(1), 4 * 0.5 + 5 * 1.0 + 6 * 1.5); // 16.0
+}
+
 TEST(MatrixMatmulVec, BasicValues) {
     // [[1,0,0],[0,1,0]] * [1,2,3] = [1,2]
     ysc::matrix<int, 2, 3> mat{1, 0, 0, 0, 1, 0};
