@@ -14,7 +14,7 @@
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 1/10 | ✅ US-046, ⬜ US-038, US-040 à US-043, US-045, US-047 à US-049 |
 | **J — Ergonomie & finition** | 🔄 En cours | 9/11 | ✅ US-039, ✅ US-051 à ✅ US-059, US-050 |
-| **K — Extensions post-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
+| **K — Extensions pre-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
 
 **Total : 43 / 68 US**
 
@@ -61,7 +61,7 @@
 | US-058 | Optimiser `matrix(matrix_view<strided>)` | P1 | ✅ Done |
 | US-059 | `operator-()` `constexpr` + hash combine 64-bit | P1 | ✅ Done |
 
-## EPIC K — Extensions post-v1
+## EPIC K — Extensions pre-v1
 
 | US | Titre | Priorité | Statut |
 |----|-------|----------|--------|
@@ -199,7 +199,7 @@ EPIC J — Ergonomie & finition
   US-058 (optim ctor strided) → dépend US-051
   US-059 (operator-() + hash 64-bit)
 
-EPIC K — Extensions post-v1
+EPIC K — Extensions pre-v1
   US-060 (réductions par axe) → dépend US-031
   US-061 (submatrix) → dépend US-036
   US-062 (enumerate) → dépend US-016
@@ -1598,7 +1598,7 @@ h ^= hasher(v) + 0x9E3779B97F4A7C15ULL + (h << 12) + (h >> 4);
 
 ---
 
-# EPIC K — Extensions post-v1
+# EPIC K — Extensions pre-v1
 
 ## US-060 — Réductions par axe (`sum<Axis>()`, etc.)
 
