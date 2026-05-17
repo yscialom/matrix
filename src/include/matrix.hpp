@@ -20,6 +20,7 @@
 #include <iterator>
 #include <numeric>
 #include <ostream>
+#include <ranges>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -1420,6 +1421,94 @@ public:
     }
 
     /**
+     * @brief Returns a range of contiguous row views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A range of @c matrix_view<T,contiguous,C> where @c C = @c dimensions[1],
+     *         one per row in order (row 0, row 1, …).
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto row_view : m.rows()) {
+     *     // row_view is a matrix_view<int, contiguous, 3>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto rows() & {
+        return std::views::iota(std::size_t{0}, std::get<0>(dimensions)) |
+               std::views::transform([this](std::size_t i) { return this->row(i); });
+    }
+
+    /**
+     * @brief Returns a range of const contiguous row views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A range of @c matrix_view<const T,contiguous,C> where @c C = @c dimensions[1],
+     *         one per row in order (row 0, row 1, …).
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto row_view : m.rows()) {
+     *     // row_view is a matrix_view<const int, contiguous, 3>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto rows() const& {
+        return std::views::iota(std::size_t{0}, std::get<0>(dimensions)) |
+               std::views::transform([this](std::size_t i) { return this->row(i); });
+    }
+
+    /**
+     * @brief Returns a range of strided column views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A range of @c matrix_view<T,strided,R> where @c R = @c dimensions[0],
+     *         one per column in order (col 0, col 1, …).
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto col_view : m.cols()) {
+     *     // col_view is a matrix_view<int, strided, 2>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto cols() & {
+        return std::views::iota(std::size_t{0}, std::get<1>(dimensions)) |
+               std::views::transform([this](std::size_t j) { return this->col(j); });
+    }
+
+    /**
+     * @brief Returns a range of const strided column views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A range of @c matrix_view<const T,strided,R> where @c R = @c dimensions[0],
+     *         one per column in order (col 0, col 1, …).
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto col_view : m.cols()) {
+     *     // col_view is a matrix_view<const int, strided, 2>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_view
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto cols() const& {
+        return std::views::iota(std::size_t{0}, std::get<1>(dimensions)) |
+               std::views::transform([this](std::size_t j) { return this->col(j); });
+    }
+
+    /**
      * @brief Returns a non-owning view over the same data reinterpreted with new dimensions.
      * @tparam NewD New dimensions; their product must equal @c linear_size.
      * @return @c matrix_view<T, contiguous, NewD...>
@@ -1668,6 +1757,34 @@ template <class Ta, class Tb, std::size_t N>
     Tc result{};
     for (std::size_t i = 0; i < N; ++i) {
         result += a(i) * b(i);
+    }
+    return result;
+}
+
+/**
+ * @brief Multiply a matrix by a column vector.
+ * @tparam T Element type
+ * @tparam M Number of rows of the matrix
+ * @tparam N Number of columns of the matrix (= size of the vector)
+ * @param mat The M×N matrix
+ * @param vec The column vector of size N
+ * @return The result vector of size M
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> A{1, 0, 0, 0, 1, 0};
+ * ysc::matrix<int, 3> v{1, 2, 3};
+ * auto r = ysc::matmul(A, v); // matrix<int,2>{1,2}
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class T, std::size_t M, std::size_t N>
+[[nodiscard]] constexpr matrix<T, M> matmul(const matrix<T, M, N>& mat, const matrix<T, N>& vec) {
+    matrix<T, M> result(zero);
+    for (std::size_t i = 0; i < M; ++i) {
+        for (std::size_t k = 0; k < N; ++k) {
+            result(i) += mat(i, k) * vec(k);
+        }
     }
     return result;
 }
