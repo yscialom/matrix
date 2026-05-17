@@ -13,10 +13,10 @@
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 1/10 | ✅ US-046, ⬜ US-038, US-040 à US-043, US-045, US-047 à US-049 |
-| **J — Ergonomie & finition** | 🔄 En cours | 9/11 | ✅ US-039, ✅ US-051 à ✅ US-059, US-050 |
-| **K — Extensions pre-v1** | ⬜ Non démarrée | 0/9 | ⬜ US-060 à US-068 |
+| **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
+| **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
 
-**Total : 43 / 68 US**
+**Total : 44 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -50,7 +50,7 @@
 | US | Titre | Priorité | Statut |
 |----|-------|----------|--------|
 | US-039 | Suite de benchmarks (Google Benchmark) | P1 | ✅ Done |
-| US-050 | Cookbook Doxygen | P1 | ⬜ À faire |
+| US-050 | Cookbook Doxygen | P1 | ✅ Done |
 | US-051 | `matrix_view` : itérateurs strided + `front`/`back`/`fill` | P1 | ✅ Done |
 | US-052 | `matrix_view` : I/O, ctor const, vues composables | P1 | ✅ Done |
 | US-053 | Constructeurs additionnels : `std::array`, `std::span`, générateur | P1 | ✅ Done |
@@ -74,6 +74,7 @@
 | US-066 | CI Windows : cache vcpkg | P2 | ⬜ À faire |
 | US-067 | Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ⬜ À faire |
 | US-068 | Migration guide : promesse de stabilité SemVer v1.0.0 | P2 | ⬜ À faire |
+| US-069 | `generate` avec callable multi-index | P2 | ⬜ À faire |
 
 ---
 
@@ -1806,3 +1807,40 @@ En tant qu'utilisateur adoptant la lib depuis une version v0.x, je veux comprend
 - [ ] Tous les changements breaking v0.x → v1.0.0 listés avec instructions
 - [ ] La promesse SemVer (API publique vs `ysc::detail::`) est explicitement documentée
 - [ ] Lien vers `doc/migration.md` depuis `README.md` et `mainpage.md`
+
+---
+
+## US-069 — `generate` avec callable multi-index
+
+**Priorité :** P2 — **Dépend de :** US-053 — **Épopée :** K
+
+### Story
+En tant qu'utilisateur construisant des matrices position-dépendantes (identité par fonction, triangulaire, Vandermonde, gradient XY, masques i*j…), je veux pouvoir passer à `ysc::generate` un callable qui reçoit les coordonnées N-D plutôt qu'un index linéaire. Aujourd'hui je dois dérouler à la main `i = k / cols; j = k % cols;`, ce qui est verbeux et fragile en 3D+.
+
+### Spécification technique
+
+Ajouter une **deuxième surcharge** de `ysc::generate` à côté de l'existante (`src/include/matrix.hpp:1632-1640`) :
+
+```cpp
+template <class T, std::size_t... Dims, class F>
+    requires std::invocable<F, /* sizeof...(Dims) × std::size_t */>
+          && std::convertible_to<
+                 std::invoke_result_t<F, /* idem */>, T>
+constexpr matrix<T, Dims...> generate(F f);
+```
+
+- L'overload existant (`std::invocable<F, std::size_t>`, index linéaire row-major) reste exposé et continue de compiler tel quel — **rétrocompatibilité totale**.
+- Implémentation : itérer sur les indices N-D via `detail::index_to_coordinates` (déjà disponible dans `matrix_detail.hpp`, US-044) et invoquer `f` avec `std::apply` sur le tuple de coordonnées.
+- Doxygen `@brief @tparam @return @code`, groupe `ysc_factory` (ou équivalent existant).
+- Le callable peut être `auto` (la C++ générique) ou typé explicitement `std::size_t`.
+
+**Cas limite à clarifier dans l'implémentation** : si `sizeof...(Dims) == 1`, un callable `[](std::size_t k){ ... }` satisfait à la fois `invocable<size_t>` et la nouvelle contrainte (1 arg). Trancher en faveur de la surcharge linéaire (rétrocompat) — par exemple via `requires(!std::invocable<F, std::size_t>)` sur la nouvelle surcharge, ou par concept plus strict.
+
+### Critères d'acceptation
+- [ ] `auto I = ysc::generate<int, 3, 3>([](std::size_t i, std::size_t j){ return i == j ? 1 : 0; });` compile et produit la matrice identité 3×3.
+- [ ] `static_assert(ysc::generate<int, 2, 2>([](auto i, auto j){ return int(i + j); })(1, 1) == 2);` passe (la surcharge est `constexpr`).
+- [ ] Tenseur 3D : `auto m = ysc::generate<int, 2, 3, 4>([](auto i, auto j, auto k){ return int(i*100 + j*10 + k); });` compile et `m(1, 2, 3) == 123`.
+- [ ] La surcharge linéaire historique (`generate<int, N>([](std::size_t k){ return int(k); })`) compile sans modification.
+- [ ] Test dédié `test/src/generate_multi_index.cpp` couvrant : 1D (équivalent linéaire vs multi-index), 2D, 3D, type non-trivial, propagation `constexpr`.
+- [ ] Doxygen mis à jour avec exemple inline `@code`.
+- [ ] CI verte sur toutes plateformes ; clang-format / clang-tidy clean.

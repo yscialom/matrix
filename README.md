@@ -8,7 +8,8 @@ A **header-only C++20** template library providing a general-purpose multi-dimen
 container with static dimensions. Inspired by `std::array`, it extends it to N dimensions
 while keeping the same zero-overhead, `constexpr`-friendly design.
 
-Full API reference: [yscialom.github.io/matrix](https://yscialom.github.io/matrix/)
+Full API reference: [yscialom.github.io/matrix](https://yscialom.github.io/matrix/) —
+[Cookbook](https://yscialom.github.io/matrix/cookbook.html)
 
 ---
 
