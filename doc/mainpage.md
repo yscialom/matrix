@@ -77,6 +77,15 @@ Copy `src/include/matrix.hpp` into your project and add its directory to your in
 
 ---
 
+## Cookbook
+
+Looking for practical, copy-paste examples? The @ref cookbook page collects ready-to-use
+recipes for the most common tasks: iterating over rows and columns, filling and transforming,
+working with views, interop with `std::ranges` / `std::format` / `std::hash`, and solving
+linear-algebra problems with `dot`, `transpose`, and `matmul`.
+
+---
+
 ## API Reference
 
 The main entry point is the @ref ysc::matrix class.
