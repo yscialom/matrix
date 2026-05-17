@@ -79,10 +79,11 @@ Copy `src/include/matrix.hpp` into your project and add its directory to your in
 
 ## Cookbook
 
-Looking for practical, copy-paste examples? The @ref cookbook page collects ready-to-use
-recipes for the most common tasks: iterating over rows and columns, filling and transforming,
-working with views, interop with `std::ranges` / `std::format` / `std::hash`, and solving
-linear-algebra problems with `dot`, `transpose`, and `matmul`.
+Looking for practical, copy-paste examples? The @ref cookbook page collects six
+ready-to-use recipes covering the first use-cases — element access, factory
+functions, algorithms, zero-copy views, and linear algebra — and showcases the
+library's signature features: `constexpr` linear algebra, compile-time dimension
+checks, and views that carry their shape in the type.
 
 ---
 
