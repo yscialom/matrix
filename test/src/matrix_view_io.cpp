@@ -145,6 +145,32 @@ TEST(matrix_view_io, contiguous_view_col_out_of_range) {
     ASSERT_THROW({ auto c = v.col(3); }, std::out_of_range);
 }
 
+TEST(matrix_view_io, contiguous_view_slice_out_of_range) {
+    ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+    auto v = m.reshape<2, 3>();
+    // Fix first dim with an out-of-bounds index → throws
+    // NOLINTNEXTLINE(bugprone-unused-return-value,clang-analyzer-cplusplus.Move)
+    ASSERT_THROW({ auto s = v.slice(5); }, std::out_of_range);
+}
+
+TEST(matrix_view_io, contiguous_view_slice_non_prefix_out_of_range) {
+    ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+    auto v = m.reshape<2, 3>();
+    // Fix second dim with an out-of-bounds index → throws
+    // NOLINTNEXTLINE(bugprone-unused-return-value,clang-analyzer-cplusplus.Move)
+    ASSERT_THROW({ auto s = v.slice(ysc::all, 10); }, std::out_of_range);
+}
+
+TEST(matrix_view_io, contiguous_view_slice_all_dims) {
+    ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+    auto v = m.reshape<2, 3>();
+    // slice(all, all) — all specs are all_t, no bounds check, prefix pattern → contiguous view
+    auto s = v.slice(ysc::all, ysc::all);
+    static_assert(std::same_as<decltype(s), ysc::matrix_view<int, ysc::contiguous, 2, 3>>);
+    ASSERT_EQ(s(0, 0), 1);
+    ASSERT_EQ(s(1, 2), 6);
+}
+
 // ─── std::formatter for matrix_view<T, contiguous, Dims...> ──────────────────
 
 #if defined(__cpp_lib_format) && __cpp_lib_format >= 201907L
