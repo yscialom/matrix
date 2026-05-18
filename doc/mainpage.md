@@ -52,7 +52,8 @@ target_link_libraries(my_target PRIVATE ysc::matrix)
 
 ### Manual
 
-Copy `src/include/matrix.hpp` into your project and add its directory to your include path.
+Download `matrix.hpp` from a [GitHub Release](https://github.com/yscialom/matrix/releases) and
+copy it into your project.
 
 ```cpp
 #include "matrix.hpp"
@@ -91,7 +92,16 @@ checks, and views that carry their shape in the type.
 
 The main entry point is the @ref ysc::matrix class.
 
-Related types and concepts:
-- @ref ysc::matrix_zero_t — tag type for explicit zero-initialization (`ysc::zero`)
-- @ref ysc::integral_coordinates — concept constraining `operator()` and `at()` coordinates
-- @ref ysc::matrix_convertible_from — concept constraining converting constructors and assignments
+The API is organized into the following groups — see the [Topics](topics.html) page for a full listing:
+- @ref ysc_construction — Construction (constructors, assignment, `zeros`, `full`, `ones`, `identity`, `generate`)
+- @ref ysc_access — Element access (`operator()`, `at()`)
+- @ref ysc_iterators — Iterators (`begin`, `end`, `rbegin`, `rend`, and const variants)
+- @ref ysc_capacity — Capacity (`size()`, `empty()`, `data()`, `order`, `dimensions`)
+- @ref ysc_modifiers — Modifiers (`fill`, `swap`, `front`, `back`)
+- @ref ysc_comparison — Comparison (`==`, `<=>`)
+- @ref ysc_arithmetic — Arithmetic operators (element-wise and scalar)
+- @ref ysc_algorithms — Algorithms (`apply`, `map`, `sum`, `min`, `max`, `all`, `any`)
+- @ref ysc_linalg — Linear algebra (`transpose`, `matmul`, `dot`)
+- @ref ysc_views — Views (`matrix_view`, `row`, `col`, `slice`, `rows`, `cols`, `reshape`, `flatten`)
+- @ref ysc_io — I/O (`operator<<`, `std::formatter`)
+- @ref ysc_hash — Hash support (`std::hash` specialization)

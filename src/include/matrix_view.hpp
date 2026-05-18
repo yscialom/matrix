@@ -33,7 +33,7 @@
 namespace ysc {
 
 /**
- * @defgroup ysc_view Views
+ * @defgroup ysc_views Views
  * @brief Non-owning read/write views over @c ysc::matrix storage.
  */
 
@@ -50,7 +50,7 @@ namespace ysc {
  * @tparam Storage Storage tag: @c ysc::contiguous or @c ysc::strided
  * @tparam Dims    Dimensions of the view
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 template <class T, class Storage, std::size_t... Dims> class matrix_view;
 
@@ -80,7 +80,7 @@ template <class T, class Storage, std::size_t... Dims> class matrix_view;
  * assert(m(0, 0) == 99);
  * @endcode
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 template <class T, std::size_t... Dimensions> class matrix_view<T, contiguous, Dimensions...> {
 public:
@@ -139,7 +139,7 @@ public:
      * ysc::matrix_view<int, ysc::contiguous, 3> v = m;
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
     constexpr matrix_view(matrix<T, Dimensions...>& m) noexcept : _ptr{m.data()} {}
@@ -158,7 +158,7 @@ public:
      * ysc::matrix_view<const int, ysc::contiguous, 3> v{m};
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class U>
         requires std::same_as<T, const U>
@@ -177,7 +177,7 @@ public:
      * ysc::matrix_view<int, ysc::contiguous, 2, 3> v{buf};
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr explicit matrix_view(T* ptr) noexcept : _ptr{ptr} {}
 
@@ -205,7 +205,7 @@ public:
      * ysc::matrix_view<int, ysc::strided,    2, 3> sv = cv;  // implicit conversion
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
     operator matrix_view<T, strided, Dimensions...>() const noexcept;
@@ -215,56 +215,56 @@ public:
     /**
      * @brief Returns an iterator to the first element (row-major order).
      * @return Iterator to the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr iterator begin() noexcept { return _ptr; }
 
     /**
      * @brief Returns a const iterator to the first element (row-major order).
      * @return Const iterator to the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_iterator begin() const noexcept { return _ptr; }
 
     /**
      * @brief Returns a const iterator to the first element (row-major order).
      * @return Const iterator to the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_iterator cbegin() const noexcept { return _ptr; }
 
     /**
      * @brief Returns an iterator past the last element.
      * @return Iterator past the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr iterator end() noexcept { return end_ptr(); }
 
     /**
      * @brief Returns a const iterator past the last element.
      * @return Const iterator past the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_iterator end() const noexcept { return end_ptr(); }
 
     /**
      * @brief Returns a const iterator past the last element.
      * @return Const iterator past the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_iterator cend() const noexcept { return end_ptr(); }
 
     /**
      * @brief Returns a reverse iterator to the last element.
      * @return Reverse iterator to the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr reverse_iterator rbegin() noexcept { return reverse_iterator{end_ptr()}; }
 
     /**
      * @brief Returns a const reverse iterator to the last element.
      * @return Const reverse iterator to the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reverse_iterator rbegin() const noexcept {
         return const_reverse_iterator{end_ptr()};
@@ -273,7 +273,7 @@ public:
     /**
      * @brief Returns a const reverse iterator to the last element.
      * @return Const reverse iterator to the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reverse_iterator crbegin() const noexcept {
         return const_reverse_iterator{end_ptr()};
@@ -282,14 +282,14 @@ public:
     /**
      * @brief Returns a reverse iterator past the first element.
      * @return Reverse iterator past the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr reverse_iterator rend() noexcept { return reverse_iterator{_ptr}; }
 
     /**
      * @brief Returns a const reverse iterator past the first element.
      * @return Const reverse iterator past the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reverse_iterator rend() const noexcept {
         return const_reverse_iterator{_ptr};
@@ -298,7 +298,7 @@ public:
     /**
      * @brief Returns a const reverse iterator past the first element.
      * @return Const reverse iterator past the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reverse_iterator crend() const noexcept {
         return const_reverse_iterator{_ptr};
@@ -316,7 +316,7 @@ public:
      * static_assert(ysc::matrix_view<int, ysc::contiguous, 2, 3>::size() == 6);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] static constexpr size_type size() noexcept { return linear_size; }
 
@@ -326,7 +326,7 @@ public:
      *
      * @note This function is @c static because the value is a compile-time constant.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] static constexpr size_type max_size() noexcept { return linear_size; }
 
@@ -336,7 +336,7 @@ public:
      *
      * @note This function is @c static because the value is a compile-time constant.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] static constexpr bool empty() noexcept { return linear_size == 0; }
 
@@ -346,7 +346,7 @@ public:
      *
      * Elements are stored in row-major order (rightmost dimension is contiguous).
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr pointer data() noexcept { return _ptr; }
 
@@ -356,7 +356,7 @@ public:
      *
      * Elements are stored in row-major order (rightmost dimension is contiguous).
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_pointer data() const noexcept { return _ptr; }
 
@@ -367,7 +367,7 @@ public:
      *
      * Calling @c front() on an empty view is undefined behavior.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr reference front() noexcept { return *_ptr; }
 
@@ -376,7 +376,7 @@ public:
      *
      * Calling @c front() on an empty view is undefined behavior.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reference front() const noexcept { return *_ptr; }
 
@@ -385,7 +385,7 @@ public:
      *
      * Calling @c back() on an empty view is undefined behavior.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     constexpr reference back() noexcept { return *(end_ptr() - 1); }
@@ -395,7 +395,7 @@ public:
      *
      * Calling @c back() on an empty view is undefined behavior.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
     [[nodiscard]] constexpr const_reference back() const noexcept { return *(end_ptr() - 1); }
@@ -414,7 +414,7 @@ public:
      * assert(v(1, 2) == 6);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
@@ -439,7 +439,7 @@ public:
      * assert(m(0, 0) == 99);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
@@ -467,7 +467,7 @@ public:
      * assert(v.at(1, 2) == 6);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
@@ -507,7 +507,7 @@ public:
      * assert(m(0, 0) == 99);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
@@ -543,7 +543,7 @@ public:
      * assert(m(0) == 0 && m(2) == 0);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) {
         std::fill(begin(), end(), value);
@@ -565,7 +565,7 @@ public:
      * auto sub = row0.slice(2);    // matrix_view<int, contiguous, 2> — last 2 elements
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <typename... Specs>
         requires(sizeof...(Specs) <= order) &&
@@ -617,7 +617,7 @@ public:
      * auto r   = v2d.row(1);  // contiguous view of row 1 — 4 elements
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t D = order>
         requires(D == 2)
@@ -642,7 +642,7 @@ public:
      * auto c   = v2d.col(2);  // strided view of column 2 — 3 elements, stride 4
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t D = order>
         requires(D == 2)
@@ -684,7 +684,7 @@ public:
  * assert(m(1, 2) == 99);
  * @endcode
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 template <class T, std::size_t... Dimensions> class matrix_view<T, strided, Dimensions...> {
 public:
@@ -724,7 +724,7 @@ public:
      * Advances by @c _stride elements per step.  Satisfies
      * `std::random_access_iterator` (but not `std::contiguous_iterator`).
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     struct iterator {
         /** @brief Iterator category: random-access (not contiguous). */
@@ -818,7 +818,7 @@ public:
 
     /**
      * @brief Const random-access iterator over a 1-D strided view.
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     struct const_iterator {
         /** @brief Iterator category: random-access (not contiguous). */
@@ -932,7 +932,7 @@ public:
      * assert(v(0) == 1 && v(1) == 3 && v(2) == 5);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr explicit matrix_view(T* ptr,
                                    std::array<std::size_t, sizeof...(Dimensions)> strides) noexcept
@@ -961,21 +961,21 @@ public:
      * static_assert(ysc::matrix_view<int, ysc::strided, 3, 4>::size() == 12);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] static constexpr size_type size() noexcept { return linear_size; }
 
     /**
      * @brief Returns the maximum number of elements the view can address.
      * @return Maximum number of elements (always equal to @c size())
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] static constexpr size_type max_size() noexcept { return linear_size; }
 
     /**
      * @brief Returns whether the view has no elements.
      * @return @c true if @c linear_size == 0
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] static constexpr bool empty() noexcept { return linear_size == 0; }
 
@@ -993,7 +993,7 @@ public:
      * int sum = std::accumulate(col.begin(), col.end(), 0);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     iterator begin() noexcept
         requires(order == 1)
@@ -1005,7 +1005,7 @@ public:
     /**
      * @brief Returns a const iterator to the first element of a 1-D strided view.
      * @return Const iterator to the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] const_iterator begin() const noexcept
         requires(order == 1)
@@ -1017,7 +1017,7 @@ public:
     /**
      * @brief Returns a const iterator to the first element of a 1-D strided view.
      * @return Const iterator to the first element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] const_iterator cbegin() const noexcept
         requires(order == 1)
@@ -1029,7 +1029,7 @@ public:
     /**
      * @brief Returns an iterator past the last element of a 1-D strided view.
      * @return Iterator past the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     iterator end() noexcept
         requires(order == 1)
@@ -1041,7 +1041,7 @@ public:
     /**
      * @brief Returns a const iterator past the last element of a 1-D strided view.
      * @return Const iterator past the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] const_iterator end() const noexcept
         requires(order == 1)
@@ -1053,7 +1053,7 @@ public:
     /**
      * @brief Returns a const iterator past the last element of a 1-D strided view.
      * @return Const iterator past the last element
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] const_iterator cend() const noexcept
         requires(order == 1)
@@ -1079,7 +1079,7 @@ public:
      * assert(col(1) == m(1, 2));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...> && (sizeof...(Coords) == sizeof...(Dimensions))
@@ -1111,7 +1111,7 @@ public:
      * assert(m(1, 2) == 99);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...> && (sizeof...(Coords) == sizeof...(Dimensions))
@@ -1145,7 +1145,7 @@ public:
      * assert(col.at(0) == m(0, 2));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...> && (sizeof...(Coords) == sizeof...(Dimensions))
@@ -1185,7 +1185,7 @@ public:
      * assert(m(1, 2) == 99);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <class... Coords>
         requires integral_coordinates<Coords...> && (sizeof...(Coords) == sizeof...(Dimensions))
@@ -1219,7 +1219,7 @@ public:
      * assert(col.front() == m(0, 1));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr reference front() noexcept { return (*this)(((void)Dimensions, std::size_t{0})...); }
 
@@ -1228,7 +1228,7 @@ public:
      *
      * Calling @c front() on an empty view is undefined behavior.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reference front() const noexcept {
         return (*this)(((void)Dimensions, std::size_t{0})...);
@@ -1245,7 +1245,7 @@ public:
      * assert(col.back() == m(2, 1));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr reference back() noexcept { return (*this)((Dimensions - 1)...); }
 
@@ -1254,7 +1254,7 @@ public:
      *
      * Calling @c back() on an empty view is undefined behavior.
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr const_reference back() const noexcept {
         return (*this)((Dimensions - 1)...);
@@ -1275,7 +1275,7 @@ public:
      * assert(m(1, 2) == 7);
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     constexpr void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) {
         for (std::size_t k = 0; k < linear_size; ++k) {
@@ -1294,7 +1294,7 @@ public:
  * The natural strides of a row-major contiguous view are computed at compile time.
  * Stride at dimension @c i = product of all dimensions after @c i.
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 template <class T, std::size_t... Dimensions>
 matrix_view<T, contiguous, Dimensions...>::operator matrix_view<T, strided, Dimensions...>()
