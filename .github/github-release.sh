@@ -3,7 +3,7 @@
 #
 # Usage :
 #   ./release.sh prepare  M.m.p   — branche release, bump CMakeLists.txt, PR vers master
-#   ./release.sh finalize M.m.p   — tag signé sur master, PR back-merge vers develop
+#   ./release.sh finalize M.m.p   — CHANGELOG + tag signé sur la branche release
 
 set -euo pipefail
 
@@ -106,7 +106,6 @@ phase_finalize() {
 
     require_cmd git
     require_cmd gh
-    require_cmd git-cliff
     check_clean_worktree
 
     local current_branch
@@ -121,14 +120,6 @@ phase_finalize() {
         || die "CMakeLists.txt affiche ${actual} et non ${version}"
 
     git pull --ff-only origin "$branch"
-
-    echo "==> Génération du CHANGELOG..."
-    git-cliff --config cliff.toml --tag "$tag" --output CHANGELOG.md
-    git add CHANGELOG.md
-    if ! git diff --cached --quiet; then
-        git commit -m "chore(release): update CHANGELOG for ${tag}"
-        git push origin "$branch"
-    fi
 
     echo "==> Création du tag signé ${tag} sur ${branch}..."
     git tag -s -a "$tag" -m "Release ${tag}"
