@@ -3,13 +3,30 @@
 #
 # Usage :
 #   ./release.sh prepare  M.m.p   — branche release, bump CMakeLists.txt, PR vers master
-#   ./release.sh finalize M.m.p   — tag signé sur master, PR back-merge vers develop
+#   ./release.sh finalize M.m.p   — CHANGELOG + tag signé sur la branche release
 
 set -euo pipefail
 
 die()         { echo "ERREUR: $*" >&2; exit 1; }
 require_cmd() { command -v "$1" &>/dev/null || die "commande manquante : $1"; }
 separator()   { echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; }
+
+# ---------------------------------------------------------------------------
+# ensure_git_cliff — utilise git-cliff système ou le télécharge dans /tmp
+# ---------------------------------------------------------------------------
+GIT_CLIFF_VERSION="2.13.1"
+ensure_git_cliff() {
+    if command -v git-cliff &>/dev/null; then return 0; fi
+    local bin_dir="/tmp/git-cliff-bin"
+    local bin="${bin_dir}/git-cliff"
+    if [[ -x "$bin" ]]; then export PATH="${bin_dir}:${PATH}"; return 0; fi
+    echo "==> git-cliff non trouvé — téléchargement de la version ${GIT_CLIFF_VERSION}..."
+    mkdir -p "$bin_dir"
+    curl -sSfL \
+        "https://github.com/orhun/git-cliff/releases/download/v${GIT_CLIFF_VERSION}/git-cliff-${GIT_CLIFF_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
+        | tar -xz --strip-components=1 -C "$bin_dir" "git-cliff-${GIT_CLIFF_VERSION}/git-cliff"
+    export PATH="${bin_dir}:${PATH}"
+}
 
 # ---------------------------------------------------------------------------
 # parse_version VERSION → sets MAJOR MINOR PATCH
@@ -106,7 +123,7 @@ phase_finalize() {
 
     require_cmd git
     require_cmd gh
-    require_cmd git-cliff
+    ensure_git_cliff
     check_clean_worktree
 
     local current_branch
