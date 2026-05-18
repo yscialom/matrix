@@ -59,7 +59,7 @@ The CHANGELOG is generated automatically from these messages on each release via
 ## Releasing
 
 `.github/github-release.sh` at the root of the repository semi-automates the release process.
-It requires `git` and `gh` (GitHub CLI, authenticated).
+It requires `git`, `gh` (GitHub CLI, authenticated), and `git-cliff`.
 
 ### Step 1 — Prepare the release
 
@@ -71,25 +71,36 @@ This:
 - creates branch `release/vM.m.p` from the current branch
 - bumps `VERSION_MAJOR/MINOR/PATCH` in `CMakeLists.txt`
 - commits (title `Release vM.m.p`, body = epic dashboard from `user-stories.md`)
-- opens a PR `release/vM.m.p` → `master`
+- pushes the branch and opens a PR `release/vM.m.p` → `master`
 
-### Step 2 — Merge the PR (manual)
+### Step 2 — Wait for CI (manual)
 
-Wait for CI to be green, then merge the PR into `master` (merge commit).
+Wait for CI to be green on the PR. **Do not merge yet.**
 
 ### Step 3 — Finalize the release
+
+From the `release/vM.m.p` branch:
 
 ```bash
 ./.github/github-release.sh finalize M.m.p
 ```
 
 This:
-- creates and pushes the signed tag `vM.m.p` on `master`
-- opens a PR `master` → `develop` to bring the tag into `develop`'s history
+- generates `CHANGELOG.md` with `git-cliff` and commits it on the release branch
+- creates and pushes the signed tag `vM.m.p` on the release branch
+- the CI triggered by the tag handles: version verification, build, and GitHub Release publication
 
-### Step 4 — Merge the back-merge PR (manual)
+### Step 4 — Merge the release PR (manual)
 
-Merge the `master` → `develop` PR (merge commit).
+Wait for the tag-triggered CI to be green, then merge the PR `release/vM.m.p` → `master`
+(merge commit).
 
-The CI triggered by the tag handles the rest: version verification, build,
-CHANGELOG generation, and GitHub Release publication.
+### Step 5 — Back-merge into develop (manual)
+
+```bash
+gh pr create --base develop --head master \
+  --title "chore: back-merge vM.m.p into develop" \
+  --body "Back-merge after release vM.m.p."
+```
+
+Merge this PR (merge commit) to bring the release into `develop`'s history.

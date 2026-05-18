@@ -3,7 +3,7 @@
 #
 # Usage :
 #   ./release.sh prepare  M.m.p   — branche release, bump CMakeLists.txt, PR vers master
-#   ./release.sh finalize M.m.p   — tag signé sur master, PR back-merge vers develop
+#   ./release.sh finalize M.m.p   — CHANGELOG + tag signé sur la branche release
 
 set -euo pipefail
 
@@ -90,9 +90,8 @@ phase_prepare() {
     echo "  PR créée : ${pr_url}"
     echo ""
     echo "  Prochaines étapes (manuelles) :"
-    echo "  1. Attendre que la CI soit verte"
-    echo "  2. Merger la PR (merge commit) dans master"
-    echo "  3. Lancer : ./release.sh finalize ${version}"
+    echo "  1. Attendre que la CI soit verte sur la PR"
+    echo "  2. Lancer : ./.github/github-release.sh finalize ${version}"
     separator
 }
 
@@ -103,39 +102,40 @@ phase_finalize() {
     local version="$1"
     parse_version "$version"
     local tag="v${version}"
+    local branch="release/${tag}"
 
     require_cmd git
     require_cmd gh
     check_clean_worktree
 
-    echo "==> Synchronisation de master..."
-    git fetch origin
-    git checkout master
-    git merge --ff-only origin/master
+    local current_branch
+    current_branch=$(git symbolic-ref --short HEAD 2>/dev/null) \
+        || die "HEAD détaché — positionnez-vous sur ${branch}"
+    [[ "$current_branch" == "$branch" ]] \
+        || die "branche courante '${current_branch}' ≠ '${branch}'"
 
     local actual
     actual=$(cmake_version)
     [[ "$actual" == "$version" ]] \
-        || die "master affiche la version ${actual} et non ${version} — la PR release est-elle mergée ?"
+        || die "CMakeLists.txt affiche ${actual} et non ${version}"
 
-    echo "==> Création du tag signé ${tag}..."
+    git pull --ff-only origin "$branch"
+
+    echo "==> Création du tag signé ${tag} sur ${branch}..."
     git tag -s -a "$tag" -m "Release ${tag}"
     git push origin "$tag"
 
-    echo "==> Ouverture de la PR back-merge master → develop..."
-    local pr_url
-    pr_url=$(gh pr create \
-        --base develop \
-        --head master \
-        --title "chore: back-merge ${tag} into develop" \
-        --body "Back-merge after release ${tag} — récupère le tag dans l'historique de develop.")
-
     separator
-    echo "  Tag ${tag} poussé."
-    echo "  PR back-merge créée : ${pr_url}"
+    echo "  Tag ${tag} poussé sur ${branch}."
+    echo "  La CI crée le GitHub Release automatiquement."
     echo ""
-    echo "  Dernière étape (manuelle) :"
-    echo "  1. Merger la PR back-merge dans develop"
+    echo "  Prochaines étapes (manuelles) :"
+    echo "  1. Attendre que la CI (déclenchée par le tag) soit verte"
+    echo "  2. Merger la PR ${branch} → master (merge commit)"
+    echo "  3. Créer et merger la PR back-merge master → develop :"
+    echo "       gh pr create --base develop --head master \\"
+    echo "         --title 'chore: back-merge ${tag} into develop' \\"
+    echo "         --body 'Back-merge after release ${tag}.'"
     separator
 }
 
