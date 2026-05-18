@@ -90,8 +90,6 @@ checks, and views that carry their shape in the type.
 
 ## API Reference
 
-The main entry point is the @ref ysc::matrix class.
-
 The API is organized into the following groups — see the [Topics](topics.html) page for a full listing:
 - @ref ysc_construction — Construction (constructors, assignment, `zeros`, `full`, `ones`, `identity`, `generate`)
 - @ref ysc_access — Element access (`operator()`, `at()`)
@@ -105,3 +103,8 @@ The API is organized into the following groups — see the [Topics](topics.html)
 - @ref ysc_views — Views (`matrix_view`, `row`, `col`, `slice`, `rows`, `cols`, `reshape`, `flatten`)
 - @ref ysc_io — I/O (`operator<<`, `std::formatter`)
 - @ref ysc_hash — Hash support (`std::hash` specialization)
+
+You can also browse the full documentation for the main library classes:
+- Owning matrix — @ref ysc::matrix
+- Non-owning continuous view — @ref ysc::matrix_view< T, contiguous, Dimensions... >
+- Non-owning strided view — @ref ysc::matrix_view< T, strided, Dimensions... >
