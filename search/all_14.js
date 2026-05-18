@@ -1,15 +1,7 @@
 var searchData=
 [
-  ['l_20api_20publique_0',['US-043 — Documentation Doxygen complète de l&apos;API publique',['../md_doc_2user-stories.html#autotoc_md259',1,'']]],
-  ['la_20ci_1',['US-049 — Amalgamation auto-générée par la CI',['../md_doc_2user-stories.html#autotoc_md285',1,'']]],
-  ['layout_20mémoire_20sémantique_2',['Layout mémoire &amp; sémantique',['../md_doc_2user-stories.html#autotoc_md74',1,'']]],
-  ['lcov_20codecov_3',['US-002 — Couverture de code (gcov + lcov + Codecov)',['../md_doc_2user-stories.html#autotoc_md87',1,'']]],
-  ['le_20conflit_20tt_20feature_20fill_20tt_4',['US-011 — Résoudre le conflit &lt;tt&gt;feature-fill&lt;/tt&gt;',['../md_doc_2user-stories.html#autotoc_md124',1,'']]],
-  ['les_20tt_20nolintnextline_20tt_20dans_20tt_20matrix_20hpp_20tt_5',['US-057 — Centraliser les &lt;tt&gt;NOLINTNEXTLINE&lt;/tt&gt; dans &lt;tt&gt;matrix.hpp&lt;/tt&gt;',['../md_doc_2user-stories.html#autotoc_md335',1,'']]],
-  ['les_20us_6',['Décisions transverses (s&apos;appliquent à toutes les US)',['../md_doc_2user-stories.html#autotoc_md71',1,'']]],
-  ['library_7',['ysc::matrix — Multi-dimensional Array Library',['../index.html',1,'']]],
-  ['linalg_20valeurs_20pré_20calculées_8',['US-065 — Tests de référence linalg (valeurs pré-calculées)',['../md_doc_2user-stories.html#autotoc_md376',1,'']]],
-  ['linear_20algebra_9',['Linear algebra',['../group__ysc__linalg.html',1,'']]],
-  ['linear_20algebra_20essentials_10',['6. Linear algebra essentials',['../cookbook.html#autotoc_md24',1,'']]],
-  ['list_11',['Todo List',['../todo.html',1,'']]]
+  ['pad_5fright_5fwith_5fall_0',['pad_right_with_all',['../structysc_1_1detail_1_1pad__right__with__all.html',1,'ysc::detail']]],
+  ['pointer_1',['pointer',['../classysc_1_1matrix.html#afc89cd1b879c41fcd4a49db213b43cb6',1,'ysc::matrix::pointer'],['../classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a210b6c2651136fd24b8c671a670696c4',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::pointer'],['../classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#a3c4138667f49c18d3c947b587f1f9f34',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::pointer'],['../structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#a782a343bb0daaf08e63aaf4630cff352',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator::pointer'],['../structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#ad498aa134404e8b60bbc8e92428322a0',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator::pointer']]],
+  ['practical_20recipes_20for_20ysc_3a_3amatrix_2',['Cookbook — Practical Recipes for ysc::matrix',['../cookbook.html',1,'']]],
+  ['prepend_5fval_3',['prepend_val',['../structysc_1_1detail_1_1prepend__val.html',1,'ysc::detail']]]
 ];

@@ -1,16 +1,18 @@
 var searchData=
 [
-  ['_3a_20cache_20vcpkg_0',['US-066 — CI Windows : cache vcpkg',['../md_doc_2user-stories.html#autotoc_md381',1,'']]],
-  ['_3a_20cible_20tt_20ysc_20matrix_20tt_20alias_20install_20tt_20find_5fpackage_20tt_1',['US-045 — Packaging CMake : cible &lt;tt&gt;ysc-matrix&lt;/tt&gt;, alias, install, &lt;tt&gt;find_package&lt;/tt&gt;',['../md_doc_2user-stories.html#autotoc_md265',1,'']]],
-  ['_3a_20détection_20de_20vue_20dangling_2',['US-064 — Test ASan : détection de vue dangling',['../md_doc_2user-stories.html#autotoc_md371',1,'']]],
-  ['_3a_20extraction_20d_20un_20sous_20bloc_20n_20d_3',['US-061 — &lt;tt&gt;submatrix&lt;/tt&gt; : extraction d&apos;un sous-bloc N-D',['../md_doc_2user-stories.html#autotoc_md356',1,'']]],
-  ['_3a_20i_20o_20ctor_20const_20vues_20composables_4',['US-052 — &lt;tt&gt;matrix_view&lt;/tt&gt; : I/O, ctor const, vues composables',['../md_doc_2user-stories.html#autotoc_md310',1,'']]],
-  ['_3a_20itérateur_20de_20coordonnées_5',['US-062 — &lt;tt&gt;enumerate()&lt;/tt&gt; : itérateur de coordonnées',['../md_doc_2user-stories.html#autotoc_md361',1,'']]],
-  ['_3a_20itérateurs_20strided_20tt_20front_20tt_20tt_20back_20tt_20tt_20fill_20tt_6',['US-051 — &lt;tt&gt;matrix_view&lt;/tt&gt; : itérateurs strided, &lt;tt&gt;front&lt;/tt&gt;/&lt;tt&gt;back&lt;/tt&gt;/&lt;tt&gt;fill&lt;/tt&gt;',['../md_doc_2user-stories.html#autotoc_md305',1,'']]],
-  ['_3a_20positionnement_20marketing_20v1_7',['US-047 — README et &lt;tt&gt;mainpage.md&lt;/tt&gt; : positionnement marketing v1',['../md_doc_2user-stories.html#autotoc_md275',1,'']]],
-  ['_3a_20promesse_20de_20stabilité_20semver_20v1_200_200_8',['US-068 — Migration guide : promesse de stabilité SemVer v1.0.0',['../md_doc_2user-stories.html#autotoc_md391',1,'']]],
-  ['_3a_20tt_20editorconfig_20tt_20tt_20security_20md_20tt_20tt_20code_5fof_5fconduct_20md_20tt_20dependabot_9',['US-067 — Hygiène repo : &lt;tt&gt;.editorconfig&lt;/tt&gt;, &lt;tt&gt;SECURITY.md&lt;/tt&gt;, &lt;tt&gt;CODE_OF_CONDUCT.md&lt;/tt&gt;, Dependabot',['../md_doc_2user-stories.html#autotoc_md386',1,'']]],
-  ['_3a_20tt_20operator_20tt_20templatés_20sans_20tt_20return_20this_20tt_10',['US-013 — Fix bug : &lt;tt&gt;operator=&lt;/tt&gt; templatés sans &lt;tt&gt;return *this;&lt;/tt&gt;',['../md_doc_2user-stories.html#autotoc_md133',1,'']]],
-  ['_3a_20tt_20std_3a_3aarray_20tt_20tt_20std_3a_3aspan_20tt_20générateur_11',['US-053 — Constructeurs additionnels : &lt;tt&gt;std::array&lt;/tt&gt;, &lt;tt&gt;std::span&lt;/tt&gt;, générateur',['../md_doc_2user-stories.html#autotoc_md315',1,'']]],
-  ['_3a_20tt_20sum_20tt_20tt_20min_20tt_20tt_20max_20tt_20tt_20all_20tt_20tt_20any_20tt_12',['US-031 — Réductions : &lt;tt&gt;sum&lt;/tt&gt;, &lt;tt&gt;min&lt;/tt&gt;, &lt;tt&gt;max&lt;/tt&gt;, &lt;tt&gt;all&lt;/tt&gt;, &lt;tt&gt;any&lt;/tt&gt;',['../md_doc_2user-stories.html#autotoc_md211',1,'']]]
+  ['access_0',['Element access',['../group__ysc__access.html',1,'']]],
+  ['algebra_1',['Linear algebra',['../group__ysc__linalg.html',1,'']]],
+  ['algebra_20at_20compile_20time_2',['2. Algebra at compile time',['../cookbook.html#autotoc_md14',1,'']]],
+  ['algebra_20essentials_3',['6. Linear algebra essentials',['../cookbook.html#autotoc_md18',1,'']]],
+  ['algorithms_4',['Algorithms',['../group__ysc__algorithms.html',1,'']]],
+  ['all_5',['all',['../group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00',1,'ysc::all'],['../group__ysc__algorithms.html#ga0fcc364b5cbf394eb9e1c0947f71c53d',1,'ysc::matrix::all()']]],
+  ['all_5ft_6',['all_t',['../structysc_1_1all__t.html',1,'ysc']]],
+  ['and_20slicing_7',['5. Zero-copy views and slicing',['../cookbook.html#autotoc_md17',1,'']]],
+  ['any_8',['any',['../group__ysc__algorithms.html#ga0322bb96e2983098a6876d4e649faba3',1,'ysc::matrix']]],
+  ['api_20reference_9',['API Reference',['../index.html#autotoc_md11',1,'']]],
+  ['apply_10',['apply',['../group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9',1,'ysc::matrix']]],
+  ['arithmetic_20operators_11',['Arithmetic operators',['../group__ysc__arithmetic.html',1,'']]],
+  ['array_20library_12',['ysc::matrix — Multi-dimensional Array Library',['../index.html',1,'']]],
+  ['at_13',['at',['../group__ysc__views.html#ga11b5ba355b81decde0b1341c799d3400',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::at(Coords... coords) const'],['../group__ysc__views.html#ga48accd4129c3d586f35f1b63bea6d2b9',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::at(Coords... coords)'],['../group__ysc__views.html#ga21befd9200319571be66bbda8692e614',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::at(Coords... coords) const'],['../group__ysc__views.html#ga3eb080b91043df79a4362e05ae3f20a1',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::at(Coords... coords)'],['../group__ysc__access.html#gaf8b0b25ddfc410cea350fcff438a130b',1,'ysc::matrix::at(Coords... coordinates)'],['../group__ysc__access.html#gad3619924f8273c8db733a8a1b342459a',1,'ysc::matrix::at(Coords... coordinates) const']]],
+  ['at_20compile_20time_14',['2. Algebra at compile time',['../cookbook.html#autotoc_md14',1,'']]]
 ];

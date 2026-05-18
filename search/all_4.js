@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['4_20—_20merge_20the_20back_20merge_20pr_20manual_0',['Step 4 — Merge the back-merge PR (manual)',['../md_CONTRIBUTING.html#autotoc_md61',1,'']]],
-  ['4_200_202026_2005_2003_1',['[0.4.0] - 2026-05-03',['../md_CHANGELOG.html#autotoc_md33',1,'']]],
-  ['4_202026_2005_2003_2',['[0.2.4] - 2026-05-03',['../md_CHANGELOG.html#autotoc_md38',1,'']]],
-  ['4_20map_20reduce_20transform_3',['4. Map, reduce, transform',['../cookbook.html#autotoc_md20',1,'']]]
+  ['5_20zero_20copy_20views_20and_20slicing_0',['5. Zero-copy views and slicing',['../cookbook.html#autotoc_md17',1,'']]]
 ];

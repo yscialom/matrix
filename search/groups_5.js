@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['support_0',['Hash support',['../group__ysc__hash.html',1,'']]]
+  ['linear_20algebra_0',['Linear algebra',['../group__ysc__linalg.html',1,'']]]
 ];

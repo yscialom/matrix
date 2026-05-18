@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -5,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ysc-matrix: Cookbook</title>
+<title>ysc-matrix: Cookbook — Practical Recipes for ysc::matrix</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -24,6 +25,17 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -97,15 +109,13 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Cookbook</div></div>
+  <div class="headertitle"><div class="title">Cookbook — Practical Recipes for ysc::matrix</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md12"></a>
-Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
-<p>Six self-contained recipes for the first things you will want to do with <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code>. Each one also highlights a property of the library that sets it apart from raw C arrays, nested <code>std::array</code>, Eigen, or <code>std::mdspan</code>.</p>
+<div class="textblock"><p>Six self-contained recipes for the first things you will want to do with <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code>. Each one also highlights a property of the library that sets it apart from raw C arrays, nested <code>std::array</code>, Eigen, or <code>std::mdspan</code>.</p>
 <hr  />
-<h2><a class="anchor" id="autotoc_md14"></a>
-1. Hello, matrix</h2>
+<h1><a class="anchor" id="autotoc_md13"></a>
+1. Hello, matrix</h1>
 <p>Aggregate-initialize a matrix, mutate one element through <code>operator()</code>, and print it. Same syntax as a C array — but bounds-checking, comparison, iteration, and <code>std::format</code> come for free.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -119,21 +129,19 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 <div class="line">    m(1, 2) = 42;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Bounds-checked read — throws std::out_of_range on bad coordinates</span></div>
-<div class="line">    <span class="keywordtype">int</span> top_right = m.<a class="code hl_function" href="classysc_1_1matrix.html#ad3619924f8273c8db733a8a1b342459a">at</a>(0, 2);</div>
+<div class="line">    <span class="keywordtype">int</span> top_right = m.<a class="code hl_function" href="group__ysc__access.html#gad3619924f8273c8db733a8a1b342459a">at</a>(0, 2);</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;m = &quot;</span> &lt;&lt; m &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;m(0, 2) = &quot;</span> &lt;&lt; top_right &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00084">matrix.hpp:84</a></div></div>
-<div class="ttc" id="aclassysc_1_1matrix_html_ad3619924f8273c8db733a8a1b342459a"><div class="ttname"><a href="classysc_1_1matrix.html#ad3619924f8273c8db733a8a1b342459a">ysc::matrix::at</a></div><div class="ttdeci">const T &amp; at(Coords... coordinates) const</div><div class="ttdoc">Returns a reference to the element at coordinates.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01128">matrix.hpp:1128</a></div></div>
+<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00114">matrix.hpp:114</a></div></div>
+<div class="ttc" id="agroup__ysc__access_html_gad3619924f8273c8db733a8a1b342459a"><div class="ttname"><a href="group__ysc__access.html#gad3619924f8273c8db733a8a1b342459a">ysc::matrix::at</a></div><div class="ttdeci">const T &amp; at(Coords... coordinates) const</div><div class="ttdoc">Returns a const reference to the element at coordinates (bounds-checked).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01451">matrix.hpp:1451</a></div></div>
 <div class="ttc" id="amatrix_8hpp_html"><div class="ttname"><a href="matrix_8hpp.html">matrix.hpp</a></div></div>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> The storage is a <code>std::array&lt;int, 6&gt;</code> — same layout as <code>int m[2][3]</code>, zero indirection, zero allocation. You only pay for what you use. </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md15"></a>
-&lt;/blockquote&gt;</h2>
-<h2><a class="anchor" id="autotoc_md16"></a>
-2. Algebra at compile time</h2>
+<h1><a class="anchor" id="autotoc_md14"></a>
+2. Algebra at compile time</h1>
 <p>Every linear-algebra primitive is <code>constexpr</code>. Move invariants from the test suite into the build itself — broken dimensions or wrong values become compile errors, not runtime surprises.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
 <div class="line"> </div>
@@ -149,17 +157,15 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 <div class="line">    <span class="keyword">static_assert</span>(<a class="code hl_function" href="group__ysc__linalg.html#gaa8fb95914f5faec6a8b80f7c60306a2f">ysc::matmul</a>(A, A)(0, 0) == 7);  <span class="comment">// (A*A)(0,0) = 1+6</span></div>
 <div class="line">    <span class="keyword">static_assert</span>(A.<a class="code hl_function" href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">sum</a>() == 10);</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__ysc__algorithms_html_ga9f07763e5ad451cbbd4e586e85a0b980"><div class="ttname"><a href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">ysc::matrix::sum</a></div><div class="ttdeci">constexpr U sum() const std</div><div class="ttdoc">Returns the sum of all elements.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00948">matrix.hpp:948</a></div></div>
-<div class="ttc" id="agroup__ysc__linalg_html_ga375aa7c0a09c50f9349c9bf6b245ec19"><div class="ttname"><a href="group__ysc__linalg.html#ga375aa7c0a09c50f9349c9bf6b245ec19">ysc::dot</a></div><div class="ttdeci">constexpr auto dot(const matrix&lt; Ta, N &gt; &amp;a, const matrix&lt; Tb, N &gt; &amp;b) -&gt; std::invoke_result_t&lt; std::multiplies&lt;&gt;, const Ta &amp;, const Tb &amp; &gt;</div><div class="ttdoc">Returns the dot product of two 1D matrices (vectors) of the same length.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01736">matrix.hpp:1736</a></div></div>
-<div class="ttc" id="agroup__ysc__linalg_html_gaa8fb95914f5faec6a8b80f7c60306a2f"><div class="ttname"><a href="group__ysc__linalg.html#gaa8fb95914f5faec6a8b80f7c60306a2f">ysc::matmul</a></div><div class="ttdeci">constexpr auto matmul(const matrix&lt; Ta, M, N &gt; &amp;a, const matrix&lt; Tb, N, P &gt; &amp;b) -&gt; matrix&lt; std::invoke_result_t&lt; std::multiplies&lt;&gt;, const Ta &amp;, const Tb &amp; &gt;, M, P &gt;</div><div class="ttdoc">Computes the matrix product of two 2D matrices.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01699">matrix.hpp:1699</a></div></div>
-<div class="ttc" id="agroup__ysc__linalg_html_gadb001997450558cad3ecbc4c5ebcb720"><div class="ttname"><a href="group__ysc__linalg.html#gadb001997450558cad3ecbc4c5ebcb720">ysc::transpose</a></div><div class="ttdeci">constexpr matrix&lt; T, C, R &gt; transpose(const matrix&lt; T, R, C &gt; &amp;m)</div><div class="ttdoc">Returns the transpose of a 2D matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01665">matrix.hpp:1665</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_ga9f07763e5ad451cbbd4e586e85a0b980"><div class="ttname"><a href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">ysc::matrix::sum</a></div><div class="ttdeci">constexpr U sum() const std</div><div class="ttdoc">Returns the sum of all elements.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01218">matrix.hpp:1218</a></div></div>
+<div class="ttc" id="agroup__ysc__linalg_html_ga375aa7c0a09c50f9349c9bf6b245ec19"><div class="ttname"><a href="group__ysc__linalg.html#ga375aa7c0a09c50f9349c9bf6b245ec19">ysc::dot</a></div><div class="ttdeci">constexpr auto dot(const matrix&lt; Ta, N &gt; &amp;a, const matrix&lt; Tb, N &gt; &amp;b) -&gt; std::invoke_result_t&lt; std::multiplies&lt;&gt;, const Ta &amp;, const Tb &amp; &gt;</div><div class="ttdoc">Returns the dot product of two 1D matrices (vectors) of the same length.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02086">matrix.hpp:2086</a></div></div>
+<div class="ttc" id="agroup__ysc__linalg_html_gaa8fb95914f5faec6a8b80f7c60306a2f"><div class="ttname"><a href="group__ysc__linalg.html#gaa8fb95914f5faec6a8b80f7c60306a2f">ysc::matmul</a></div><div class="ttdeci">constexpr auto matmul(const matrix&lt; Ta, M, N &gt; &amp;a, const matrix&lt; Tb, N, P &gt; &amp;b) -&gt; matrix&lt; std::invoke_result_t&lt; std::multiplies&lt;&gt;, const Ta &amp;, const Tb &amp; &gt;, M, P &gt;</div><div class="ttdoc">Computes the matrix product of two 2D matrices.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02049">matrix.hpp:2049</a></div></div>
+<div class="ttc" id="agroup__ysc__linalg_html_gadb001997450558cad3ecbc4c5ebcb720"><div class="ttname"><a href="group__ysc__linalg.html#gadb001997450558cad3ecbc4c5ebcb720">ysc::transpose</a></div><div class="ttdeci">constexpr matrix&lt; T, C, R &gt; transpose(const matrix&lt; T, R, C &gt; &amp;m)</div><div class="ttdoc">Returns the transpose of a 2D matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02015">matrix.hpp:2015</a></div></div>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> Neither Eigen nor <code>std::mdspan</code> lets you evaluate a matrix product inside a <code>static_assert</code>. Here the whole API is <code>constexpr</code>, so unit-test-grade checks run during compilation. </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md17"></a>
-&lt;/blockquote&gt;</h2>
-<h2><a class="anchor" id="autotoc_md18"></a>
-3. Factory functions</h2>
+<h1><a class="anchor" id="autotoc_md15"></a>
+3. Factory functions</h1>
 <p>Five constexpr factories cover the matrices you most often need to type out by hand. All are type-safe and dimension-aware.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
 <div class="line"> </div>
@@ -178,10 +184,8 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> All five live in the same header you already include, all are <code>constexpr</code>, and all carry their dimensions in the type. No <code>Eigen::MatrixXd::Identity(n, n)</code> runtime sizing surprise. </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md19"></a>
-&lt;/blockquote&gt;</h2>
-<h2><a class="anchor" id="autotoc_md20"></a>
-4. Map, reduce, transform</h2>
+<h1><a class="anchor" id="autotoc_md16"></a>
+4. Map, reduce, transform</h1>
 <p>Mutate in place with <code>apply</code>, build a new matrix with <code>map</code>, reduce with <code>sum</code> / <code>min</code> / <code>max</code> / <code>all</code> / <code>any</code>. No need to drop down to STL algorithms for the common cases.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -200,24 +204,22 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 <div class="line">    <span class="keywordtype">double</span> total    = sq.<a class="code hl_function" href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">sum</a>();</div>
 <div class="line">    <span class="keywordtype">double</span> smallest = m.<a class="code hl_function" href="group__ysc__algorithms.html#ga5e5791c8f78b0a2ffdf371c6f63fffc2">min</a>();</div>
 <div class="line">    <span class="keywordtype">double</span> largest  = m.<a class="code hl_function" href="group__ysc__algorithms.html#ga3a8a176fdc174d70bb6eb8f0e868450a">max</a>();</div>
-<div class="line">    <span class="keywordtype">bool</span>   nonneg   = sq.<a class="code hl_function" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">map</a>([](<span class="keywordtype">double</span> x) { <span class="keywordflow">return</span> x &gt;= 0.0; }).<a class="code hl_variable" href="group__ysc__view.html#gaf45ff9b0ab247ef3b3cec980746d6f00">all</a>();</div>
+<div class="line">    <span class="keywordtype">bool</span>   nonneg   = sq.<a class="code hl_function" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">map</a>([](<span class="keywordtype">double</span> x) { <span class="keywordflow">return</span> x &gt;= 0.0; }).<a class="code hl_variable" href="group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00">all</a>();</div>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;sum = &quot;</span> &lt;&lt; total &lt;&lt; <span class="stringliteral">&quot;, min = &quot;</span> &lt;&lt; smallest</div>
 <div class="line">              &lt;&lt; <span class="stringliteral">&quot;, max = &quot;</span> &lt;&lt; largest &lt;&lt; <span class="stringliteral">&quot;, all non-negative = &quot;</span></div>
 <div class="line">              &lt;&lt; std::boolalpha &lt;&lt; nonneg &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__ysc__algorithms_html_ga2e877c4073a1694a0b902dba8aa2d4a9"><div class="ttname"><a href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix::apply</a></div><div class="ttdeci">constexpr void apply(F f)</div><div class="ttdoc">Applies a function to every element in place.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00900">matrix.hpp:900</a></div></div>
-<div class="ttc" id="agroup__ysc__algorithms_html_ga3a8a176fdc174d70bb6eb8f0e868450a"><div class="ttname"><a href="group__ysc__algorithms.html#ga3a8a176fdc174d70bb6eb8f0e868450a">ysc::matrix::max</a></div><div class="ttdeci">constexpr U max() const</div><div class="ttdoc">Returns the largest element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00989">matrix.hpp:989</a></div></div>
-<div class="ttc" id="agroup__ysc__algorithms_html_ga5e5791c8f78b0a2ffdf371c6f63fffc2"><div class="ttname"><a href="group__ysc__algorithms.html#ga5e5791c8f78b0a2ffdf371c6f63fffc2">ysc::matrix::min</a></div><div class="ttdeci">constexpr U min() const</div><div class="ttdoc">Returns the smallest element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00969">matrix.hpp:969</a></div></div>
-<div class="ttc" id="agroup__ysc__algorithms_html_gace61500d9d0f90708409e000c489b4f2"><div class="ttname"><a href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix::map</a></div><div class="ttdeci">constexpr auto map(F f) const -&gt; matrix&lt; std::invoke_result_t&lt; F, const T &amp; &gt;, Dimensions... &gt;</div><div class="ttdoc">Returns a new matrix obtained by applying a function to every element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00927">matrix.hpp:927</a></div></div>
-<div class="ttc" id="agroup__ysc__view_html_gaf45ff9b0ab247ef3b3cec980746d6f00"><div class="ttname"><a href="group__ysc__view.html#gaf45ff9b0ab247ef3b3cec980746d6f00">ysc::all</a></div><div class="ttdeci">constexpr all_t all</div><div class="ttdoc">Sentinel value: pass ysc::all to slice() to keep a dimension unchanged.</div><div class="ttdef"><b>Definition</b> <a href="matrix__detail_8hpp_source.html#l00048">matrix_detail.hpp:48</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_ga2e877c4073a1694a0b902dba8aa2d4a9"><div class="ttname"><a href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix::apply</a></div><div class="ttdeci">constexpr void apply(F f)</div><div class="ttdoc">Applies a function to every element in place.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01170">matrix.hpp:1170</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_ga3a8a176fdc174d70bb6eb8f0e868450a"><div class="ttname"><a href="group__ysc__algorithms.html#ga3a8a176fdc174d70bb6eb8f0e868450a">ysc::matrix::max</a></div><div class="ttdeci">constexpr U max() const</div><div class="ttdoc">Returns the largest element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01259">matrix.hpp:1259</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_ga5e5791c8f78b0a2ffdf371c6f63fffc2"><div class="ttname"><a href="group__ysc__algorithms.html#ga5e5791c8f78b0a2ffdf371c6f63fffc2">ysc::matrix::min</a></div><div class="ttdeci">constexpr U min() const</div><div class="ttdoc">Returns the smallest element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01239">matrix.hpp:1239</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_gace61500d9d0f90708409e000c489b4f2"><div class="ttname"><a href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix::map</a></div><div class="ttdeci">constexpr auto map(F f) const -&gt; matrix&lt; std::invoke_result_t&lt; F, const T &amp; &gt;, Dimensions... &gt;</div><div class="ttdoc">Returns a new matrix obtained by applying a function to every element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01197">matrix.hpp:1197</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_gaf45ff9b0ab247ef3b3cec980746d6f00"><div class="ttname"><a href="group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00">ysc::all</a></div><div class="ttdeci">constexpr all_t all</div><div class="ttdoc">Sentinel value: pass ysc::all to slice() to keep a dimension unchanged.</div><div class="ttdef"><b>Definition</b> <a href="matrix__detail_8hpp_source.html#l00048">matrix_detail.hpp:48</a></div></div>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> <code>apply</code> and <code>map</code> are the matrix-native shorthands for <code>std::ranges::for_each</code> and <code>std::ranges::transform</code>, but they keep the dimensions in the type — so <code>m.map(f)</code> produces a <code>matrix&lt;U, Dims...&gt;</code>, not a <code>std::vector</code>. </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md21"></a>
-&lt;/blockquote&gt;</h2>
-<h2><a class="anchor" id="autotoc_md22"></a>
-5. Zero-copy views and slicing</h2>
+<h1><a class="anchor" id="autotoc_md17"></a>
+5. Zero-copy views and slicing</h1>
 <p><code>row(i)</code>, <code>col(j)</code>, <code>reshape&lt;…&gt;()</code>, and <code>flatten()</code> return lightweight non-owning views — pointer + static shape, no allocation. Use them like <code>std::string_view</code> for matrices.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -228,15 +230,15 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 <div class="line">    <span class="keyword">auto</span> m = ysc::generate&lt;int, 4, 4&gt;(</div>
 <div class="line">        [](std::size_t k) { <span class="keywordflow">return</span> int(k); });</div>
 <div class="line"> </div>
-<div class="line">    <span class="keyword">auto</span> r1 = m.<a class="code hl_function" href="group__ysc__view.html#ga73d1cb2d336ef71c2870ae255a608b0d">row</a>(1);          <span class="comment">// contiguous view: {4, 5, 6, 7}</span></div>
-<div class="line">    <span class="keyword">auto</span> c2 = m.<a class="code hl_function" href="group__ysc__view.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);          <span class="comment">// strided view:    {2, 6, 10, 14}</span></div>
+<div class="line">    <span class="keyword">auto</span> r1 = m.<a class="code hl_function" href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">row</a>(1);          <span class="comment">// contiguous view: {4, 5, 6, 7}</span></div>
+<div class="line">    <span class="keyword">auto</span> c2 = m.<a class="code hl_function" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);          <span class="comment">// strided view:    {2, 6, 10, 14}</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Mutate the source through a view</span></div>
 <div class="line">    r1.fill(-1);                 <span class="comment">// row 1 of m becomes {-1, -1, -1, -1}</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Reshape and flatten are also zero-copy views</span></div>
-<div class="line">    <span class="keyword">auto</span> flat = m.<a class="code hl_function" href="group__ysc__view.html#gadf746e2210100153fe918d8eab35bf2a">flatten</a>();     <span class="comment">// matrix_view&lt;int, contiguous, 16&gt;</span></div>
-<div class="line">    <span class="keyword">auto</span> wide = m.<a class="code hl_function" href="group__ysc__view.html#gabeabfbfd3c53d3ba8208a53c36f70d86">reshape</a>&lt;2, 8&gt;();</div>
+<div class="line">    <span class="keyword">auto</span> flat = m.<a class="code hl_function" href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">flatten</a>();     <span class="comment">// matrix_view&lt;int, contiguous, 16&gt;</span></div>
+<div class="line">    <span class="keyword">auto</span> wide = m.<a class="code hl_function" href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">reshape</a>&lt;2, 8&gt;();</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Owning copy from a view (deep copy via explicit ctor)</span></div>
 <div class="line">    <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 4&gt;</a> c2_owned{c2};</div>
@@ -244,23 +246,21 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;m = &quot;</span> &lt;&lt; m &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;c2_owned = &quot;</span> &lt;&lt; c2_owned &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__ysc__view_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__view.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01367">matrix.hpp:1367</a></div></div>
-<div class="ttc" id="agroup__ysc__view_html_ga73d1cb2d336ef71c2870ae255a608b0d"><div class="ttname"><a href="group__ysc__view.html#ga73d1cb2d336ef71c2870ae255a608b0d">ysc::matrix::row</a></div><div class="ttdeci">constexpr auto row(std::size_t i) &amp;</div><div class="ttdoc">Returns a contiguous view over row i (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01314">matrix.hpp:1314</a></div></div>
-<div class="ttc" id="agroup__ysc__view_html_gabeabfbfd3c53d3ba8208a53c36f70d86"><div class="ttname"><a href="group__ysc__view.html#gabeabfbfd3c53d3ba8208a53c36f70d86">ysc::matrix::reshape</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, NewD... &gt; reshape() &amp;noexcept</div><div class="ttdoc">Returns a non-owning view over the same data reinterpreted with new dimensions.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01510">matrix.hpp:1510</a></div></div>
-<div class="ttc" id="agroup__ysc__view_html_gadf746e2210100153fe918d8eab35bf2a"><div class="ttname"><a href="group__ysc__view.html#gadf746e2210100153fe918d8eab35bf2a">ysc::matrix::flatten</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, linear_size &gt; flatten() &amp;noexcept</div><div class="ttdoc">Returns a 1D non-owning view over all elements in row-major order.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01549">matrix.hpp:1549</a></div></div>
-</div><!-- fragment --><p><b>Const-correctness propagates automatically.</b> On a non-const <code>matrix&lt;T, …&gt;</code>, <code>row</code> / <code>col</code> / <code>slice</code> return <code>matrix_view&lt;T, …&gt;</code> (mutable). On a <code>const matrix&lt;T, …&gt;</code> they return <code>matrix_view&lt;const T, …&gt;</code> — exactly the type aliased as <code><a class="el" href="group__ysc__view.html#ga4cc25153c17fcf35d9990d4d49724706" title="Alias for a read-only contiguous view over a ysc::matrix.">ysc::const_matrix_view</a>&lt;T, …&gt;</code>. You do not pick the view type; the language does:</p>
+<div class="ttc" id="agroup__ysc__views_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01689">matrix.hpp:1689</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_ga73d1cb2d336ef71c2870ae255a608b0d"><div class="ttname"><a href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">ysc::matrix::row</a></div><div class="ttdeci">constexpr auto row(std::size_t i) &amp;</div><div class="ttdoc">Returns a contiguous view over row i (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01636">matrix.hpp:1636</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_gabeabfbfd3c53d3ba8208a53c36f70d86"><div class="ttname"><a href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">ysc::matrix::reshape</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, NewD... &gt; reshape() &amp;noexcept</div><div class="ttdoc">Returns a non-owning view over the same data reinterpreted with new dimensions.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01832">matrix.hpp:1832</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_gadf746e2210100153fe918d8eab35bf2a"><div class="ttname"><a href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">ysc::matrix::flatten</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, linear_size &gt; flatten() &amp;noexcept</div><div class="ttdoc">Returns a 1D non-owning view over all elements in row-major order.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01871">matrix.hpp:1871</a></div></div>
+</div><!-- fragment --><p><b>Const-correctness propagates automatically.</b> On a non-const <code>matrix&lt;T, …&gt;</code>, <code>row</code> / <code>col</code> / <code>slice</code> return <code>matrix_view&lt;T, …&gt;</code> (mutable). On a <code>const matrix&lt;T, …&gt;</code> they return <code>matrix_view&lt;const T, …&gt;</code> — exactly the type aliased as <code><a class="el" href="group__ysc__views.html#ga4cc25153c17fcf35d9990d4d49724706" title="Alias for a read-only contiguous view over a ysc::matrix.">ysc::const_matrix_view</a>&lt;T, …&gt;</code>. You do not pick the view type; the language does:</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 4, 4&gt;</a> mutable_m = ysc::zeros&lt;int, 4, 4&gt;();</div>
 <div class="line"><span class="keyword">const</span> <span class="keyword">auto</span>&amp;            const_m   = mutable_m;</div>
 <div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> rm = mutable_m.<a class="code hl_function" href="group__ysc__view.html#ga73d1cb2d336ef71c2870ae255a608b0d">row</a>(0);  <span class="comment">// matrix_view&lt;int, contiguous, 4&gt;       (writable)</span></div>
+<div class="line"><span class="keyword">auto</span> rm = mutable_m.<a class="code hl_function" href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">row</a>(0);  <span class="comment">// matrix_view&lt;int, contiguous, 4&gt;       (writable)</span></div>
 <div class="line"><span class="keyword">auto</span> rc = const_m.row(0);    <span class="comment">// matrix_view&lt;const int, contiguous, 4&gt; (read-only)</span></div>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> Slicing in Eigen returns expression templates with non-trivial lifetimes; <code>std::mdspan</code> is a view but not a container; nested <code>std::array</code> cannot slice at all. Here a view is a pointer + a compile-time shape, composable, and the const-ness is enforced by the type system. </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md23"></a>
-&lt;/blockquote&gt;</h2>
-<h2><a class="anchor" id="autotoc_md24"></a>
-6. Linear algebra essentials</h2>
+<h1><a class="anchor" id="autotoc_md18"></a>
+6. Linear algebra essentials</h1>
 <p><code>transpose</code>, <code>matmul</code>, and <code>dot</code> cover most everyday linear algebra. <code>matmul</code> is overloaded for matrix × matrix and matrix × column-vector, and mismatched inner dimensions are a compile error — not a runtime check.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
@@ -293,7 +293,6 @@ Cookbook — Practical Recipes for &lt;tt&gt;ysc::matrix&lt;/tt&gt;</h1>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> <code><a class="el" href="group__ysc__linalg.html#gaa8fb95914f5faec6a8b80f7c60306a2f" title="Computes the matrix product of two 2D matrices.">ysc::matmul</a>(matrix&lt;T, M, N&gt;, matrix&lt;T, K, P&gt;)</code> does not compile when <code>N != K</code>. With Eigen's dynamic matrices that mistake is a runtime assertion; with raw arrays it is silent undefined behaviour. Static dimensions catch it at the build. </p>
 </blockquote>
-<p>*/ </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

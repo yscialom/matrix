@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bord_0',['Tableau de bord',['../md_doc_2user-stories.html',1,'']]]
+  ['cookbook_20—_20practical_20recipes_20for_20ysc_3a_3amatrix_0',['Cookbook — Practical Recipes for ysc::matrix',['../cookbook.html',1,'']]]
 ];

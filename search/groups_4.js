@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['o_0',['I/O',['../group__ysc__io.html',1,'']]],
-  ['operators_1',['Arithmetic operators',['../group__ysc__arithmetic.html',1,'']]]
+  ['i_20o_0',['I/O',['../group__ysc__io.html',1,'']]],
+  ['iterators_1',['Iterators',['../group__ysc__iterators.html',1,'']]]
 ];

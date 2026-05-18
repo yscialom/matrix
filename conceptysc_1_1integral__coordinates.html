@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -24,6 +25,17 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -97,7 +109,7 @@ $(document).ready(function(){initNavTree('conceptysc_1_1integral__coordinates.ht
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">ysc::integral_coordinates Concept Reference</div></div>
+  <div class="headertitle"><div class="title">ysc::integral_coordinates Concept Reference<div class="ingroups"><a class="el" href="group__ysc__access.html">Element access</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -108,11 +120,11 @@ $(document).ready(function(){initNavTree('conceptysc_1_1integral__coordinates.ht
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span>... Coords&gt;</div>
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptysc_1_1integral__coordinates.html">ysc::integral_coordinates</a> =  (std::integral&lt;std::remove_cvref_t&lt;Coords&gt;&gt; &amp;&amp; ...)</div>
-<div class="ttc" id="aconceptysc_1_1integral__coordinates_html"><div class="ttname"><a href="conceptysc_1_1integral__coordinates.html">ysc::integral_coordinates</a></div><div class="ttdoc">Satisfied when all types in Coords are integral (ignoring cv-ref). Used to constrain operator() and a...</div><div class="ttdef"><b>Definition</b> <a href="matrix__detail_8hpp_source.html#l00063">matrix_detail.hpp:63</a></div></div>
+<div class="ttc" id="aconceptysc_1_1integral__coordinates_html"><div class="ttname"><a href="conceptysc_1_1integral__coordinates.html">ysc::integral_coordinates</a></div><div class="ttdoc">Satisfied when all types in Coords are integral (ignoring cv-ref). Used to constrain operator() and a...</div><div class="ttdef"><b>Definition</b> <a href="matrix__detail_8hpp_source.html#l00064">matrix_detail.hpp:64</a></div></div>
 </div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Satisfied when all types in <code>Coords</code> are integral (ignoring cv-ref). Used to constrain <code>operator()</code> and <code>at()</code> on matrix and matrix_view. </p>
 
-<p class="definition">Definition at line <a class="el" href="matrix__detail_8hpp_source.html#l00063">63</a> of file <a class="el" href="matrix__detail_8hpp_source.html">matrix_detail.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix__detail_8hpp_source.html#l00064">64</a> of file <a class="el" href="matrix__detail_8hpp_source.html">matrix_detail.hpp</a>.</p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

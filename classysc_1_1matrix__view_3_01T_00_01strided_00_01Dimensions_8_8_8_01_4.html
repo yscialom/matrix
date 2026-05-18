@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -24,6 +25,17 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -104,7 +116,7 @@ $(document).ready(function(){initNavTree('classysc_1_1matrix__view_3_01T_00_01st
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ysc::matrix_view&lt; T, strided, Dimensions... &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__ysc__view.html">Views</a></div></div></div>
+  <div class="headertitle"><div class="title">ysc::matrix_view&lt; T, strided, Dimensions... &gt; Class Template Reference<div class="ingroups"><a class="el" href="group__ysc__views.html">Views</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -155,7 +167,7 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>const_pointer</b> = 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:gac939769931ddb42b2a47d96c9381a171" id="r_gac939769931ddb42b2a47d96c9381a171"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gac939769931ddb42b2a47d96c9381a171">matrix_view</a> (T *ptr, std::array&lt; std::size_t, sizeof...(Dimensions)&gt; strides) noexcept</td></tr>
+<tr class="memitem:gac939769931ddb42b2a47d96c9381a171" id="r_gac939769931ddb42b2a47d96c9381a171"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gac939769931ddb42b2a47d96c9381a171">matrix_view</a> (T *ptr, std::array&lt; std::size_t, sizeof...(Dimensions)&gt; strides) noexcept</td></tr>
 <tr class="memdesc:gac939769931ddb42b2a47d96c9381a171"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a strided view from a raw pointer and a strides array.  <br /></td></tr>
 <tr class="separator:gac939769931ddb42b2a47d96c9381a171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac56c07a02f479573d7537d8eee37d14e" id="r_ac56c07a02f479573d7537d8eee37d14e"><td class="memItemLeft" align="right" valign="top"><a id="ac56c07a02f479573d7537d8eee37d14e" name="ac56c07a02f479573d7537d8eee37d14e"></a>
@@ -178,69 +190,69 @@ constexpr <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a> &am
 &#160;</td><td class="memItemRight" valign="bottom"><b>~matrix_view</b> ()=default</td></tr>
 <tr class="memdesc:ad30f0695003037a67a5ea21cd19ef319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor (does not free the underlying storage). <br /></td></tr>
 <tr class="separator:ad30f0695003037a67a5ea21cd19ef319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2779eabab33b506a64a6c3214d1c7f2a" id="r_ga2779eabab33b506a64a6c3214d1c7f2a"><td class="memItemLeft" align="right" valign="top">iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga2779eabab33b506a64a6c3214d1c7f2a">begin</a> () noexcept</td></tr>
+<tr class="memitem:ga2779eabab33b506a64a6c3214d1c7f2a" id="r_ga2779eabab33b506a64a6c3214d1c7f2a"><td class="memItemLeft" align="right" valign="top">iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga2779eabab33b506a64a6c3214d1c7f2a">begin</a> () noexcept</td></tr>
 <tr class="memdesc:ga2779eabab33b506a64a6c3214d1c7f2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator to the first element of a 1-D strided view.  <br /></td></tr>
 <tr class="separator:ga2779eabab33b506a64a6c3214d1c7f2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga166e56a2a70ea535c4f118fe92f4205b" id="r_ga166e56a2a70ea535c4f118fe92f4205b"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga166e56a2a70ea535c4f118fe92f4205b">begin</a> () const noexcept</td></tr>
+<tr class="memitem:ga166e56a2a70ea535c4f118fe92f4205b" id="r_ga166e56a2a70ea535c4f118fe92f4205b"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga166e56a2a70ea535c4f118fe92f4205b">begin</a> () const noexcept</td></tr>
 <tr class="memdesc:ga166e56a2a70ea535c4f118fe92f4205b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const iterator to the first element of a 1-D strided view.  <br /></td></tr>
 <tr class="separator:ga166e56a2a70ea535c4f118fe92f4205b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadf38f09060d276c14e7dc8581149ccb7" id="r_gadf38f09060d276c14e7dc8581149ccb7"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gadf38f09060d276c14e7dc8581149ccb7">cbegin</a> () const noexcept</td></tr>
+<tr class="memitem:gadf38f09060d276c14e7dc8581149ccb7" id="r_gadf38f09060d276c14e7dc8581149ccb7"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gadf38f09060d276c14e7dc8581149ccb7">cbegin</a> () const noexcept</td></tr>
 <tr class="memdesc:gadf38f09060d276c14e7dc8581149ccb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const iterator to the first element of a 1-D strided view.  <br /></td></tr>
 <tr class="separator:gadf38f09060d276c14e7dc8581149ccb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaff6ee4ec765408f0471395c3bc84a1d0" id="r_gaff6ee4ec765408f0471395c3bc84a1d0"><td class="memItemLeft" align="right" valign="top">iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gaff6ee4ec765408f0471395c3bc84a1d0">end</a> () noexcept</td></tr>
+<tr class="memitem:gaff6ee4ec765408f0471395c3bc84a1d0" id="r_gaff6ee4ec765408f0471395c3bc84a1d0"><td class="memItemLeft" align="right" valign="top">iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gaff6ee4ec765408f0471395c3bc84a1d0">end</a> () noexcept</td></tr>
 <tr class="memdesc:gaff6ee4ec765408f0471395c3bc84a1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an iterator past the last element of a 1-D strided view.  <br /></td></tr>
 <tr class="separator:gaff6ee4ec765408f0471395c3bc84a1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf37289a30427b479bbf79d154d842ebc" id="r_gaf37289a30427b479bbf79d154d842ebc"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gaf37289a30427b479bbf79d154d842ebc">end</a> () const noexcept</td></tr>
+<tr class="memitem:gaf37289a30427b479bbf79d154d842ebc" id="r_gaf37289a30427b479bbf79d154d842ebc"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gaf37289a30427b479bbf79d154d842ebc">end</a> () const noexcept</td></tr>
 <tr class="memdesc:gaf37289a30427b479bbf79d154d842ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const iterator past the last element of a 1-D strided view.  <br /></td></tr>
 <tr class="separator:gaf37289a30427b479bbf79d154d842ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab93f99b33b3689592d55b942becdec8a" id="r_gab93f99b33b3689592d55b942becdec8a"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gab93f99b33b3689592d55b942becdec8a">cend</a> () const noexcept</td></tr>
+<tr class="memitem:gab93f99b33b3689592d55b942becdec8a" id="r_gab93f99b33b3689592d55b942becdec8a"><td class="memItemLeft" align="right" valign="top">const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gab93f99b33b3689592d55b942becdec8a">cend</a> () const noexcept</td></tr>
 <tr class="memdesc:gab93f99b33b3689592d55b942becdec8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const iterator past the last element of a 1-D strided view.  <br /></td></tr>
 <tr class="separator:gab93f99b33b3689592d55b942becdec8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafca72113df82ada74318ac04f82f2be8" id="r_gafca72113df82ada74318ac04f82f2be8"><td class="memTemplParams" colspan="2">template&lt;class... Coords&gt; <br />
 requires integral_coordinates&lt;Coords...&gt; &amp;&amp; (sizeof...(Coords) == sizeof...(Dimensions))</td></tr>
-<tr class="memitem:gafca72113df82ada74318ac04f82f2be8"><td class="memTemplItemLeft" align="right" valign="top">constexpr const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gafca72113df82ada74318ac04f82f2be8">operator()</a> (Coords... coords) const noexcept</td></tr>
+<tr class="memitem:gafca72113df82ada74318ac04f82f2be8"><td class="memTemplItemLeft" align="right" valign="top">constexpr const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gafca72113df82ada74318ac04f82f2be8">operator()</a> (Coords... coords) const noexcept</td></tr>
 <tr class="memdesc:gafca72113df82ada74318ac04f82f2be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const reference to the element at the given coordinates.  <br /></td></tr>
 <tr class="separator:gafca72113df82ada74318ac04f82f2be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac80b9c2fffcadd888913e6e8f6ba03b9" id="r_gac80b9c2fffcadd888913e6e8f6ba03b9"><td class="memTemplParams" colspan="2">template&lt;class... Coords&gt; <br />
 requires integral_coordinates&lt;Coords...&gt; &amp;&amp; (sizeof...(Coords) == sizeof...(Dimensions))</td></tr>
-<tr class="memitem:gac80b9c2fffcadd888913e6e8f6ba03b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gac80b9c2fffcadd888913e6e8f6ba03b9">operator()</a> (Coords... coords) noexcept</td></tr>
+<tr class="memitem:gac80b9c2fffcadd888913e6e8f6ba03b9"><td class="memTemplItemLeft" align="right" valign="top">constexpr T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gac80b9c2fffcadd888913e6e8f6ba03b9">operator()</a> (Coords... coords) noexcept</td></tr>
 <tr class="memdesc:gac80b9c2fffcadd888913e6e8f6ba03b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a mutable reference to the element at the given coordinates.  <br /></td></tr>
 <tr class="separator:gac80b9c2fffcadd888913e6e8f6ba03b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga21befd9200319571be66bbda8692e614" id="r_ga21befd9200319571be66bbda8692e614"><td class="memTemplParams" colspan="2">template&lt;class... Coords&gt; <br />
 requires integral_coordinates&lt;Coords...&gt; &amp;&amp; (sizeof...(Coords) == sizeof...(Dimensions))</td></tr>
-<tr class="memitem:ga21befd9200319571be66bbda8692e614"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga21befd9200319571be66bbda8692e614">at</a> (Coords... coords) const</td></tr>
+<tr class="memitem:ga21befd9200319571be66bbda8692e614"><td class="memTemplItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga21befd9200319571be66bbda8692e614">at</a> (Coords... coords) const</td></tr>
 <tr class="memdesc:ga21befd9200319571be66bbda8692e614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const reference to the element at the given coordinates, with bounds checking.  <br /></td></tr>
 <tr class="separator:ga21befd9200319571be66bbda8692e614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3eb080b91043df79a4362e05ae3f20a1" id="r_ga3eb080b91043df79a4362e05ae3f20a1"><td class="memTemplParams" colspan="2">template&lt;class... Coords&gt; <br />
 requires integral_coordinates&lt;Coords...&gt; &amp;&amp; (sizeof...(Coords) == sizeof...(Dimensions))</td></tr>
-<tr class="memitem:ga3eb080b91043df79a4362e05ae3f20a1"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga3eb080b91043df79a4362e05ae3f20a1">at</a> (Coords... coords)</td></tr>
+<tr class="memitem:ga3eb080b91043df79a4362e05ae3f20a1"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga3eb080b91043df79a4362e05ae3f20a1">at</a> (Coords... coords)</td></tr>
 <tr class="memdesc:ga3eb080b91043df79a4362e05ae3f20a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a mutable reference to the element at the given coordinates, with bounds checking.  <br /></td></tr>
 <tr class="separator:ga3eb080b91043df79a4362e05ae3f20a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ae56a5e76d35796384286bb30fb290b" id="r_ga4ae56a5e76d35796384286bb30fb290b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#a7e9175849d8d6bbad46e2fb696b57893">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga4ae56a5e76d35796384286bb30fb290b">front</a> () noexcept</td></tr>
+<tr class="memitem:ga4ae56a5e76d35796384286bb30fb290b" id="r_ga4ae56a5e76d35796384286bb30fb290b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#a7e9175849d8d6bbad46e2fb696b57893">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga4ae56a5e76d35796384286bb30fb290b">front</a> () noexcept</td></tr>
 <tr class="memdesc:ga4ae56a5e76d35796384286bb30fb290b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reference to the first element (all coordinates zero).  <br /></td></tr>
 <tr class="separator:ga4ae56a5e76d35796384286bb30fb290b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e24c2e9d6c4af22d2a7f8b328a02da2" id="r_ga0e24c2e9d6c4af22d2a7f8b328a02da2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ac117464b10831eb875c5cff8311b6b89">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga0e24c2e9d6c4af22d2a7f8b328a02da2">front</a> () const noexcept</td></tr>
+<tr class="memitem:ga0e24c2e9d6c4af22d2a7f8b328a02da2" id="r_ga0e24c2e9d6c4af22d2a7f8b328a02da2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ac117464b10831eb875c5cff8311b6b89">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga0e24c2e9d6c4af22d2a7f8b328a02da2">front</a> () const noexcept</td></tr>
 <tr class="memdesc:ga0e24c2e9d6c4af22d2a7f8b328a02da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const reference to the first element (all coordinates zero).  <br /></td></tr>
 <tr class="separator:ga0e24c2e9d6c4af22d2a7f8b328a02da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab32b4ee275f17e1b350ccfcd86fc7132" id="r_gab32b4ee275f17e1b350ccfcd86fc7132"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#a7e9175849d8d6bbad46e2fb696b57893">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gab32b4ee275f17e1b350ccfcd86fc7132">back</a> () noexcept</td></tr>
+<tr class="memitem:gab32b4ee275f17e1b350ccfcd86fc7132" id="r_gab32b4ee275f17e1b350ccfcd86fc7132"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#a7e9175849d8d6bbad46e2fb696b57893">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gab32b4ee275f17e1b350ccfcd86fc7132">back</a> () noexcept</td></tr>
 <tr class="memdesc:gab32b4ee275f17e1b350ccfcd86fc7132"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reference to the last element (each coordinate at its maximum).  <br /></td></tr>
 <tr class="separator:gab32b4ee275f17e1b350ccfcd86fc7132"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga89dddbe08a2111841f7a1f355024e5b0" id="r_ga89dddbe08a2111841f7a1f355024e5b0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ac117464b10831eb875c5cff8311b6b89">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga89dddbe08a2111841f7a1f355024e5b0">back</a> () const noexcept</td></tr>
+<tr class="memitem:ga89dddbe08a2111841f7a1f355024e5b0" id="r_ga89dddbe08a2111841f7a1f355024e5b0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ac117464b10831eb875c5cff8311b6b89">const_reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga89dddbe08a2111841f7a1f355024e5b0">back</a> () const noexcept</td></tr>
 <tr class="memdesc:ga89dddbe08a2111841f7a1f355024e5b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const reference to the last element (each coordinate at its maximum).  <br /></td></tr>
 <tr class="separator:ga89dddbe08a2111841f7a1f355024e5b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae04eeded82427bf1ff980d87165ffb5f" id="r_gae04eeded82427bf1ff980d87165ffb5f"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gae04eeded82427bf1ff980d87165ffb5f">fill</a> (const T &amp;value) noexcept(std::is_nothrow_copy_assignable_v&lt; T &gt;)</td></tr>
+<tr class="memitem:gae04eeded82427bf1ff980d87165ffb5f" id="r_gae04eeded82427bf1ff980d87165ffb5f"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gae04eeded82427bf1ff980d87165ffb5f">fill</a> (const T &amp;value) noexcept(std::is_nothrow_copy_assignable_v&lt; T &gt;)</td></tr>
 <tr class="memdesc:gae04eeded82427bf1ff980d87165ffb5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assigns <code>value</code> to every element of the strided view.  <br /></td></tr>
 <tr class="separator:gae04eeded82427bf1ff980d87165ffb5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ga20e9b8cd7e38ff58c49c31eb40917d89" id="r_ga20e9b8cd7e38ff58c49c31eb40917d89"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ab9357f72ea23a3e14c646d50a46f39e2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga20e9b8cd7e38ff58c49c31eb40917d89">size</a> () noexcept</td></tr>
+<tr class="memitem:ga20e9b8cd7e38ff58c49c31eb40917d89" id="r_ga20e9b8cd7e38ff58c49c31eb40917d89"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ab9357f72ea23a3e14c646d50a46f39e2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga20e9b8cd7e38ff58c49c31eb40917d89">size</a> () noexcept</td></tr>
 <tr class="memdesc:ga20e9b8cd7e38ff58c49c31eb40917d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of elements in the view (product of all kept dimensions).  <br /></td></tr>
 <tr class="separator:ga20e9b8cd7e38ff58c49c31eb40917d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafe80bb49e7b24403d85c843f49e3bb12" id="r_gafe80bb49e7b24403d85c843f49e3bb12"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ab9357f72ea23a3e14c646d50a46f39e2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#gafe80bb49e7b24403d85c843f49e3bb12">max_size</a> () noexcept</td></tr>
+<tr class="memitem:gafe80bb49e7b24403d85c843f49e3bb12" id="r_gafe80bb49e7b24403d85c843f49e3bb12"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#ab9357f72ea23a3e14c646d50a46f39e2">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gafe80bb49e7b24403d85c843f49e3bb12">max_size</a> () noexcept</td></tr>
 <tr class="memdesc:gafe80bb49e7b24403d85c843f49e3bb12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum number of elements the view can address.  <br /></td></tr>
 <tr class="separator:gafe80bb49e7b24403d85c843f49e3bb12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0f25d93094daef2e4f8c651f19b55444" id="r_ga0f25d93094daef2e4f8c651f19b55444"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__view.html#ga0f25d93094daef2e4f8c651f19b55444">empty</a> () noexcept</td></tr>
+<tr class="memitem:ga0f25d93094daef2e4f8c651f19b55444" id="r_ga0f25d93094daef2e4f8c651f19b55444"><td class="memItemLeft" align="right" valign="top">static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga0f25d93094daef2e4f8c651f19b55444">empty</a> () noexcept</td></tr>
 <tr class="memdesc:ga0f25d93094daef2e4f8c651f19b55444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether the view has no elements.  <br /></td></tr>
 <tr class="separator:ga0f25d93094daef2e4f8c651f19b55444"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -266,15 +278,15 @@ class ysc::matrix_view&lt; T, strided, Dimensions... &gt;</div><p>Non-owning rea
   </dd>
 </dl>
 <p>A <code>matrix_view&lt;T,strided,Dims...&gt;</code> holds a raw pointer and a strides array. Elements are accessed as: </p><div class="fragment"><div class="line">element(c0, c1, ...) == *(_ptr + c0*strides[0] + c1*strides[1] + ...)</div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Iterators and <code>data()</code> are not available (non-contiguous layout). Use <code>operator()</code> or <code><a class="el" href="group__ysc__view.html#ga21befd9200319571be66bbda8692e614" title="Returns a const reference to the element at the given coordinates, with bounds checking.">at()</a></code> for element access.</dd></dl>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Iterators and <code>data()</code> are not available (non-contiguous layout). Use <code>operator()</code> or <code><a class="el" href="group__ysc__views.html#ga21befd9200319571be66bbda8692e614" title="Returns a const reference to the element at the given coordinates, with bounds checking.">at()</a></code> for element access.</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd>Destroying the underlying <code>matrix</code> while a view still refers to it is undefined behavior.</dd></dl>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3, 4&gt;</a> m{};</div>
 <div class="line"><span class="comment">// Column 2: elements m(0,2), m(1,2), m(2,2) — stride 4</span></div>
-<div class="line"><span class="keyword">auto</span> col2 = m.<a class="code hl_function" href="group__ysc__view.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);   <span class="comment">// matrix_view&lt;int, strided, 3&gt;</span></div>
+<div class="line"><span class="keyword">auto</span> col2 = m.<a class="code hl_function" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);   <span class="comment">// matrix_view&lt;int, strided, 3&gt;</span></div>
 <div class="line">col2(1) = 99;           <span class="comment">// writes m(1, 2)</span></div>
 <div class="line">assert(m(1, 2) == 99);</div>
-<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00084">matrix.hpp:84</a></div></div>
-<div class="ttc" id="agroup__ysc__view_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__view.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01367">matrix.hpp:1367</a></div></div>
+<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00114">matrix.hpp:114</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01689">matrix.hpp:1689</a></div></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="matrix__view_8hpp_source.html#l00689">689</a> of file <a class="el" href="matrix__view_8hpp_source.html">matrix_view.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>

@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -24,6 +25,17 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -103,58 +115,58 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 <li>all()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#ga0fcc364b5cbf394eb9e1c0947f71c53d">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 <li>any()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#ga0322bb96e2983098a6876d4e649faba3">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 <li>apply()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>at()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#ad3619924f8273c8db733a8a1b342459a">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga11b5ba355b81decde0b1341c799d3400">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#ga21befd9200319571be66bbda8692e614">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>at()&#160;:&#160;<a class="el" href="group__ysc__access.html#gad3619924f8273c8db733a8a1b342459a">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga11b5ba355b81decde0b1341c799d3400">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#ga21befd9200319571be66bbda8692e614">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
-<li>back()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a6f88dd0313062ebda80cc44fd7887bdb">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#gab374a82030589478b2831d4b9416f56b">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gab32b4ee275f17e1b350ccfcd86fc7132">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>begin()&#160;:&#160;<a class="el" href="group__ysc__view.html#gafe1d063faa9e098be04d1d86c251e4c7">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#ga2779eabab33b506a64a6c3214d1c7f2a">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>back()&#160;:&#160;<a class="el" href="group__ysc__modifiers.html#ga6f88dd0313062ebda80cc44fd7887bdb">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gab374a82030589478b2831d4b9416f56b">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gab32b4ee275f17e1b350ccfcd86fc7132">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>begin()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#gabfdb32a2961d450cf07a9b6251db9115">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gafe1d063faa9e098be04d1d86c251e4c7">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#ga2779eabab33b506a64a6c3214d1c7f2a">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
-<li>cbegin()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga6d95f3f6a92ce15cd6ed4a843c84fd8b">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gadf38f09060d276c14e7dc8581149ccb7">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>cend()&#160;:&#160;<a class="el" href="group__ysc__view.html#gab4b608702bb4d301da4fcb257db7b744">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gab93f99b33b3689592d55b942becdec8a">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>col()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga586e256a6319999d3761a08f93f38925">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
-<li>cols()&#160;:&#160;<a class="el" href="group__ysc__view.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>crbegin()&#160;:&#160;<a class="el" href="group__ysc__view.html#gaa6afcea4b26952305b583ffd34162281">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
-<li>crend()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga82c0d18da0997174dfc5b05cac687ea2">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>cbegin()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#ga70f94135f39044cc39a90aea8d674021">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga6d95f3f6a92ce15cd6ed4a843c84fd8b">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gadf38f09060d276c14e7dc8581149ccb7">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>cend()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#gadfc96b828ffeaf717379546e84ab158b">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gab4b608702bb4d301da4fcb257db7b744">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gab93f99b33b3689592d55b942becdec8a">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>col()&#160;:&#160;<a class="el" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga586e256a6319999d3761a08f93f38925">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>cols()&#160;:&#160;<a class="el" href="group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>crbegin()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#gabb1ec4b6e5cc8dce247981e33d802fcc">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gaa6afcea4b26952305b583ffd34162281">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>crend()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#ga49232c0a6abe78c4f0f8f2caa6e721b9">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga82c0d18da0997174dfc5b05cac687ea2">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
-<li>data()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a0912b88229d5206407a0ecf591d572dc">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga4a5f59c832fb6eb55a4a98dd113982bf">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>data()&#160;:&#160;<a class="el" href="group__ysc__capacity.html#ga0912b88229d5206407a0ecf591d572dc">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga4a5f59c832fb6eb55a4a98dd113982bf">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
-<li>empty()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a011704105625d0de9f76c27145181bce">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#gadb84e3605a194f6e56030570070bc267">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#ga0f25d93094daef2e4f8c651f19b55444">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>end()&#160;:&#160;<a class="el" href="group__ysc__view.html#gafa856afa58851ae350f7c3d81c61131a">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gaff6ee4ec765408f0471395c3bc84a1d0">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>explicit()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a39262f99acad5c261e742a9eb02f1d9f">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>empty()&#160;:&#160;<a class="el" href="group__ysc__capacity.html#ga011704105625d0de9f76c27145181bce">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gadb84e3605a194f6e56030570070bc267">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#ga0f25d93094daef2e4f8c651f19b55444">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>end()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#ga51b5062b043c07ed0a5babe59bfc2a04">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gafa856afa58851ae350f7c3d81c61131a">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gaff6ee4ec765408f0471395c3bc84a1d0">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>explicit()&#160;:&#160;<a class="el" href="group__ysc__construction.html#ga39262f99acad5c261e742a9eb02f1d9f">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_f" name="index_f"></a>- f -</h3><ul>
-<li>fill()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#afe6ca8e1df000d2a4138bb70d73f1e16">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#gab49beb82fe19e372ced47038927a4fbe">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gae04eeded82427bf1ff980d87165ffb5f">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>flatten()&#160;:&#160;<a class="el" href="group__ysc__view.html#gadf746e2210100153fe918d8eab35bf2a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>front()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#ad19cb8b261ca1df44f7bc463e85c9390">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga414d0e5094db6623769b36e63d44ee26">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#ga4ae56a5e76d35796384286bb30fb290b">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>fill()&#160;:&#160;<a class="el" href="group__ysc__modifiers.html#gafe6ca8e1df000d2a4138bb70d73f1e16">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gab49beb82fe19e372ced47038927a4fbe">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gae04eeded82427bf1ff980d87165ffb5f">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>flatten()&#160;:&#160;<a class="el" href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>front()&#160;:&#160;<a class="el" href="group__ysc__modifiers.html#gad19cb8b261ca1df44f7bc463e85c9390">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga414d0e5094db6623769b36e63d44ee26">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#ga4ae56a5e76d35796384286bb30fb290b">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
 <li>map()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>matrix()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a8429c8d6b629955327d6e42d8a7a7995">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>matrix_view()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga075aad40155106fba417cdff45e01b69">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gac939769931ddb42b2a47d96c9381a171">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>matrix()&#160;:&#160;<a class="el" href="group__ysc__construction.html#ga8429c8d6b629955327d6e42d8a7a7995">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>matrix_view()&#160;:&#160;<a class="el" href="group__ysc__views.html#ga075aad40155106fba417cdff45e01b69">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gac939769931ddb42b2a47d96c9381a171">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 <li>max()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#ga3a8a176fdc174d70bb6eb8f0e868450a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>max_size()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a15ff2ef97153a2e2220d48050eb240c0">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga47425eec9513c0f76ba7895b57fd98d2">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gafe80bb49e7b24403d85c843f49e3bb12">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>max_size()&#160;:&#160;<a class="el" href="group__ysc__capacity.html#ga15ff2ef97153a2e2220d48050eb240c0">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga47425eec9513c0f76ba7895b57fd98d2">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gafe80bb49e7b24403d85c843f49e3bb12">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 <li>min()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#ga5e5791c8f78b0a2ffdf371c6f63fffc2">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_o" name="index_o"></a>- o -</h3><ul>
-<li>operator matrix_view&lt; T, strided, Dimensions... &gt;()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga23f17b4aad3e2bdfc5ad3af2e8521a1c">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
-<li>operator()()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a3613eed8d9acb6df0dab14156086ac8d">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga6f817a8a802ed8e7125f4816f487830d">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#gafca72113df82ada74318ac04f82f2be8">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>operator matrix_view&lt; T, strided, Dimensions... &gt;()&#160;:&#160;<a class="el" href="group__ysc__views.html#ga23f17b4aad3e2bdfc5ad3af2e8521a1c">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>operator()()&#160;:&#160;<a class="el" href="group__ysc__access.html#ga3613eed8d9acb6df0dab14156086ac8d">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga6f817a8a802ed8e7125f4816f487830d">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#gafca72113df82ada74318ac04f82f2be8">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 <li>operator*()&#160;:&#160;<a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#aaa0e5d0e092219059f037273129e11dd">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#a632e62f76f18745a4f65026bdd5de82a">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator</a></li>
 <li>operator*=()&#160;:&#160;<a class="el" href="group__ysc__arithmetic.html#ga97e3b126a0d2c99acd71b30a2cf6269c">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 <li>operator+()&#160;:&#160;<a class="el" href="group__ysc__arithmetic.html#ga6869e980732b886843bcadd87c66c253">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#a04c0b047fe2de65d5c084825d3cbfed3">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#a53baeedf98213d4ab3a217b001c06803">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator</a></li>
@@ -166,26 +178,26 @@ $(document).ready(function(){initNavTree('functions_func.html',''); initResizabl
 <li>operator-&gt;()&#160;:&#160;<a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#a8becb2a33e49fcd754d868950de7c6da">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#a40d318cab22204146329c5e22ff19df5">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator</a></li>
 <li>operator/=()&#160;:&#160;<a class="el" href="group__ysc__arithmetic.html#ga37444fc41003ee077d4e5ed14017a949">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 <li>operator&lt;=&gt;()&#160;:&#160;<a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#af66d07b81f58a8a8534deb5c8fa97f96">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#a430d2033e4217c2e588749c9c451e26a">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator</a></li>
-<li>operator=()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a460d4ae142c9a63632f0f0b02b3fc2ec">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a4766a83d32722c288134bdfb446222c0">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#abdc922fc2530658d1a03c98f5702ca78">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>operator=()&#160;:&#160;<a class="el" href="group__ysc__construction.html#ga460d4ae142c9a63632f0f0b02b3fc2ec">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a4766a83d32722c288134bdfb446222c0">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#abdc922fc2530658d1a03c98f5702ca78">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
 <li>operator==()&#160;:&#160;<a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#a8d456b9516a3348b2e98de917bcff742">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#afb3722eef4186feef2aeb755990b414b">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator</a></li>
 <li>operator[]()&#160;:&#160;<a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html#afe8d2c0fff86908bc1d450db5f1d16c3">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator</a>, <a class="el" href="structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html#a72e7893bcd4d2a60f0747c7f074957d4">ysc::matrix_view&lt; T, strided, Dimensions... &gt;::iterator</a></li>
 </ul>
 
 
 <h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
-<li>rbegin()&#160;:&#160;<a class="el" href="group__ysc__view.html#gaef07b09fd03c118a4323695f15f0e699">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
-<li>rend()&#160;:&#160;<a class="el" href="group__ysc__view.html#gab8232b452d79fceb6c3b8da806a11671">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
-<li>reshape()&#160;:&#160;<a class="el" href="group__ysc__view.html#gabeabfbfd3c53d3ba8208a53c36f70d86">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>row()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga73d1cb2d336ef71c2870ae255a608b0d">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#gaaf8de3ab577ba6def01aca0e5f6f9024">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
-<li>rows()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga23a4f8c22fe794763d98f29083adf57a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>rbegin()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#ga012b7e200c13d609eef2ae49515d2421">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gaef07b09fd03c118a4323695f15f0e699">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>rend()&#160;:&#160;<a class="el" href="group__ysc__iterators.html#gac184357420d4985b7bdc1bf23aa74865">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gab8232b452d79fceb6c3b8da806a11671">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>reshape()&#160;:&#160;<a class="el" href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>row()&#160;:&#160;<a class="el" href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gaaf8de3ab577ba6def01aca0e5f6f9024">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>rows()&#160;:&#160;<a class="el" href="group__ysc__views.html#ga23a4f8c22fe794763d98f29083adf57a">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 </ul>
 
 
 <h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
-<li>size()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#a340677ab006e42faaf21e8db425e18db">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#gaf6f43872b76b736b16c231559b8c4033">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__view.html#ga20e9b8cd7e38ff58c49c31eb40917d89">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
-<li>slice()&#160;:&#160;<a class="el" href="group__ysc__view.html#ga60287e8274876a3e4288b7896c213e06">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__view.html#ga5681d5fb016b565353cf56d0b192b611">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>size()&#160;:&#160;<a class="el" href="group__ysc__capacity.html#ga340677ab006e42faaf21e8db425e18db">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#gaf6f43872b76b736b16c231559b8c4033">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a>, <a class="el" href="group__ysc__views.html#ga20e9b8cd7e38ff58c49c31eb40917d89">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a></li>
+<li>slice()&#160;:&#160;<a class="el" href="group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06">ysc::matrix&lt; T, Dimensions &gt;</a>, <a class="el" href="group__ysc__views.html#ga5681d5fb016b565353cf56d0b192b611">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
 <li>sum()&#160;:&#160;<a class="el" href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">ysc::matrix&lt; T, Dimensions &gt;</a></li>
-<li>swap()&#160;:&#160;<a class="el" href="classysc_1_1matrix.html#ae3cd460e88ee68c908e6a2295fe289ad">ysc::matrix&lt; T, Dimensions &gt;</a></li>
+<li>swap()&#160;:&#160;<a class="el" href="group__ysc__modifiers.html#gae3cd460e88ee68c908e6a2295fe289ad">ysc::matrix&lt; T, Dimensions &gt;</a></li>
 </ul>
 
 

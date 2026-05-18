@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -24,6 +25,17 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -108,35 +120,35 @@ $(document).ready(function(){initNavTree('group__ysc__algorithms.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga2e877c4073a1694a0b902dba8aa2d4a9" id="r_ga2e877c4073a1694a0b902dba8aa2d4a9"><td class="memTemplParams" colspan="2">template&lt;class F &gt; <br />
-requires std::invocable&lt;F, T&amp;&gt;</td></tr>
-<tr class="memitem:ga2e877c4073a1694a0b902dba8aa2d4a9"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix&lt; T, Dimensions &gt;::apply</a> (F f)</td></tr>
+<tr class="memitem:ga2e877c4073a1694a0b902dba8aa2d4a9" id="r_ga2e877c4073a1694a0b902dba8aa2d4a9"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a> &gt; <br />
+requires std::invocable&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>, T&amp;&gt;</td></tr>
+<tr class="memitem:ga2e877c4073a1694a0b902dba8aa2d4a9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix&lt; T, Dimensions &gt;::apply</a> (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">f</a>)</td></tr>
 <tr class="memdesc:ga2e877c4073a1694a0b902dba8aa2d4a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies a function to every element in place.  <br /></td></tr>
 <tr class="separator:ga2e877c4073a1694a0b902dba8aa2d4a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace61500d9d0f90708409e000c489b4f2" id="r_gace61500d9d0f90708409e000c489b4f2"><td class="memTemplParams" colspan="2">template&lt;class F &gt; <br />
-requires std::invocable&lt;F, const T&amp;&gt;</td></tr>
-<tr class="memitem:gace61500d9d0f90708409e000c489b4f2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix&lt; T, Dimensions &gt;::map</a> (F f) const -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; std::invoke_result_t&lt; F, const T &amp; &gt;, Dimensions... &gt;</td></tr>
+<tr class="memitem:gace61500d9d0f90708409e000c489b4f2" id="r_gace61500d9d0f90708409e000c489b4f2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a> &gt; <br />
+requires std::invocable&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T&amp;&gt;</td></tr>
+<tr class="memitem:gace61500d9d0f90708409e000c489b4f2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix&lt; T, Dimensions &gt;::map</a> (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">f</a>) <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; std::invoke_result_t&lt; <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T &amp; &gt;, Dimensions... &gt;</td></tr>
 <tr class="memdesc:gace61500d9d0f90708409e000c489b4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new matrix obtained by applying a function to every element.  <br /></td></tr>
 <tr class="separator:gace61500d9d0f90708409e000c489b4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f07763e5ad451cbbd4e586e85a0b980" id="r_ga9f07763e5ad451cbbd4e586e85a0b980"><td class="memTemplParams" colspan="2">template&lt;class U  = T&gt; <br />
-requires std::same_as&lt;U, T&gt;</td></tr>
-<tr class="memitem:ga9f07763e5ad451cbbd4e586e85a0b980"><td class="memTemplItemLeft" align="right" valign="top">constexpr U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">ysc::matrix&lt; T, Dimensions &gt;::sum</a> () const std</td></tr>
+<tr class="memitem:ga9f07763e5ad451cbbd4e586e85a0b980" id="r_ga9f07763e5ad451cbbd4e586e85a0b980"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>  = T&gt; <br />
+requires std::same_as&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>, T&gt;</td></tr>
+<tr class="memitem:ga9f07763e5ad451cbbd4e586e85a0b980"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980">ysc::matrix&lt; T, Dimensions &gt;::sum</a> () <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> std</td></tr>
 <tr class="memdesc:ga9f07763e5ad451cbbd4e586e85a0b980"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sum of all elements.  <br /></td></tr>
 <tr class="separator:ga9f07763e5ad451cbbd4e586e85a0b980"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5e5791c8f78b0a2ffdf371c6f63fffc2" id="r_ga5e5791c8f78b0a2ffdf371c6f63fffc2"><td class="memTemplParams" colspan="2">template&lt;class U  = T&gt; <br />
-requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</td></tr>
-<tr class="memitem:ga5e5791c8f78b0a2ffdf371c6f63fffc2"><td class="memTemplItemLeft" align="right" valign="top">constexpr U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga5e5791c8f78b0a2ffdf371c6f63fffc2">ysc::matrix&lt; T, Dimensions &gt;::min</a> () const</td></tr>
+<tr class="memitem:ga5e5791c8f78b0a2ffdf371c6f63fffc2" id="r_ga5e5791c8f78b0a2ffdf371c6f63fffc2"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>  = T&gt; <br />
+requires std::same_as&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</td></tr>
+<tr class="memitem:ga5e5791c8f78b0a2ffdf371c6f63fffc2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga5e5791c8f78b0a2ffdf371c6f63fffc2">ysc::matrix&lt; T, Dimensions &gt;::min</a> () <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a></td></tr>
 <tr class="memdesc:ga5e5791c8f78b0a2ffdf371c6f63fffc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the smallest element.  <br /></td></tr>
 <tr class="separator:ga5e5791c8f78b0a2ffdf371c6f63fffc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a8a176fdc174d70bb6eb8f0e868450a" id="r_ga3a8a176fdc174d70bb6eb8f0e868450a"><td class="memTemplParams" colspan="2">template&lt;class U  = T&gt; <br />
-requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</td></tr>
-<tr class="memitem:ga3a8a176fdc174d70bb6eb8f0e868450a"><td class="memTemplItemLeft" align="right" valign="top">constexpr U&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga3a8a176fdc174d70bb6eb8f0e868450a">ysc::matrix&lt; T, Dimensions &gt;::max</a> () const</td></tr>
+<tr class="memitem:ga3a8a176fdc174d70bb6eb8f0e868450a" id="r_ga3a8a176fdc174d70bb6eb8f0e868450a"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>  = T&gt; <br />
+requires std::same_as&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</td></tr>
+<tr class="memitem:ga3a8a176fdc174d70bb6eb8f0e868450a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga3a8a176fdc174d70bb6eb8f0e868450a">ysc::matrix&lt; T, Dimensions &gt;::max</a> () <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a></td></tr>
 <tr class="memdesc:ga3a8a176fdc174d70bb6eb8f0e868450a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the largest element.  <br /></td></tr>
 <tr class="separator:ga3a8a176fdc174d70bb6eb8f0e868450a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0fcc364b5cbf394eb9e1c0947f71c53d" id="r_ga0fcc364b5cbf394eb9e1c0947f71c53d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga0fcc364b5cbf394eb9e1c0947f71c53d">ysc::matrix&lt; T, Dimensions &gt;::all</a> () const</td></tr>
+<tr class="memitem:ga0fcc364b5cbf394eb9e1c0947f71c53d" id="r_ga0fcc364b5cbf394eb9e1c0947f71c53d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga0fcc364b5cbf394eb9e1c0947f71c53d">ysc::matrix&lt; T, Dimensions &gt;::all</a> () <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a></td></tr>
 <tr class="memdesc:ga0fcc364b5cbf394eb9e1c0947f71c53d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if every element converts to <code>true</code>.  <br /></td></tr>
 <tr class="separator:ga0fcc364b5cbf394eb9e1c0947f71c53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0322bb96e2983098a6876d4e649faba3" id="r_ga0322bb96e2983098a6876d4e649faba3"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga0322bb96e2983098a6876d4e649faba3">ysc::matrix&lt; T, Dimensions &gt;::any</a> () const</td></tr>
+<tr class="memitem:ga0322bb96e2983098a6876d4e649faba3" id="r_ga0322bb96e2983098a6876d4e649faba3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__algorithms.html#ga0322bb96e2983098a6876d4e649faba3">ysc::matrix&lt; T, Dimensions &gt;::any</a> () <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a></td></tr>
 <tr class="memdesc:ga0322bb96e2983098a6876d4e649faba3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if at least one element converts to <code>true</code>.  <br /></td></tr>
 <tr class="separator:ga0322bb96e2983098a6876d4e649faba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -149,13 +161,13 @@ requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_o
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::all </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">bool</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::all </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -170,13 +182,14 @@ template&lt;class T , std::size_t... Dimensions&gt; </div>
 
 <p>Returns <code>true</code> if every element converts to <code>true</code>. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> iff all elements are truthy</dd></dl>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{1, 2, 3};</div>
-<div class="line">assert(m.all() == <span class="keyword">true</span>);</div>
-<div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> n{1, 0, 3};</div>
-<div class="line">assert(n.all() == <span class="keyword">false</span>);</div>
-<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00084">matrix.hpp:84</a></div></div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.all() == <span class="keyword">true</span>);</div>
+<div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">n</a>{1, 0, 3};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">n</a>.all() == <span class="keyword">false</span>);</div>
+<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00114">matrix.hpp:114</a></div></div>
+<div class="ttc" id="aclassysc_1_1matrix_html_a9b05ad6c525775562e1ddc25ce176f9e"><div class="ttname"><a href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">ysc::matrix::reverse_iterator</a></div><div class="ttdeci">std::reverse_iterator&lt; iterator &gt; reverse_iterator</div><div class="ttdoc">Reverse iterator.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00165">matrix.hpp:165</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01008">1008</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01278">1278</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -186,13 +199,13 @@ template&lt;class T , std::size_t... Dimensions&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::any </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">bool</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::any </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -207,12 +220,12 @@ template&lt;class T , std::size_t... Dimensions&gt; </div>
 
 <p>Returns <code>true</code> if at least one element converts to <code>true</code>. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>true</code> iff at least one element is truthy</dd></dl>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{0, 0, 3};</div>
-<div class="line">assert(m.any() == <span class="keyword">true</span>);</div>
-<div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> n{0, 0, 0};</div>
-<div class="line">assert(n.any() == <span class="keyword">false</span>);</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{0, 0, 3};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.any() == <span class="keyword">true</span>);</div>
+<div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">n</a>{0, 0, 0};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">n</a>.any() == <span class="keyword">false</span>);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01027">1027</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01297">1297</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -222,18 +235,18 @@ template&lt;class T , std::size_t... Dimensions&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <div class="memtemplate">
-template&lt;class F &gt; <br />
-requires std::invocable&lt;F, T&amp;&gt;</div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a> &gt; <br />
+requires std::invocable&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>, T&amp;&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr void <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::apply </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">void</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::apply </td>
           <td>(</td>
-          <td class="paramtype">F&#160;</td>
+          <td class="paramtype"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
           <td></td>
         </tr>
@@ -259,12 +272,12 @@ requires std::invocable&lt;F, T&amp;&gt;</div>
   </dd>
 </dl>
 <p>Visits every element in row-major order and calls <em>f</em> with a reference to the element. <em>f</em> may modify the element; the matrix is mutated in place.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{1, 2, 3};</div>
-<div class="line">m.<a class="code hl_function" href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">apply</a>([](<span class="keywordtype">int</span>&amp; v) { v *= 2; });</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">apply</a>([](<span class="keywordtype">int</span>&amp; <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>) { <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> *= 2; });</div>
 <div class="line"><span class="comment">// m == ysc::matrix&lt;int, 3&gt;{2, 4, 6}</span></div>
-<div class="ttc" id="agroup__ysc__algorithms_html_ga2e877c4073a1694a0b902dba8aa2d4a9"><div class="ttname"><a href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix::apply</a></div><div class="ttdeci">constexpr void apply(F f)</div><div class="ttdoc">Applies a function to every element in place.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00900">matrix.hpp:900</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_ga2e877c4073a1694a0b902dba8aa2d4a9"><div class="ttname"><a href="group__ysc__algorithms.html#ga2e877c4073a1694a0b902dba8aa2d4a9">ysc::matrix::apply</a></div><div class="ttdeci">constexpr void apply(F f)</div><div class="ttdoc">Applies a function to every element in place.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01170">matrix.hpp:1170</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00900">900</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01170">1170</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -274,20 +287,20 @@ requires std::invocable&lt;F, T&amp;&gt;</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <div class="memtemplate">
-template&lt;class F &gt; <br />
-requires std::invocable&lt;F, const T&amp;&gt;</div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a> &gt; <br />
+requires std::invocable&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T&amp;&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::map </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">auto</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::map </td>
           <td>(</td>
-          <td class="paramtype">F&#160;</td>
+          <td class="paramtype"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>&#160;</td>
           <td class="paramname"><em>f</em></td><td>)</td>
-          <td> const -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt;std::invoke_result_t&lt;F, const T&amp;&gt;, Dimensions...&gt; </td>
+          <td> const -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt;std::invoke_result_t&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">F</a>, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T&amp;&gt;, Dimensions...&gt; </td>
         </tr>
       </table>
   </td>
@@ -312,12 +325,12 @@ requires std::invocable&lt;F, const T&amp;&gt;</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A new matrix whose element type is <code>std::invoke_result_t&lt;F, const T&amp;&gt;</code> and whose dimensions are identical to <code>*this</code>.</dd></dl>
 <p>Does not modify the original matrix.</p>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{1, 2, 3};</div>
-<div class="line"><span class="keyword">auto</span> s = m.<a class="code hl_function" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">map</a>([](<span class="keywordtype">int</span> v) { <span class="keywordflow">return</span> std::to_string(v); });</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3};</div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">s</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">map</a>([](<span class="keywordtype">int</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>) { <span class="keywordflow">return</span> std::to_string(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>); });</div>
 <div class="line"><span class="comment">// s is ysc::matrix&lt;std::string, 3&gt;{&quot;1&quot;, &quot;2&quot;, &quot;3&quot;}</span></div>
-<div class="ttc" id="agroup__ysc__algorithms_html_gace61500d9d0f90708409e000c489b4f2"><div class="ttname"><a href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix::map</a></div><div class="ttdeci">constexpr auto map(F f) const -&gt; matrix&lt; std::invoke_result_t&lt; F, const T &amp; &gt;, Dimensions... &gt;</div><div class="ttdoc">Returns a new matrix obtained by applying a function to every element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00927">matrix.hpp:927</a></div></div>
+<div class="ttc" id="agroup__ysc__algorithms_html_gace61500d9d0f90708409e000c489b4f2"><div class="ttname"><a href="group__ysc__algorithms.html#gace61500d9d0f90708409e000c489b4f2">ysc::matrix::map</a></div><div class="ttdeci">constexpr auto map(F f) const -&gt; matrix&lt; std::invoke_result_t&lt; F, const T &amp; &gt;, Dimensions... &gt;</div><div class="ttdoc">Returns a new matrix obtained by applying a function to every element.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01197">matrix.hpp:1197</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00927">927</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01197">1197</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -327,16 +340,16 @@ requires std::invocable&lt;F, const T&amp;&gt;</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <div class="memtemplate">
-template&lt;class U  = T&gt; <br />
-requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>  = T&gt; <br />
+requires std::same_as&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr U <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::max </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::max </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -357,10 +370,10 @@ requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_o
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Maximum element in row-major order</dd></dl>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{3, 1, 2};</div>
-<div class="line">assert(m.max() == 3);</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{3, 1, 2};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.max() == 3);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00989">989</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01259">1259</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -370,16 +383,16 @@ requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_o
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <div class="memtemplate">
-template&lt;class U  = T&gt; <br />
-requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>  = T&gt; <br />
+requires std::same_as&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_ordered&lt;T&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr U <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::min </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::min </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -400,10 +413,10 @@ requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_o
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Minimum element in row-major order</dd></dl>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{3, 1, 2};</div>
-<div class="line">assert(m.min() == 1);</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{3, 1, 2};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.min() == 1);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00969">969</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01239">1239</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -413,16 +426,16 @@ requires std::same_as&lt;U, T&gt; (linear_size &gt; 0) &amp;&amp; std::totally_o
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , std::size_t... Dimensions&gt; </div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
 <div class="memtemplate">
-template&lt;class U  = T&gt; <br />
-requires std::same_as&lt;U, T&gt;</div>
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>  = T&gt; <br />
+requires std::same_as&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a>, T&gt;</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr U <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, Dimensions &gt;::sum </td>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">U</a> <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::sum </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -443,10 +456,10 @@ requires std::same_as&lt;U, T&gt;</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Sum of all elements, with the accumulator initialized to <code>T{}</code> </dd></dl>
-<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> m{1, 2, 3};</div>
-<div class="line">assert(m.sum() == 6);</div>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3};</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.sum() == 6);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00948">948</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01218">1218</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>

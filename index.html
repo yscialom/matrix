@@ -1,3 +1,4 @@
+<!-- HTML header for doxygen 1.9.8-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
 <head>
@@ -24,6 +25,17 @@ MathJax.Hub.Config({
 </script>
 <script type="text/javascript" async="async" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+</script>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -118,13 +130,13 @@ Quick Start</h2>
 <div class="line">grid(0, 1) = 42;</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Element access — bounds-checked (throws std::out_of_range)</span></div>
-<div class="line"><span class="keywordtype">int</span> v = grid.<a class="code hl_function" href="classysc_1_1matrix.html#ad3619924f8273c8db733a8a1b342459a">at</a>(1, 2);</div>
+<div class="line"><span class="keywordtype">int</span> v = grid.<a class="code hl_function" href="group__ysc__access.html#gad3619924f8273c8db733a8a1b342459a">at</a>(1, 2);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Range-based for loop (row-major order)</span></div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keywordtype">int</span>&amp; x : grid)</div>
 <div class="line">    x *= 2;</div>
-<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00084">matrix.hpp:84</a></div></div>
-<div class="ttc" id="aclassysc_1_1matrix_html_ad3619924f8273c8db733a8a1b342459a"><div class="ttname"><a href="classysc_1_1matrix.html#ad3619924f8273c8db733a8a1b342459a">ysc::matrix::at</a></div><div class="ttdeci">const T &amp; at(Coords... coordinates) const</div><div class="ttdoc">Returns a reference to the element at coordinates.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01128">matrix.hpp:1128</a></div></div>
+<div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00114">matrix.hpp:114</a></div></div>
+<div class="ttc" id="agroup__ysc__access_html_gad3619924f8273c8db733a8a1b342459a"><div class="ttname"><a href="group__ysc__access.html#gad3619924f8273c8db733a8a1b342459a">ysc::matrix::at</a></div><div class="ttdeci">const T &amp; at(Coords... coordinates) const</div><div class="ttdoc">Returns a const reference to the element at coordinates (bounds-checked).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01451">matrix.hpp:1451</a></div></div>
 <div class="ttc" id="amatrix_8hpp_html"><div class="ttname"><a href="matrix_8hpp.html">matrix.hpp</a></div></div>
 </div><!-- fragment --><hr  />
 <h2><a class="anchor" id="autotoc_md3"></a>
@@ -142,7 +154,7 @@ CMake FetchContent (recommended)</h3>
 <div class="line">target_link_libraries(my_target PRIVATE ysc::matrix)</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md5"></a>
 Manual</h3>
-<p>Copy <code><a class="el" href="matrix_8hpp.html">src/include/matrix.hpp</a></code> into your project and add its directory to your include path.</p>
+<p>Download <code><a class="el" href="matrix_8hpp.html">matrix.hpp</a></code> from a <a href="https://github.com/yscialom/matrix/releases">GitHub Release</a> and copy it into your project.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&quot;</span></div>
 </div><!-- fragment --><hr  />
 <h2><a class="anchor" id="autotoc_md7"></a>
@@ -174,15 +186,28 @@ Features</h2>
 <hr  />
 <h2><a class="anchor" id="autotoc_md9"></a>
 Cookbook</h2>
-<p>Looking for practical, copy-paste examples? The <a class="el" href="cookbook.html">Cookbook</a> page collects six ready-to-use recipes covering the first use-cases — element access, factory functions, algorithms, zero-copy views, and linear algebra — and showcases the library's signature features: <code>constexpr</code> linear algebra, compile-time dimension checks, and views that carry their shape in the type.</p>
+<p>Looking for practical, copy-paste examples? The <a class="el" href="cookbook.html">Cookbook — Practical Recipes for ysc::matrix</a> page collects six ready-to-use recipes covering the first use-cases — element access, factory functions, algorithms, zero-copy views, and linear algebra — and showcases the library's signature features: <code>constexpr</code> linear algebra, compile-time dimension checks, and views that carry their shape in the type.</p>
 <hr  />
 <h2><a class="anchor" id="autotoc_md11"></a>
 API Reference</h2>
-<p>The main entry point is the <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a> class.</p>
-<p>Related types and concepts:</p><ul>
-<li><a class="el" href="structysc_1_1matrix__zero__t.html">ysc::matrix_zero_t</a> — tag type for explicit zero-initialization (<code>ysc::zero</code>)</li>
-<li><a class="el" href="conceptysc_1_1integral__coordinates.html">ysc::integral_coordinates</a> — concept constraining <code>operator()</code> and <code>at()</code> coordinates</li>
-<li><a class="el" href="conceptysc_1_1matrix__convertible__from.html">ysc::matrix_convertible_from</a> — concept constraining converting constructors and assignments </li>
+<p>The API is organized into the following groups — see the <a href="topics.html">Topics</a> page for a full listing:</p><ul>
+<li><a class="el" href="group__ysc__construction.html">Construction</a> — Construction (constructors, assignment, <code>zeros</code>, <code>full</code>, <code>ones</code>, <code>identity</code>, <code>generate</code>)</li>
+<li><a class="el" href="group__ysc__access.html">Element access</a> — Element access (<code>operator()</code>, <code>at()</code>)</li>
+<li><a class="el" href="group__ysc__iterators.html">Iterators</a> — Iterators (<code>begin</code>, <code>end</code>, <code>rbegin</code>, <code>rend</code>, and const variants)</li>
+<li><a class="el" href="group__ysc__capacity.html">Capacity</a> — Capacity (<code>size()</code>, <code>empty()</code>, <code>data()</code>, <code>order</code>, <code>dimensions</code>)</li>
+<li><a class="el" href="group__ysc__modifiers.html">Modifiers</a> — Modifiers (<code>fill</code>, <code>swap</code>, <code>front</code>, <code>back</code>)</li>
+<li><a class="el" href="group__ysc__comparison.html">Comparison</a> — Comparison (<code>==</code>, <code>&lt;=&gt;</code>)</li>
+<li><a class="el" href="group__ysc__arithmetic.html">Arithmetic operators</a> — Arithmetic operators (element-wise and scalar)</li>
+<li><a class="el" href="group__ysc__algorithms.html">Algorithms</a> — Algorithms (<code>apply</code>, <code>map</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>all</code>, <code>any</code>)</li>
+<li><a class="el" href="group__ysc__linalg.html">Linear algebra</a> — Linear algebra (<code>transpose</code>, <code>matmul</code>, <code>dot</code>)</li>
+<li><a class="el" href="group__ysc__views.html">Views</a> — Views (<code>matrix_view</code>, <code>row</code>, <code>col</code>, <code>slice</code>, <code>rows</code>, <code>cols</code>, <code>reshape</code>, <code>flatten</code>)</li>
+<li><a class="el" href="group__ysc__io.html">I/O</a> — I/O (<code>operator&lt;&lt;</code>, <code>std::formatter</code>)</li>
+<li><a class="el" href="group__ysc__hash.html">Hash support</a> — Hash support (<code>std::hash</code> specialization)</li>
+</ul>
+<p>You can also browse the full documentation for the main library classes:</p><ul>
+<li>Owning matrix — <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a></li>
+<li>Non-owning continuous view — <a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;</a></li>
+<li>Non-owning strided view — <a class="el" href="classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html">ysc::matrix_view&lt; T, strided, Dimensions... &gt;</a> </li>
 </ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->

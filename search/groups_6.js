@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['views_0',['Views',['../group__ysc__view.html',1,'']]]
+  ['modifiers_0',['Modifiers',['../group__ysc__modifiers.html',1,'']]]
 ];
