@@ -12,11 +12,11 @@
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 1/10 | ✅ US-046, ⬜ US-038, US-040 à US-043, US-045, US-047 à US-049 |
+| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 2/10 | ✅ US-043, ✅ US-046, ⬜ US-038, US-040 à US-042, US-045, US-047 à US-049 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
 
-**Total : 44 / 69 US**
+**Total : 45 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -38,7 +38,7 @@
 | US-040 | Dossier `examples/` enrichi | P1 | ⬜ À faire |
 | US-041 | Gate couverture 100 % | P1 | ⬜ À faire |
 | US-042 | Tag `v1.0.0` | P0 (final) | ⬜ À faire |
-| US-043 | Documentation Doxygen complète | P1 | ⬜ À faire |
+| US-043 | Documentation Doxygen complète | P1 | ✅ Done |
 | US-045 | Packaging CMake : cible `ysc-matrix`, alias, install, find_package | P0 | ⬜ À faire |
 | US-046 | Correctifs docs + `.gitignore` | P0 | ✅ Done |
 | US-047 | README marketing + `mainpage.md` v1 | P0 | ⬜ À faire |
@@ -1108,18 +1108,18 @@ En tant qu'utilisateur de la bibliothèque, je veux que chaque fonction publique
 
 | Groupe | Contenu |
 |--------|---------|
-| `ysc_construction` | Constructeurs, `operator=`, factories |
+| `ysc_construction` | Constructeurs, `operator=`, factories : `zeros`, `full`, `ones`, `identity`, `generate` ; `matrix(std::array)`, `matrix(std::span)` |
 | `ysc_access` | `operator()`, `at()` |
-| `ysc_iterators` | `begin`, `end`, `cbegin`, `cend`, `rbegin`, `rend`, variantes const |
-| `ysc_capacity` | `size`, `max_size`, `empty`, `data` |
-| `ysc_modifiers` | `fill`, `swap` |
+| `ysc_iterators` | `begin`, `end`, `cbegin`, `cend`, `rbegin`, `rend`, `crbegin`, `crend` et variantes const |
+| `ysc_capacity` | `size`, `max_size`, `empty`, `data`, `order`, `dimensions` |
+| `ysc_modifiers` | `fill`, `swap` (membre et friend), `front`, `back` |
 | `ysc_comparison` | `operator==`, `operator<=>` |
 | `ysc_arithmetic` | `operator+`, `-`, `*`, `/`, scalaires, Hadamard, unaires |
 | `ysc_algorithms` | `apply`, `map`, `sum`, `min`, `max`, `all`, `any` |
 | `ysc_linalg` | `transpose`, `matmul`, `dot` |
-| `ysc_views` | `slice`, `row`, `col`, `reshape`, `flatten`, `ysc::all`, `ysc::contiguous`, `ysc::strided` |
-| `ysc_io` | `operator<<`, `std::formatter` |
-| `ysc_hash` | `std::hash` |
+| `ysc_views` | `slice`, `row`, `col`, `rows`, `cols`, `reshape`, `flatten` ; `matrix_view` (classe), `contiguous`, `strided`, `all_t`, `all`, `const_matrix_view` ; vues sur `matrix_view` : `row`, `col`, `fill`, `front`, `back` |
+| `ysc_io` | `operator<<` (matrix + matrix_view contiguous), `std::formatter` (matrix + matrix_view contiguous) |
+| `ysc_hash` | `std::hash<ysc::matrix<T, D...>>` |
 
 **Page principale (`@mainpage`) :**
 - Fichier `doc/mainpage.md`
@@ -1134,12 +1134,12 @@ En tant qu'utilisateur de la bibliothèque, je veux que chaque fonction publique
 - Ou ajouter une étape `doxygen-check` dédiée (sans déploiement)
 
 ### Critères d'acceptation
-- [ ] Chaque fonction publique de `matrix.hpp`, `matrix_view.hpp`, `matrix_detail.hpp` possède `@brief`, `@tparam`/`@param`/`@return`/`@throws` selon applicable, et un exemple `@code`…`@endcode`
-- [ ] Toutes les fonctions sont rattachées à l'un des 12 groupes ci-dessus via `@ingroup`
-- [ ] La page `@mainpage` liste les 12 groupes ; chaque groupe est accessible en 1 clic depuis la page principale
-- [ ] `cmake --build build --target doc` produit zéro avertissement Doxygen
-- [ ] La CI est rouge si un avertissement Doxygen est introduit (`WARN_AS_ERROR = YES`)
-- [ ] `GENERATE_TREEVIEW = YES` et `USE_MATHJAX = YES` actifs dans `Doxyfile.in`
+- [x] Chaque fonction publique de `matrix.hpp`, `matrix_view.hpp`, `matrix_detail.hpp` possède `@brief`, `@tparam`/`@param`/`@return`/`@throws` selon applicable, et un exemple `@code`…`@endcode`
+- [x] Toutes les fonctions sont rattachées à l'un des 12 groupes ci-dessus via `@ingroup`
+- [x] La page `@mainpage` liste les 12 groupes ; chaque groupe est accessible en 1 clic depuis la page principale
+- [x] `cmake --build build --target doc` produit zéro avertissement Doxygen
+- [x] La CI est rouge si un avertissement Doxygen est introduit (`WARN_AS_ERROR = YES`)
+- [x] `GENERATE_TREEVIEW = YES` et `USE_MATHJAX = YES` actifs dans `Doxyfile.in`
 
 ---
 

@@ -1,7 +1,4 @@
-/**
-\page cookbook Cookbook
-
-# Cookbook — Practical Recipes for `ysc::matrix`
+# Cookbook — Practical Recipes for ysc::matrix {#cookbook}
 
 Six self-contained recipes for the first things you will want to do with
 `ysc::matrix`. Each one also highlights a property of the library that sets it
@@ -39,8 +36,6 @@ int main()
 > `int m[2][3]`, zero indirection, zero allocation. You only pay for what you
 > use.
 
----
-
 ## 2. Algebra at compile time
 
 Every linear-algebra primitive is `constexpr`. Move invariants from the
@@ -68,8 +63,6 @@ int main()
 > matrix product inside a `static_assert`. Here the whole API is `constexpr`,
 > so unit-test-grade checks run during compilation.
 
----
-
 ## 3. Factory functions
 
 Five constexpr factories cover the matrices you most often need to type
@@ -95,8 +88,6 @@ int main()
 > **Why it matters.** All five live in the same header you already include,
 > all are `constexpr`, and all carry their dimensions in the type. No
 > `Eigen::MatrixXd::Identity(n, n)` runtime sizing surprise.
-
----
 
 ## 4. Map, reduce, transform
 
@@ -134,8 +125,6 @@ int main()
 > `std::ranges::for_each` and `std::ranges::transform`, but they keep the
 > dimensions in the type — so `m.map(f)` produces a `matrix<U, Dims...>`,
 > not a `std::vector`.
-
----
 
 ## 5. Zero-copy views and slicing
 
@@ -190,8 +179,6 @@ auto rc = const_m.row(0);    // matrix_view<const int, contiguous, 4> (read-only
 > `std::array` cannot slice at all. Here a view is a pointer + a compile-time
 > shape, composable, and the const-ness is enforced by the type system.
 
----
-
 ## 6. Linear algebra essentials
 
 `transpose`, `matmul`, and `dot` cover most everyday linear algebra.
@@ -233,5 +220,3 @@ int main()
 > compile when `N != K`. With Eigen's dynamic matrices that mistake is a
 > runtime assertion; with raw arrays it is silent undefined behaviour. Static
 > dimensions catch it at the build.
-
-*/

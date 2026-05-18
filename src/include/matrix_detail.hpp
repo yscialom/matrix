@@ -22,16 +22,16 @@ namespace ysc {
 
 // ─── storage tags ────────────────────────────────────────────────────────────
 
-/** @brief Storage tag: view elements are contiguous in memory. @ingroup ysc_view */
+/** @brief Storage tag: view elements are contiguous in memory. @ingroup ysc_views */
 struct contiguous {};
-/** @brief Storage tag: view elements are non-contiguous (strided) in memory. @ingroup ysc_view */
+/** @brief Storage tag: view elements are non-contiguous (strided) in memory. @ingroup ysc_views */
 struct strided {};
 
 // ─── slice sentinel ──────────────────────────────────────────────────────────
 
 /**
  * @brief Sentinel type used in slice() to indicate "keep this dimension".
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 struct all_t {};
 
@@ -43,7 +43,7 @@ struct all_t {};
  * auto v = m.slice(ysc::all, 2);  // keeps dims 0 and 2, fixes dim 1 at index 2
  * @endcode
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 inline constexpr all_t all{};
 
@@ -58,6 +58,7 @@ template <class T, class Storage, std::size_t... Dims> class matrix_view;
 /**
  * @brief Satisfied when all types in @c Coords are integral (ignoring cv-ref).
  * Used to constrain @c operator() and @c at() on matrix and matrix_view.
+ * @ingroup ysc_access
  */
 template <class... Coords>
 concept integral_coordinates = (std::integral<std::remove_cvref_t<Coords>> && ...);
@@ -272,7 +273,7 @@ template <class... PaddedSpecs> struct slice_helper<std::tuple<PaddedSpecs...>> 
  * assert(v(0, 0) == 1);
  * @endcode
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 template <class T, std::size_t... Dims>
 using const_matrix_view = matrix_view<const T, contiguous, Dims...>;
