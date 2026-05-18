@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.20)
 project(ysc-matrix)
 
 set(VERSION_MAJOR   0   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   6   CACHE STRING "Project minor version number.")
+set(VERSION_MINOR   7   CACHE STRING "Project minor version number.")
 set(VERSION_PATCH   0   CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
@@ -39,6 +39,15 @@ endif()
 
 
 ##
+# benchmark configuration
+#
+option(BUILD_BENCHMARKS "Build benchmarks" OFF)
+if(BUILD_BENCHMARKS)
+    add_subdirectory(bench)
+endif()
+
+
+##
 # doc generation
 #
 find_package(Doxygen)
@@ -48,6 +57,8 @@ if(BUILD_DOCUMENTATION)
     if(NOT DOXYGEN_FOUND)
         message(FATAL_ERROR "Doxygen is needed to build the documentation.")
     endif()
+
+    include(cmake/DoxygenAwesome.cmake)
 
     set(doxyfile_in    ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in)
     set(doxyfile       ${CMAKE_CURRENT_BINARY_DIR}/doc/Doxyfile)

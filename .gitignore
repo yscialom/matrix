@@ -1,6 +1,6 @@
 # Building
 _cmake
-/build
+/build*/
 
 # Editing
 *.orig

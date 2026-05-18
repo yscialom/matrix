@@ -88,3 +88,73 @@ static_assert([] {
     auto c = ysc::matmul(a, b);
     return c(0, 0) == 19 && c(0, 1) == 22 && c(1, 0) == 43 && c(1, 1) == 50;
 }());
+
+// ─── matmul(matrix, vector) ───────────────────────────────────────────────────
+
+TEST(MatrixMatmulVec, ReturnTypeIsCorrect) {
+    ysc::matrix<int, 2, 3> mat{1, 0, 0, 0, 1, 0};
+    ysc::matrix<int, 3> vec{1, 2, 3};
+    auto r = ysc::matmul(mat, vec);
+    static_assert(std::is_same_v<decltype(r), ysc::matrix<int, 2>>);
+    (void)r;
+}
+
+TEST(MatrixMatmulVec, BasicValues) {
+    // [[1,0,0],[0,1,0]] * [1,2,3] = [1,2]
+    ysc::matrix<int, 2, 3> mat{1, 0, 0, 0, 1, 0};
+    ysc::matrix<int, 3> vec{1, 2, 3};
+    auto r = ysc::matmul(mat, vec);
+    EXPECT_EQ(r(0), 1);
+    EXPECT_EQ(r(1), 2);
+}
+
+TEST(MatrixMatmulVec, NonTrivialValues) {
+    // [[1,2,3],[4,5,6]] * [1,0,1] = [4,10]
+    ysc::matrix<int, 2, 3> mat{1, 2, 3, 4, 5, 6};
+    ysc::matrix<int, 3> vec{1, 0, 1};
+    auto r = ysc::matmul(mat, vec);
+    EXPECT_EQ(r(0), 4);
+    EXPECT_EQ(r(1), 10);
+}
+
+TEST(MatrixMatmulVec, IdentityLeftNeutral) {
+    ysc::matrix<int, 3> vec{7, 8, 9};
+    auto r = ysc::matmul(ysc::identity<int, 3>(), vec);
+    EXPECT_EQ(r, vec);
+}
+
+TEST(MatrixMatmulVec, ZeroMatrix) {
+    ysc::matrix<int, 2, 3> mat(ysc::zero);
+    ysc::matrix<int, 3> vec{1, 2, 3};
+    auto r = ysc::matmul(mat, vec);
+    ysc::matrix<int, 2> expected(ysc::zero);
+    EXPECT_EQ(r, expected);
+}
+
+TEST(MatrixMatmulVec, SingleRowMatrix) {
+    // [[1,2,3]] * [4,5,6] = [32]
+    ysc::matrix<int, 1, 3> mat{1, 2, 3};
+    ysc::matrix<int, 3> vec{4, 5, 6};
+    auto r = ysc::matmul(mat, vec);
+    EXPECT_EQ(r(0), 32);
+}
+
+TEST(MatrixMatmulVec, MixedTypes) {
+    // [[1,2,3],[4,5,6]] * [0.5, 1.0, 1.5]
+    // row 0: 1*0.5 + 2*1.0 + 3*1.5 = 7.0
+    // row 1: 4*0.5 + 5*1.0 + 6*1.5 = 16.0
+    ysc::matrix<int, 2, 3> mat{1, 2, 3, 4, 5, 6};
+    ysc::matrix<double, 3> vec{0.5, 1.0, 1.5};
+    auto r = ysc::matmul(mat, vec);
+    static_assert(std::is_same_v<decltype(r), ysc::matrix<double, 2>>);
+    EXPECT_DOUBLE_EQ(r(0), 7.0);
+    EXPECT_DOUBLE_EQ(r(1), 16.0);
+}
+
+// constexpr verification
+static_assert([] {
+    ysc::matrix<int, 2, 3> mat{1, 0, 0, 0, 1, 0};
+    ysc::matrix<int, 3> vec{5, 6, 7};
+    auto r = ysc::matmul(mat, vec);
+    return r(0) == 5 && r(1) == 6;
+}());

@@ -178,3 +178,41 @@ TEST(matrix_from_view, ctad_strided) {
     EXPECT_EQ(m2(0), 1);
     EXPECT_EQ(m2(2), 9);
 }
+
+// ─── US-058: strided ctor uses iterators ──────────────────────────────────────
+
+TEST(matrix_from_view, strided_1d_iterator_copies_correct_values) {
+    // Verify that the 1-D strided ctor (now using iterators) yields the same
+    // result as constructing element by element.
+    ysc::matrix<int, 4, 5> m{};
+    for (std::size_t i = 0; i < 4; ++i) {
+        for (std::size_t j = 0; j < 5; ++j) {
+            m(i, j) = static_cast<int>(i * 5 + j + 1);
+        }
+    }
+    // col(3): elements m(0,3), m(1,3), m(2,3), m(3,3) — values 4, 9, 14, 19
+    auto col3 = m.col(3);
+    auto m2 = ysc::matrix<int, 4>(col3);
+    EXPECT_EQ(m2(0), m(0, 3));
+    EXPECT_EQ(m2(1), m(1, 3));
+    EXPECT_EQ(m2(2), m(2, 3));
+    EXPECT_EQ(m2(3), m(3, 3));
+}
+
+TEST(matrix_from_view, strided_1d_copy_does_not_alias_source) {
+    // After construction, mutating the copy must not affect the original.
+    ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    auto col1 = m.col(1);
+    auto m2 = ysc::matrix<int, 3>(col1);
+    // Mutate the copy
+    m2(0) = 42;
+    m2(1) = 43;
+    m2(2) = 44;
+    // Source must be unchanged
+    EXPECT_EQ(m(0, 1), 2);
+    EXPECT_EQ(m(1, 1), 6);
+    EXPECT_EQ(m(2, 1), 10);
+    // And mutating the source must not affect the copy
+    m(0, 1) = 99;
+    EXPECT_EQ(m2(0), 42);
+}

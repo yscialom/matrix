@@ -20,7 +20,10 @@
 #include <iterator>
 #include <numeric>
 #include <ostream>
+#include <ranges>
+#include <span>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <type_traits>
 // Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
@@ -34,36 +37,6 @@
 #include <matrix_view.hpp>
 
 namespace ysc {
-namespace detail {
-
-template <class T>
-concept ostream_streamable = requires(std::ostream& os, const T& v) { os << v; };
-
-// Print a hyperslice of a matrix starting at `it`, covering dimension `dim_idx`
-// onward. Returns an iterator past the last element printed.
-// NOLINTNEXTLINE(misc-no-recursion)
-template <class It, class Dims>
-It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_idx) {
-    os << '[';
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
-    const std::size_t count = dims[dim_idx];
-    const bool last_dim = (dim_idx + 1 == dims.size());
-    for (std::size_t i = 0; i < count; ++i) {
-        if (i > 0) {
-            os << ", ";
-        }
-        if (last_dim) {
-            os << *it++;
-        } else {
-            // NOLINTNEXTLINE(misc-no-recursion)
-            it = print_recursive(os, it, dims, dim_idx + 1);
-        }
-    }
-    os << ']';
-    return it;
-}
-
-} // namespace detail
 
 /**
  * @brief Satisfied when `U` is convertible to `T`.
@@ -78,6 +51,36 @@ concept matrix_convertible_from = std::convertible_to<U, T>;
  */
 constexpr struct matrix_zero_t {
 } zero;
+
+/**
+ * @defgroup ysc_construction Construction
+ * @brief Constructors, assignment operators, and factory functions.
+ */
+
+/**
+ * @defgroup ysc_iterators Iterators
+ * @brief Range iteration over matrix elements in row-major order.
+ */
+
+/**
+ * @defgroup ysc_capacity Capacity
+ * @brief Size queries and data pointer.
+ */
+
+/**
+ * @defgroup ysc_modifiers Modifiers
+ * @brief In-place mutation: fill, swap, front, back.
+ */
+
+/**
+ * @defgroup ysc_access Element access
+ * @brief Unchecked and checked element access.
+ */
+
+/**
+ * @defgroup ysc_comparison Comparison
+ * @brief Equality and three-way comparison operators.
+ */
 
 /**
  * @brief Multi-dimensional container encapsulating a fixed size matrix.
@@ -112,10 +115,26 @@ template <class T, std::size_t... Dimensions> class matrix {
     template <class, std::size_t...> friend class matrix;
 
 public:
-    /** @brief Order of the matrix (2D matrix have order 2, 3D order 3, etc.).
+    /**
+     * @brief Order of the matrix (2D matrix have order 2, 3D order 3, etc.).
+     *
+     * @code
+     * static_assert(ysc::matrix<int, 2, 3>::order == 2);
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     static constexpr std::size_t order = sizeof...(Dimensions);
-    /** @brief Dimensions of the matrix. An order-`N` matrix has `N` dimensions.
+
+    /**
+     * @brief Dimensions of the matrix. An order-`N` matrix has `N` dimensions.
+     *
+     * @code
+     * static_assert(ysc::matrix<int, 2, 3>::dimensions[0] == 2);
+     * static_assert(ysc::matrix<int, 2, 3>::dimensions[1] == 3);
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     static constexpr std::array dimensions = {Dimensions...};
 
@@ -148,64 +167,186 @@ public:
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     // iterators
+
+    /**
+     * @brief Returns an iterator to the first element in row-major order.
+     * @return Iterator to the first element
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * for (int v : m) { } // visits 1, then 2, then 3
+     * @endcode
+     *
+     * @ingroup ysc_iterators
+     */
     constexpr iterator begin() noexcept { return _data.begin(); }
+
+    /**
+     * @brief Returns a const iterator to the first element in row-major order.
+     * @return Const iterator to the first element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_iterator begin() const noexcept { return _data.begin(); }
+
+    /**
+     * @brief Returns a const iterator to the first element in row-major order.
+     * @return Const iterator to the first element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_iterator cbegin() const noexcept { return _data.cbegin(); }
+
+    /**
+     * @brief Returns an iterator past the last element.
+     * @return Iterator past the last element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     constexpr iterator end() noexcept { return _data.end(); }
+
+    /**
+     * @brief Returns a const iterator past the last element.
+     * @return Const iterator past the last element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_iterator end() const noexcept { return _data.end(); }
+
+    /**
+     * @brief Returns a const iterator past the last element.
+     * @return Const iterator past the last element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_iterator cend() const noexcept { return _data.cend(); }
+
+    /**
+     * @brief Returns a reverse iterator to the last element.
+     * @return Reverse iterator to the last element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     constexpr reverse_iterator rbegin() noexcept { return _data.rbegin(); }
+
+    /**
+     * @brief Returns a const reverse iterator to the last element.
+     * @return Const reverse iterator to the last element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_reverse_iterator rbegin() const noexcept {
         return _data.rbegin();
     }
+
+    /**
+     * @brief Returns a const reverse iterator to the last element.
+     * @return Const reverse iterator to the last element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_reverse_iterator crbegin() const noexcept {
         return _data.crbegin();
     }
+
+    /**
+     * @brief Returns a reverse iterator past the first element.
+     * @return Reverse iterator past the first element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     constexpr reverse_iterator rend() noexcept { return _data.rend(); }
+
+    /**
+     * @brief Returns a const reverse iterator past the first element.
+     * @return Const reverse iterator past the first element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_reverse_iterator rend() const noexcept { return _data.rend(); }
+
+    /**
+     * @brief Returns a const reverse iterator past the first element.
+     * @return Const reverse iterator past the first element
+     * @see begin()
+     * @ingroup ysc_iterators
+     */
     [[nodiscard]] constexpr const_reverse_iterator crend() const noexcept { return _data.crend(); }
 
     // capacity
     /**
-     * @brief Returns the number of elements in the matrix (product of all
-     * dimensions).
+     * @brief Returns the number of elements in the matrix (product of all dimensions).
+     * @return Number of elements
      *
-     * @note This function is @c static because the size is a compile-time
-     * constant.
+     * @note This function is @c static because the size is a compile-time constant.
+     *
+     * @code
+     * static_assert(ysc::matrix<int, 2, 3>::size() == 6);
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     static constexpr size_type size() noexcept { return linear_size; }
 
     /**
      * @brief Returns the maximum number of elements the matrix can hold.
+     * @return Maximum number of elements (always equal to @c size())
      *
      * Always equal to @c size() for this fixed-size container.
      *
-     * @note This function is @c static because the value is a compile-time
-     * constant.
+     * @note This function is @c static because the value is a compile-time constant.
+     *
+     * @code
+     * static_assert(ysc::matrix<int, 2, 3>::max_size() == 6);
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     static constexpr size_type max_size() noexcept { return linear_size; }
 
     /**
      * @brief Returns whether the matrix has no elements.
+     * @return @c true if @c linear_size == 0
      *
-     * @note This function is @c static because the value is a compile-time
-     * constant.
+     * @note This function is @c static because the value is a compile-time constant.
+     *
+     * @code
+     * static_assert(!ysc::matrix<int, 2, 3>::empty());
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     static constexpr bool empty() noexcept { return linear_size == 0; }
 
     /**
      * @brief Returns a pointer to the underlying element storage.
+     * @return Pointer to the first element
      *
-     * Elements are stored in row-major order (rightmost dimension is
-     * contiguous).
+     * Elements are stored in row-major order (rightmost dimension is contiguous).
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * int* p = m.data();
+     * assert(p[1] == 2);
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     constexpr pointer data() noexcept { return _data.data(); }
 
     /**
-     * @brief Returns a pointer to the underlying element storage.
+     * @brief Returns a const pointer to the underlying element storage.
+     * @return Const pointer to the first element
      *
-     * Elements are stored in row-major order (rightmost dimension is
-     * contiguous).
+     * Elements are stored in row-major order (rightmost dimension is contiguous).
+     *
+     * @code
+     * const ysc::matrix<int, 3> m{1, 2, 3};
+     * const int* p = m.data();
+     * assert(p[0] == 1);
+     * @endcode
+     *
+     * @ingroup ysc_capacity
      */
     [[nodiscard]] constexpr const_pointer data() const noexcept { return _data.data(); }
 
@@ -222,6 +363,8 @@ public:
      ++rhs_it) { swap(*lhs_it, *rhs_it);
      }
      @endcode
+     *
+     * @ingroup ysc_modifiers
      */
     friend void swap(matrix& lhs, matrix& rhs) noexcept(std::is_nothrow_swappable_v<T>) {
         using std::swap;
@@ -232,8 +375,14 @@ public:
     /**
      * @brief Initializes the matrix.
      *
-     * @note If `T` is a trivial type, initialization may result in
-     * indeterminate values.
+     * @note If `T` is a trivial type, initialization may result in indeterminate values.
+     * Use `matrix(matrix_zero_t)` to guarantee zero-initialization.
+     *
+     * @code
+     * ysc::matrix<int, 3> m;  // elements may be indeterminate for trivial T
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     // Intentional: _data is deliberately left uninitialized for trivial T to
     // avoid the cost of zero-initialization on the hot path. Use
@@ -242,31 +391,41 @@ public:
     matrix() = default;
 
     /**
-     * @brief Initializes the matrix following the rules of default
-     * initialization.
+     * @brief Initializes the matrix with all elements zero-initialized.
      *
      * @note If `T` is a trivial type, the matrix is zero-initialized; otherwise
      * the default constructors of its elements are called.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{ysc::zero};  // all elements == 0
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     constexpr matrix(matrix_zero_t /*zero*/) : _data({}) {}
 
     // aggregate constructors
     /**
-     * @brief Initializes the matrix following the rules of aggregate
-     * initialization.
-     * @tparam Args... Source types (must all be convertible to @c T)
-     * @param args...  Source values (must be exactly @c linear_size values)
+     * @brief Initializes the matrix from exactly @c linear_size values,
+     * following the rules of aggregate initialization.
+     * @tparam Args Source types (must all be convertible to @c T)
      *
-     * `matrix<long, 2, 2> m{true, '\x02', 3, 4L}` initializes an order-2 matrix
-     * from the values `true`, `'\x02'`, `3` and `4L` converted to `long`.
+     * `matrix<long, 2, 2> m{true, 'x', 3, 4L}` initializes an order-2 matrix
+     * from the values `true`, `'x'`, `3` and `4L` converted to `long`.
      * Partial initialization (fewer than `linear_size` values) is not
      * supported; use `matrix(matrix_zero_t)` to zero-initialize.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * assert(m(1, 2) == 6);
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     template <class... Args>
         requires(sizeof...(Args) == linear_size) && (std::convertible_to<Args, T> && ...) &&
                 (sizeof...(Args) > 0)
     constexpr explicit(sizeof...(Args) == 1) matrix(Args&&... args)
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
         : _data{static_cast<T>(std::forward<Args>(args))...} {}
 
     // nested initializer_list constructor (2D only)
@@ -284,6 +443,8 @@ public:
      * ysc::matrix<int, 2, 3> m{{1, 2, 3}, {4, 5, 6}};
      * assert(m(1, 2) == 6);
      * @endcode
+     *
+     * @ingroup ysc_construction
      */
     template <std::size_t D1 = order>
         requires(D1 == 2)
@@ -306,6 +467,13 @@ public:
     /**
      * @brief Initializes the matrix as a copy of another.
      * @param other Source matrix
+     *
+     * @code
+     * ysc::matrix<int, 3> a{1, 2, 3};
+     * ysc::matrix<int, 3> b = a;
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     matrix(matrix const& other) = default;
 
@@ -316,6 +484,13 @@ public:
      *
      * Elements of the matrix are copy-initialized from the elements of the
      * source matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3>  a{1, 2, 3};
+     * ysc::matrix<long, 3> b = a;  // converting copy
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     template <class U>
         requires matrix_convertible_from<T, U>
@@ -330,6 +505,13 @@ public:
      *
      * Elements of the matrix are move-initialized from the elements of the
      * source matrix. `other` is left in a valid but unspecified state.
+     *
+     * @code
+     * ysc::matrix<int, 3> a{1, 2, 3};
+     * ysc::matrix<int, 3> b = std::move(a);
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     matrix(matrix&& other) = default;
 
@@ -340,6 +522,13 @@ public:
      *
      * Elements of the matrix are move-initialized from the elements of the
      * source matrix. `other` is left in a valid but unspecified state.
+     *
+     * @code
+     * ysc::matrix<int, 3>  a{1, 2, 3};
+     * ysc::matrix<long, 3> b = std::move(a);  // converting move
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     template <class U>
         requires matrix_convertible_from<T, U>
@@ -366,47 +555,101 @@ public:
      * m2(0) = 99;                              // does not affect m
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     explicit matrix(const matrix_view<T, contiguous, Dimensions...>& v) {
         std::copy(v.begin(), v.end(), _data.begin());
     }
 
     /**
-     * @brief Constructs an owning matrix by copying elements from a strided view.
+     * @brief Constructs an owning matrix by copying elements from a strided view using its
+     *        iterators.
      * @param v Strided view to copy from
      *
-     * Elements are copied one by one via @c operator(). The resulting matrix is independent
-     * of @p v: mutations to either do not affect the other.
+     * For 1-D strided views, elements are copied via the view's random-access iterators
+     * (@c std::copy(v.begin(), v.end(), ...)), which is O(N).  For higher-order strided views,
+     * elements are copied one by one via @c index_to_coordinates and @c operator().
+     * The resulting matrix is independent of @p v: mutations to either do not affect the other.
      *
      * @code
      * ysc::matrix<int, 3, 4> m{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
      * auto col1 = m.col(1);                    // strided view of column 1
-     * auto m2   = ysc::matrix<int, 3>(col1);   // owning copy
+     * auto m2   = ysc::matrix<int, 3>(col1);   // owning copy via iterators
      * m2(0) = 99;                              // does not affect m
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     explicit matrix(const matrix_view<T, strided, Dimensions...>& v) {
-        std::size_t k = 0;
-        for (auto& elem : _data) {
-            const auto coords = detail::index_to_coordinates(dimensions, k++);
-            elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
+        if constexpr (sizeof...(Dimensions) == 1) {
+            std::copy(v.begin(), v.end(), _data.begin());
+        } else {
+            std::size_t k = 0;
+            for (auto& elem : _data) {
+                const auto coords = detail::index_to_coordinates(dimensions, k++);
+                elem = std::apply([&v](auto... cs) -> T { return v(cs...); }, coords);
+            }
         }
+    }
+
+    // constructors from std::array and std::span
+    /**
+     * @brief Constructs from a @c std::array.
+     * @param data Array of exactly @c linear_size elements to move into the matrix.
+     *
+     * @code
+     * ysc::matrix<int, 3> m(std::array<int, 3>{1, 2, 3});
+     * assert(m(0) == 1);
+     * @endcode
+     *
+     * @ingroup ysc_construction
+     */
+    explicit matrix(std::array<T, linear_size> data) noexcept(
+        std::is_nothrow_move_constructible_v<T>)
+        : _data(std::move(data)) {}
+
+    /**
+     * @brief Constructs from a @c std::span.
+     * @param data Span of exactly @c linear_size elements; copied into the matrix.
+     *
+     * @code
+     * int buf[3] = {4, 5, 6};
+     * ysc::matrix<int, 3> m(std::span<const int, 3>{buf, 3});
+     * assert(m(0) == 4);
+     * @endcode
+     *
+     * @ingroup ysc_construction
+     */
+    explicit matrix(std::span<const T, linear_size> data) {
+        std::copy(data.begin(), data.end(), _data.begin());
     }
 
     // assignment operators (copy)
     /**
      * @brief Assigns values to a matrix.
      * @param other Source matrix
+     *
+     * @code
+     * ysc::matrix<int, 3> a{1, 2, 3}, b{4, 5, 6};
+     * a = b;
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     matrix& operator=(matrix const& other) = default;
 
     /**
-     * @brief Assigns values to a matrix.
+     * @brief Assigns values to a matrix with element type conversion.
      * @tparam U     Element type of the source matrix
      * @param  other Source matrix
+     *
+     * @code
+     * ysc::matrix<long, 3> a;
+     * ysc::matrix<int, 3>  b{1, 2, 3};
+     * a = b;  // converting assignment
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     template <class U>
         requires matrix_convertible_from<T, U>
@@ -417,15 +660,30 @@ public:
 
     // assignment operators (move)
     /**
-     * @brief Replace the element with those of another matrix.
-     * @param other Source matrix
+     * @brief Replaces the elements with those of another matrix (move).
+     * @param other Source matrix — left in a valid but unspecified state
+     *
+     * @code
+     * ysc::matrix<int, 3> a{1, 2, 3}, b;
+     * b = std::move(a);
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     matrix& operator=(matrix&& other) = default;
 
     /**
-     * @brief Replaces the element with those of another matrix.
+     * @brief Replaces the elements with those of another matrix (converting move).
      * @tparam U     Element type of the source matrix
-     * @param  other Source matrix
+     * @param  other Source matrix — left in a valid but unspecified state
+     *
+     * @code
+     * ysc::matrix<long, 3> a;
+     * ysc::matrix<int, 3>  b{1, 2, 3};
+     * a = std::move(b);
+     * @endcode
+     *
+     * @ingroup ysc_construction
      */
     template <class U>
         requires matrix_convertible_from<T, U>
@@ -441,12 +699,35 @@ public:
     ~matrix() = default;
 
     // comparison operators
-    /** @brief Equality comparison — lexicographic on the flat row-major
-     * storage.
+
+    /**
+     * @brief Equality comparison — lexicographic on the flat row-major storage.
+     * @param lhs Left-hand matrix
+     * @param rhs Right-hand matrix
+     * @return @c true if all elements are equal in row-major order
+     *
+     * @code
+     * ysc::matrix<int, 2> a{1, 2}, b{1, 2}, c{1, 3};
+     * assert(a == b);
+     * assert(a != c);
+     * @endcode
+     *
+     * @ingroup ysc_comparison
      */
     friend bool operator==(const matrix& lhs, const matrix& rhs) = default;
-    /** @brief Three-way comparison — lexicographic on the flat row-major
-     * storage.
+
+    /**
+     * @brief Three-way comparison — lexicographic on the flat row-major storage.
+     * @param lhs Left-hand matrix
+     * @param rhs Right-hand matrix
+     * @return Ordering result (strong, weak, or partial — inherits from @c T)
+     *
+     * @code
+     * ysc::matrix<int, 2> a{1, 2}, b{1, 3};
+     * assert((a <=> b) < 0);
+     * @endcode
+     *
+     * @ingroup ysc_comparison
      */
     friend auto operator<=>(const matrix& lhs, const matrix& rhs) = default;
 
@@ -855,12 +1136,10 @@ public:
      *
      * @ingroup ysc_arithmetic
      */
-    [[nodiscard]] matrix operator-() const
+    [[nodiscard]] constexpr matrix operator-() const noexcept(noexcept(-std::declval<T const&>()))
         requires requires(const T& a) { -a; }
     {
-        matrix result(zero);
-        std::transform(cbegin(), cend(), result.begin(), [](const T& a) -> T { return -a; });
-        return result;
+        return map([](const T& v) { return -v; });
     }
 
     // algorithms
@@ -1025,6 +1304,14 @@ public:
     /**
      * @brief Assigns the given value to all elements of the matrix.
      * @param value Value to assign
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * m.fill(0);
+     * assert(m(0) == 0 && m(2) == 0);
+     * @endcode
+     *
+     * @ingroup ysc_modifiers
      */
     constexpr void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>) {
         _data.fill(value);
@@ -1033,108 +1320,180 @@ public:
     /**
      * @brief Exchanges the contents of this matrix with another.
      * @param other Matrix to swap with
+     *
+     * @code
+     * ysc::matrix<int, 2> a{1, 2}, b{3, 4};
+     * a.swap(b);
+     * assert(a(0) == 3 && b(0) == 1);
+     * @endcode
+     *
+     * @ingroup ysc_modifiers
      */
     void swap(matrix& other) noexcept(std::is_nothrow_swappable_v<T>) { _data.swap(other._data); }
 
     // element access
     /**
-     * @brief Returns a reference to the first element in the matrix (row-major
-     * order).
+     * @brief Returns a reference to the first element in the matrix (row-major order).
+     * @return Reference to the first element
      *
      * Calling @c front() on an empty matrix is undefined behavior.
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * assert(m.front() == 1);
+     * m.front() = 99;
+     * @endcode
+     *
+     * @ingroup ysc_modifiers
      */
     constexpr reference front() noexcept { return _data.front(); }
 
     /**
-     * @brief Returns a const reference to the first element in the matrix
-     * (row-major order).
+     * @brief Returns a const reference to the first element in the matrix (row-major order).
+     * @return Const reference to the first element
      *
      * Calling @c front() on an empty matrix is undefined behavior.
+     *
+     * @see front()
+     * @ingroup ysc_modifiers
      */
     [[nodiscard]] constexpr const_reference front() const noexcept { return _data.front(); }
 
     /**
-     * @brief Returns a reference to the last element in the matrix (row-major
-     * order).
+     * @brief Returns a reference to the last element in the matrix (row-major order).
+     * @return Reference to the last element
      *
      * Calling @c back() on an empty matrix is undefined behavior.
+     *
+     * @code
+     * ysc::matrix<int, 3> m{1, 2, 3};
+     * assert(m.back() == 3);
+     * m.back() = 99;
+     * @endcode
+     *
+     * @ingroup ysc_modifiers
      */
     constexpr reference back() noexcept { return _data.back(); }
 
     /**
-     * @brief Returns a const reference to the last element in the matrix
-     * (row-major order).
+     * @brief Returns a const reference to the last element in the matrix (row-major order).
+     * @return Const reference to the last element
      *
      * Calling @c back() on an empty matrix is undefined behavior.
+     *
+     * @see back()
+     * @ingroup ysc_modifiers
      */
     [[nodiscard]] constexpr const_reference back() const noexcept { return _data.back(); }
 
     /**
-     * @brief Returns a reference to the element at coordinates.
+     * @brief Returns a const reference to the element at the given coordinates (unchecked).
      * @param coordinates Coordinates of the element to return
+     * @return Const reference to the element
      *
-     * No bounds checking is performed; if @c coordinates are outside od
+     * No bounds checking is performed; if @c coordinates are outside of
      * the matrix dimensions, the behavior is undefined.
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * assert(m(1, 2) == 6);
+     * @endcode
+     *
+     * @ingroup ysc_access
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     constexpr T const& operator()(Coords... coordinates) const {
         // Intentional: unchecked access on the performance path. Use at() for
         // bounds checking.
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
 
     /**
-     * @brief Returns a reference to the element at coordinates.
+     * @brief Returns a reference to the element at the given coordinates (unchecked).
      * @param coordinates Coordinates of the element to return
+     * @return Reference to the element
      *
-     * No bounds checking is performed; if @c coordinates are outside od
+     * No bounds checking is performed; if @c coordinates are outside of
      * the matrix dimensions, the behavior is undefined.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * m(1, 2) = 99;
+     * @endcode
+     *
+     * @ingroup ysc_access
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     constexpr T& operator()(Coords... coordinates) {
         // Intentional: unchecked access on the performance path. Use at() for
         // bounds checking.
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
         return _data[detail::coordinates_to_index(dimensions, std::array{coordinates...})];
     }
 
     /**
-     * @brief Returns a reference to the element at coordinates.
+     * @brief Returns a const reference to the element at coordinates (bounds-checked).
      * @param coordinates Coordinates of the element to return
+     * @return Const reference to the element
      *
-     * If @a coordinates is not within the range of the container, an exception
-     * of type
-     * @c std::out_of_range is thrown.
+     * @throws std::out_of_range if any coordinate is negative or exceeds the dimension size
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * assert(m.at(0, 2) == 3);
+     * @endcode
+     *
+     * @ingroup ysc_access
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     [[nodiscard]] const T& at(Coords... coordinates) const {
-        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coordinates)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coordinates...);
     }
 
     /**
-     * @brief Returns a reference to the element at coordinates.
+     * @brief Returns a reference to the element at coordinates (bounds-checked).
      * @param coordinates Coordinates of the element to return
+     * @return Reference to the element
      *
-     * If @a coordinates is not within the range of the container, an exception
-     * of type
-     * @c std::out_of_range is thrown.
+     * @throws std::out_of_range if any coordinate is negative or exceeds the dimension size
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * m.at(1, 0) = 42;
+     * @endcode
+     *
+     * @ingroup ysc_access
      */
     template <class... Coords>
         requires integral_coordinates<Coords...>
     T& at(Coords... coordinates) {
-        const bool any_of_coords_is_negative = ((coordinates < 0) || ...);
-        const bool any_of_coords_is_out_of_bound = ((coordinates >= Dimensions) || ...);
-        if (any_of_coords_is_negative || any_of_coords_is_out_of_bound) {
-            throw std::out_of_range{"matrix::at"};
+        const std::array<std::ptrdiff_t, sizeof...(Coords)> coords_arr = {
+            static_cast<std::ptrdiff_t>(coordinates)...};
+        for (std::size_t i = 0; i < sizeof...(Coords); ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (coords_arr[i] < 0 || static_cast<std::size_t>(coords_arr[i]) >= dimensions[i]) {
+                throw std::out_of_range(
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    "matrix::at: coordinate " + std::to_string(coords_arr[i]) +
+                    " is out of bounds for dimension " + std::to_string(i) +
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                    " (size=" + std::to_string(dimensions[i]) + ")");
+            }
         }
         return (*this)(coordinates...);
     }
@@ -1161,7 +1520,7 @@ public:
      * whole matrix
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <typename... Specs>
         requires(sizeof...(Specs) <= order) &&
@@ -1182,11 +1541,9 @@ public:
                     using S = std::remove_cvref_t<decltype(s)>;
                     if constexpr (!detail::is_all_v<S>) {
                         auto idx = static_cast<std::size_t>(s);
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         if (idx >= dimensions[i]) {
                             throw std::out_of_range("slice: index out of range");
                         }
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         spec_vals[i] = idx;
                     }
                     ++i;
@@ -1194,7 +1551,6 @@ public:
                 ...);
         }
 
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         auto* base = _data.data() + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
         if constexpr (is_prefix) {
             return ViewT{base};
@@ -1219,7 +1575,7 @@ public:
      * auto v = m.slice(1);  // const view of row 1
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <typename... Specs>
         requires(sizeof...(Specs) <= order) &&
@@ -1240,11 +1596,9 @@ public:
                     using S = std::remove_cvref_t<decltype(s)>;
                     if constexpr (!detail::is_all_v<S>) {
                         auto idx = static_cast<std::size_t>(s);
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         if (idx >= dimensions[i]) {
                             throw std::out_of_range("slice: index out of range");
                         }
-                        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
                         spec_vals[i] = idx;
                     }
                     ++i;
@@ -1252,7 +1606,6 @@ public:
                 ...);
         }
 
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         const auto* base =
             _data.data() + detail::slice_helper<PaddedT>::offset(dimensions, spec_vals);
         if constexpr (is_prefix) {
@@ -1276,7 +1629,7 @@ public:
      * r(2) = 99;          // writes m(1, 2)
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t D = order>
         requires(D == 2)
@@ -1284,7 +1637,6 @@ public:
         if (i >= dimensions[0]) {
             throw std::out_of_range("row: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<T, contiguous, dimensions[1]>{_data.data() + (i * dimensions[1])};
     }
 
@@ -1303,7 +1655,7 @@ public:
      * assert(r(0) == m(1, 0));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t D = order>
         requires(D == 2)
@@ -1311,7 +1663,6 @@ public:
         if (i >= dimensions[0]) {
             throw std::out_of_range("row: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<const T, contiguous, dimensions[1]>{_data.data() + (i * dimensions[1])};
     }
 
@@ -1331,7 +1682,7 @@ public:
      * c(1) = 99;          // writes m(1, 2)
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t D = order>
         requires(D == 2)
@@ -1339,7 +1690,6 @@ public:
         if (j >= dimensions[1]) {
             throw std::out_of_range("col: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<T, strided, dimensions[0]>{_data.data() + j,
                                                       std::array<std::size_t, 1>{dimensions[1]}};
     }
@@ -1358,7 +1708,7 @@ public:
      * assert(c(1) == m(1, 2));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t D = order>
         requires(D == 2)
@@ -1366,9 +1716,100 @@ public:
         if (j >= dimensions[1]) {
             throw std::out_of_range("col: index out of range");
         }
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         return matrix_view<const T, strided, dimensions[0]>{
             _data.data() + j, std::array<std::size_t, 1>{dimensions[1]}};
+    }
+
+    /**
+     * @brief Returns a range of contiguous row views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A range of @c matrix_view<T,contiguous,C> where @c C = @c dimensions[1],
+     *         one per row in order (row 0, row 1, …).
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto row_view : m.rows()) {
+     *     // row_view is a matrix_view<int, contiguous, 3>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto rows() & {
+        return [this]<std::size_t... Is>(std::index_sequence<Is...>) {
+            return std::array{this->row(Is)...};
+        }(std::make_index_sequence<dimensions[0]>{});
+    }
+
+    /**
+     * @brief Returns a range of const contiguous row views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A @c std::array of @c matrix_view<const T,contiguous,C> where @c C = @c
+     * dimensions[1], one per row in order (row 0, row 1, …).
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto row_view : m.rows()) {
+     *     // row_view is a matrix_view<const int, contiguous, 3>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto rows() const& {
+        return [this]<std::size_t... Is>(std::index_sequence<Is...>) {
+            return std::array{this->row(Is)...};
+        }(std::make_index_sequence<dimensions[0]>{});
+    }
+
+    /**
+     * @brief Returns a range of strided column views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A @c std::array of @c matrix_view<T,strided,R> where @c R = @c dimensions[0],
+     *         one per column in order (col 0, col 1, …).
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto col_view : m.cols()) {
+     *     // col_view is a matrix_view<int, strided, 2>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto cols() & {
+        return [this]<std::size_t... Js>(std::index_sequence<Js...>) {
+            return std::array{this->col(Js)...};
+        }(std::make_index_sequence<dimensions[1]>{});
+    }
+
+    /**
+     * @brief Returns a range of const strided column views (2D matrices only).
+     * @tparam D Deduced from @c order; constrained to 2 — do not specify explicitly.
+     * @return A @c std::array of @c matrix_view<const T,strided,R> where @c R = @c dimensions[0],
+     *         one per column in order (col 0, col 1, …).
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto col_view : m.cols()) {
+     *     // col_view is a matrix_view<const int, strided, 2>
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t D = order>
+        requires(D == 2)
+    [[nodiscard]] constexpr auto cols() const& {
+        return [this]<std::size_t... Js>(std::index_sequence<Js...>) {
+            return std::array{this->col(Js)...};
+        }(std::make_index_sequence<dimensions[1]>{});
     }
 
     /**
@@ -1385,7 +1826,7 @@ public:
      * v(0, 0) = 99;               // also sets m(0, 0)
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t... NewD>
     [[nodiscard]] constexpr matrix_view<T, contiguous, NewD...> reshape() & noexcept {
@@ -1404,7 +1845,7 @@ public:
      * auto v = m.reshape<6>();  // matrix_view<const int, contiguous, 6>
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     template <std::size_t... NewD>
     [[nodiscard]] constexpr matrix_view<const T, contiguous, NewD...> reshape() const& noexcept {
@@ -1425,7 +1866,7 @@ public:
      * assert(v(3) == m(1, 0));
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr matrix_view<T, contiguous, linear_size> flatten() & noexcept {
         return matrix_view<T, contiguous, linear_size>{_data.data()};
@@ -1440,7 +1881,7 @@ public:
      * auto v = m.flatten();  // matrix_view<const int, contiguous, 6>
      * @endcode
      *
-     * @ingroup ysc_view
+     * @ingroup ysc_views
      */
     [[nodiscard]] constexpr matrix_view<const T, contiguous, linear_size>
     flatten() const& noexcept {
@@ -1452,6 +1893,13 @@ public:
  * @brief Returns a matrix with all elements zero-initialized.
  * @tparam T  Element type
  * @tparam D  Dimensions
+ *
+ * @code
+ * auto m = ysc::zeros<int, 2, 3>();
+ * assert(m(0, 0) == 0 && m(1, 2) == 0);
+ * @endcode
+ *
+ * @ingroup ysc_construction
  */
 template <class T, std::size_t... D> constexpr matrix<T, D...> zeros() noexcept {
     return matrix<T, D...>(zero);
@@ -1462,6 +1910,13 @@ template <class T, std::size_t... D> constexpr matrix<T, D...> zeros() noexcept 
  * @tparam T  Element type
  * @tparam D  Dimensions
  * @param  v  Value to fill
+ *
+ * @code
+ * auto m = ysc::full<int, 2, 3>(7);
+ * assert(m(0, 0) == 7 && m(1, 2) == 7);
+ * @endcode
+ *
+ * @ingroup ysc_construction
  */
 template <class T, std::size_t... D> constexpr matrix<T, D...> full(const T& v) {
     auto m = zeros<T, D...>();
@@ -1473,6 +1928,13 @@ template <class T, std::size_t... D> constexpr matrix<T, D...> full(const T& v) 
  * @brief Returns a matrix with all elements set to @c T{1}.
  * @tparam T  Element type — must support construction from integer literal @c 1
  * @tparam D  Dimensions
+ *
+ * @code
+ * auto m = ysc::ones<double, 3>();
+ * assert(m(0) == 1.0 && m(2) == 1.0);
+ * @endcode
+ *
+ * @ingroup ysc_construction
  */
 template <class T, std::size_t... D>
     requires requires { T{1}; }
@@ -1484,6 +1946,13 @@ constexpr matrix<T, D...> ones() {
  * @brief Returns the N×N identity matrix (diagonal = 1, rest = 0).
  * @tparam T  Element type — must support construction from integer literal @c 1
  * @tparam N  Dimension
+ *
+ * @code
+ * auto m = ysc::identity<double, 3>();
+ * assert(m(0, 0) == 1.0 && m(0, 1) == 0.0);
+ * @endcode
+ *
+ * @ingroup ysc_construction
  */
 template <class T, std::size_t N>
     requires requires { T{1}; }
@@ -1493,6 +1962,31 @@ constexpr matrix<T, N, N> identity() {
         m(i, i) = T{1};
     }
     return m;
+}
+
+/**
+ * @brief Returns a matrix filled by calling @a f(i) for each linear index @a i.
+ * @tparam T    Element type
+ * @tparam Dims Dimensions of the result matrix
+ * @tparam F    Callable type — must satisfy @c std::invocable<F, std::size_t>
+ * @param  f    Generator callable: @c f(i) must be convertible to @c T
+ * @return New @c matrix<T, Dims...> where element at linear index @a i equals @c f(i)
+ *
+ * @code
+ * auto m = ysc::generate<int, 3>([](std::size_t i) { return static_cast<int>(i * 2); });
+ * // m == ysc::matrix<int, 3>{0, 2, 4}
+ * @endcode
+ *
+ * @ingroup ysc_construction
+ */
+template <class T, std::size_t... Dims, std::invocable<std::size_t> F>
+[[nodiscard]] constexpr matrix<T, Dims...> generate(F f) {
+    matrix<T, Dims...> result;
+    for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        result.begin()[i] = f(i);
+    }
+    return result;
 }
 
 /**
@@ -1600,6 +2094,41 @@ template <class Ta, class Tb, std::size_t N>
 }
 
 /**
+ * @brief Multiply a matrix by a column vector.
+ * @tparam Ta Element type of @a mat — must be multipliable with @a Tb
+ * @tparam Tb Element type of @a vec — must be multipliable with @a Ta
+ * @tparam M  Number of rows of @a mat and the result
+ * @tparam N  Number of columns of @a mat (= size of @a vec)
+ * @param mat The M×N matrix
+ * @param vec The column vector of size N
+ * @return New @c matrix<Tc,M> where `Tc = decltype(Ta{} * Tb{})`, equal to
+ * the matrix-vector product `mat × vec`
+ *
+ * @code
+ * ysc::matrix<int, 2, 3> A{1, 0, 0, 0, 1, 0};
+ * ysc::matrix<double, 3> v{1.0, 2.0, 3.0};
+ * auto r = ysc::matmul(A, v); // matrix<double,2>{1.0,2.0}
+ * @endcode
+ *
+ * @ingroup ysc_linalg
+ */
+template <class Ta, class Tb, std::size_t M, std::size_t N>
+    requires std::invocable<std::multiplies<>, const Ta&, const Tb&> &&
+                 requires(std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&> tc,
+                          const Ta& a, const Tb& b) { tc += a * b; }
+[[nodiscard]] constexpr auto matmul(const matrix<Ta, M, N>& mat, const matrix<Tb, N>& vec)
+    -> matrix<std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>, M> {
+    using Tc = std::invoke_result_t<std::multiplies<>, const Ta&, const Tb&>;
+    matrix<Tc, M> result(zero);
+    for (std::size_t i = 0; i < M; ++i) {
+        for (std::size_t k = 0; k < N; ++k) {
+            result(i) += mat(i, k) * vec(k);
+        }
+    }
+    return result;
+}
+
+/**
  * @defgroup ysc_io I/O
  * @brief Stream output for `ysc::matrix`.
  */
@@ -1662,7 +2191,7 @@ template <class T, std::size_t... D> struct std::hash<ysc::matrix<T, D...>> {
         std::size_t h = 0;
         std::hash<T> hasher;
         for (const auto& v : m) {
-            h ^= hasher(v) + 0x9e3779b9 + (h << 6) + (h >> 2);
+            h ^= hasher(v) + 0x9E3779B97F4A7C15ULL + (h << 12) + (h >> 4);
         }
         return h;
     }

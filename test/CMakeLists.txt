@@ -21,6 +21,7 @@ add_executable(${TARGET_NAME}
     src/comparison.cpp
     src/concepts.cpp
     src/construct.cpp
+    src/construct_from_buffer.cpp
     src/factories.cpp
     src/fill.cpp
     src/formatter.cpp
@@ -32,10 +33,12 @@ add_executable(${TARGET_NAME}
     src/matmul.cpp
     src/matrix_from_view.cpp
     src/matrix_view.cpp
+    src/matrix_view_io.cpp
     src/reshape.cpp
     src/slice.cpp
     src/ostream.cpp
     src/reductions.cpp
+    src/rows_cols.cpp
     src/transpose.cpp
     src/size_data.cpp
     src/typedefs.cpp

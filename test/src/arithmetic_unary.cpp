@@ -62,3 +62,15 @@ TEST(arithmetic_unary, unary_minus_2d_matrix) {
     const ysc::matrix<int, 2, 2> m{1, -2, 3, -4};
     ASSERT_EQ(-m, (ysc::matrix<int, 2, 2>{-1, 2, -3, 4}));
 }
+
+TEST(arithmetic_unary, negation_constexpr) {
+    constexpr ysc::matrix<int, 2> m{1, -1};
+    constexpr auto neg = -m;
+    static_assert(neg(0) == -1);
+    static_assert(neg(1) == 1);
+}
+
+TEST(arithmetic_unary, negation_noexcept_propagation) {
+    // operator-() must be noexcept for types whose unary minus is noexcept
+    static_assert(noexcept(-std::declval<ysc::matrix<int, 2>>()));
+}

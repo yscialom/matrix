@@ -15,22 +15,23 @@
 #include <array>
 #include <concepts>
 #include <cstddef>
+#include <ostream>
 #include <type_traits>
 
 namespace ysc {
 
 // ─── storage tags ────────────────────────────────────────────────────────────
 
-/** @brief Storage tag: view elements are contiguous in memory. @ingroup ysc_view */
+/** @brief Storage tag: view elements are contiguous in memory. @ingroup ysc_views */
 struct contiguous {};
-/** @brief Storage tag: view elements are non-contiguous (strided) in memory. @ingroup ysc_view */
+/** @brief Storage tag: view elements are non-contiguous (strided) in memory. @ingroup ysc_views */
 struct strided {};
 
 // ─── slice sentinel ──────────────────────────────────────────────────────────
 
 /**
  * @brief Sentinel type used in slice() to indicate "keep this dimension".
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 struct all_t {};
 
@@ -42,7 +43,7 @@ struct all_t {};
  * auto v = m.slice(ysc::all, 2);  // keeps dims 0 and 2, fixes dim 1 at index 2
  * @endcode
  *
- * @ingroup ysc_view
+ * @ingroup ysc_views
  */
 inline constexpr all_t all{};
 
@@ -57,6 +58,7 @@ template <class T, class Storage, std::size_t... Dims> class matrix_view;
 /**
  * @brief Satisfied when all types in @c Coords are integral (ignoring cv-ref).
  * Used to constrain @c operator() and @c at() on matrix and matrix_view.
+ * @ingroup ysc_access
  */
 template <class... Coords>
 concept integral_coordinates = (std::integral<std::remove_cvref_t<Coords>> && ...);
@@ -64,6 +66,32 @@ concept integral_coordinates = (std::integral<std::remove_cvref_t<Coords>> && ..
 // ─── detail namespace ─────────────────────────────────────────────────────────
 
 namespace detail {
+
+template <class T>
+concept ostream_streamable = requires(std::ostream& os, const T& v) { os << v; };
+
+// Print a hyperslice starting at `it`, covering dimension `dim_idx` onward.
+// Returns an iterator past the last element printed.
+// NOLINTNEXTLINE(misc-no-recursion)
+template <class It, class Dims>
+It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_idx) {
+    os << '[';
+    const std::size_t count = dims[dim_idx];
+    const bool last_dim = (dim_idx + 1 == dims.size());
+    for (std::size_t i = 0; i < count; ++i) {
+        if (i > 0) {
+            os << ", ";
+        }
+        if (last_dim) {
+            os << *it++;
+        } else {
+            // NOLINTNEXTLINE(misc-no-recursion)
+            it = print_recursive(os, it, dims, dim_idx + 1);
+        }
+    }
+    os << ']';
+    return it;
+}
 
 // cache-friendly: neighbor objects within the right-most coordinate are neighbors in memory
 template <class TDim, class TCoord>
@@ -228,6 +256,28 @@ template <class... PaddedSpecs> struct slice_helper<std::tuple<PaddedSpecs...>> 
 };
 
 } // namespace detail
+
+/**
+ * @brief Alias for a read-only contiguous view over a @c ysc::matrix.
+ * @tparam T    Element type (non-const; the alias adds @c const automatically)
+ * @tparam Dims Dimensions of the view
+ *
+ * @c const_matrix_view<T, Dims...> is shorthand for
+ * @c matrix_view<const T, contiguous, Dims...>.  It is the natural read-only
+ * counterpart of @c matrix_view, analogous to @c std::string_view vs
+ * @c std::string.
+ *
+ * @code
+ * const ysc::matrix<int, 3, 3> m{1, 2, 3, 4, 5, 6, 7, 8, 9};
+ * ysc::const_matrix_view<int, 3, 3> v{m};  // read-only view
+ * assert(v(0, 0) == 1);
+ * @endcode
+ *
+ * @ingroup ysc_views
+ */
+template <class T, std::size_t... Dims>
+using const_matrix_view = matrix_view<const T, contiguous, Dims...>;
+
 } // namespace ysc
 
 #endif // YSC_MATRIX_DETAIL_HPP
