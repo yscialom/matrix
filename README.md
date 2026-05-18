@@ -31,7 +31,8 @@ target_link_libraries(my_target PRIVATE ysc::matrix)
 
 ### Manual
 
-Copy `src/include/matrix.hpp` into your project and add its directory to your include path.
+Download `matrix.hpp` from a [GitHub Release](https://github.com/yscialom/matrix/releases) and
+copy it into your project.
 
 ---
 
@@ -74,15 +75,18 @@ int main()
 
 ## Features
 
-- **N-dimensional** — any number of dimensions, all sizes fixed at compile time
-- **STL-compatible** — `begin`/`end`, `size()`, `data()`, `front()`, `back()`, `fill()`, `swap()`
-- **Two access policies** — unchecked `operator()` (fast path) and bounds-checked `at()`
-- **Aggregate initialization** — `matrix<int, 2, 3> m = {1, 2, 3, 4, 5, 6};`
-- **Type conversion** — constructors and assignment from `matrix<U, Dims...>` when `U` converts to `T`
-- **Comparison** — `==` and `<=>` (lexicographic, row-major order)
-- **Compile-time metadata** — `order`, `dimensions`, `size()`, `empty()` all `static constexpr`
-- **Zero-init tag** — `matrix<T, Dims...> m{ysc::zero};` for explicit zero-initialization
-- **Zero overhead** — storage is `std::array<T, N>`, no heap, no virtual dispatch, no indirection
+| Feature | Description |
+|---------|-------------|
+| N-dimensional | Any number of dimensions; all sizes fixed at compile time |
+| STL-compatible | `begin`/`end`, `size()`, `data()`, `front()`, `back()`, `fill()`, `swap()` |
+| Unchecked access | `operator()` — no bounds check, UB out-of-bounds (performance path) |
+| Bounds-checked access | `at()` — throws `std::out_of_range` |
+| Aggregate init | `matrix<int,2,3> m = {1,2,3,4,5,6};` |
+| Type conversion | Converting constructors and assignment from `matrix<U, Dims...>` |
+| Comparison | `==` and `<=>` (lexicographic on row-major storage) |
+| Compile-time metadata | `order`, `dimensions`, `size()`, `empty()` — all `static constexpr` |
+| Zero-init tag | `matrix<T, Dims...> m{ysc::zero};` — explicit zero-initialization |
+| Zero overhead | Storage is `std::array<T, N>`, no heap, no virtual, no indirection |
 
 ---
 
