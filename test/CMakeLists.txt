@@ -45,7 +45,7 @@ add_executable(${TARGET_NAME}
     src/main.cpp
 )
 
-target_link_libraries(${TARGET_NAME} matrix GTest::gtest)
+target_link_libraries(${TARGET_NAME} ysc::matrix GTest::gtest)
 
 
 ##
