@@ -12,11 +12,11 @@
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 5/10 | ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ⬜ US-038, US-040, US-042, US-048 à US-049 |
+| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 6/10 | ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-049, ⬜ US-038, US-040, US-042, US-048 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
 
-**Total : 47 / 69 US**
+**Total : 48 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -43,7 +43,7 @@
 | US-046 | Correctifs docs + `.gitignore` | P0 | ✅ Done |
 | US-047 | README marketing + `mainpage.md` v1 | P0 | ✅ Done |
 | US-048 | Job CI consumer test | P0 | ⬜ À faire |
-| US-049 | Amalgamation auto-générée par CI | P0 | ⬜ À faire |
+| US-049 | Amalgamation auto-générée par CI | P0 | ✅ Done |
 
 ## EPIC J — Ergonomie & finition
 
