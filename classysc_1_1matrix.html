@@ -536,12 +536,11 @@ class ysc::matrix&lt; T, Dimensions &gt;</div><p>Multi-dimensional container enc
 <p>This container is a class type with the semantics of an aggregate similar to a struct holding a C-style array <code>T[Dimensions][...]</code> as its only non-static data member. Unlike a C-style array, it doesn't decay to <code>T*</code> automatically. As an aggregate impersonator, it can be initialized with aggregate-initialization given exactly <code>linear_size</code> initializers that are convertible to <code>T:</code> <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a>&lt;int, 3, 2&gt; m = {1,2,3,4,5,6};</code>.</p>
 <p>The struct combines the performance and accessibility of a C-style array with the benefits of a standard container, such as knowing its own size, supporting assignment, random access iterators, etc.</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>Requirements (Container, etc.)</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Special case when one dimension is 0.</dd></dl>
 <h3><a class="anchor" id="autotoc_md19"></a>
 Iterator invalidation</h3>
 <p>As a rule, iterators to aa matrix are never invalidated throughout the lifetime of the matrix. One should take note, however, that during swap, the iterator will continue to point to the same matrix element, and will thus change its value. </p>
 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00114">114</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00112">112</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/include/<a class="el" href="matrix_8hpp_source.html">matrix.hpp</a></li>
 </ul>
