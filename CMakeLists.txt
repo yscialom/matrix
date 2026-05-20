@@ -23,9 +23,14 @@ else()
     set(YSC_MATRIX_IS_TOP_LEVEL OFF)
 endif()
 
-option(YSC_MATRIX_BUILD_TESTING       "Build tests"       ${YSC_MATRIX_IS_TOP_LEVEL})
-option(YSC_MATRIX_BUILD_DOCUMENTATION "Build Doxygen doc" ${YSC_MATRIX_IS_TOP_LEVEL})
-option(YSC_MATRIX_BUILD_EXAMPLES      "Build examples"    OFF)
+option(YSC_MATRIX_BUILD_TESTING  "Build tests"    ${YSC_MATRIX_IS_TOP_LEVEL})
+option(YSC_MATRIX_BUILD_EXAMPLES "Build examples" OFF)
+
+find_package(Doxygen)
+option(YSC_MATRIX_BUILD_DOCUMENTATION
+    "Build Doxygen doc (requires Doxygen)"
+    ${DOXYGEN_FOUND}
+)
 
 
 ##
@@ -64,7 +69,9 @@ endif()
 # doc generation
 #
 if(YSC_MATRIX_BUILD_DOCUMENTATION)
-    find_package(Doxygen REQUIRED)
+    if(NOT DOXYGEN_FOUND)
+        message(FATAL_ERROR "Doxygen is needed to build the documentation.")
+    endif()
 
     include(cmake/DoxygenAwesome.cmake)
 
