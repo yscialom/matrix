@@ -3,20 +3,34 @@ cmake_minimum_required(VERSION 3.20)
 ##
 # general configuration
 #
-project(ysc-matrix)
-
 set(VERSION_MAJOR   0   CACHE STRING "Project major version number.")
 set(VERSION_MINOR   7   CACHE STRING "Project minor version number.")
 set(VERSION_PATCH   2   CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
+project(ysc-matrix
+    VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+    LANGUAGES CXX
+)
+
+
+##
+# top-level detection (auto-disable tests/docs when used via FetchContent)
+#
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    set(YSC_MATRIX_IS_TOP_LEVEL ON)
+else()
+    set(YSC_MATRIX_IS_TOP_LEVEL OFF)
+endif()
+
+option(YSC_MATRIX_BUILD_TESTING       "Build tests"       ${YSC_MATRIX_IS_TOP_LEVEL})
+option(YSC_MATRIX_BUILD_DOCUMENTATION "Build Doxygen doc" ${YSC_MATRIX_IS_TOP_LEVEL})
+option(YSC_MATRIX_BUILD_EXAMPLES      "Build examples"    OFF)
+
 
 ##
 # source configuration
 #
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(src)
 
@@ -24,9 +38,8 @@ add_subdirectory(src)
 ##
 # test configuration
 #
-include(cmake/ClangFormat.cmake)
-option(BUILD_TESTING "Build the test suite" ON)
-if(BUILD_TESTING)
+if(YSC_MATRIX_BUILD_TESTING)
+    include(cmake/ClangFormat.cmake)
     enable_testing()
     add_subdirectory(test)
     include(cmake/Coverage.cmake)
@@ -50,13 +63,8 @@ endif()
 ##
 # doc generation
 #
-find_package(Doxygen)
-option(BUILD_DOCUMENTATION "Create and install the HTML based API documentation (requires Doxygen)" ${DOXYGEN_FOUND})
-
-if(BUILD_DOCUMENTATION)
-    if(NOT DOXYGEN_FOUND)
-        message(FATAL_ERROR "Doxygen is needed to build the documentation.")
-    endif()
+if(YSC_MATRIX_BUILD_DOCUMENTATION)
+    find_package(Doxygen REQUIRED)
 
     include(cmake/DoxygenAwesome.cmake)
 
@@ -72,5 +80,5 @@ if(BUILD_DOCUMENTATION)
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM)
 
-    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION share/doc)
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/html DESTINATION share/doc OPTIONAL)
 endif()
