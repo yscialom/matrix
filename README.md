@@ -17,6 +17,8 @@ Full API reference: [yscialom.github.io/matrix](https://yscialom.github.io/matri
 
 ### CMake FetchContent (recommended)
 
+Add to your `CMakeLists.txt`:
+
 ```cmake
 include(FetchContent)
 FetchContent_Declare(
@@ -28,6 +30,34 @@ FetchContent_MakeAvailable(ysc-matrix)
 
 target_link_libraries(my_target PRIVATE ysc::matrix)
 ```
+
+Tests and documentation are automatically disabled when the library is consumed this way.
+
+### CMake find_package (system install)
+
+Install the library first:
+
+```bash
+cmake -S path/to/ysc-matrix -B build
+cmake --install build --prefix /usr/local
+```
+
+Then in your project's `CMakeLists.txt`:
+
+```cmake
+find_package(ysc-matrix CONFIG REQUIRED)
+
+target_link_libraries(my_target PRIVATE ysc::matrix)
+```
+
+Version constraints are supported:
+
+```cmake
+find_package(ysc-matrix 0.7 CONFIG REQUIRED)
+```
+
+The headers are installed to `<prefix>/include/ysc/` and the CMake package config to
+`<prefix>/lib/cmake/ysc-matrix/`.
 
 ### Manual
 
