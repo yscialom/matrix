@@ -1298,6 +1298,146 @@ public:
         return std::ranges::any_of(_data, [](const T& v) { return static_cast<bool>(v); });
     }
 
+    /**
+     * @brief Returns the sum of all elements along a given axis.
+     * @tparam Axis Axis to reduce along; must satisfy `Axis < order`
+     * @return A matrix with @c order-1 dimensions containing per-slice sums
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * auto col_sums = m.sum<0>();  // matrix<int, 3>{5, 7, 9}
+     * auto row_sums = m.sum<1>();  // matrix<int, 2>{6, 15}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::size_t Axis>
+        requires(Axis < order)
+    [[nodiscard]] constexpr auto sum() const
+        requires std::default_initializable<T> && requires(T a, const T& b) { a += b; }
+    {
+        using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
+        result_type result(zero);
+        constexpr std::size_t axis_size = dimensions[Axis];
+        constexpr std::size_t suffix = []() constexpr -> std::size_t {
+            std::size_t s = 1;
+            for (std::size_t i = Axis + 1; i < order; ++i) {
+                s *= dimensions[i];
+            }
+            return s;
+        }();
+        constexpr std::size_t prefix = []() constexpr -> std::size_t {
+            std::size_t p = 1;
+            for (std::size_t i = 0; i < Axis; ++i) {
+                p *= dimensions[i];
+            }
+            return p;
+        }();
+        for (std::size_t p = 0; p < prefix; ++p) {
+            for (std::size_t k = 0; k < axis_size; ++k) {
+                for (std::size_t s = 0; s < suffix; ++s) {
+                    result._data[(p * suffix) + s] +=
+                        _data[(p * axis_size * suffix) + (k * suffix) + s];
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @brief Returns the minimum of all elements along a given axis.
+     * @tparam Axis Axis to reduce along; must satisfy `Axis < order` and `dimensions[Axis] > 0`
+     * @return A matrix with @c order-1 dimensions containing per-slice minima
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{3, 1, 4, 1, 5, 9};
+     * auto col_min = m.min<0>();  // matrix<int, 3>{1, 1, 4}
+     * auto row_min = m.min<1>();  // matrix<int, 2>{1, 1}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::size_t Axis>
+        requires(Axis < order && dimensions[Axis] > 0)
+    [[nodiscard]] constexpr auto min() const
+        requires std::totally_ordered<T>
+    {
+        using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
+        result_type result;
+        constexpr std::size_t axis_size = dimensions[Axis];
+        constexpr std::size_t suffix = []() constexpr -> std::size_t {
+            std::size_t s = 1;
+            for (std::size_t i = Axis + 1; i < order; ++i) {
+                s *= dimensions[i];
+            }
+            return s;
+        }();
+        constexpr std::size_t prefix = []() constexpr -> std::size_t {
+            std::size_t p = 1;
+            for (std::size_t i = 0; i < Axis; ++i) {
+                p *= dimensions[i];
+            }
+            return p;
+        }();
+        for (std::size_t p = 0; p < prefix; ++p) {
+            for (std::size_t s = 0; s < suffix; ++s) {
+                T val = _data[(p * axis_size * suffix) + s];
+                for (std::size_t k = 1; k < axis_size; ++k) {
+                    val = std::min(val, _data[(p * axis_size * suffix) + (k * suffix) + s]);
+                }
+                result._data[(p * suffix) + s] = val;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @brief Returns the maximum of all elements along a given axis.
+     * @tparam Axis Axis to reduce along; must satisfy `Axis < order` and `dimensions[Axis] > 0`
+     * @return A matrix with @c order-1 dimensions containing per-slice maxima
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{3, 1, 4, 1, 5, 9};
+     * auto col_max = m.max<0>();  // matrix<int, 3>{3, 5, 9}
+     * auto row_max = m.max<1>();  // matrix<int, 2>{4, 9}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::size_t Axis>
+        requires(Axis < order && dimensions[Axis] > 0)
+    [[nodiscard]] constexpr auto max() const
+        requires std::totally_ordered<T>
+    {
+        using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
+        result_type result;
+        constexpr std::size_t axis_size = dimensions[Axis];
+        constexpr std::size_t suffix = []() constexpr -> std::size_t {
+            std::size_t s = 1;
+            for (std::size_t i = Axis + 1; i < order; ++i) {
+                s *= dimensions[i];
+            }
+            return s;
+        }();
+        constexpr std::size_t prefix = []() constexpr -> std::size_t {
+            std::size_t p = 1;
+            for (std::size_t i = 0; i < Axis; ++i) {
+                p *= dimensions[i];
+            }
+            return p;
+        }();
+        for (std::size_t p = 0; p < prefix; ++p) {
+            for (std::size_t s = 0; s < suffix; ++s) {
+                T val = _data[(p * axis_size * suffix) + s];
+                for (std::size_t k = 1; k < axis_size; ++k) {
+                    val = std::max(val, _data[(p * axis_size * suffix) + (k * suffix) + s]);
+                }
+                result._data[(p * suffix) + s] = val;
+            }
+        }
+        return result;
+    }
+
     // modifiers
     /**
      * @brief Assigns the given value to all elements of the matrix.
