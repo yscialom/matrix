@@ -10,6 +10,7 @@ include_directories(include)
 #
 set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
+    src/empty_matrix.cpp
     src/access.cpp
     src/accessors.cpp
     src/algorithms.cpp
