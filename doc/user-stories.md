@@ -12,11 +12,11 @@
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 6/10 | ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-049, ⬜ US-038, US-040, US-042, US-048 |
+| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 7/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-049, ⬜ US-040, US-042, US-048 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
 
-**Total : 48 / 69 US**
+**Total : 49 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -34,7 +34,7 @@
 
 | US | Titre | Priorité | Statut |
 |----|-------|----------|--------|
-| US-038 | Cas particulier dimension 0 | P2 | ⬜ À faire |
+| US-038 | Cas particulier dimension 0 | P2 | ✅ Done |
 | US-040 | Dossier `examples/` enrichi | P1 | ⬜ À faire |
 | US-041 | Gate couverture 100 % | P1 | ✅ Done |
 | US-042 | Tag `v1.0.0` | P0 (final) | ⬜ À faire |

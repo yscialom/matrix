@@ -103,8 +103,6 @@ constexpr struct matrix_zero_t {
  *
  * @todo Requirements (Container, etc.)
  *
- * @todo Special case when one dimension is 0.
- *
  * ### Iterator invalidation
  * As a rule, iterators to aa matrix are never invalidated throughout the
  * lifetime of the matrix. One should take note, however, that during swap, the
