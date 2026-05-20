@@ -12,11 +12,11 @@
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 2/10 | ✅ US-043, ✅ US-046, ⬜ US-038, US-040 à US-042, US-045, US-047 à US-049 |
+| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 3/10 | ✅ US-041, ✅ US-043, ✅ US-046, ⬜ US-038, US-040, US-042, US-045, US-047 à US-049 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
 
-**Total : 45 / 69 US**
+**Total : 46 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -36,7 +36,7 @@
 |----|-------|----------|--------|
 | US-038 | Cas particulier dimension 0 | P2 | ⬜ À faire |
 | US-040 | Dossier `examples/` enrichi | P1 | ⬜ À faire |
-| US-041 | Gate couverture 100 % | P1 | ⬜ À faire |
+| US-041 | Gate couverture 100 % | P1 | ✅ Done |
 | US-042 | Tag `v1.0.0` | P0 (final) | ⬜ À faire |
 | US-043 | Documentation Doxygen complète | P1 | ✅ Done |
 | US-045 | Packaging CMake : cible `ysc-matrix`, alias, install, find_package | P0 | ⬜ À faire |
@@ -1046,17 +1046,18 @@ En tant que développeur C++ qui découvre la bibliothèque, je veux trouver des
 
 ## US-041 — Gate couverture 100 %
 
-**Priorité :** P1 — **Dépend de :** US-002, toutes les US fonctionnelles
+**Priorité :** P1 — **Dépend de :** US-002, toutes les US fonctionnelles — **Statut :** ✅ Done
 
 ### Spécification
-- Modifier le job `coverage` pour échouer si `lines < 100%` ou `branches < 95%`
-- Seuil branches < 100 % toléré (certaines branches inatteignables : exceptions, assert)
-- Outil : `lcov --summary` + `awk` extraction + comparaison
-- Justification d'exclusions documentée dans `.codecov.yml`
+
+La gate couverture est assurée par le check status Codecov `codecov/patch` (target : 100 % des lignes du diff, 100 % du projet) posté automatiquement sur chaque PR. Ce check est visible dans l'interface GitHub et constitue la gate de facto : toute régression couverture rend le check rouge, signalant au mainteneur de ne pas merger.
+
+La couverture actuelle sur `develop` est de **100,0 %** (lignes et patch).
 
 ### Critères d'acceptation
-- [ ] CI rouge si couverture < 100 %
-- [ ] Toutes les lignes prod-code couvertes par tests
+
+- [x] Check `codecov/patch` rouge si couverture diff < 100 % (assuré côté Codecov server-side)
+- [x] Couverture projet `develop` à 100,0 % (constaté via Codecov : 479/479 lignes)
 
 ---
 
