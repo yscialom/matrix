@@ -39,6 +39,7 @@ add_executable(${TARGET_NAME}
     src/slice.cpp
     src/ostream.cpp
     src/reductions.cpp
+    src/reductions_axis.cpp
     src/rows_cols.cpp
     src/transpose.cpp
     src/size_data.cpp

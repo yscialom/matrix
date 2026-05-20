@@ -14,9 +14,9 @@
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 7/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-049, ⬜ US-040, US-042, US-048 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
-| **K — Extensions pre-v1** | ⬜ Non démarrée | 0/10 | ⬜ US-060 à US-069 |
+| **K — Extensions pre-v1** | 🔄 En cours | 1/10 | ✅ US-060, ⬜ US-061 à US-069 |
 
-**Total : 49 / 69 US**
+**Total : 50 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -65,7 +65,7 @@
 
 | US | Titre | Priorité | Statut |
 |----|-------|----------|--------|
-| US-060 | Réductions par axe (`sum<Axis>()`, etc.) | P2 | ⬜ À faire |
+| US-060 | Réductions par axe (`sum<Axis>()`, etc.) | P2 | ✅ Done |
 | US-061 | `submatrix` : extraction d'un sous-bloc N-D | P2 | ⬜ À faire |
 | US-062 | `enumerate()` : itérateur de coordonnées | P2 | ⬜ À faire |
 | US-063 | Opérateurs bit-à-bit pour types entiers | P2 | ⬜ À faire |
@@ -1615,10 +1615,10 @@ En tant qu'utilisateur, je veux calculer la somme, le min, le max d'une matrice 
 - Contrainte : `static_assert(Axis < order)`
 
 ### Critères d'acceptation
-- [ ] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<0>()` == `matrix<int,3>{5,7,9}` (somme par colonnes)
-- [ ] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<1>()` == `matrix<int,2>{6,15}` (somme par lignes)
-- [ ] Erreur de compilation si `Axis >= order`
-- [ ] Tests dans `test/src/reductions_axis.cpp`
+- [x] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<0>()` == `matrix<int,3>{5,7,9}` (somme par colonnes)
+- [x] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<1>()` == `matrix<int,2>{6,15}` (somme par lignes)
+- [x] Erreur de compilation si `Axis >= order` (contrainte `requires(Axis < order)`)
+- [x] Tests dans `test/src/reductions_axis.cpp`
 
 ---
 
