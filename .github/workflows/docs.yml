@@ -20,7 +20,7 @@ jobs:
           sudo apt-get install -y doxygen graphviz
 
       - name: Configure
-        run: cmake -S . -B build -DBUILD_DOCUMENTATION=ON -DBUILD_TESTING=OFF
+        run: cmake -S . -B build -DBUILD_DOCUMENTATION=ON -DYSC_MATRIX_BUILD_TESTING=OFF
 
       - name: Build documentation
         run: cmake --build build --target doc
