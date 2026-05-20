@@ -11,6 +11,7 @@ Options:
 
 import argparse
 import re
+import os
 import sys
 from datetime import date
 from pathlib import Path
@@ -28,15 +29,15 @@ INTERNAL_INCLUDES = re.compile(
 )
 
 
-def amalgamate(src_dir: Path) -> str:
+def amalgamate(src_dir: Path, filename: str) -> str:
     """Return the full text of the amalgamated header."""
     today = date.today().isoformat()
     lines = [
         "// =============================================================================",
-        "// matrix-amalgamated.hpp",
+        f"// {filename}",
         "// Auto-generated amalgamation of the ysc::matrix library.",
         f"// Generated on: {today}",
-        "// DO NOT EDIT — regenerate with:  python3 utils/amalgamate.py -o matrix-amalgamated.hpp",
+        f"// DO NOT EDIT — regenerate with:  python3 utils/amalgamate.py -o {filename}",
         "// =============================================================================",
         "",
     ]
@@ -76,7 +77,7 @@ def main() -> None:
     repo_root = script_dir.parent
     src_dir = repo_root / "src" / "include"
 
-    content = amalgamate(src_dir)
+    content = amalgamate(src_dir, os.path.basename(args.o or "stdout"))
 
     if args.o is None:
         sys.stdout.write(content)
