@@ -6,6 +6,9 @@ _cmake
 *.orig
 *~
 
+# Generated
+matrix-amalgamated.hpp
+
 # LLM
 /CLAUDE.md
 /.claude

@@ -82,7 +82,7 @@ jobs:
 
       - name: Prepare release assets
         run: |
-          gzip -c src/include/matrix.hpp > matrix.hpp.gz
+          python3 utils/amalgamate.py -o matrix-amalgamated.hpp
           cat > ysc-matrix.cmake <<EOF
           include(FetchContent)
           FetchContent_Declare(
@@ -100,5 +100,5 @@ jobs:
           body_path: CHANGELOG.md
           files: |
             CHANGELOG.md
-            matrix.hpp.gz
+            matrix-amalgamated.hpp
             ysc-matrix.cmake
