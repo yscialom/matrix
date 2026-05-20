@@ -6,6 +6,9 @@ _cmake
 *.orig
 *~
 
+# Generated
+dist/
+
 # LLM
 /CLAUDE.md
 /.claude
