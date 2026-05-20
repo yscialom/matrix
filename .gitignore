@@ -7,7 +7,7 @@ _cmake
 *~
 
 # Generated
-matrix-amalgamated.hpp
+dist/
 
 # LLM
 /CLAUDE.md
