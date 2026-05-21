@@ -12,11 +12,11 @@
 | **F — Arithmétique** | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
 | **G — Algorithmes** | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 7/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-049, ⬜ US-040, US-042, US-048 |
+| **I — Packaging & préparation v1.0.0** | 🔄 En cours | 8/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-048, ✅ US-049, ⬜ US-040, US-042 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | 🔄 En cours | 1/10 | ✅ US-060, ⬜ US-061 à US-069 |
 
-**Total : 50 / 69 US**
+**Total : 51 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -42,7 +42,7 @@
 | US-045 | Packaging CMake : cible `ysc-matrix`, alias, install, find_package | P0 | ✅ Done |
 | US-046 | Correctifs docs + `.gitignore` | P0 | ✅ Done |
 | US-047 | README marketing + `mainpage.md` v1 | P0 | ✅ Done |
-| US-048 | Job CI consumer test | P0 | ⬜ À faire |
+| US-048 | Job CI consumer test | P0 | ✅ Done |
 | US-049 | Amalgamation auto-générée par CI | P0 | ✅ Done |
 
 ## EPIC J — Ergonomie & finition

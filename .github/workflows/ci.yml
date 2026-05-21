@@ -257,3 +257,65 @@ jobs:
 
       - name: Run clang-tidy
         run: run-clang-tidy -p build
+
+  consumer-test:
+    name: Consumer Test (Ubuntu / GCC-13)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GCC-13
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: g++-13
+
+      - name: Create consumer project
+        run: |
+          mkdir consumer_test
+          cat > consumer_test/CMakeLists.txt << 'EOF'
+          cmake_minimum_required(VERSION 3.20)
+          project(consumer-test CXX)
+
+          include(FetchContent)
+          FetchContent_Declare(ysc-matrix
+              GIT_REPOSITORY https://github.com/yscialom/matrix.git
+              GIT_TAG        ${{ github.event.pull_request.head.sha || github.sha }}
+          )
+          FetchContent_MakeAvailable(ysc-matrix)
+
+          add_executable(consumer main.cpp)
+          target_link_libraries(consumer PRIVATE ysc::matrix)
+
+          enable_testing()
+          add_test(NAME consumer-run COMMAND consumer)
+          EOF
+          cat > consumer_test/main.cpp << 'EOF'
+          #include <concepts>
+          #include <matrix.hpp>
+
+          template <typename T>
+          concept sized_container = requires(T t) {
+              { t.size() } -> std::convertible_to<std::size_t>;
+          };
+
+          static_assert(sized_container<ysc::matrix<int, 2, 3>>);
+
+          int main() {
+              ysc::matrix<int, 2, 3> m;
+              m(0, 0) = 42;
+              return m(0, 0) == 42 ? 0 : 1;
+          }
+          EOF
+
+      - name: Configure consumer project
+        env:
+          CC: gcc-13
+          CXX: g++-13
+        run: cmake -S consumer_test -B consumer_test/build
+
+      - name: Build consumer project
+        run: cmake --build consumer_test/build --parallel
+
+      - name: Run consumer test
+        run: ctest --test-dir consumer_test/build --output-on-failure
