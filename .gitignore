@@ -1,6 +1,7 @@
 # Building
 _cmake
 /build*/
+/consumer_test/
 
 # Editing
 *.orig
