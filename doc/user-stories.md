@@ -16,7 +16,7 @@
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
 | **K — Extensions pre-v1** | 🔄 En cours | 2/10 | ✅ US-060, ✅ US-063, ⬜ US-061, US-062, US-064 à US-069 |
 
-**Total : 52 / 69 US**
+**Total : 59 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
