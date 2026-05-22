@@ -1140,6 +1140,138 @@ public:
         return map([](const T& v) { return -v; });
     }
 
+    // bitwise
+
+    /**
+     * @brief Bitwise AND assignment (element-wise).
+     * @tparam Other Element type of @a other — must support @c &= with @c T
+     * @param  other Right-hand matrix
+     * @return Reference to @c *this after in-place AND
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> a{0b111, 0b101, 0b010};
+     * ysc::matrix<unsigned, 3> b{0b110, 0b110, 0b110};
+     * a &= b;  // a == ysc::matrix<unsigned, 3>{0b110, 0b100, 0b010}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Other>
+    matrix& operator&=(const matrix<Other, Dimensions...>& other)
+        requires requires(T a, const Other& b) { a &= b; }
+    {
+        std::transform(_data.begin(), _data.end(), other.cbegin(), _data.begin(),
+                       [](T a, const Other& b) -> T { return a &= b; });
+        return *this;
+    }
+
+    /**
+     * @brief Bitwise OR assignment (element-wise).
+     * @tparam Other Element type of @a other — must support @c |= with @c T
+     * @param  other Right-hand matrix
+     * @return Reference to @c *this after in-place OR
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> a{0b001, 0b010, 0b100};
+     * ysc::matrix<unsigned, 3> b{0b110, 0b101, 0b011};
+     * a |= b;  // a == ysc::matrix<unsigned, 3>{0b111, 0b111, 0b111}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Other>
+    matrix& operator|=(const matrix<Other, Dimensions...>& other)
+        requires requires(T a, const Other& b) { a |= b; }
+    {
+        std::transform(_data.begin(), _data.end(), other.cbegin(), _data.begin(),
+                       [](T a, const Other& b) -> T { return a |= b; });
+        return *this;
+    }
+
+    /**
+     * @brief Bitwise XOR assignment (element-wise).
+     * @tparam Other Element type of @a other — must support @c ^= with @c T
+     * @param  other Right-hand matrix
+     * @return Reference to @c *this after in-place XOR
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> a{0b111, 0b101, 0b010};
+     * ysc::matrix<unsigned, 3> b{0b110, 0b110, 0b110};
+     * a ^= b;  // a == ysc::matrix<unsigned, 3>{0b001, 0b011, 0b100}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Other>
+    matrix& operator^=(const matrix<Other, Dimensions...>& other)
+        requires requires(T a, const Other& b) { a ^= b; }
+    {
+        std::transform(_data.begin(), _data.end(), other.cbegin(), _data.begin(),
+                       [](T a, const Other& b) -> T { return a ^= b; });
+        return *this;
+    }
+
+    /**
+     * @brief Left-shift assignment by scalar (element-wise).
+     * @tparam Scalar Type of the shift amount — must support @c <<= with @c T
+     * @param  s      Shift amount applied to every element
+     * @return Reference to @c *this after in-place left shift
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> m{1, 2, 4};
+     * m <<= 1u;  // m == ysc::matrix<unsigned, 3>{2, 4, 8}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator<<=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a <<= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a <<= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Right-shift assignment by scalar (element-wise).
+     * @tparam Scalar Type of the shift amount — must support @c >>= with @c T
+     * @param  s      Shift amount applied to every element
+     * @return Reference to @c *this after in-place right shift
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> m{8, 4, 2};
+     * m >>= 1u;  // m == ysc::matrix<unsigned, 3>{4, 2, 1}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator>>=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a >>= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a >>= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Bitwise NOT (element-wise).
+     * @return New matrix where each element @c e is replaced by @c ~e
+     *
+     * @code
+     * ysc::matrix<unsigned, 2> m{0u, 0xFFFFFFFFu};
+     * auto r = ~m;  // r == ysc::matrix<unsigned, 2>{~0u, 0u}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    [[nodiscard]] matrix operator~() const
+        requires requires(const T& a) { ~a; }
+    {
+        return map([](const T& v) { return ~v; });
+    }
+
     // algorithms
     /**
      * @defgroup ysc_algorithms Algorithms
@@ -2263,6 +2395,96 @@ template <class Ta, class Tb, std::size_t M, std::size_t N>
             result(i) += mat(i, k) * vec(k);
         }
     }
+    return result;
+}
+
+/**
+ * @brief Bitwise AND of two matrices (element-wise, mixed types).
+ * @tparam Ta   Element type of @a lhs
+ * @tparam Tb   Element type of @a rhs — must support @c & with @c Ta
+ * @tparam Dims Dimensions of both matrices
+ * @param  lhs  Left-hand matrix
+ * @param  rhs  Right-hand matrix
+ * @return New matrix where element @c i is @c lhs[i] & @c rhs[i].
+ *         Element type is `decltype(Ta{} & Tb{})`.
+ *
+ * @code
+ * ysc::matrix<unsigned, 3> a{0b111u, 0b101u, 0b010u};
+ * ysc::matrix<unsigned, 3> b{0b110u, 0b110u, 0b110u};
+ * auto r = a & b;  // r == ysc::matrix<unsigned, 3>{0b110u, 0b100u, 0b010u}
+ * @endcode
+ *
+ * @ingroup ysc_arithmetic
+ */
+template <class Ta, class Tb, std::size_t... Dims>
+    requires requires(const Ta& a, const Tb& b) { a & b; }
+[[nodiscard]] constexpr auto operator&(const matrix<Ta, Dims...>& lhs,
+                                       const matrix<Tb, Dims...>& rhs)
+    -> matrix<decltype(std::declval<const Ta&>() & std::declval<const Tb&>()), Dims...> {
+    using Tc = decltype(std::declval<const Ta&>() & std::declval<const Tb&>());
+    matrix<Tc, Dims...> result;
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), result.begin(),
+                   [](const Ta& a, const Tb& b) -> Tc { return a & b; });
+    return result;
+}
+
+/**
+ * @brief Bitwise OR of two matrices (element-wise, mixed types).
+ * @tparam Ta   Element type of @a lhs
+ * @tparam Tb   Element type of @a rhs — must support @c | with @c Ta
+ * @tparam Dims Dimensions of both matrices
+ * @param  lhs  Left-hand matrix
+ * @param  rhs  Right-hand matrix
+ * @return New matrix where element @c i is @c lhs[i] | @c rhs[i].
+ *         Element type is `decltype(Ta{} | Tb{})`.
+ *
+ * @code
+ * ysc::matrix<unsigned, 3> a{0b001u, 0b010u, 0b100u};
+ * ysc::matrix<unsigned, 3> b{0b110u, 0b101u, 0b011u};
+ * auto r = a | b;  // r == ysc::matrix<unsigned, 3>{0b111u, 0b111u, 0b111u}
+ * @endcode
+ *
+ * @ingroup ysc_arithmetic
+ */
+template <class Ta, class Tb, std::size_t... Dims>
+    requires requires(const Ta& a, const Tb& b) { a | b; }
+[[nodiscard]] constexpr auto operator|(const matrix<Ta, Dims...>& lhs,
+                                       const matrix<Tb, Dims...>& rhs)
+    -> matrix<decltype(std::declval<const Ta&>() | std::declval<const Tb&>()), Dims...> {
+    using Tc = decltype(std::declval<const Ta&>() | std::declval<const Tb&>());
+    matrix<Tc, Dims...> result;
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), result.begin(),
+                   [](const Ta& a, const Tb& b) -> Tc { return a | b; });
+    return result;
+}
+
+/**
+ * @brief Bitwise XOR of two matrices (element-wise, mixed types).
+ * @tparam Ta   Element type of @a lhs
+ * @tparam Tb   Element type of @a rhs — must support @c ^ with @c Ta
+ * @tparam Dims Dimensions of both matrices
+ * @param  lhs  Left-hand matrix
+ * @param  rhs  Right-hand matrix
+ * @return New matrix where element @c i is @c lhs[i] ^ @c rhs[i].
+ *         Element type is `decltype(Ta{} ^ Tb{})`.
+ *
+ * @code
+ * ysc::matrix<unsigned, 3> a{0b111u, 0b101u, 0b010u};
+ * ysc::matrix<unsigned, 3> b{0b110u, 0b110u, 0b110u};
+ * auto r = a ^ b;  // r == ysc::matrix<unsigned, 3>{0b001u, 0b011u, 0b100u}
+ * @endcode
+ *
+ * @ingroup ysc_arithmetic
+ */
+template <class Ta, class Tb, std::size_t... Dims>
+    requires requires(const Ta& a, const Tb& b) { a ^ b; }
+[[nodiscard]] constexpr auto operator^(const matrix<Ta, Dims...>& lhs,
+                                       const matrix<Tb, Dims...>& rhs)
+    -> matrix<decltype(std::declval<const Ta&>() ^ std::declval<const Tb&>()), Dims...> {
+    using Tc = decltype(std::declval<const Ta&>() ^ std::declval<const Tb&>());
+    matrix<Tc, Dims...> result;
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), result.begin(),
+                   [](const Ta& a, const Tb& b) -> Tc { return a ^ b; });
     return result;
 }
 
