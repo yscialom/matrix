@@ -14,6 +14,7 @@ add_executable(${TARGET_NAME}
     src/access.cpp
     src/accessors.cpp
     src/algorithms.cpp
+    src/arithmetic_bitwise.cpp
     src/arithmetic_elementwise.cpp
     src/arithmetic_hadamard.cpp
     src/arithmetic_scalar.cpp
