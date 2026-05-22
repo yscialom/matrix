@@ -2260,6 +2260,48 @@ template <class T, std::size_t... Dims, std::invocable<std::size_t> F>
 }
 
 /**
+ * @brief Returns a matrix filled by calling @a f(i₀, i₁, …) for each N-D coordinate.
+ *
+ * This overload accepts a callable that takes @c sizeof...(Dims) arguments of type
+ * @c std::size_t — one per dimension, in row-major order.  It is selected when @a f is
+ * **not** callable with a single @c std::size_t (which would select the linear-index
+ * overload instead, preserving backward compatibility).
+ *
+ * @tparam T    Element type
+ * @tparam Dims Dimensions of the result matrix
+ * @tparam F    Callable type: @c f(i₀, …, iₙ) must be convertible to @c T
+ * @param  f    Generator callable receiving the N-D coordinates
+ * @return New @c matrix<T, Dims...> where element at @c (i₀,…,iₙ) equals @c f(i₀,…,iₙ)
+ *
+ * @code
+ * // 3×3 identity matrix
+ * auto I = ysc::generate<int, 3, 3>([](std::size_t i, std::size_t j) {
+ *     return i == j ? 1 : 0;
+ * });
+ * // Tensor: m(i,j,k) = i*100 + j*10 + k
+ * auto m = ysc::generate<int, 2, 3, 4>([](auto i, auto j, auto k) {
+ *     return int(i * 100 + j * 10 + k);
+ * });
+ * @endcode
+ *
+ * @ingroup ysc_construction
+ */
+template <class T, std::size_t... Dims, class F>
+    requires(!std::invocable<F, std::size_t> &&
+             requires(F f, std::array<std::size_t, sizeof...(Dims)> coords) {
+                 { std::apply(f, coords) } -> std::convertible_to<T>;
+             })
+[[nodiscard]] constexpr matrix<T, Dims...> generate(F f) {
+    matrix<T, Dims...> result;
+    for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
+        auto coords = detail::index_to_coordinates(matrix<T, Dims...>::dimensions, i);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        result.begin()[i] = static_cast<T>(std::apply(f, coords));
+    }
+    return result;
+}
+
+/**
  * @defgroup ysc_linalg Linear algebra
  * @brief Linear algebra operations on @c ysc::matrix.
  */

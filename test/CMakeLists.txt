@@ -25,6 +25,7 @@ add_executable(${TARGET_NAME}
     src/construct.cpp
     src/construct_from_buffer.cpp
     src/factories.cpp
+    src/generate_multi_index.cpp
     src/fill.cpp
     src/formatter.cpp
     src/hash.cpp

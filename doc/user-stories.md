@@ -14,9 +14,9 @@
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 8/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-048, ✅ US-049, ⬜ US-040, US-042 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
-| **K — Extensions pre-v1** | 🔄 En cours | 2/10 | ✅ US-060, ✅ US-063, ⬜ US-061, US-062, US-064 à US-069 |
+| **K — Extensions pre-v1** | 🔄 En cours | 3/10 | ✅ US-060, ✅ US-063, ✅ US-069, ⬜ US-061, US-062, US-064 à US-068 |
 
-**Total : 59 / 69 US**
+**Total : 60 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
@@ -74,7 +74,7 @@
 | US-066 | CI Windows : cache vcpkg | P2 | ⬜ À faire |
 | US-067 | Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ⬜ À faire |
 | US-068 | Migration guide : promesse de stabilité SemVer v1.0.0 | P2 | ⬜ À faire |
-| US-069 | `generate` avec callable multi-index | P2 | ⬜ À faire |
+| US-069 | `generate` avec callable multi-index | P2 | ✅ Done |
 
 ---
 
