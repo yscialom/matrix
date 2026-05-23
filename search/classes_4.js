@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['is_5fprefix_5fslice_5fhelper_0',['is_prefix_slice_helper',['../structysc_1_1detail_1_1is__prefix__slice__helper.html',1,'ysc::detail']]],
-  ['iterator_1',['iterator',['../structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1iterator.html',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;']]]
+  ['hash_3c_20ysc_3a_3amatrix_3c_20t_2c_20d_2e_2e_2e_20_3e_20_3e_0',['hash&lt; ysc::matrix&lt; T, D... &gt; &gt;',['../structstd_1_1hash_3_01ysc_1_1matrix_3_01T_00_01D_8_8_8_01_4_01_4.html',1,'std']]]
 ];

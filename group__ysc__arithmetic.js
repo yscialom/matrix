@@ -1,5 +1,7 @@
 var group__ysc__arithmetic =
 [
+    [ "ysc::operator&", "group__ysc__arithmetic.html#gac539f91b5230adc324dd87694b76a16b", null ],
+    [ "ysc::matrix::operator&=", "group__ysc__arithmetic.html#gaa191e18eed96e037b1922fd5717f1917", null ],
     [ "ysc::matrix::operator*=", "group__ysc__arithmetic.html#ga97e3b126a0d2c99acd71b30a2cf6269c", null ],
     [ "ysc::matrix::operator*=", "group__ysc__arithmetic.html#gabc51940fed414953eaf6d37b5e128a35", null ],
     [ "ysc::matrix::operator+", "group__ysc__arithmetic.html#ga6869e980732b886843bcadd87c66c253", null ],
@@ -10,6 +12,13 @@ var group__ysc__arithmetic =
     [ "ysc::matrix::operator-=", "group__ysc__arithmetic.html#gade6879eb584f03ac24ae4c2bc5cf69e7", null ],
     [ "ysc::matrix::operator/=", "group__ysc__arithmetic.html#ga37444fc41003ee077d4e5ed14017a949", null ],
     [ "ysc::matrix::operator/=", "group__ysc__arithmetic.html#gacd432d500764ecfea040b47553dcf836", null ],
+    [ "ysc::matrix::operator<<=", "group__ysc__arithmetic.html#ga8b2723b39c26e9a62cd73a9f3ffa874a", null ],
+    [ "ysc::matrix::operator>>=", "group__ysc__arithmetic.html#ga0bf1e292d779ec6a37902760d8ffe154", null ],
+    [ "ysc::operator^", "group__ysc__arithmetic.html#ga2ef02bf884d925c69e6607e408520ecc", null ],
+    [ "ysc::matrix::operator^=", "group__ysc__arithmetic.html#gaf3675dd40a4701354b7525b991ee9f7f", null ],
+    [ "ysc::operator|", "group__ysc__arithmetic.html#ga70101d40bfbade428fa2a823fd1fe89f", null ],
+    [ "ysc::matrix::operator|=", "group__ysc__arithmetic.html#ga8b05bbe7665ff4ad64444f0dca43155a", null ],
+    [ "ysc::matrix::operator~", "group__ysc__arithmetic.html#gae21113dd37efce1e455748894169401a", null ],
     [ "ysc::matrix::operator*", "group__ysc__arithmetic.html#ga242f86f052e2d47efdfa28fb826fd9d6", null ],
     [ "ysc::matrix::operator*", "group__ysc__arithmetic.html#gae991bb774b2efc3b9791d410e234565b", null ],
     [ "ysc::matrix::operator*", "group__ysc__arithmetic.html#ga7c7ce281791c7e0169d20e7f525fe230", null ],

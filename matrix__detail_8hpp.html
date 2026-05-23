@@ -152,6 +152,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structysc_1_1detail_1_1pad__right__with__all.html">ysc::detail::pad_right_with_all&lt; ToAdd, Specs &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pad <code>Specs</code>... with <code><a class="el" href="structysc_1_1all__t.html" title="Sentinel type used in slice() to indicate &quot;keep this dimension&quot;.">all_t</a></code> on the right until <code>N</code> elements total. Returns a <code>std::tuple</code> of the padded types.  <a href="structysc_1_1detail_1_1pad__right__with__all.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structysc_1_1detail_1_1drop__dim__impl.html">ysc::detail::drop_dim_impl&lt; Axis, Idx, Dims &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the <code>Axis-th</code> element from a <code><a class="el" href="structysc_1_1detail_1_1size__seq.html" title="Non-type parameter pack container for std::size_t values.">size_seq</a></code> of dimensions (recursive helper).  <a href="structysc_1_1detail_1_1drop__dim__impl.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
 Concepts</h2></td></tr>
@@ -161,6 +164,11 @@ Concepts</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a3be71d2af83331b0da17986a28ec27d6" id="r_a3be71d2af83331b0da17986a28ec27d6"><td class="memTemplParams" colspan="2"><a id="a3be71d2af83331b0da17986a28ec27d6" name="a3be71d2af83331b0da17986a28ec27d6"></a>
+template&lt;std::size_t Axis, std::size_t... Dims&gt; </td></tr>
+<tr class="memitem:a3be71d2af83331b0da17986a28ec27d6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ysc::detail::drop_dim_t</b> = typename <a class="el" href="structysc_1_1detail_1_1drop__dim__impl.html">drop_dim_impl</a>&lt; Axis, 0, Dims... &gt;::type</td></tr>
+<tr class="memdesc:a3be71d2af83331b0da17986a28ec27d6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="structysc_1_1detail_1_1size__seq.html" title="Non-type parameter pack container for std::size_t values.">size_seq</a></code> of <code>Dims</code>... with the <code>Axis-th</code> dimension removed. <br /></td></tr>
+<tr class="separator:a3be71d2af83331b0da17986a28ec27d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4cc25153c17fcf35d9990d4d49724706" id="r_ga4cc25153c17fcf35d9990d4d49724706"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t... Dims&gt; </td></tr>
 <tr class="memitem:ga4cc25153c17fcf35d9990d4d49724706"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga4cc25153c17fcf35d9990d4d49724706">ysc::const_matrix_view</a> = <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; const T, <a class="el" href="structysc_1_1contiguous.html">contiguous</a>, Dims... &gt;</td></tr>
 <tr class="memdesc:ga4cc25153c17fcf35d9990d4d49724706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for a read-only contiguous view over a <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code>.  <br /></td></tr>

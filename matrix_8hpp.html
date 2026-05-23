@@ -182,6 +182,11 @@ requires requires { T{1}; }</td></tr>
 <tr class="memitem:gac576c1a63cac336454e2023283a902f2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dims... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__construction.html#gac576c1a63cac336454e2023283a902f2">ysc::generate</a> (F f)</td></tr>
 <tr class="memdesc:gac576c1a63cac336454e2023283a902f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a matrix filled by calling <em>f(i)</em> for each linear index <em>i</em>.  <br /></td></tr>
 <tr class="separator:gac576c1a63cac336454e2023283a902f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac576c1a63cac336454e2023283a902f2" id="r_gac576c1a63cac336454e2023283a902f2"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t... Dims, class F &gt; <br />
+requires (!std::invocable&lt;F, std::size_t&gt; &amp;&amp; requires(F f, std::array&lt;std::size_t, sizeof...(Dims)&gt; coords) { { std::apply(f, coords) } -&gt; std::convertible_to&lt;T&gt;; })</td></tr>
+<tr class="memitem:gac576c1a63cac336454e2023283a902f2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dims... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="matrix_8hpp.html#gac576c1a63cac336454e2023283a902f2">ysc::generate</a> (F f)</td></tr>
+<tr class="memdesc:gac576c1a63cac336454e2023283a902f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a matrix filled by calling <em>f</em>(i₀, i₁, …) for each N-D coordinate.  <br /></td></tr>
+<tr class="separator:gac576c1a63cac336454e2023283a902f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadb001997450558cad3ecbc4c5ebcb720" id="r_gadb001997450558cad3ecbc4c5ebcb720"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t R, std::size_t C&gt; </td></tr>
 <tr class="memitem:gadb001997450558cad3ecbc4c5ebcb720"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, C, R &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__linalg.html#gadb001997450558cad3ecbc4c5ebcb720">ysc::transpose</a> (const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, R, C &gt; &amp;m)</td></tr>
 <tr class="memdesc:gadb001997450558cad3ecbc4c5ebcb720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the transpose of a 2D matrix.  <br /></td></tr>
@@ -201,6 +206,21 @@ requires std::invocable&lt;std::multiplies&lt;&gt;, const Ta&amp;, const Tb&amp;
 <tr class="memitem:ga18aed2852bab2be37078850fe310d3de"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__linalg.html#ga18aed2852bab2be37078850fe310d3de">ysc::matmul</a> (const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Ta, M, N &gt; &amp;mat, const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Tb, N &gt; &amp;vec) -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; std::invoke_result_t&lt; std::multiplies&lt;&gt;, const Ta &amp;, const Tb &amp; &gt;, M &gt;</td></tr>
 <tr class="memdesc:ga18aed2852bab2be37078850fe310d3de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply a matrix by a column vector.  <br /></td></tr>
 <tr class="separator:ga18aed2852bab2be37078850fe310d3de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac539f91b5230adc324dd87694b76a16b" id="r_gac539f91b5230adc324dd87694b76a16b"><td class="memTemplParams" colspan="2">template&lt;class Ta , class Tb , std::size_t... Dims&gt; <br />
+requires requires(const Ta&amp; a, const Tb&amp; b) { a &amp; b; }</td></tr>
+<tr class="memitem:gac539f91b5230adc324dd87694b76a16b"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__arithmetic.html#gac539f91b5230adc324dd87694b76a16b">ysc::operator&amp;</a> (const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Ta, Dims... &gt; &amp;lhs, const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Tb, Dims... &gt; &amp;rhs) -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; decltype(std::declval&lt; const Ta &amp; &gt;() &amp;std::declval&lt; const Tb &amp; &gt;()), Dims... &gt;</td></tr>
+<tr class="memdesc:gac539f91b5230adc324dd87694b76a16b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitwise AND of two matrices (element-wise, mixed types).  <br /></td></tr>
+<tr class="separator:gac539f91b5230adc324dd87694b76a16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga70101d40bfbade428fa2a823fd1fe89f" id="r_ga70101d40bfbade428fa2a823fd1fe89f"><td class="memTemplParams" colspan="2">template&lt;class Ta , class Tb , std::size_t... Dims&gt; <br />
+requires requires(const Ta&amp; a, const Tb&amp; b) { a | b; }</td></tr>
+<tr class="memitem:ga70101d40bfbade428fa2a823fd1fe89f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__arithmetic.html#ga70101d40bfbade428fa2a823fd1fe89f">ysc::operator|</a> (const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Ta, Dims... &gt; &amp;lhs, const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Tb, Dims... &gt; &amp;rhs) -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; decltype(std::declval&lt; const Ta &amp; &gt;()|std::declval&lt; const Tb &amp; &gt;()), Dims... &gt;</td></tr>
+<tr class="memdesc:ga70101d40bfbade428fa2a823fd1fe89f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitwise OR of two matrices (element-wise, mixed types).  <br /></td></tr>
+<tr class="separator:ga70101d40bfbade428fa2a823fd1fe89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ef02bf884d925c69e6607e408520ecc" id="r_ga2ef02bf884d925c69e6607e408520ecc"><td class="memTemplParams" colspan="2">template&lt;class Ta , class Tb , std::size_t... Dims&gt; <br />
+requires requires(const Ta&amp; a, const Tb&amp; b) { a ^ b; }</td></tr>
+<tr class="memitem:ga2ef02bf884d925c69e6607e408520ecc"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__arithmetic.html#ga2ef02bf884d925c69e6607e408520ecc">ysc::operator^</a> (const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Ta, Dims... &gt; &amp;lhs, const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; Tb, Dims... &gt; &amp;rhs) -&gt; <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; decltype(std::declval&lt; const Ta &amp; &gt;() ^ std::declval&lt; const Tb &amp; &gt;()), Dims... &gt;</td></tr>
+<tr class="memdesc:ga2ef02bf884d925c69e6607e408520ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bitwise XOR of two matrices (element-wise, mixed types).  <br /></td></tr>
+<tr class="separator:ga2ef02bf884d925c69e6607e408520ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2a59a8048e4a85696e27c941ec5cedfa" id="r_ga2a59a8048e4a85696e27c941ec5cedfa"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t... Dims&gt; <br />
 requires detail::ostream_streamable&lt;T&gt;</td></tr>
 <tr class="memitem:ga2a59a8048e4a85696e27c941ec5cedfa"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__io.html#ga2a59a8048e4a85696e27c941ec5cedfa">ysc::operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dims... &gt; &amp;m)</td></tr>
@@ -214,7 +234,65 @@ requires detail::ostream_streamable&lt;T&gt;</td></tr>
 <p>The matrix library is a header-only template library defining a general-purpose multi-dimension container of static dimensions. </p>
 
 <p class="definition">Definition in file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="gac576c1a63cac336454e2023283a902f2" name="gac576c1a63cac336454e2023283a902f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac576c1a63cac336454e2023283a902f2">&#9670;&#160;</a></span>generate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , std::size_t... Dims, class F &gt; <br />
+requires (!std::invocable&lt;F, std::size_t&gt; &amp;&amp; requires(F f, std::array&lt;std::size_t, sizeof...(Dims)&gt; coords) { { std::apply(f, coords) } -&gt; std::convertible_to&lt;T&gt;; })</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr matrix&lt; T, Dims... &gt; ysc::generate </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a matrix filled by calling <em>f</em>(i₀, i₁, …) for each N-D coordinate. </p>
+<p>This overload accepts a callable that takes <code>sizeof</code>...(Dims) arguments of type <code>std::size_t</code> — one per dimension, in row-major order. It is selected when <em>f</em> is <b>not</b> callable with a single <code>std::size_t</code> (which would select the linear-index overload instead, preserving backward compatibility).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Element type </td></tr>
+    <tr><td class="paramname">Dims</td><td>Dimensions of the result matrix </td></tr>
+    <tr><td class="paramname">F</td><td>Callable type: <code>f</code>(i₀, …, iₙ) must be convertible to <code>T</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Generator callable receiving the N-D coordinates </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New <code>matrix&lt;T, Dims...&gt;</code> where element at <code></code>(i₀,…,iₙ) equals <code>f</code>(i₀,…,iₙ)</dd></dl>
+<div class="fragment"><div class="line"><span class="comment">// 3×3 identity matrix</span></div>
+<div class="line"><span class="keyword">auto</span> I = ysc::generate&lt;int, 3, 3&gt;([](std::size_t i, std::size_t j) {</div>
+<div class="line">    <span class="keywordflow">return</span> i == j ? 1 : 0;</div>
+<div class="line">});</div>
+<div class="line"><span class="comment">// Tensor: m(i,j,k) = i*100 + j*10 + k</span></div>
+<div class="line"><span class="keyword">auto</span> m = ysc::generate&lt;int, 2, 3, 4&gt;([](<span class="keyword">auto</span> i, <span class="keyword">auto</span> j, <span class="keyword">auto</span> k) {</div>
+<div class="line">    <span class="keywordflow">return</span> int(i * 100 + j * 10 + k);</div>
+<div class="line">});</div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02289">2289</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

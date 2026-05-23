@@ -446,7 +446,7 @@ template&lt;class T , std::size_t... Dims&gt; </div>
 <div class="ttc" id="aclassysc_1_1matrix__view_html"><div class="ttname"><a href="classysc_1_1matrix__view.html">ysc::matrix_view</a></div><div class="ttdoc">Non-owning view over a ysc::matrix storage.</div><div class="ttdef"><b>Definition</b> <a href="matrix__detail_8hpp_source.html#l00054">matrix_detail.hpp:54</a></div></div>
 <div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00112">matrix.hpp:112</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix__detail_8hpp_source.html#l00279">279</a> of file <a class="el" href="matrix__detail_8hpp_source.html">matrix_detail.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix__detail_8hpp_source.html#l00303">303</a> of file <a class="el" href="matrix__detail_8hpp_source.html">matrix_detail.hpp</a>.</p>
 
 </div>
 </div>
@@ -490,7 +490,7 @@ template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc2
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m2</a>   = <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 4&gt;</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">row0</a>);   <span class="comment">// owning copy</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m2</a>(0) = 99;                              <span class="comment">// does not affect m</span></div>
 <div class="ttc" id="aclassysc_1_1matrix_html_a9b05ad6c525775562e1ddc25ce176f9e"><div class="ttname"><a href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">ysc::matrix::reverse_iterator</a></div><div class="ttdeci">std::reverse_iterator&lt; iterator &gt; reverse_iterator</div><div class="ttdoc">Reverse iterator.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00163">matrix.hpp:163</a></div></div>
-<div class="ttc" id="agroup__ysc__views_html_ga73d1cb2d336ef71c2870ae255a608b0d"><div class="ttname"><a href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">ysc::matrix::row</a></div><div class="ttdeci">constexpr auto row(std::size_t i) &amp;</div><div class="ttdoc">Returns a contiguous view over row i (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01634">matrix.hpp:1634</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_ga73d1cb2d336ef71c2870ae255a608b0d"><div class="ttname"><a href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">ysc::matrix::row</a></div><div class="ttdeci">constexpr auto row(std::size_t i) &amp;</div><div class="ttdoc">Returns a contiguous view over row i (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01901">matrix.hpp:1901</a></div></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00558">558</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
@@ -534,7 +534,7 @@ template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc2
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">col1</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(1);                    <span class="comment">// strided view of column 1</span></div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m2</a>   = <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3&gt;</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">col1</a>);   <span class="comment">// owning copy via iterators</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m2</a>(0) = 99;                              <span class="comment">// does not affect m</span></div>
-<div class="ttc" id="agroup__ysc__views_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01687">matrix.hpp:1687</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01954">matrix.hpp:1954</a></div></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00581">581</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
@@ -1404,7 +1404,7 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">c</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);  <span class="comment">// strided view of column 2 — 3 elements, stride 4</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">c</a>(1) = 99;          <span class="comment">// writes m(1, 2)</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01687">1687</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01954">1954</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1460,7 @@ requires (<a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_
 <div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3, 4&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">m</a>{};</div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">v2d</a> = <a class="code hl_typedef" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">m</a>.<a class="code hl_function" href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">flatten</a>().reshape&lt;3, 4&gt;();</div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">c</a>   = <a class="code hl_typedef" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">v2d</a>.col(2);  <span class="comment">// strided view of column 2 — 3 elements, stride 4</span></div>
-<div class="ttc" id="agroup__ysc__views_html_gadf746e2210100153fe918d8eab35bf2a"><div class="ttname"><a href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">ysc::matrix::flatten</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, linear_size &gt; flatten() &amp;noexcept</div><div class="ttdoc">Returns a 1D non-owning view over all elements in row-major order.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01869">matrix.hpp:1869</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_gadf746e2210100153fe918d8eab35bf2a"><div class="ttname"><a href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">ysc::matrix::flatten</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, linear_size &gt; flatten() &amp;noexcept</div><div class="ttdoc">Returns a 1D non-owning view over all elements in row-major order.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02136">matrix.hpp:2136</a></div></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="matrix__view_8hpp_source.html#l00649">649</a> of file <a class="el" href="matrix__view_8hpp_source.html">matrix_view.hpp</a>.</p>
 
@@ -1519,7 +1519,7 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">c</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);</div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">c</a>(1) == <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>(1, 2));</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01713">1713</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01980">1980</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -1563,9 +1563,9 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">col_view</a> : <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a">cols</a>()) {</div>
 <div class="line">    <span class="comment">// col_view is a matrix_view&lt;int, strided, 2&gt;</span></div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__ysc__views_html_gae45a5dceb0d0ea551c7d0f3cc1a3a97a"><div class="ttname"><a href="group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a">ysc::matrix::cols</a></div><div class="ttdeci">constexpr auto cols() &amp;</div><div class="ttdoc">Returns a range of strided column views (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01784">matrix.hpp:1784</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_gae45a5dceb0d0ea551c7d0f3cc1a3a97a"><div class="ttname"><a href="group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a">ysc::matrix::cols</a></div><div class="ttdeci">constexpr auto cols() &amp;</div><div class="ttdoc">Returns a range of strided column views (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02051">matrix.hpp:2051</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01784">1784</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02051">2051</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -1610,7 +1610,7 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line">    <span class="comment">// col_view is a matrix_view&lt;const int, strided, 2&gt;</span></div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01807">1807</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02074">2074</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2055,7 +2055,7 @@ template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc2
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">flatten</a>();  <span class="comment">// matrix_view&lt;int, contiguous, 6&gt;</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>(3) == <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>(1, 0));</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01869">1869</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02136">2136</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2089,7 +2089,7 @@ template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc2
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 2, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3, 4, 5, 6};</div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a">flatten</a>();  <span class="comment">// matrix_view&lt;const int, contiguous, 6&gt;</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01885">1885</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02152">2152</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2703,9 +2703,9 @@ template&lt;std::size_t... NewD&gt; </div>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 2, 6&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};</div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">reshape</a>&lt;3, 4&gt;();  <span class="comment">// view m as 3x4</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>(0, 0) = 99;               <span class="comment">// also sets m(0, 0)</span></div>
-<div class="ttc" id="agroup__ysc__views_html_gabeabfbfd3c53d3ba8208a53c36f70d86"><div class="ttname"><a href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">ysc::matrix::reshape</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, NewD... &gt; reshape() &amp;noexcept</div><div class="ttdoc">Returns a non-owning view over the same data reinterpreted with new dimensions.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01830">matrix.hpp:1830</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_gabeabfbfd3c53d3ba8208a53c36f70d86"><div class="ttname"><a href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">ysc::matrix::reshape</a></div><div class="ttdeci">constexpr matrix_view&lt; T, contiguous, NewD... &gt; reshape() &amp;noexcept</div><div class="ttdoc">Returns a non-owning view over the same data reinterpreted with new dimensions.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02097">matrix.hpp:2097</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01830">1830</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02097">2097</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2747,7 +2747,7 @@ template&lt;std::size_t... NewD&gt; </div>
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 2, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3, 4, 5, 6};</div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#gabeabfbfd3c53d3ba8208a53c36f70d86">reshape</a>&lt;6&gt;();  <span class="comment">// matrix_view&lt;const int, contiguous, 6&gt;</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01849">1849</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02116">2116</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2804,7 +2804,7 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">r</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">row</a>(1);  <span class="comment">// contiguous view of row 1 — 4 elements</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">r</a>(2) = 99;          <span class="comment">// writes m(1, 2)</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01634">1634</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01901">1901</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2918,7 +2918,7 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">r</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga73d1cb2d336ef71c2870ae255a608b0d">row</a>(1);</div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">r</a>(0) == <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>(1, 0));</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01660">1660</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01927">1927</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -2962,9 +2962,9 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">row_view</a> : <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga23a4f8c22fe794763d98f29083adf57a">rows</a>()) {</div>
 <div class="line">    <span class="comment">// row_view is a matrix_view&lt;int, contiguous, 3&gt;</span></div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__ysc__views_html_ga23a4f8c22fe794763d98f29083adf57a"><div class="ttname"><a href="group__ysc__views.html#ga23a4f8c22fe794763d98f29083adf57a">ysc::matrix::rows</a></div><div class="ttdeci">constexpr auto rows() &amp;</div><div class="ttdoc">Returns a range of contiguous row views (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01738">matrix.hpp:1738</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_ga23a4f8c22fe794763d98f29083adf57a"><div class="ttname"><a href="group__ysc__views.html#ga23a4f8c22fe794763d98f29083adf57a">ysc::matrix::rows</a></div><div class="ttdeci">constexpr auto rows() &amp;</div><div class="ttdoc">Returns a range of contiguous row views (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02005">matrix.hpp:2005</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01738">1738</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02005">2005</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -3009,7 +3009,7 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <div class="line">    <span class="comment">// row_view is a matrix_view&lt;const int, contiguous, 3&gt;</span></div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01761">1761</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02028">2028</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -3135,10 +3135,10 @@ requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c5257755
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">columns</a> <span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v1</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.slice(<a class="code hl_variable" href="group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00">ysc::all</a>, 2);  <span class="comment">// strided: column 2 across all</span></div>
 <div class="line">3<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">×5</a> <a class="code hl_function" href="group__ysc__views.html#ga23a4f8c22fe794763d98f29083adf57a">rows</a> <span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v2</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.slice();             <span class="comment">// contiguous: view over the</span></div>
 <div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">whole</a> <a class="code hl_class" href="classysc_1_1matrix.html">matrix</a></div>
-<div class="ttc" id="agroup__ysc__views_html_ga60287e8274876a3e4288b7896c213e06"><div class="ttname"><a href="group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06">ysc::matrix::slice</a></div><div class="ttdeci">constexpr auto slice(Specs... specs) &amp;</div><div class="ttdoc">Returns a non-owning view over a hyperslice of the matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01527">matrix.hpp:1527</a></div></div>
+<div class="ttc" id="agroup__ysc__views_html_ga60287e8274876a3e4288b7896c213e06"><div class="ttname"><a href="group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06">ysc::matrix::slice</a></div><div class="ttdeci">constexpr auto slice(Specs... specs) &amp;</div><div class="ttdoc">Returns a non-owning view over a hyperslice of the matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01794">matrix.hpp:1794</a></div></div>
 <div class="ttc" id="agroup__ysc__views_html_gaf45ff9b0ab247ef3b3cec980746d6f00"><div class="ttname"><a href="group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00">ysc::all</a></div><div class="ttdeci">constexpr all_t all</div><div class="ttdoc">Sentinel value: pass ysc::all to slice() to keep a dimension unchanged.</div><div class="ttdef"><b>Definition</b> <a href="matrix__detail_8hpp_source.html#l00048">matrix_detail.hpp:48</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01527">1527</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01794">1794</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -3251,7 +3251,7 @@ requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c5257755
 <div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3, 4&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{};</div>
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06">slice</a>(1);  <span class="comment">// const view of row 1</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01582">1582</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01849">1849</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>

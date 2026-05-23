@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['filter_5fkept_5fdims_0',['filter_kept_dims',['../structysc_1_1detail_1_1filter__kept__dims.html',1,'ysc::detail']]]
+  ['drop_5fdim_5fimpl_0',['drop_dim_impl',['../structysc_1_1detail_1_1drop__dim__impl.html',1,'ysc::detail']]]
 ];
