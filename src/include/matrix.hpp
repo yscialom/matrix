@@ -1444,10 +1444,9 @@ public:
      * @ingroup ysc_algorithms
      */
     template <std::size_t Axis>
-        requires(Axis < order)
-    [[nodiscard]] constexpr auto sum() const
-        requires std::default_initializable<T> && requires(T a, const T& b) { a += b; }
-    {
+        requires(Axis < order) && std::default_initializable<T> &&
+                requires(T a, const T& b) { a += b; }
+    [[nodiscard]] constexpr auto sum() const {
         using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
         result_type result(zero);
         constexpr std::size_t axis_size = dimensions[Axis];
@@ -1490,10 +1489,8 @@ public:
      * @ingroup ysc_algorithms
      */
     template <std::size_t Axis>
-        requires(Axis < order && dimensions[Axis] > 0)
-    [[nodiscard]] constexpr auto min() const
-        requires std::totally_ordered<T>
-    {
+        requires(Axis < order && dimensions[Axis] > 0) && std::totally_ordered<T>
+    [[nodiscard]] constexpr auto min() const {
         using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
         result_type result;
         constexpr std::size_t axis_size = dimensions[Axis];
@@ -1537,10 +1534,8 @@ public:
      * @ingroup ysc_algorithms
      */
     template <std::size_t Axis>
-        requires(Axis < order && dimensions[Axis] > 0)
-    [[nodiscard]] constexpr auto max() const
-        requires std::totally_ordered<T>
-    {
+        requires(Axis < order && dimensions[Axis] > 0) && std::totally_ordered<T>
+    [[nodiscard]] constexpr auto max() const {
         using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
         result_type result;
         constexpr std::size_t axis_size = dimensions[Axis];

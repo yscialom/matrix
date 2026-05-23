@@ -319,3 +319,20 @@ jobs:
 
       - name: Run consumer test
         run: ctest --test-dir consumer_test/build --output-on-failure
+
+  doc-check:
+    name: Doxygen build (no publish)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y doxygen graphviz
+
+      - name: Configure
+        run: cmake -S . -B build -DYSC_MATRIX_BUILD_DOCUMENTATION=ON -DYSC_MATRIX_BUILD_TESTING=OFF
+
+      - name: Build documentation
+        run: cmake --build build --target doc
