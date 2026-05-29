@@ -2271,6 +2271,98 @@ public:
     [[nodiscard]] constexpr enumerate_range<const T> enumerate() const noexcept {
         return enumerate_range<const T>{_data.data(), linear_size};
     }
+
+    /**
+     * @brief Returns a strided view over an N-D sub-block starting at @a origin.
+     * @tparam NewD Dimensions of the sub-block (one per matrix dimension).
+     * @param  origin Multi-dimensional starting position of the sub-block.
+     * @return @c matrix_view<T, strided, NewD...>
+     *
+     * The strides of the view are the row-major strides of the source matrix, so
+     * mutation through the view is reflected in the original matrix.
+     *
+     * @throws std::out_of_range if @c origin[i] + NewD[i] > dimensions[i] for
+     *         any dimension @c i.
+     *
+     * @code
+     * ysc::matrix<int, 4, 4> m{};
+     * std::iota(m.begin(), m.end(), 0);
+     * auto v = m.submatrix<2, 2>({1, 1});  // 2×2 view starting at (1,1)
+     * assert(v(0, 0) == m(1, 1));
+     * v(0, 0) = 99;  // writes m(1, 1)
+     * assert(m(1, 1) == 99);
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t... NewD>
+        requires(sizeof...(NewD) == order)
+    [[nodiscard]] constexpr matrix_view<T, strided, NewD...>
+    submatrix(std::array<std::size_t, order> origin) & {
+        constexpr std::array<std::size_t, order> new_dims = {NewD...};
+        for (std::size_t i = 0; i < order; ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (origin[i] + new_dims[i] > dimensions[i]) {
+                throw std::out_of_range("submatrix: sub-block exceeds matrix bounds");
+            }
+        }
+        // Row-major strides of the source matrix: stride[i] = D[i+1] * ... * D[order-1]
+        std::array<std::size_t, order> src_strides{};
+        for (std::size_t i = 0; i < order; ++i) {
+            std::size_t s = 1;
+            for (std::size_t j = i + 1; j < order; ++j) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                s *= dimensions[j];
+            }
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            src_strides[i] = s;
+        }
+        T* base = _data.data() + detail::coordinates_to_index(dimensions, origin);
+        return matrix_view<T, strided, NewD...>{base, src_strides};
+    }
+
+    /**
+     * @brief Returns a const strided view over an N-D sub-block starting at @a origin.
+     * @tparam NewD Dimensions of the sub-block (one per matrix dimension).
+     * @param  origin Multi-dimensional starting position of the sub-block.
+     * @return @c matrix_view<const T, strided, NewD...>
+     *
+     * @throws std::out_of_range if @c origin[i] + NewD[i] > dimensions[i] for
+     *         any dimension @c i.
+     *
+     * @code
+     * const ysc::matrix<int, 4, 4> m{};
+     * auto v = m.submatrix<2, 2>({1, 1});  // const 2×2 view starting at (1,1)
+     * assert(v(0, 0) == m(1, 1));
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t... NewD>
+        requires(sizeof...(NewD) == order)
+    [[nodiscard]] constexpr matrix_view<const T, strided, NewD...>
+    submatrix(std::array<std::size_t, order> origin) const& {
+        constexpr std::array<std::size_t, order> new_dims = {NewD...};
+        for (std::size_t i = 0; i < order; ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (origin[i] + new_dims[i] > dimensions[i]) {
+                throw std::out_of_range("submatrix: sub-block exceeds matrix bounds");
+            }
+        }
+        // Row-major strides of the source matrix: stride[i] = D[i+1] * ... * D[order-1]
+        std::array<std::size_t, order> src_strides{};
+        for (std::size_t i = 0; i < order; ++i) {
+            std::size_t s = 1;
+            for (std::size_t j = i + 1; j < order; ++j) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                s *= dimensions[j];
+            }
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            src_strides[i] = s;
+        }
+        const T* base = _data.data() + detail::coordinates_to_index(dimensions, origin);
+        return matrix_view<const T, strided, NewD...>{base, src_strides};
+    }
 };
 
 /**
