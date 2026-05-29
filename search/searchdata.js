@@ -8,7 +8,7 @@ var indexSectionsWithContent =
   5: "cdiprsv",
   6: "os",
   7: "acehilmosv",
-  8: "acdflmprty—",
+  8: "acdflmpry—",
   9: "y"
 };
 

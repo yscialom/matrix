@@ -34,7 +34,6 @@ var NAVTREE =
       [ "5. Zero-copy views and slicing", "cookbook.html#autotoc_md17", null ],
       [ "6. Linear algebra essentials", "cookbook.html#autotoc_md18", null ]
     ] ],
-    [ "Todo List", "todo.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Concepts", "concepts.html", "concepts" ],
     [ "Classes", "annotated.html", [
