@@ -11,6 +11,7 @@ include_directories(include)
 set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
     src/empty_matrix.cpp
+    src/enumerate.cpp
     src/access.cpp
     src/accessors.cpp
     src/algorithms.cpp
@@ -37,7 +38,6 @@ add_executable(${TARGET_NAME}
     src/matrix_from_view.cpp
     src/matrix_view.cpp
     src/matrix_view_io.cpp
-    src/matrix_view_lifetime.cpp
     src/reshape.cpp
     src/slice.cpp
     src/ostream.cpp
