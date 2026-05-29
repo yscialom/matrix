@@ -279,7 +279,7 @@ class ysc::matrix_view&lt; T, strided, Dimensions... &gt;</div><p>Non-owning rea
 </dl>
 <p>A <code>matrix_view&lt;T,strided,Dims...&gt;</code> holds a raw pointer and a strides array. Elements are accessed as: </p><div class="fragment"><div class="line">element(c0, c1, ...) == *(_ptr + c0*strides[0] + c1*strides[1] + ...)</div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Iterators and <code>data()</code> are not available (non-contiguous layout). Use <code>operator()</code> or <code><a class="el" href="group__ysc__views.html#ga21befd9200319571be66bbda8692e614" title="Returns a const reference to the element at the given coordinates, with bounds checking.">at()</a></code> for element access.</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd>Destroying the underlying <code>matrix</code> while a view still refers to it is undefined behavior.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd><b>Lifetime hazard:</b> a <code><a class="el" href="classysc_1_1matrix__view.html" title="Non-owning view over a ysc::matrix storage.">matrix_view</a></code> does <b>not</b> extend the lifetime of the underlying storage. Destroying the <code>matrix</code> (or raw array) while any view still refers to it is <b>undefined behavior</b> (heap-use-after-free). AddressSanitizer detects this class of error at runtime; see <code>test/src/matrix_view_lifetime.cpp</code> for a concrete example.</dd></dl>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 3, 4&gt;</a> m{};</div>
 <div class="line"><span class="comment">// Column 2: elements m(0,2), m(1,2), m(2,2) — stride 4</span></div>
 <div class="line"><span class="keyword">auto</span> col2 = m.<a class="code hl_function" href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">col</a>(2);   <span class="comment">// matrix_view&lt;int, strided, 3&gt;</span></div>
@@ -288,7 +288,7 @@ class ysc::matrix_view&lt; T, strided, Dimensions... &gt;</div><p>Non-owning rea
 <div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00117">matrix.hpp:117</a></div></div>
 <div class="ttc" id="agroup__ysc__views_html_ga4b280459feffb12e7dcc2d7760fc3ce5"><div class="ttname"><a href="group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5">ysc::matrix::col</a></div><div class="ttdeci">constexpr auto col(std::size_t j) &amp;</div><div class="ttdoc">Returns a strided view over column j (2D matrices only).</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l01959">matrix.hpp:1959</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix__view_8hpp_source.html#l00689">689</a> of file <a class="el" href="matrix__view_8hpp_source.html">matrix_view.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix__view_8hpp_source.html#l00695">695</a> of file <a class="el" href="matrix__view_8hpp_source.html">matrix_view.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/include/<a class="el" href="matrix__view_8hpp_source.html">matrix_view.hpp</a></li>
 </ul>
