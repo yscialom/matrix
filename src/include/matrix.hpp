@@ -106,7 +106,13 @@ constexpr struct matrix_zero_t {
  * the benefits of a standard container, such as knowing its own size,
  * supporting assignment, random access iterators, etc.
  *
- * @todo Requirements (Container, etc.)
+ * ### Named requirements
+ * `ysc::matrix` satisfies the C++ named requirements
+ * [Container](https://en.cppreference.com/w/cpp/named_req/Container),
+ * [ReversibleContainer](https://en.cppreference.com/w/cpp/named_req/ReversibleContainer),
+ * and
+ * [ContiguousContainer](https://en.cppreference.com/w/cpp/named_req/ContiguousContainer).
+ * It does **not** satisfy SequenceContainer (fixed size — no insert/erase).
  *
  * ### Iterator invalidation
  * As a rule, iterators to aa matrix are never invalidated throughout the
