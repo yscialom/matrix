@@ -4,6 +4,7 @@ var topics =
     [ "Iterators", "group__ysc__iterators.html", "group__ysc__iterators" ],
     [ "Capacity", "group__ysc__capacity.html", "group__ysc__capacity" ],
     [ "Modifiers", "group__ysc__modifiers.html", "group__ysc__modifiers" ],
+    [ "Enumerate", "group__ysc__enumerate.html", "group__ysc__enumerate" ],
     [ "Element access", "group__ysc__access.html", "group__ysc__access" ],
     [ "Comparison", "group__ysc__comparison.html", "group__ysc__comparison" ],
     [ "Arithmetic operators", "group__ysc__arithmetic.html", "group__ysc__arithmetic" ],

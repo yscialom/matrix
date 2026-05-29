@@ -44,6 +44,8 @@ var classysc_1_1matrix =
     [ "data", "group__ysc__capacity.html#ga0912b88229d5206407a0ecf591d572dc", null ],
     [ "end", "group__ysc__iterators.html#gac1239ebc87c0cd52dc58f2b6dbd8e35a", null ],
     [ "end", "group__ysc__iterators.html#ga51b5062b043c07ed0a5babe59bfc2a04", null ],
+    [ "enumerate", "group__ysc__enumerate.html#ga731c28594a5a3e361f8368d19ff3a5a9", null ],
+    [ "enumerate", "group__ysc__enumerate.html#ga9a0bb3f03d6d1cacae97d69c65287180", null ],
     [ "explicit", "group__ysc__construction.html#ga39262f99acad5c261e742a9eb02f1d9f", null ],
     [ "fill", "group__ysc__modifiers.html#gafe6ca8e1df000d2a4138bb70d73f1e16", null ],
     [ "flatten", "group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a", null ],
