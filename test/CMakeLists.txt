@@ -39,6 +39,7 @@ add_executable(${TARGET_NAME}
     src/matrix_from_view.cpp
     src/matrix_view.cpp
     src/matrix_view_io.cpp
+    src/matrix_view_lifetime.cpp
     src/reshape.cpp
     src/slice.cpp
     src/ostream.cpp
