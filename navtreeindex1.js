@@ -1,11 +1,13 @@
 var NAVTREEINDEX1 =
 {
+"group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a":[3,12,48],
+"group__ysc__views.html#gae04eeded82427bf1ff980d87165ffb5f":[3,12,47],
 "group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a":[3,12,34],
 "group__ysc__views.html#gae57e4e040c943d54d06881a6438ae748":[3,12,66],
 "group__ysc__views.html#gaeb18e05dae47aadb28102c01aa247468":[3,12,42],
 "group__ysc__views.html#gaef07b09fd03c118a4323695f15f0e699":[3,12,62],
 "group__ysc__views.html#gaf37289a30427b479bbf79d154d842ebc":[3,12,43],
-"group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00":[3,12,77],
+"group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00":[3,12,79],
 "group__ysc__views.html#gaf6f43872b76b736b16c231559b8c4033":[3,12,72],
 "group__ysc__views.html#gafa856afa58851ae350f7c3d81c61131a":[3,12,44],
 "group__ysc__views.html#gafca72113df82ada74318ac04f82f2be8":[3,12,58],

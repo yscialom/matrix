@@ -91,6 +91,8 @@ var classysc_1_1matrix =
     [ "rows", "group__ysc__views.html#gabbdc726b9a9194f9aed51e0dd960a79c", null ],
     [ "slice", "group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06", null ],
     [ "slice", "group__ysc__views.html#ga939902c8740131026cb57724176c5be4", null ],
+    [ "submatrix", "group__ysc__views.html#ga2c5520d0abccee1d84fb848e2158a5cb", null ],
+    [ "submatrix", "group__ysc__views.html#ga40bd80821b27e22a0a2a065ea16295ae", null ],
     [ "sum", "classysc_1_1matrix.html#ga9f07763e5ad451cbbd4e586e85a0b980", null ],
     [ "sum", "group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980", null ],
     [ "swap", "group__ysc__modifiers.html#gae3cd460e88ee68c908e6a2295fe289ad", null ],

@@ -8,7 +8,8 @@ var searchData=
   ['slicing_5',['5. Zero-copy views and slicing',['../cookbook.html#autotoc_md17',1,'']]],
   ['start_6',['Quick Start',['../index.html#autotoc_md1',1,'']]],
   ['strided_7',['strided',['../structysc_1_1strided.html',1,'ysc']]],
-  ['sum_8',['sum',['../group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980',1,'ysc::matrix::sum() const std'],['../classysc_1_1matrix.html#ga9f07763e5ad451cbbd4e586e85a0b980',1,'ysc::matrix::sum() const']]],
-  ['support_9',['Hash support',['../group__ysc__hash.html',1,'']]],
-  ['swap_10',['swap',['../group__ysc__modifiers.html#gaefbdb49dac79c03f7fc298d2ca741fd9',1,'ysc::matrix::swap'],['../group__ysc__modifiers.html#gae3cd460e88ee68c908e6a2295fe289ad',1,'ysc::matrix::swap(matrix &amp;other) noexcept(std::is_nothrow_swappable_v&lt; T &gt;)']]]
+  ['submatrix_8',['submatrix',['../group__ysc__views.html#ga2c5520d0abccee1d84fb848e2158a5cb',1,'ysc::matrix::submatrix(std::array&lt; std::size_t, order &gt; origin) &amp;'],['../group__ysc__views.html#ga40bd80821b27e22a0a2a065ea16295ae',1,'ysc::matrix::submatrix(std::array&lt; std::size_t, order &gt; origin) const &amp;']]],
+  ['sum_9',['sum',['../group__ysc__algorithms.html#ga9f07763e5ad451cbbd4e586e85a0b980',1,'ysc::matrix::sum() const std'],['../classysc_1_1matrix.html#ga9f07763e5ad451cbbd4e586e85a0b980',1,'ysc::matrix::sum() const']]],
+  ['support_10',['Hash support',['../group__ysc__hash.html',1,'']]],
+  ['swap_11',['swap',['../group__ysc__modifiers.html#gaefbdb49dac79c03f7fc298d2ca741fd9',1,'ysc::matrix::swap'],['../group__ysc__modifiers.html#gae3cd460e88ee68c908e6a2295fe289ad',1,'ysc::matrix::swap(matrix &amp;other) noexcept(std::is_nothrow_swappable_v&lt; T &gt;)']]]
 ];

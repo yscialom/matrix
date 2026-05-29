@@ -227,6 +227,16 @@ requires (<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25c
 <tr class="memitem:ga991e0a282db6f09780e431b99f03750e" id="r_ga991e0a282db6f09780e431b99f03750e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T, <a class="el" href="structysc_1_1contiguous.html">contiguous</a>, linear_size &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga991e0a282db6f09780e431b99f03750e">ysc::matrix&lt; T, Dimensions &gt;::flatten</a> () <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> &amp;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">noexcept</a></td></tr>
 <tr class="memdesc:ga991e0a282db6f09780e431b99f03750e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const 1D non-owning view over all elements in row-major order.  <br /></td></tr>
 <tr class="separator:ga991e0a282db6f09780e431b99f03750e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2c5520d0abccee1d84fb848e2158a5cb" id="r_ga2c5520d0abccee1d84fb848e2158a5cb"><td class="memTemplParams" colspan="2">template&lt;std::size_t... NewD&gt; <br />
+requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">NewD</a>) == <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a>)</td></tr>
+<tr class="memitem:ga2c5520d0abccee1d84fb848e2158a5cb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; T, <a class="el" href="structysc_1_1strided.html">strided</a>, NewD... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga2c5520d0abccee1d84fb848e2158a5cb">ysc::matrix&lt; T, Dimensions &gt;::submatrix</a> (std::array&lt; std::size_t, <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a> &gt; <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">origin</a>) &amp;</td></tr>
+<tr class="memdesc:ga2c5520d0abccee1d84fb848e2158a5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a strided view over an N-D sub-block starting at <em>origin</em>.  <br /></td></tr>
+<tr class="separator:ga2c5520d0abccee1d84fb848e2158a5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga40bd80821b27e22a0a2a065ea16295ae" id="r_ga40bd80821b27e22a0a2a065ea16295ae"><td class="memTemplParams" colspan="2">template&lt;std::size_t... NewD&gt; <br />
+requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">NewD</a>) == <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a>)</td></tr>
+<tr class="memitem:ga40bd80821b27e22a0a2a065ea16295ae"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T, <a class="el" href="structysc_1_1strided.html">strided</a>, NewD... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga40bd80821b27e22a0a2a065ea16295ae">ysc::matrix&lt; T, Dimensions &gt;::submatrix</a> (std::array&lt; std::size_t, <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a> &gt; <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">origin</a>) <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> &amp;</td></tr>
+<tr class="memdesc:ga40bd80821b27e22a0a2a065ea16295ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a const strided view over an N-D sub-block starting at <em>origin</em>.  <br /></td></tr>
+<tr class="separator:ga40bd80821b27e22a0a2a065ea16295ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga075aad40155106fba417cdff45e01b69" id="r_ga075aad40155106fba417cdff45e01b69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga075aad40155106fba417cdff45e01b69">ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::matrix_view</a> (<a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dimensions... &gt; &amp;<a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">m</a>) <a class="el" href="classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a57062b779d9d15101b65396055bd5c8c">noexcept</a></td></tr>
 <tr class="memdesc:ga075aad40155106fba417cdff45e01b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a view over an existing <code>matrix</code>.  <br /></td></tr>
 <tr class="separator:ga075aad40155106fba417cdff45e01b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3252,6 +3262,125 @@ requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c5257755
 <div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06">slice</a>(1);  <span class="comment">// const view of row 1</span></div>
 </div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l01854">1854</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ga2c5520d0abccee1d84fb848e2158a5cb" name="ga2c5520d0abccee1d84fb848e2158a5cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2c5520d0abccee1d84fb848e2158a5cb">&#9670;&#160;</a></span>submatrix() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
+<div class="memtemplate">
+template&lt;std::size_t... NewD&gt; <br />
+requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">NewD</a>) == <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a>)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; T, <a class="el" href="structysc_1_1strided.html">strided</a>, NewD... &gt; <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::submatrix </td>
+          <td>(</td>
+          <td class="paramtype">std::array&lt; std::size_t, <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a> &gt;&#160;</td>
+          <td class="paramname"><em>origin</em></td><td>)</td>
+          <td> &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a strided view over an N-D sub-block starting at <em>origin</em>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NewD</td><td>Dimensions of the sub-block (one per matrix dimension). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">origin</td><td>Multi-dimensional starting position of the sub-block. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>matrix_view&lt;T, strided, NewD...&gt;</code> </dd></dl>
+<p>The strides of the view are the row-major strides of the source matrix, so mutation through the view is reflected in the original matrix.</p>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>origin</code>[i] + NewD[i] &gt; dimensions[i] for any dimension <code>i</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 4, 4&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{};</div>
+<div class="line">std::iota(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.begin(), <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.end(), 0);</div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.submatrix&lt;2, 2&gt;({1, 1});  <span class="comment">// 2×2 view starting at (1,1)</span></div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>(0, 0) == <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>(1, 1));</div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>(0, 0) = 99;  <span class="comment">// writes m(1, 1)</span></div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>(1, 1) == 99);</div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02301">2301</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ga40bd80821b27e22a0a2a065ea16295ae" name="ga40bd80821b27e22a0a2a065ea16295ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga40bd80821b27e22a0a2a065ea16295ae">&#9670;&#160;</a></span>submatrix() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">class</a> T , std::size_t... Dimensions&gt; </div>
+<div class="memtemplate">
+template&lt;std::size_t... NewD&gt; <br />
+requires (sizeof...(<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">NewD</a>) == <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a>)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">constexpr</a> <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">const</a> T, <a class="el" href="structysc_1_1strided.html">strided</a>, NewD... &gt; <a class="el" href="classysc_1_1matrix.html">ysc::matrix</a>&lt; T, <a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">Dimensions</a> &gt;::submatrix </td>
+          <td>(</td>
+          <td class="paramtype">std::array&lt; std::size_t, <a class="el" href="group__ysc__capacity.html#gaaac16c51044753be7101be9961293847">order</a> &gt;&#160;</td>
+          <td class="paramname"><em>origin</em></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a const strided view over an N-D sub-block starting at <em>origin</em>. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">NewD</td><td>Dimensions of the sub-block (one per matrix dimension). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">origin</td><td>Multi-dimensional starting position of the sub-block. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>matrix_view&lt;const T, strided, NewD...&gt;</code> </dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">std::out_of_range</td><td>if <code>origin</code>[i] + NewD[i] &gt; dimensions[i] for any dimension <code>i</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="fragment"><div class="line"><span class="keyword">const</span> <a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 4, 4&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{};</div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a> = <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__views.html#ga2c5520d0abccee1d84fb848e2158a5cb">submatrix</a>&lt;2, 2&gt;({1, 1});  <span class="comment">// const 2×2 view starting at (1,1)</span></div>
+<div class="line"><a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">assert</a>(<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">v</a>(0, 0) == <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>(1, 1));</div>
+<div class="ttc" id="agroup__ysc__views_html_ga2c5520d0abccee1d84fb848e2158a5cb"><div class="ttname"><a href="group__ysc__views.html#ga2c5520d0abccee1d84fb848e2158a5cb">ysc::matrix::submatrix</a></div><div class="ttdeci">constexpr matrix_view&lt; T, strided, NewD... &gt; submatrix(std::array&lt; std::size_t, order &gt; origin) &amp;</div><div class="ttdoc">Returns a strided view over an N-D sub-block starting at origin.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02301">matrix.hpp:2301</a></div></div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02344">2344</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>

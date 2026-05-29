@@ -199,5 +199,7 @@ var group__ysc__views =
     [ "ysc::matrix::slice", "group__ysc__views.html#ga60287e8274876a3e4288b7896c213e06", null ],
     [ "ysc::matrix_view< T, contiguous, Dimensions... >::slice", "group__ysc__views.html#ga5681d5fb016b565353cf56d0b192b611", null ],
     [ "ysc::matrix::slice", "group__ysc__views.html#ga939902c8740131026cb57724176c5be4", null ],
+    [ "ysc::matrix::submatrix", "group__ysc__views.html#ga2c5520d0abccee1d84fb848e2158a5cb", null ],
+    [ "ysc::matrix::submatrix", "group__ysc__views.html#ga40bd80821b27e22a0a2a065ea16295ae", null ],
     [ "ysc::all", "group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00", null ]
 ];
