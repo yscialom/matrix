@@ -42,6 +42,7 @@ add_executable(${TARGET_NAME}
     src/matrix_view_lifetime.cpp
     src/reshape.cpp
     src/slice.cpp
+    src/submatrix.cpp
     src/ostream.cpp
     src/reductions.cpp
     src/reductions_axis.cpp
