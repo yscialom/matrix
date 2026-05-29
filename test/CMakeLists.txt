@@ -33,6 +33,7 @@ add_executable(${TARGET_NAME}
     src/nested_init.cpp
     src/iterators.cpp
     src/dot.cpp
+    src/linalg_reference.cpp
     src/matmul.cpp
     src/matrix_from_view.cpp
     src/matrix_view.cpp
