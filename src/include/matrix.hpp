@@ -73,6 +73,11 @@ constexpr struct matrix_zero_t {
  */
 
 /**
+ * @defgroup ysc_enumerate Enumerate
+ * @brief Coordinate-aware iteration over matrix elements.
+ */
+
+/**
  * @defgroup ysc_access Element access
  * @brief Unchecked and checked element access.
  */
@@ -2151,6 +2156,120 @@ public:
     [[nodiscard]] constexpr matrix_view<const T, contiguous, linear_size>
     flatten() const& noexcept {
         return matrix_view<const T, contiguous, linear_size>{_data.data()};
+    }
+
+    // ─── enumerate ───────────────────────────────────────────────────────────
+
+    /**
+     * @brief Range type returned by @c enumerate() that pairs coordinates with element references.
+     * @tparam ElemT Element type (possibly @c const — controls mutability of the reference)
+     *
+     * Iterating over this range yields @c std::pair<std::array<std::size_t, order>, ElemT&> in
+     * row-major order.  When @c ElemT is non-const, mutations to the second member of the pair
+     * are reflected in the original matrix.
+     *
+     * @ingroup ysc_enumerate
+     */
+    template <class ElemT> class enumerate_range {
+    public:
+        /** @brief Value type yielded by the iterator. */
+        using value_type = std::pair<std::array<std::size_t, order>, ElemT&>;
+
+        /**
+         * @brief Input iterator over @c enumerate_range.
+         * @ingroup ysc_enumerate
+         */
+        class iterator {
+        public:
+            using iterator_category = std::input_iterator_tag;
+            using value_type = std::pair<std::array<std::size_t, order>, ElemT&>;
+            using difference_type = std::ptrdiff_t;
+            using pointer = void;
+            using reference = value_type;
+
+            constexpr iterator(ElemT* ptr, std::size_t idx) noexcept : _ptr(ptr), _idx(idx) {}
+
+            [[nodiscard]] constexpr reference operator*() const noexcept {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                return {detail::index_to_coordinates(dimensions, _idx), _ptr[_idx]};
+            }
+
+            constexpr iterator& operator++() noexcept {
+                ++_idx;
+                return *this;
+            }
+
+            constexpr iterator operator++(int) noexcept {
+                iterator tmp = *this;
+                ++(*this);
+                return tmp;
+            }
+
+            [[nodiscard]] constexpr bool operator==(const iterator& other) const noexcept {
+                return _idx == other._idx;
+            }
+
+            [[nodiscard]] constexpr bool operator!=(const iterator& other) const noexcept {
+                return _idx != other._idx;
+            }
+
+        private:
+            ElemT* _ptr;
+            std::size_t _idx;
+        };
+
+        constexpr enumerate_range(ElemT* ptr, std::size_t n) noexcept : _ptr(ptr), _n(n) {}
+
+        [[nodiscard]] constexpr iterator begin() const noexcept { return iterator{_ptr, 0}; }
+        [[nodiscard]] constexpr iterator end() const noexcept { return iterator{_ptr, _n}; }
+
+    private:
+        ElemT* _ptr;
+        std::size_t _n;
+    };
+
+    /**
+     * @brief Returns a range of @c (coordinates, value) pairs in row-major order.
+     * @return An @c enumerate_range<T> whose iterator yields
+     *         @c std::pair<std::array<std::size_t, order>, T&>
+     *
+     * Each iteration step exposes both the N-D coordinates (as a
+     * @c std::array<std::size_t, order>) and a mutable reference to the element.
+     * Mutations are reflected in the original matrix.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto& [coords, val] : m.enumerate()) {
+     *     // coords == {0,0},{0,1},{0,2},{1,0},{1,1},{1,2} in order
+     *     val *= 10;  // mutates m
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_enumerate
+     */
+    [[nodiscard]] constexpr enumerate_range<T> enumerate() noexcept {
+        return enumerate_range<T>{_data.data(), linear_size};
+    }
+
+    /**
+     * @brief Returns a const range of @c (coordinates, value) pairs in row-major order.
+     * @return An @c enumerate_range<const T> whose iterator yields
+     *         @c std::pair<std::array<std::size_t, order>, const T&>
+     *
+     * Read-only variant of @c enumerate().  No mutation is possible through the returned range.
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (const auto& [coords, val] : m.enumerate()) {
+     *     // coords == {0,0},{0,1},{0,2},{1,0},{1,1},{1,2} in order
+     *     // val is a const int&
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_enumerate
+     */
+    [[nodiscard]] constexpr enumerate_range<const T> enumerate() const noexcept {
+        return enumerate_range<const T>{_data.data(), linear_size};
     }
 };
 
