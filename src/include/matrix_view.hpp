@@ -67,8 +67,11 @@ template <class T, class Storage, std::size_t... Dims> class matrix_view;
  * the lifetime of the underlying @c matrix (or raw array) must exceed that of
  * the view.
  *
- * @warning Destroying the underlying @c matrix while a view still refers to it
- *          is undefined behavior.
+ * @warning **Lifetime hazard:** a @c matrix_view does **not** extend the lifetime of
+ *          the underlying storage.  Destroying the @c matrix (or raw array) while any
+ *          view still refers to it is **undefined behavior** (heap-use-after-free).
+ *          AddressSanitizer detects this class of error at runtime; see
+ *          @c test/src/matrix_view_lifetime.cpp for a concrete example.
  *
  * Because dimensions are part of the type,
  * @c sizeof(matrix_view<T,contiguous,D...>) equals @c sizeof(T*) on every platform.
@@ -673,8 +676,11 @@ public:
  * @note Iterators and @c data() are not available (non-contiguous layout).
  *       Use @c operator() or @c at() for element access.
  *
- * @warning Destroying the underlying @c matrix while a view still refers to it
- *          is undefined behavior.
+ * @warning **Lifetime hazard:** a @c matrix_view does **not** extend the lifetime of
+ *          the underlying storage.  Destroying the @c matrix (or raw array) while any
+ *          view still refers to it is **undefined behavior** (heap-use-after-free).
+ *          AddressSanitizer detects this class of error at runtime; see
+ *          @c test/src/matrix_view_lifetime.cpp for a concrete example.
  *
  * @code
  * ysc::matrix<int, 3, 4> m{};
