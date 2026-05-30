@@ -18,8 +18,8 @@ Report them via [GitHub Security Advisories](../../security/advisories/new) so t
 triaged privately before public disclosure.
 
 We aim to:
-- Acknowledge the report within **72 hours**
-- Publish a fix within **14 days** for confirmed vulnerabilities
+- Acknowledge the report within **2 weeks**
+- Publish a fix within **6 weeks** for confirmed vulnerabilities
 
 ## Supported Versions
 
