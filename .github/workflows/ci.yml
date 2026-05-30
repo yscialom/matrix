@@ -103,6 +103,15 @@ jobs:
         if: startsWith(matrix.os, 'macos')
         run: brew install googletest ccache
 
+      - name: Cache vcpkg
+        if: startsWith(matrix.os, 'windows')
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.VCPKG_INSTALLATION_ROOT }}/installed
+          key: vcpkg-gtest-x64-windows-${{ runner.os }}
+          restore-keys: |
+            vcpkg-gtest-x64-windows-
+
       - name: Install GTest (Windows)
         if: startsWith(matrix.os, 'windows')
         run: vcpkg install gtest:x64-windows
