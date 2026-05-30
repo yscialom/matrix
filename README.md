@@ -128,3 +128,9 @@ cmake --build build --target check
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the full development guide.
+
+---
+
+## Upgrading from v0.x
+
+See the [Migration Guide](doc/migration.md) for breaking changes and upgrade instructions.
