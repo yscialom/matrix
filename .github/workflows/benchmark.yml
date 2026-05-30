@@ -19,7 +19,7 @@ jobs:
         run: ./build/bench/matrix-bench --benchmark_format=json | tee benchmark_results.json
 
       - name: Upload results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: benchmark-results
           path: benchmark_results.json
