@@ -104,6 +104,9 @@ The API is organized into the following groups — see the [Topics](topics.html)
 - @ref ysc_io — I/O (`operator<<`, `std::formatter`)
 - @ref ysc_hash — Hash support (`std::hash` specialization)
 
+For users upgrading from v0.x, see the [Migration Guide](migration.html) for breaking changes
+and the stability promise.
+
 You can also browse the full documentation for the main library classes:
 - Owning matrix — @ref ysc::matrix
 - Non-owning continuous view — @ref ysc::matrix_view< T, contiguous, Dimensions... >
