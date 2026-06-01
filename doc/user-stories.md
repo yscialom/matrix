@@ -1020,27 +1020,71 @@ Reshape = juste un changement de vue, zero-copy.
 
 ## US-040 — Dossier `examples/` enrichi
 
-**Priorité :** P1 — **Dépend de :** US-045 — **Épopée :** I
+**Priorité :** P1 — **Dépend de :** US-045, US-053, US-054, US-056, US-060, US-061, US-062, US-063, US-069 — **Épopée :** I
 
 ### Story
-En tant que développeur C++ qui découvre la bibliothèque, je veux trouver des exemples progressifs et compilables couvrant toutes les fonctionnalités majeures.
+En tant que développeur C++ qui découvre la bibliothèque, je veux trouver d'une part des exemples progressifs et compilables couvrant **toutes** les fonctionnalités majeures (EPIC A-K), et d'autre part des exemples vitrines mobilisant transversalement ces fonctionnalités sur des cas d'usage réels, afin de juger rapidement si `ysc::matrix` répond à mon besoin.
 
 ### Spécification technique
-- Dossier `examples/` avec 6 fichiers :
-  - `01_basics.cpp` — construction, accès, itération
-  - `02_arithmetic.cpp` — element-wise + scalaire + Hadamard + linalg
-  - `03_views.cpp` — slice, row, col, reshape, flatten
-  - `04_algorithms.cpp` — apply, map, réductions
-  - `05_interop_stl.cpp` — std::ranges, std::sort, std::format, unordered_set
-  - `06_linear_algebra.cpp` — résolution Ax=b illustrant dot, transpose, matmul
-- Option CMake : `YSC_MATRIX_BUILD_EXAMPLES=OFF` (préfixe YSC_MATRIX_)
-- Chaque exemple se compile et s'exécute de manière autonome
-- Job CI optionnel qui compile les exemples avec `YSC_MATRIX_BUILD_EXAMPLES=ON`
+
+Dossier `examples/` avec **10 fichiers** organisés en deux groupes.
+
+#### Groupe 1 — Exemples topiques progressifs (couverture par feature)
+
+- `01_basics.cpp` — construction, accès, itération.
+  - Doit inclure : `operator()` / `at()`, message d'exception détaillé d'`at()` (US-056), construction depuis `std::array` et `std::span` (US-053), `generate` linéaire et multi-index (US-053 + US-069), `rows()` / `cols()` (US-054).
+- `02_arithmetic.cpp` — element-wise + scalaire + Hadamard + unaires.
+  - Doit inclure : `operator-()` unaire `constexpr` (US-059), opérateurs bit-à-bit `&` / `|` / `^` / `~` / `<<=` / `>>=` sur un `matrix<unsigned, …>` (US-063).
+- `03_views.cpp` — `slice`, `row`, `col`, `reshape`, `flatten`, **`submatrix` N-D** (US-061), composition de vues (US-052), const-correctness des vues (`matrix_view<const T, …>` vs `matrix_view<T, …>`).
+- `04_algorithms.cpp` — `apply`, `map`, réductions scalaires (`sum`, `min`, `max`, `all`, `any`), **réductions par axe** (`sum<0>()`, `min<1>()`, etc. — US-060), **`enumerate()`** pour itération coordonnées-valeur (US-062).
+- `05_interop_stl.cpp` — `std::ranges`, `std::sort` sur `flatten()`, `std::format`, `std::unordered_set<matrix<…>>` (via `std::hash`), interop `std::span`.
+- `06_linear_algebra.cpp` — `dot`, `transpose`, `matmul` matrice × matrice **et matrice × vecteur 1D** (US-054), illustré par une résolution Ax=b par les équations normales.
+
+#### Groupe 2 — Exemples vitrines (transversaux, orientés cas d'usage)
+
+Chaque vitrine est un programme autonome qui produit une sortie lisible et démontre la valeur de `ysc::matrix` sur un domaine concret.
+
+- `07_game_of_life.cpp` — Automate de Conway sur une grille 8×8, ~10 générations animées en console.
+  - Mobilise : `enumerate()` (US-062), `submatrix<3, 3>` pour le voisinage de Moore (US-061), `map` pour la transition, `sum()` sur sous-blocs, `operator<<` pour l'affichage.
+  - Vitrine du combo **`enumerate` + `submatrix`** comme outil de stencil 2D.
+- `08_kalman_filter_1d.cpp` — Filtre de Kalman constant-velocity (état position + vitesse) sur 20 mesures bruitées.
+  - Mobilise : matrices `constexpr` F / H / Q / R, `matmul` matrice × matrice et matrice × vecteur (US-054), `transpose`, `identity<…>()`, `zeros<…>()`, `dot`, arithmétique scalaire.
+  - Vitrine du domaine **robotique / fusion de capteurs** ; montre que toute l'algèbre nécessaire tient dans `<matrix.hpp>`.
+- `09_sobel_edge_detection.cpp` — Détecteur de contours Sobel sur une petite image synthétique 16×16.
+  - Mobilise : kernels `constexpr` Gx et Gy = `transpose(Gx)`, `submatrix<3, 3>` pour le voisinage (US-061), produits élément-par-élément, `sum()` pour la convolution, `map` pour la magnitude, `std::format` pour l'affichage ASCII-art.
+  - Vitrine du domaine **traitement d'image** ; montre que les kernels classiques se déclarent à la compilation.
+- `10_pagerank.cpp` — Power iteration sur un petit graphe orienté à 6 nœuds.
+  - Mobilise : `generate` multi-index pour construire la matrice de transition (US-069), `matmul` matrice × vecteur (US-054), `transpose`, `sum` + `apply` pour la normalisation L1, `dot` pour le test de convergence, `std::format` pour l'affichage du ranking final.
+  - Vitrine du domaine **algorithmes de graphe / algèbre linéaire numérique**.
+
+#### Contraintes communes à tous les exemples
+
+- Chaque fichier est un programme autonome compilable indépendamment, avec sa propre `main()` produisant une sortie textuelle utile.
+- Compilation sans warning sous `-Wall -Wextra -Wpedantic` (les exemples respectent la DoD transverse comme tout code du repo : clang-format et clang-tidy verts).
+- Pas de dépendance externe (ni Eigen, ni stb_image, etc.) — uniquement la STL et `ysc::matrix`.
+- Header inclus via `#include <matrix.hpp>` (forme « consumer » comme dans la doc et le job consumer-test US-048), pas chemin relatif.
+- Numérotation à 2 chiffres (`01_` à `10_`) pour préserver le tri lexicographique.
+
+#### Build & options CMake
+
+- Option CMake `YSC_MATRIX_BUILD_EXAMPLES=OFF` par défaut (préfixe `YSC_MATRIX_` aligné sur l'usage actuel).
+- Quand `ON`, chaque `.cpp` produit un exécutable `example-NN-name` (cible CMake distincte).
+- Les exemples se compilent contre la cible in-tree `ysc::matrix` (pas via `find_package`) — le job consumer-test (US-048) reste seul responsable de valider l'intégration via packaging.
+
+#### Job CI
+
+- Nouveau job `examples` (dans `.github/workflows/ci.yml` ou workflow séparé `examples.yml`), déclenché **uniquement sur `push: branches: [develop]`** — pas sur `pull_request`.
+  - Rationale : les exemples bougent rarement, le budget CI PR est déjà saturé par les 30+ jobs existants ; une régression éventuelle est détectée au merge et corrigée en hotfix court.
+- Le job compile les exemples avec `YSC_MATRIX_BUILD_EXAMPLES=ON` sur **un seul** runner Ubuntu/GCC-13/Release (pas de matrice complète — un seul compilateur suffit pour cette gate de non-régression).
+- Chaque exemple est enregistré comme test `ctest` qui vérifie uniquement que l'exécutable termine avec code 0 (pas de comparaison de sortie — les vitrices contiennent du flottant et de l'aléatoire ensemencé).
 
 ### Critères d'acceptation
-- [ ] Tous les 6 exemples compilent et tournent sans erreur
-- [ ] Option CMake `YSC_MATRIX_BUILD_EXAMPLES=OFF` par défaut
-- [ ] Job CI compile les examples (option ON)
+- [ ] Dossier `examples/` contient les 10 fichiers (`01`-`06` topiques + `07`-`10` vitrines) listés ci-dessus.
+- [ ] Chaque exemple compile et tourne sans erreur (code de retour 0) sur la config CI de référence (Ubuntu/GCC-13/Release).
+- [ ] Aucun warning sous `-Wall -Wextra -Wpedantic`, aucun warning clang-format, aucun warning clang-tidy (DoD transverse).
+- [ ] Option CMake `YSC_MATRIX_BUILD_EXAMPLES=OFF` par défaut ; `-DYSC_MATRIX_BUILD_EXAMPLES=ON` active la construction des 10 cibles.
+- [ ] Job CI `examples` déclenché uniquement sur `push: branches: [develop]`, vert sur develop.
+- [ ] Les 10 fichiers couvrent collectivement, au minimum, tous les groupes Doxygen : `ysc_construction`, `ysc_iterators`, `ysc_capacity`, `ysc_modifiers`, `ysc_enumerate`, `ysc_access`, `ysc_comparison`, `ysc_arithmetic`, `ysc_algorithms`, `ysc_linalg`, `ysc_io`, `ysc_hash`, `ysc_views`.
 
 ---
 
