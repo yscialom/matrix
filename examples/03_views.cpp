@@ -13,7 +13,6 @@
 // materialized into a ysc::matrix to be printed.
 
 #include <matrix.hpp>
-#include <matrix_view.hpp>
 
 #include <exception>
 #include <iostream>
