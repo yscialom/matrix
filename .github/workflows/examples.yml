@@ -1,0 +1,34 @@
+name: Examples
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  build-and-run:
+    name: Build & run examples (Ubuntu / GCC-13 / Release)
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install GCC-13
+        uses: eclipse-score/apt-install@main
+        with:
+          packages: g++-13
+
+      - name: Configure
+        env:
+          CC: gcc-13
+          CXX: g++-13
+        run: >-
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DYSC_MATRIX_BUILD_EXAMPLES=ON
+          -DYSC_MATRIX_BUILD_TESTING=OFF
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run examples
+        run: ctest --test-dir build --output-on-failure

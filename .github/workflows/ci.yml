@@ -248,7 +248,7 @@ jobs:
       - name: Check formatting
         run: |
           clang-format --dry-run --Werror \
-            $(find src test -name '*.hpp' -o -name '*.cpp')
+            $(find src test examples -name '*.hpp' -o -name '*.cpp')
 
   lint:
     name: Lint (clang-tidy)
@@ -263,7 +263,7 @@ jobs:
           packages: clang-tidy libgtest-dev
 
       - name: Configure
-        run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+        run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DYSC_MATRIX_BUILD_EXAMPLES=ON
 
       - name: Run clang-tidy
         run: run-clang-tidy -p build

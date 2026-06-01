@@ -57,6 +57,17 @@ endif()
 
 
 ##
+# examples configuration
+#
+if(YSC_MATRIX_BUILD_EXAMPLES)
+    if(NOT YSC_MATRIX_BUILD_TESTING)
+        enable_testing()
+    endif()
+    add_subdirectory(examples)
+endif()
+
+
+##
 # benchmark configuration
 #
 option(BUILD_BENCHMARKS "Build benchmarks" OFF)
