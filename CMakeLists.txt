@@ -4,8 +4,8 @@ cmake_minimum_required(VERSION 3.20)
 # general configuration
 #
 set(VERSION_MAJOR   0   CACHE STRING "Project major version number.")
-set(VERSION_MINOR   7   CACHE STRING "Project minor version number.")
-set(VERSION_PATCH   3   CACHE STRING "Project patch version number.")
+set(VERSION_MINOR   8   CACHE STRING "Project minor version number.")
+set(VERSION_PATCH   0   CACHE STRING "Project patch version number.")
 mark_as_advanced(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 
 project(ysc-matrix

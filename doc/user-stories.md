@@ -14,7 +14,7 @@
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 8/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-048, ✅ US-049, ⬜ US-040, US-042 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
-| **K — Extensions pre-v1** | ✅ Terminée | 10/10 | ✅ US-060, ✅ US-061, ✅ US-062, ✅ US-063, ✅ US-064, ✅ US-065, ✅ US-066, ✅ US-067, ✅ US-068, ✅ US-069 |
+| **K — Extensions pre-v1** | ✅ Terminée | 10/10 | ✅ US-060 à US-069 |
 
 **Total : 67 / 69 US**
 
@@ -71,9 +71,9 @@
 | US-063 | Opérateurs bit-à-bit pour types entiers | P2 | ✅ Done |
 | US-064 | Test ASan : détection de vue dangling | P2 | ✅ Done |
 | US-065 | Tests de référence linalg (valeurs pré-calculées) | P2 | ✅ Done |
-| US-066 | CI Windows : cache vcpkg | P2 | ✅ Done |
-| US-067 | Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ✅ Done |
-| US-068 | Migration guide : promesse de stabilité SemVer v1.0.0 | P2 | ✅ Done |
+| US-066 | CI Windows : cache vcpkg | P2 | ⬜ À faire |
+| US-067 | Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ⬜ À faire |
+| US-068 | Migration guide : promesse de stabilité SemVer v1.0.0 | P2 | ⬜ À faire |
 | US-069 | `generate` avec callable multi-index | P2 | ✅ Done |
 
 ---
