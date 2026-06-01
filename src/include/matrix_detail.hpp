@@ -190,6 +190,30 @@ struct make_matrix_view<T, Storage, size_seq<KeptDims...>> {
 template <class T, class Storage, class KeptSizeSeq>
 using make_matrix_view_t = typename make_matrix_view<T, Storage, KeptSizeSeq>::type;
 
+// ─── axis-reduction metaprogramming ──────────────────────────────────────────
+
+/** @brief Removes the @c Axis-th element from a @c size_seq of dimensions (recursive helper). */
+template <std::size_t Axis, std::size_t Idx, std::size_t... Dims> struct drop_dim_impl {
+    using type = size_seq<>;
+};
+template <std::size_t Axis, std::size_t Idx, std::size_t Head, std::size_t... Tail>
+struct drop_dim_impl<Axis, Idx, Head, Tail...> {
+    using tail_seq = typename drop_dim_impl<Axis, Idx + 1, Tail...>::type;
+    using type =
+        std::conditional_t<Idx == Axis, tail_seq, typename prepend_val<Head, tail_seq>::type>;
+};
+
+/** @brief @c size_seq of @c Dims... with the @c Axis-th dimension removed. */
+template <std::size_t Axis, std::size_t... Dims>
+using drop_dim_t = typename drop_dim_impl<Axis, 0, Dims...>::type;
+
+/** @brief @c matrix<T, Dims...> constructed from a @c size_seq<Dims...>. */
+template <class T, class SizeSeq> struct make_matrix_seq;
+template <class T, std::size_t... Dims> struct make_matrix_seq<T, size_seq<Dims...>> {
+    using type = matrix<T, Dims...>;
+};
+template <class T, class SizeSeq> using make_matrix_t = typename make_matrix_seq<T, SizeSeq>::type;
+
 /**
  * @brief Centralises runtime offset and stride computations for @c slice().
  * @tparam PaddedTuple @c std::tuple of padded spec types (all_t or integral)

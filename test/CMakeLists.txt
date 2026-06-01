@@ -10,9 +10,12 @@ include_directories(include)
 #
 set(TARGET_NAME matrix-test)
 add_executable(${TARGET_NAME}
+    src/empty_matrix.cpp
+    src/enumerate.cpp
     src/access.cpp
     src/accessors.cpp
     src/algorithms.cpp
+    src/arithmetic_bitwise.cpp
     src/arithmetic_elementwise.cpp
     src/arithmetic_hadamard.cpp
     src/arithmetic_scalar.cpp
@@ -23,6 +26,7 @@ add_executable(${TARGET_NAME}
     src/construct.cpp
     src/construct_from_buffer.cpp
     src/factories.cpp
+    src/generate_multi_index.cpp
     src/fill.cpp
     src/formatter.cpp
     src/hash.cpp
@@ -30,14 +34,18 @@ add_executable(${TARGET_NAME}
     src/nested_init.cpp
     src/iterators.cpp
     src/dot.cpp
+    src/linalg_reference.cpp
     src/matmul.cpp
     src/matrix_from_view.cpp
     src/matrix_view.cpp
     src/matrix_view_io.cpp
+    src/matrix_view_lifetime.cpp
     src/reshape.cpp
     src/slice.cpp
+    src/submatrix.cpp
     src/ostream.cpp
     src/reductions.cpp
+    src/reductions_axis.cpp
     src/rows_cols.cpp
     src/transpose.cpp
     src/size_data.cpp

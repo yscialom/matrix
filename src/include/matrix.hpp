@@ -73,6 +73,11 @@ constexpr struct matrix_zero_t {
  */
 
 /**
+ * @defgroup ysc_enumerate Enumerate
+ * @brief Coordinate-aware iteration over matrix elements.
+ */
+
+/**
  * @defgroup ysc_access Element access
  * @brief Unchecked and checked element access.
  */
@@ -101,9 +106,13 @@ constexpr struct matrix_zero_t {
  * the benefits of a standard container, such as knowing its own size,
  * supporting assignment, random access iterators, etc.
  *
- * @todo Requirements (Container, etc.)
- *
- * @todo Special case when one dimension is 0.
+ * ### Named requirements
+ * `ysc::matrix` satisfies the C++ named requirements
+ * [Container](https://en.cppreference.com/w/cpp/named_req/Container),
+ * [ReversibleContainer](https://en.cppreference.com/w/cpp/named_req/ReversibleContainer),
+ * and
+ * [ContiguousContainer](https://en.cppreference.com/w/cpp/named_req/ContiguousContainer).
+ * It does **not** satisfy SequenceContainer (fixed size — no insert/erase).
  *
  * ### Iterator invalidation
  * As a rule, iterators to aa matrix are never invalidated throughout the
@@ -1142,6 +1151,138 @@ public:
         return map([](const T& v) { return -v; });
     }
 
+    // bitwise
+
+    /**
+     * @brief Bitwise AND assignment (element-wise).
+     * @tparam Other Element type of @a other — must support @c &= with @c T
+     * @param  other Right-hand matrix
+     * @return Reference to @c *this after in-place AND
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> a{0b111, 0b101, 0b010};
+     * ysc::matrix<unsigned, 3> b{0b110, 0b110, 0b110};
+     * a &= b;  // a == ysc::matrix<unsigned, 3>{0b110, 0b100, 0b010}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Other>
+    matrix& operator&=(const matrix<Other, Dimensions...>& other)
+        requires requires(T a, const Other& b) { a &= b; }
+    {
+        std::transform(_data.begin(), _data.end(), other.cbegin(), _data.begin(),
+                       [](T a, const Other& b) -> T { return a &= b; });
+        return *this;
+    }
+
+    /**
+     * @brief Bitwise OR assignment (element-wise).
+     * @tparam Other Element type of @a other — must support @c |= with @c T
+     * @param  other Right-hand matrix
+     * @return Reference to @c *this after in-place OR
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> a{0b001, 0b010, 0b100};
+     * ysc::matrix<unsigned, 3> b{0b110, 0b101, 0b011};
+     * a |= b;  // a == ysc::matrix<unsigned, 3>{0b111, 0b111, 0b111}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Other>
+    matrix& operator|=(const matrix<Other, Dimensions...>& other)
+        requires requires(T a, const Other& b) { a |= b; }
+    {
+        std::transform(_data.begin(), _data.end(), other.cbegin(), _data.begin(),
+                       [](T a, const Other& b) -> T { return a |= b; });
+        return *this;
+    }
+
+    /**
+     * @brief Bitwise XOR assignment (element-wise).
+     * @tparam Other Element type of @a other — must support @c ^= with @c T
+     * @param  other Right-hand matrix
+     * @return Reference to @c *this after in-place XOR
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> a{0b111, 0b101, 0b010};
+     * ysc::matrix<unsigned, 3> b{0b110, 0b110, 0b110};
+     * a ^= b;  // a == ysc::matrix<unsigned, 3>{0b001, 0b011, 0b100}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Other>
+    matrix& operator^=(const matrix<Other, Dimensions...>& other)
+        requires requires(T a, const Other& b) { a ^= b; }
+    {
+        std::transform(_data.begin(), _data.end(), other.cbegin(), _data.begin(),
+                       [](T a, const Other& b) -> T { return a ^= b; });
+        return *this;
+    }
+
+    /**
+     * @brief Left-shift assignment by scalar (element-wise).
+     * @tparam Scalar Type of the shift amount — must support @c <<= with @c T
+     * @param  s      Shift amount applied to every element
+     * @return Reference to @c *this after in-place left shift
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> m{1, 2, 4};
+     * m <<= 1u;  // m == ysc::matrix<unsigned, 3>{2, 4, 8}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator<<=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a <<= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a <<= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Right-shift assignment by scalar (element-wise).
+     * @tparam Scalar Type of the shift amount — must support @c >>= with @c T
+     * @param  s      Shift amount applied to every element
+     * @return Reference to @c *this after in-place right shift
+     *
+     * @code
+     * ysc::matrix<unsigned, 3> m{8, 4, 2};
+     * m >>= 1u;  // m == ysc::matrix<unsigned, 3>{4, 2, 1}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    template <class Scalar>
+    matrix& operator>>=(const Scalar& s)
+        requires requires(T a, const Scalar& b) { a >>= b; }
+    {
+        std::transform(_data.begin(), _data.end(), _data.begin(),
+                       [&s](T a) -> T { return a >>= s; });
+        return *this;
+    }
+
+    /**
+     * @brief Bitwise NOT (element-wise).
+     * @return New matrix where each element @c e is replaced by @c ~e
+     *
+     * @code
+     * ysc::matrix<unsigned, 2> m{0u, 0xFFFFFFFFu};
+     * auto r = ~m;  // r == ysc::matrix<unsigned, 2>{~0u, 0u}
+     * @endcode
+     *
+     * @ingroup ysc_arithmetic
+     */
+    [[nodiscard]] matrix operator~() const
+        requires requires(const T& a) { ~a; }
+    {
+        return map([](const T& v) { return ~v; });
+    }
+
     // algorithms
     /**
      * @defgroup ysc_algorithms Algorithms
@@ -1298,6 +1439,141 @@ public:
         requires std::convertible_to<T, bool>
     {
         return std::ranges::any_of(_data, [](const T& v) { return static_cast<bool>(v); });
+    }
+
+    /**
+     * @brief Returns the sum of all elements along a given axis.
+     * @tparam Axis Axis to reduce along; must satisfy `Axis < order`
+     * @return A matrix with @c order-1 dimensions containing per-slice sums
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * auto col_sums = m.sum<0>();  // matrix<int, 3>{5, 7, 9}
+     * auto row_sums = m.sum<1>();  // matrix<int, 2>{6, 15}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::size_t Axis>
+        requires(Axis < order) && std::default_initializable<T> &&
+                requires(T a, const T& b) { a += b; }
+    [[nodiscard]] constexpr auto sum() const {
+        using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
+        result_type result(zero);
+        constexpr std::size_t axis_size = dimensions[Axis];
+        constexpr std::size_t suffix = []() constexpr -> std::size_t {
+            std::size_t s = 1;
+            for (std::size_t i = Axis + 1; i < order; ++i) {
+                s *= dimensions[i];
+            }
+            return s;
+        }();
+        constexpr std::size_t prefix = []() constexpr -> std::size_t {
+            std::size_t p = 1;
+            for (std::size_t i = 0; i < Axis; ++i) {
+                p *= dimensions[i];
+            }
+            return p;
+        }();
+        for (std::size_t p = 0; p < prefix; ++p) {
+            for (std::size_t k = 0; k < axis_size; ++k) {
+                for (std::size_t s = 0; s < suffix; ++s) {
+                    result._data[(p * suffix) + s] +=
+                        _data[(p * axis_size * suffix) + (k * suffix) + s];
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @brief Returns the minimum of all elements along a given axis.
+     * @tparam Axis Axis to reduce along; must satisfy `Axis < order` and `dimensions[Axis] > 0`
+     * @return A matrix with @c order-1 dimensions containing per-slice minima
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{3, 1, 4, 1, 5, 9};
+     * auto col_min = m.min<0>();  // matrix<int, 3>{1, 1, 4}
+     * auto row_min = m.min<1>();  // matrix<int, 2>{1, 1}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::size_t Axis>
+        requires(Axis < order && dimensions[Axis] > 0) && std::totally_ordered<T>
+    [[nodiscard]] constexpr auto min() const {
+        using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
+        result_type result;
+        constexpr std::size_t axis_size = dimensions[Axis];
+        constexpr std::size_t suffix = []() constexpr -> std::size_t {
+            std::size_t s = 1;
+            for (std::size_t i = Axis + 1; i < order; ++i) {
+                s *= dimensions[i];
+            }
+            return s;
+        }();
+        constexpr std::size_t prefix = []() constexpr -> std::size_t {
+            std::size_t p = 1;
+            for (std::size_t i = 0; i < Axis; ++i) {
+                p *= dimensions[i];
+            }
+            return p;
+        }();
+        for (std::size_t p = 0; p < prefix; ++p) {
+            for (std::size_t s = 0; s < suffix; ++s) {
+                T val = _data[(p * axis_size * suffix) + s];
+                for (std::size_t k = 1; k < axis_size; ++k) {
+                    val = std::min(val, _data[(p * axis_size * suffix) + (k * suffix) + s]);
+                }
+                result._data[(p * suffix) + s] = val;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @brief Returns the maximum of all elements along a given axis.
+     * @tparam Axis Axis to reduce along; must satisfy `Axis < order` and `dimensions[Axis] > 0`
+     * @return A matrix with @c order-1 dimensions containing per-slice maxima
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{3, 1, 4, 1, 5, 9};
+     * auto col_max = m.max<0>();  // matrix<int, 3>{3, 5, 9}
+     * auto row_max = m.max<1>();  // matrix<int, 2>{4, 9}
+     * @endcode
+     *
+     * @ingroup ysc_algorithms
+     */
+    template <std::size_t Axis>
+        requires(Axis < order && dimensions[Axis] > 0) && std::totally_ordered<T>
+    [[nodiscard]] constexpr auto max() const {
+        using result_type = detail::make_matrix_t<T, detail::drop_dim_t<Axis, Dimensions...>>;
+        result_type result;
+        constexpr std::size_t axis_size = dimensions[Axis];
+        constexpr std::size_t suffix = []() constexpr -> std::size_t {
+            std::size_t s = 1;
+            for (std::size_t i = Axis + 1; i < order; ++i) {
+                s *= dimensions[i];
+            }
+            return s;
+        }();
+        constexpr std::size_t prefix = []() constexpr -> std::size_t {
+            std::size_t p = 1;
+            for (std::size_t i = 0; i < Axis; ++i) {
+                p *= dimensions[i];
+            }
+            return p;
+        }();
+        for (std::size_t p = 0; p < prefix; ++p) {
+            for (std::size_t s = 0; s < suffix; ++s) {
+                T val = _data[(p * axis_size * suffix) + s];
+                for (std::size_t k = 1; k < axis_size; ++k) {
+                    val = std::max(val, _data[(p * axis_size * suffix) + (k * suffix) + s]);
+                }
+                result._data[(p * suffix) + s] = val;
+            }
+        }
+        return result;
     }
 
     // modifiers
@@ -1887,6 +2163,212 @@ public:
     flatten() const& noexcept {
         return matrix_view<const T, contiguous, linear_size>{_data.data()};
     }
+
+    // ─── enumerate ───────────────────────────────────────────────────────────
+
+    /**
+     * @brief Range type returned by @c enumerate() that pairs coordinates with element references.
+     * @tparam ElemT Element type (possibly @c const — controls mutability of the reference)
+     *
+     * Iterating over this range yields @c std::pair<std::array<std::size_t, order>, ElemT&> in
+     * row-major order.  When @c ElemT is non-const, mutations to the second member of the pair
+     * are reflected in the original matrix.
+     *
+     * @ingroup ysc_enumerate
+     */
+    template <class ElemT> class enumerate_range {
+    public:
+        /** @brief Value type yielded by the iterator. */
+        using value_type = std::pair<std::array<std::size_t, order>, ElemT&>;
+
+        /**
+         * @brief Input iterator over @c enumerate_range.
+         * @ingroup ysc_enumerate
+         */
+        class iterator {
+        public:
+            using iterator_category = std::input_iterator_tag;
+            using value_type = std::pair<std::array<std::size_t, order>, ElemT&>;
+            using difference_type = std::ptrdiff_t;
+            using pointer = void;
+            using reference = value_type;
+
+            constexpr iterator(ElemT* ptr, std::size_t idx) noexcept : _ptr(ptr), _idx(idx) {}
+
+            [[nodiscard]] constexpr reference operator*() const noexcept {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+                return {detail::index_to_coordinates(dimensions, _idx), _ptr[_idx]};
+            }
+
+            constexpr iterator& operator++() noexcept {
+                ++_idx;
+                return *this;
+            }
+
+            constexpr iterator operator++(int) noexcept {
+                iterator tmp = *this;
+                ++(*this);
+                return tmp;
+            }
+
+            [[nodiscard]] constexpr bool operator==(const iterator& other) const noexcept {
+                return _idx == other._idx;
+            }
+
+            [[nodiscard]] constexpr bool operator!=(const iterator& other) const noexcept {
+                return _idx != other._idx;
+            }
+
+        private:
+            ElemT* _ptr;
+            std::size_t _idx;
+        };
+
+        constexpr enumerate_range(ElemT* ptr, std::size_t n) noexcept : _ptr(ptr), _n(n) {}
+
+        [[nodiscard]] constexpr iterator begin() const noexcept { return iterator{_ptr, 0}; }
+        [[nodiscard]] constexpr iterator end() const noexcept { return iterator{_ptr, _n}; }
+
+    private:
+        ElemT* _ptr;
+        std::size_t _n;
+    };
+
+    /**
+     * @brief Returns a range of @c (coordinates, value) pairs in row-major order.
+     * @return An @c enumerate_range<T> whose iterator yields
+     *         @c std::pair<std::array<std::size_t, order>, T&>
+     *
+     * Each iteration step exposes both the N-D coordinates (as a
+     * @c std::array<std::size_t, order>) and a mutable reference to the element.
+     * Mutations are reflected in the original matrix.
+     *
+     * @code
+     * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (auto& [coords, val] : m.enumerate()) {
+     *     // coords == {0,0},{0,1},{0,2},{1,0},{1,1},{1,2} in order
+     *     val *= 10;  // mutates m
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_enumerate
+     */
+    [[nodiscard]] constexpr enumerate_range<T> enumerate() noexcept {
+        return enumerate_range<T>{_data.data(), linear_size};
+    }
+
+    /**
+     * @brief Returns a const range of @c (coordinates, value) pairs in row-major order.
+     * @return An @c enumerate_range<const T> whose iterator yields
+     *         @c std::pair<std::array<std::size_t, order>, const T&>
+     *
+     * Read-only variant of @c enumerate().  No mutation is possible through the returned range.
+     *
+     * @code
+     * const ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
+     * for (const auto& [coords, val] : m.enumerate()) {
+     *     // coords == {0,0},{0,1},{0,2},{1,0},{1,1},{1,2} in order
+     *     // val is a const int&
+     * }
+     * @endcode
+     *
+     * @ingroup ysc_enumerate
+     */
+    [[nodiscard]] constexpr enumerate_range<const T> enumerate() const noexcept {
+        return enumerate_range<const T>{_data.data(), linear_size};
+    }
+
+    /**
+     * @brief Returns a strided view over an N-D sub-block starting at @a origin.
+     * @tparam NewD Dimensions of the sub-block (one per matrix dimension).
+     * @param  origin Multi-dimensional starting position of the sub-block.
+     * @return @c matrix_view<T, strided, NewD...>
+     *
+     * The strides of the view are the row-major strides of the source matrix, so
+     * mutation through the view is reflected in the original matrix.
+     *
+     * @throws std::out_of_range if @c origin[i] + NewD[i] > dimensions[i] for
+     *         any dimension @c i.
+     *
+     * @code
+     * ysc::matrix<int, 4, 4> m{};
+     * std::iota(m.begin(), m.end(), 0);
+     * auto v = m.submatrix<2, 2>({1, 1});  // 2×2 view starting at (1,1)
+     * assert(v(0, 0) == m(1, 1));
+     * v(0, 0) = 99;  // writes m(1, 1)
+     * assert(m(1, 1) == 99);
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t... NewD>
+        requires(sizeof...(NewD) == order)
+    [[nodiscard]] constexpr matrix_view<T, strided, NewD...>
+    submatrix(std::array<std::size_t, order> origin) & {
+        constexpr std::array<std::size_t, order> new_dims = {NewD...};
+        for (std::size_t i = 0; i < order; ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (origin[i] + new_dims[i] > dimensions[i]) {
+                throw std::out_of_range("submatrix: sub-block exceeds matrix bounds");
+            }
+        }
+        // Row-major strides of the source matrix: stride[i] = D[i+1] * ... * D[order-1]
+        std::array<std::size_t, order> src_strides{};
+        for (std::size_t i = 0; i < order; ++i) {
+            std::size_t s = 1;
+            for (std::size_t j = i + 1; j < order; ++j) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                s *= dimensions[j];
+            }
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            src_strides[i] = s;
+        }
+        T* base = _data.data() + detail::coordinates_to_index(dimensions, origin);
+        return matrix_view<T, strided, NewD...>{base, src_strides};
+    }
+
+    /**
+     * @brief Returns a const strided view over an N-D sub-block starting at @a origin.
+     * @tparam NewD Dimensions of the sub-block (one per matrix dimension).
+     * @param  origin Multi-dimensional starting position of the sub-block.
+     * @return @c matrix_view<const T, strided, NewD...>
+     *
+     * @throws std::out_of_range if @c origin[i] + NewD[i] > dimensions[i] for
+     *         any dimension @c i.
+     *
+     * @code
+     * const ysc::matrix<int, 4, 4> m{};
+     * auto v = m.submatrix<2, 2>({1, 1});  // const 2×2 view starting at (1,1)
+     * assert(v(0, 0) == m(1, 1));
+     * @endcode
+     *
+     * @ingroup ysc_views
+     */
+    template <std::size_t... NewD>
+        requires(sizeof...(NewD) == order)
+    [[nodiscard]] constexpr matrix_view<const T, strided, NewD...>
+    submatrix(std::array<std::size_t, order> origin) const& {
+        constexpr std::array<std::size_t, order> new_dims = {NewD...};
+        for (std::size_t i = 0; i < order; ++i) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            if (origin[i] + new_dims[i] > dimensions[i]) {
+                throw std::out_of_range("submatrix: sub-block exceeds matrix bounds");
+            }
+        }
+        // Row-major strides of the source matrix: stride[i] = D[i+1] * ... * D[order-1]
+        std::array<std::size_t, order> src_strides{};
+        for (std::size_t i = 0; i < order; ++i) {
+            std::size_t s = 1;
+            for (std::size_t j = i + 1; j < order; ++j) {
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+                s *= dimensions[j];
+            }
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+            src_strides[i] = s;
+        }
+        const T* base = _data.data() + detail::coordinates_to_index(dimensions, origin);
+        return matrix_view<const T, strided, NewD...>{base, src_strides};
+    }
 };
 
 /**
@@ -1985,6 +2467,48 @@ template <class T, std::size_t... Dims, std::invocable<std::size_t> F>
     for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
         // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
         result.begin()[i] = f(i);
+    }
+    return result;
+}
+
+/**
+ * @brief Returns a matrix filled by calling @a f(i₀, i₁, …) for each N-D coordinate.
+ *
+ * This overload accepts a callable that takes @c sizeof...(Dims) arguments of type
+ * @c std::size_t — one per dimension, in row-major order.  It is selected when @a f is
+ * **not** callable with a single @c std::size_t (which would select the linear-index
+ * overload instead, preserving backward compatibility).
+ *
+ * @tparam T    Element type
+ * @tparam Dims Dimensions of the result matrix
+ * @tparam F    Callable type: @c f(i₀, …, iₙ) must be convertible to @c T
+ * @param  f    Generator callable receiving the N-D coordinates
+ * @return New @c matrix<T, Dims...> where element at @c (i₀,…,iₙ) equals @c f(i₀,…,iₙ)
+ *
+ * @code
+ * // 3×3 identity matrix
+ * auto I = ysc::generate<int, 3, 3>([](std::size_t i, std::size_t j) {
+ *     return i == j ? 1 : 0;
+ * });
+ * // Tensor: m(i,j,k) = i*100 + j*10 + k
+ * auto m = ysc::generate<int, 2, 3, 4>([](auto i, auto j, auto k) {
+ *     return int(i * 100 + j * 10 + k);
+ * });
+ * @endcode
+ *
+ * @ingroup ysc_construction
+ */
+template <class T, std::size_t... Dims, class F>
+    requires(!std::invocable<F, std::size_t> &&
+             requires(F f, std::array<std::size_t, sizeof...(Dims)> coords) {
+                 { std::apply(f, coords) } -> std::convertible_to<T>;
+             })
+[[nodiscard]] constexpr matrix<T, Dims...> generate(F f) {
+    matrix<T, Dims...> result;
+    for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
+        auto coords = detail::index_to_coordinates(matrix<T, Dims...>::dimensions, i);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        result.begin()[i] = static_cast<T>(std::apply(f, coords));
     }
     return result;
 }
@@ -2125,6 +2649,96 @@ template <class Ta, class Tb, std::size_t M, std::size_t N>
             result(i) += mat(i, k) * vec(k);
         }
     }
+    return result;
+}
+
+/**
+ * @brief Bitwise AND of two matrices (element-wise, mixed types).
+ * @tparam Ta   Element type of @a lhs
+ * @tparam Tb   Element type of @a rhs — must support @c & with @c Ta
+ * @tparam Dims Dimensions of both matrices
+ * @param  lhs  Left-hand matrix
+ * @param  rhs  Right-hand matrix
+ * @return New matrix where element @c i is @c lhs[i] & @c rhs[i].
+ *         Element type is `decltype(Ta{} & Tb{})`.
+ *
+ * @code
+ * ysc::matrix<unsigned, 3> a{0b111u, 0b101u, 0b010u};
+ * ysc::matrix<unsigned, 3> b{0b110u, 0b110u, 0b110u};
+ * auto r = a & b;  // r == ysc::matrix<unsigned, 3>{0b110u, 0b100u, 0b010u}
+ * @endcode
+ *
+ * @ingroup ysc_arithmetic
+ */
+template <class Ta, class Tb, std::size_t... Dims>
+    requires requires(const Ta& a, const Tb& b) { a & b; }
+[[nodiscard]] constexpr auto operator&(const matrix<Ta, Dims...>& lhs,
+                                       const matrix<Tb, Dims...>& rhs)
+    -> matrix<decltype(std::declval<const Ta&>() & std::declval<const Tb&>()), Dims...> {
+    using Tc = decltype(std::declval<const Ta&>() & std::declval<const Tb&>());
+    matrix<Tc, Dims...> result;
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), result.begin(),
+                   [](const Ta& a, const Tb& b) -> Tc { return a & b; });
+    return result;
+}
+
+/**
+ * @brief Bitwise OR of two matrices (element-wise, mixed types).
+ * @tparam Ta   Element type of @a lhs
+ * @tparam Tb   Element type of @a rhs — must support @c | with @c Ta
+ * @tparam Dims Dimensions of both matrices
+ * @param  lhs  Left-hand matrix
+ * @param  rhs  Right-hand matrix
+ * @return New matrix where element @c i is @c lhs[i] | @c rhs[i].
+ *         Element type is `decltype(Ta{} | Tb{})`.
+ *
+ * @code
+ * ysc::matrix<unsigned, 3> a{0b001u, 0b010u, 0b100u};
+ * ysc::matrix<unsigned, 3> b{0b110u, 0b101u, 0b011u};
+ * auto r = a | b;  // r == ysc::matrix<unsigned, 3>{0b111u, 0b111u, 0b111u}
+ * @endcode
+ *
+ * @ingroup ysc_arithmetic
+ */
+template <class Ta, class Tb, std::size_t... Dims>
+    requires requires(const Ta& a, const Tb& b) { a | b; }
+[[nodiscard]] constexpr auto operator|(const matrix<Ta, Dims...>& lhs,
+                                       const matrix<Tb, Dims...>& rhs)
+    -> matrix<decltype(std::declval<const Ta&>() | std::declval<const Tb&>()), Dims...> {
+    using Tc = decltype(std::declval<const Ta&>() | std::declval<const Tb&>());
+    matrix<Tc, Dims...> result;
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), result.begin(),
+                   [](const Ta& a, const Tb& b) -> Tc { return a | b; });
+    return result;
+}
+
+/**
+ * @brief Bitwise XOR of two matrices (element-wise, mixed types).
+ * @tparam Ta   Element type of @a lhs
+ * @tparam Tb   Element type of @a rhs — must support @c ^ with @c Ta
+ * @tparam Dims Dimensions of both matrices
+ * @param  lhs  Left-hand matrix
+ * @param  rhs  Right-hand matrix
+ * @return New matrix where element @c i is @c lhs[i] ^ @c rhs[i].
+ *         Element type is `decltype(Ta{} ^ Tb{})`.
+ *
+ * @code
+ * ysc::matrix<unsigned, 3> a{0b111u, 0b101u, 0b010u};
+ * ysc::matrix<unsigned, 3> b{0b110u, 0b110u, 0b110u};
+ * auto r = a ^ b;  // r == ysc::matrix<unsigned, 3>{0b001u, 0b011u, 0b100u}
+ * @endcode
+ *
+ * @ingroup ysc_arithmetic
+ */
+template <class Ta, class Tb, std::size_t... Dims>
+    requires requires(const Ta& a, const Tb& b) { a ^ b; }
+[[nodiscard]] constexpr auto operator^(const matrix<Ta, Dims...>& lhs,
+                                       const matrix<Tb, Dims...>& rhs)
+    -> matrix<decltype(std::declval<const Ta&>() ^ std::declval<const Tb&>()), Dims...> {
+    using Tc = decltype(std::declval<const Ta&>() ^ std::declval<const Tb&>());
+    matrix<Tc, Dims...> result;
+    std::transform(lhs.cbegin(), lhs.cend(), rhs.cbegin(), result.begin(),
+                   [](const Ta& a, const Tb& b) -> Tc { return a ^ b; });
     return result;
 }
 
