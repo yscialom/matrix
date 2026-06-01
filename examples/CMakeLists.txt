@@ -24,3 +24,4 @@ endfunction()
 
 # Add new examples below, sorted by leading number.
 ysc_add_example(01_basics)
+ysc_add_example(02_arithmetic)
