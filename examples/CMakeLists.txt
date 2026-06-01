@@ -23,3 +23,4 @@ function(ysc_add_example file)
 endfunction()
 
 # Add new examples below, sorted by leading number.
+ysc_add_example(01_basics)
