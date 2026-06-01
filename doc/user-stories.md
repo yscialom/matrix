@@ -14,9 +14,9 @@
 | **H — Vues & reshape** | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
 | **I — Packaging & préparation v1.0.0** | 🔄 En cours | 8/10 | ✅ US-038, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-048, ✅ US-049, ⬜ US-040, US-042 |
 | **J — Ergonomie & finition** | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
-| **K — Extensions pre-v1** | 🔄 En cours | 7/10 | ✅ US-060, ✅ US-061, ✅ US-062, ✅ US-063, ✅ US-064, ✅ US-065, ✅ US-069, ⬜ US-066, US-067, US-068 |
+| **K — Extensions pre-v1** | ✅ Terminée | 10/10 | ✅ US-060 à US-069 |
 
-**Total : 64 / 69 US**
+**Total : 67 / 69 US**
 
 ## EPIC A — Infrastructure & CI/CD
 
