@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="doc/logo/ysc-matrix-banner.png" alt="ysc::matrix banner">
+</p>
+
 # `ysc::matrix`
 
 [![CI](https://github.com/yscialom/matrix/actions/workflows/ci.yml/badge.svg)](https://github.com/yscialom/matrix/actions/workflows/ci.yml)
