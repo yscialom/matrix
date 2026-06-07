@@ -16,11 +16,14 @@
 #include <algorithm>
 #include <array>
 #include <compare>
+#include <concepts>
+#include <cstddef>
 #include <iterator>
 #include <ostream>
 #include <stdexcept>
 #include <string>
 #include <tuple>
+#include <type_traits>
 // Clang < 17 cannot compile libstdc++-14's <format> due to unicode.h
 // incompatibility
 #if __has_include(<format>) && (!defined(__clang__) || __clang_major__ >= 17)
