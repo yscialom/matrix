@@ -147,15 +147,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structysc_1_1all__t.html">ysc::all_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sentinel type used in slice() to indicate "keep this dimension".  <a href="structysc_1_1all__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structysc_1_1detail_1_1size__seq.html">ysc::detail::size_seq&lt; Vals &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Non-type parameter pack container for <code>std::size_t</code> values.  <a href="structysc_1_1detail_1_1size__seq.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structysc_1_1detail_1_1pad__right__with__all.html">ysc::detail::pad_right_with_all&lt; ToAdd, Specs &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pad <code>Specs</code>... with <code><a class="el" href="structysc_1_1all__t.html" title="Sentinel type used in slice() to indicate &quot;keep this dimension&quot;.">all_t</a></code> on the right until <code>N</code> elements total. Returns a <code>std::tuple</code> of the padded types.  <a href="structysc_1_1detail_1_1pad__right__with__all.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structysc_1_1detail_1_1drop__dim__impl.html">ysc::detail::drop_dim_impl&lt; Axis, Idx, Dims &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the <code>Axis-th</code> element from a <code><a class="el" href="structysc_1_1detail_1_1size__seq.html" title="Non-type parameter pack container for std::size_t values.">size_seq</a></code> of dimensions (recursive helper).  <a href="structysc_1_1detail_1_1drop__dim__impl.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
 Concepts</h2></td></tr>
@@ -165,11 +156,6 @@ Concepts</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a3be71d2af83331b0da17986a28ec27d6" id="r_a3be71d2af83331b0da17986a28ec27d6"><td class="memTemplParams" colspan="2"><a id="a3be71d2af83331b0da17986a28ec27d6" name="a3be71d2af83331b0da17986a28ec27d6"></a>
-template&lt;std::size_t Axis, std::size_t... Dims&gt; </td></tr>
-<tr class="memitem:a3be71d2af83331b0da17986a28ec27d6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ysc::detail::drop_dim_t</b> = typename <a class="el" href="structysc_1_1detail_1_1drop__dim__impl.html">drop_dim_impl</a>&lt; Axis, 0, Dims... &gt;::type</td></tr>
-<tr class="memdesc:a3be71d2af83331b0da17986a28ec27d6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="structysc_1_1detail_1_1size__seq.html" title="Non-type parameter pack container for std::size_t values.">size_seq</a></code> of <code>Dims</code>... with the <code>Axis-th</code> dimension removed. <br /></td></tr>
-<tr class="separator:a3be71d2af83331b0da17986a28ec27d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4cc25153c17fcf35d9990d4d49724706" id="r_ga4cc25153c17fcf35d9990d4d49724706"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t... Dims&gt; </td></tr>
 <tr class="memitem:ga4cc25153c17fcf35d9990d4d49724706"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#ga4cc25153c17fcf35d9990d4d49724706">ysc::const_matrix_view</a> = <a class="el" href="classysc_1_1matrix__view.html">matrix_view</a>&lt; const T, <a class="el" href="structysc_1_1contiguous.html">contiguous</a>, Dims... &gt;</td></tr>
 <tr class="memdesc:ga4cc25153c17fcf35d9990d4d49724706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alias for a read-only contiguous view over a <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code>.  <br /></td></tr>
@@ -180,16 +166,6 @@ Variables</h2></td></tr>
 <tr class="memitem:gaf45ff9b0ab247ef3b3cec980746d6f00" id="r_gaf45ff9b0ab247ef3b3cec980746d6f00"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structysc_1_1all__t.html">all_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00">ysc::all</a> {}</td></tr>
 <tr class="memdesc:gaf45ff9b0ab247ef3b3cec980746d6f00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sentinel value: pass <a class="el" href="group__ysc__views.html#gaf45ff9b0ab247ef3b3cec980746d6f00" title="Sentinel value: pass ysc::all to slice() to keep a dimension unchanged.">ysc::all</a> to slice() to keep a dimension unchanged.  <br /></td></tr>
 <tr class="separator:gaf45ff9b0ab247ef3b3cec980746d6f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cb11edb33bbb29a2daab66c91df8dc9" id="r_a2cb11edb33bbb29a2daab66c91df8dc9"><td class="memTemplParams" colspan="2"><a id="a2cb11edb33bbb29a2daab66c91df8dc9" name="a2cb11edb33bbb29a2daab66c91df8dc9"></a>
-template&lt;class S &gt; </td></tr>
-<tr class="memitem:a2cb11edb33bbb29a2daab66c91df8dc9"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ysc::detail::is_all_v</b> = std::same_as&lt;S, <a class="el" href="structysc_1_1all__t.html">all_t</a>&gt;</td></tr>
-<tr class="memdesc:a2cb11edb33bbb29a2daab66c91df8dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">True iff <code>S</code> is <code><a class="el" href="structysc_1_1all__t.html" title="Sentinel type used in slice() to indicate &quot;keep this dimension&quot;.">ysc::all_t</a></code>. <br /></td></tr>
-<tr class="separator:a2cb11edb33bbb29a2daab66c91df8dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03c2f1b12cbc7f746aa4d159b77a079c" id="r_a03c2f1b12cbc7f746aa4d159b77a079c"><td class="memTemplParams" colspan="2"><a id="a03c2f1b12cbc7f746aa4d159b77a079c" name="a03c2f1b12cbc7f746aa4d159b77a079c"></a>
-template&lt;class... Specs&gt; </td></tr>
-<tr class="memitem:a03c2f1b12cbc7f746aa4d159b77a079c"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>ysc::detail::n_kept_v</b> = (std::size_t{0} + ... + (<a class="el" href="matrix__detail_8hpp.html#a2cb11edb33bbb29a2daab66c91df8dc9">is_all_v</a>&lt;Specs&gt; ? 1 : 0))</td></tr>
-<tr class="memdesc:a03c2f1b12cbc7f746aa4d159b77a079c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of <code><a class="el" href="structysc_1_1all__t.html" title="Sentinel type used in slice() to indicate &quot;keep this dimension&quot;.">all_t</a></code> values in <code>Specs</code>... <br /></td></tr>
-<tr class="separator:a03c2f1b12cbc7f746aa4d159b77a079c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>Yankel Scialom (YSC) <a href="#" onclick="location.href='mai'+'lto:'+'yan'+'ke'+'l-p'+'ro'+'@sc'+'ia'+'lom'+'.o'+'rg'; return false;">yanke<span class="obfuscator">.nosp@m.</span>l-pr<span class="obfuscator">.nosp@m.</span>o@sci<span class="obfuscator">.nosp@m.</span>alom<span class="obfuscator">.nosp@m.</span>.org</a> </dd></dl>

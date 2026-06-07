@@ -175,9 +175,9 @@ template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc2
 <div class="line">}</div>
 <div class="ttc" id="aclassysc_1_1matrix_html"><div class="ttname"><a href="classysc_1_1matrix.html">ysc::matrix</a></div><div class="ttdoc">Multi-dimensional container encapsulating a fixed size matrix.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00126">matrix.hpp:126</a></div></div>
 <div class="ttc" id="aclassysc_1_1matrix_html_a9b05ad6c525775562e1ddc25ce176f9e"><div class="ttname"><a href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">ysc::matrix::reverse_iterator</a></div><div class="ttdeci">std::reverse_iterator&lt; iterator &gt; reverse_iterator</div><div class="ttdoc">Reverse iterator.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l00177">matrix.hpp:177</a></div></div>
-<div class="ttc" id="agroup__ysc__enumerate_html_ga9a0bb3f03d6d1cacae97d69c65287180"><div class="ttname"><a href="group__ysc__enumerate.html#ga9a0bb3f03d6d1cacae97d69c65287180">ysc::matrix::enumerate</a></div><div class="ttdeci">constexpr enumerate_range&lt; T &gt; enumerate() noexcept</div><div class="ttdoc">Returns a range of (coordinates, value) pairs in row-major order.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02261">matrix.hpp:2261</a></div></div>
+<div class="ttc" id="agroup__ysc__enumerate_html_ga9a0bb3f03d6d1cacae97d69c65287180"><div class="ttname"><a href="group__ysc__enumerate.html#ga9a0bb3f03d6d1cacae97d69c65287180">ysc::matrix::enumerate</a></div><div class="ttdeci">constexpr enumerate_range&lt; T &gt; enumerate() noexcept</div><div class="ttdoc">Returns a range of (coordinates, value) pairs in row-major order.</div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02259">matrix.hpp:2259</a></div></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02282">2282</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02280">2280</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -210,12 +210,12 @@ template&lt;<a class="el" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc2
 <dl class="section return"><dt>Returns</dt><dd>An <code>enumerate_range&lt;T&gt;</code> whose iterator yields <code>std::pair&lt;std::array&lt;std::size_t, order&gt;</code>, T&amp;&gt;</dd></dl>
 <p>Each iteration step exposes both the N-D coordinates (as a <code>std::array&lt;std::size_t, order&gt;</code>) and a mutable reference to the element. Mutations are reflected in the original matrix.</p>
 <div class="fragment"><div class="line"><a class="code hl_class" href="classysc_1_1matrix.html">ysc::matrix&lt;int, 2, 3&gt;</a> <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>{1, 2, 3, 4, 5, 6};</div>
-<div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; [<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">coords</a>, <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">val</a>] : <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__enumerate.html#ga9a0bb3f03d6d1cacae97d69c65287180">enumerate</a>()) {</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> [<a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">coords</a>, <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">val</a>] : <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">m</a>.<a class="code hl_function" href="group__ysc__enumerate.html#ga9a0bb3f03d6d1cacae97d69c65287180">enumerate</a>()) {</div>
 <div class="line">    <span class="comment">// coords == {0,0},{0,1},{0,2},{1,0},{1,1},{1,2} in order</span></div>
 <div class="line">    <a class="code hl_typedef" href="classysc_1_1matrix.html#a9b05ad6c525775562e1ddc25ce176f9e">val</a> *= 10;  <span class="comment">// mutates m</span></div>
 <div class="line">}</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02261">2261</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02259">2259</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>

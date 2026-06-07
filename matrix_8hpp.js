@@ -3,7 +3,6 @@ var matrix_8hpp =
     [ "ysc::matrix_zero_t", "structysc_1_1matrix__zero__t.html", null ],
     [ "ysc::matrix< T, Dimensions >", "classysc_1_1matrix.html", "classysc_1_1matrix" ],
     [ "ysc::matrix_convertible_from", "conceptysc_1_1matrix__convertible__from.html", null ],
-    [ "ysc::detail::coord_generator", "conceptysc_1_1detail_1_1coord__generator.html", null ],
     [ "dot", "matrix_8hpp.html#ga375aa7c0a09c50f9349c9bf6b245ec19", null ],
     [ "full", "matrix_8hpp.html#ga4667d4ca977426b55a433ec7d7b0af03", null ],
     [ "generate", "matrix_8hpp.html#gac576c1a63cac336454e2023283a902f2", null ],
