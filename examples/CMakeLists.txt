@@ -19,6 +19,17 @@ function(ysc_add_example file)
         target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic)
     endif()
 
+    if(ENABLE_SANITIZERS AND CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        target_compile_options(${target} PRIVATE
+            -fsanitize=address,undefined
+            -fno-omit-frame-pointer
+            -g
+        )
+        target_link_options(${target} PRIVATE
+            -fsanitize=address,undefined
+        )
+    endif()
+
     add_test(NAME ${target} COMMAND ${target})
 endfunction()
 
