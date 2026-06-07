@@ -125,6 +125,13 @@ TEST(submatrix, throws_on_col_overflow) {
     EXPECT_THROW(bad(), std::out_of_range);
 }
 
+TEST(submatrix, throws_on_const_matrix_overflow) {
+    const ysc::matrix<int, 4, 4> m{};
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
+    auto bad = [&] { (void)m.submatrix<3, 3>({2, 2}); };
+    EXPECT_THROW(bad(), std::out_of_range);
+}
+
 TEST(submatrix, does_not_throw_on_exact_boundary) {
     ysc::matrix<int, 4, 4> m{};
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
