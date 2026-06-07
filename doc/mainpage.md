@@ -65,6 +65,17 @@ copy it into your project.
 
 ---
 
+## Stability & Semantic Versioning
+
+Starting with v1.0.0, `ysc::matrix` follows [Semantic Versioning](https://semver.org/):
+
+- **Public API** = everything in namespace `ysc` *except* `ysc::detail::`.
+  Breaking changes to the public API require a **major version bump**.
+- **`ysc::detail::`** is internal implementation. It may change in any release, including
+  patch releases. Do **not** depend on it directly.
+
+---
+
 ## Features
 
 | Feature | Description |

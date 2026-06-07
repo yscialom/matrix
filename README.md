@@ -57,7 +57,7 @@ target_link_libraries(my_target PRIVATE ysc::matrix)
 Version constraints are supported:
 
 ```cmake
-find_package(ysc-matrix 0.7 CONFIG REQUIRED)
+find_package(ysc-matrix 1.0 CONFIG REQUIRED)
 ```
 
 The headers are installed to `<prefix>/include/ysc/` and the CMake package config to
@@ -67,6 +67,17 @@ The headers are installed to `<prefix>/include/ysc/` and the CMake package confi
 
 Download `matrix.hpp` from a [GitHub Release](https://github.com/yscialom/matrix/releases) and
 copy it into your project.
+
+---
+
+## Stability & Semantic Versioning
+
+Starting with v1.0.0, `ysc::matrix` follows [Semantic Versioning](https://semver.org/):
+
+- **Public API** = everything in namespace `ysc` *except* `ysc::detail::`.
+  Breaking changes to the public API require a **major version bump**.
+- **`ysc::detail::`** is internal implementation. It may change in any release, including
+  patch releases. Do **not** depend on it directly.
 
 ---
 
