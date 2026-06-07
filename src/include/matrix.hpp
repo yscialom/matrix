@@ -2446,6 +2446,17 @@ constexpr matrix<T, N, N> identity() {
     return m;
 }
 
+namespace detail {
+/// Satisfied when F can be invoked with sizeof...(Dims) std::size_t arguments
+/// and the result is convertible to T. Used to dispatch the multi-index
+/// overload of ysc::generate.
+template <class F, class T, std::size_t... Dims>
+concept coord_generator =
+    requires(F f, std::array<std::size_t, sizeof...(Dims)> coords) {
+        { std::apply(f, coords) } -> std::convertible_to<T>;
+    };
+} // namespace detail
+
 /**
  * @brief Returns a matrix filled by calling @a f(i) for each linear index @a i.
  * @tparam T    Element type
@@ -2498,11 +2509,15 @@ template <class T, std::size_t... Dims, std::invocable<std::size_t> F>
  *
  * @ingroup ysc_construction
  */
+// clang-format off
+#ifdef DOXYGEN
+// Doxygen-only prototype: distinct template parameter name avoids ID collision
+// with the linear-index overload (both would hash to generate(F f) otherwise).
+template <class T, std::size_t... Dims, detail::coord_generator<T, Dims...> MultiIndexF>
+[[nodiscard]] constexpr matrix<T, Dims...> generate(MultiIndexF f);
+#else
 template <class T, std::size_t... Dims, class F>
-    requires(!std::invocable<F, std::size_t> &&
-             requires(F f, std::array<std::size_t, sizeof...(Dims)> coords) {
-                 { std::apply(f, coords) } -> std::convertible_to<T>;
-             })
+    requires(!std::invocable<F, std::size_t> && detail::coord_generator<F, T, Dims...>)
 [[nodiscard]] constexpr matrix<T, Dims...> generate(F f) {
     matrix<T, Dims...> result;
     for (std::size_t i = 0; i < matrix<T, Dims...>::size(); ++i) {
@@ -2512,6 +2527,8 @@ template <class T, std::size_t... Dims, class F>
     }
     return result;
 }
+#endif
+// clang-format on
 
 /**
  * @defgroup ysc_linalg Linear algebra
