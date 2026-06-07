@@ -2451,10 +2451,9 @@ namespace detail {
 /// and the result is convertible to T. Used to dispatch the multi-index
 /// overload of ysc::generate.
 template <class F, class T, std::size_t... Dims>
-concept coord_generator =
-    requires(F f, std::array<std::size_t, sizeof...(Dims)> coords) {
-        { std::apply(f, coords) } -> std::convertible_to<T>;
-    };
+concept coord_generator = requires(F f, std::array<std::size_t, sizeof...(Dims)> coords) {
+    { std::apply(f, coords) } -> std::convertible_to<T>;
+};
 } // namespace detail
 
 /**
