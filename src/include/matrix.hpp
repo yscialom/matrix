@@ -93,9 +93,9 @@ constexpr struct matrix_zero_t {
 /**
  * @brief Multi-dimensional container encapsulating a fixed size matrix.
  * @tparam T          Element type
- * @tparam Dimentions Dimensions of the matrix
+ * @tparam Dimensions Dimensions of the matrix
  *
- * `matrix<T, 2, 5, 9>` is an order 3  matrix of @c T elements; its dimensions
+ * `matrix<T, 2, 5, 9>` is an order 3 matrix of @c T elements; its dimensions
  * are 2 by 5 by 9 (90 @c T elements in total).
  *
  * This container is a class type with the semantics of an aggregate similar to
@@ -118,7 +118,7 @@ constexpr struct matrix_zero_t {
  * It does **not** satisfy SequenceContainer (fixed size — no insert/erase).
  *
  * ### Iterator invalidation
- * As a rule, iterators to aa matrix are never invalidated throughout the
+ * As a rule, iterators to a matrix are never invalidated throughout the
  * lifetime of the matrix. One should take note, however, that during swap, the
  * iterator will continue to point to the same matrix element, and will thus
  * change its value.
