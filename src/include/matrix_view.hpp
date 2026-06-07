@@ -211,7 +211,7 @@ public:
      * @ingroup ysc_views
      */
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
-    operator matrix_view<T, strided, Dimensions...>() const noexcept;
+    constexpr operator matrix_view<T, strided, Dimensions...>() const noexcept;
 
     // ─── iterators ───────────────────────────────────────────────────────────
 
@@ -1303,8 +1303,8 @@ public:
  * @ingroup ysc_views
  */
 template <class T, std::size_t... Dimensions>
-matrix_view<T, contiguous, Dimensions...>::operator matrix_view<T, strided, Dimensions...>()
-    const noexcept {
+constexpr matrix_view<T, contiguous, Dimensions...>::operator matrix_view<
+    T, strided, Dimensions...>() const noexcept {
     constexpr std::array<std::size_t, sizeof...(Dimensions)> dims_arr = {Dimensions...};
     std::array<std::size_t, sizeof...(Dimensions)> strides{};
     for (std::size_t i = 0; i < sizeof...(Dimensions); ++i) {
