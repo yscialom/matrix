@@ -1,7 +1,7 @@
 @mainpage ysc::matrix — Multi-dimensional Array Library
 
 <div align="center">
-\image html ysc-matrix-logo-128.png "" width=128px
+\image html ysc-matrix-banner.png ""
 </div>
 
 `ysc::matrix<T, Dims...>` is a **header-only C++20** template library providing a
