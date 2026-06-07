@@ -16,6 +16,7 @@
 #include <concepts>
 #include <cstddef>
 #include <ostream>
+#include <tuple>
 #include <type_traits>
 
 namespace ysc {
