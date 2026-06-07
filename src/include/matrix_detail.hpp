@@ -86,6 +86,7 @@ It print_recursive(std::ostream& os, It it, const Dims& dims, std::size_t dim_id
         if (last_dim) {
             os << *it++;
         } else {
+            // Recursion bounded by the finite number of dimensions (order ≥ 1).
             // NOLINTNEXTLINE(misc-no-recursion)
             it = print_recursive(os, it, dims, dim_idx + 1);
         }
@@ -233,6 +234,9 @@ template <class... PaddedSpecs> struct slice_helper<std::tuple<PaddedSpecs...>> 
      * @return Flat offset from the matrix's data() pointer
      */
     [[nodiscard]] static constexpr std::size_t
+    // dims = original dimension extents; spec_vals = fixed-axis indices. Same array type,
+    // but semantically orthogonal — a swap would produce a wrong result, not UB; the call
+    // sites always pass them in this order by construction.
     // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
     offset(std::array<std::size_t, n_specs> dims,
            std::array<std::size_t, n_specs> spec_vals) noexcept {

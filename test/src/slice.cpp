@@ -55,9 +55,9 @@ static_assert(std::same_as<decltype(std::declval<const ysc::matrix<int, 3, 4>&>(
 
 // sizeof(strided view) == sizeof(T*) + order * sizeof(size_t)
 static_assert(sizeof(ysc::matrix_view<int, ysc::strided, 3>) ==
-              sizeof(int*) + 1 * sizeof(std::size_t));
+              sizeof(int*) + (1 * sizeof(std::size_t)));
 static_assert(sizeof(ysc::matrix_view<int, ysc::strided, 3, 4>) ==
-              sizeof(int*) + 2 * sizeof(std::size_t));
+              sizeof(int*) + (2 * sizeof(std::size_t)));
 
 // ─── slice — prefix (contiguous) ─────────────────────────────────────────────
 

@@ -29,6 +29,7 @@ struct throwing_copy {
 // not SFINAE-friendly on GCC/libstdc++. The compilation refusal is verified manually: attempting
 // to compare two matrix<no_eq,2> values fails to compile, as expected by design.
 struct no_eq {
+    // Rule-of-5 is not needed: struct has no user-managed resources; only operator== is deleted.
     // NOLINTNEXTLINE(cppcoreguidelines-special-member-functions)
     bool operator==(const no_eq&) = delete;
 };
@@ -117,6 +118,7 @@ TEST(pathological_throwing_copy, move_construction) {
 TEST(pathological_throwing_copy, copy_propagates_exception) {
     using tc3 = ysc::matrix<throwing_copy, 3>;
     tc3 src;
+    // Copy is intentional: we are testing that the copy constructor propagates the exception.
     // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
     EXPECT_THROW(tc3 copy(src), std::runtime_error);
 }
