@@ -70,7 +70,7 @@ It requires `git`, `gh` (GitHub CLI, authenticated), and `git-cliff`.
 This:
 - creates branch `release/vM.m.p` from the current branch
 - bumps `VERSION_MAJOR/MINOR/PATCH` in `CMakeLists.txt`
-- commits (title `Release vM.m.p`, body = epic dashboard from `user-stories.md`)
+- commits (title `Release vM.m.p`, body = epic dashboard from `doc/specs/README.md`)
 - pushes the branch and opens a PR `release/vM.m.p` → `master`
 
 ### Step 2 — Wait for CI (manual)
