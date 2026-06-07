@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="doc/logo/ysc-matrix-logo-128.png" alt="ysc::matrix logo" width="128">
+  <img src="doc/logo/ysc-matrix-logo.png" alt="ysc::matrix banner" width="600">
 </p>
 
 # `ysc::matrix`
