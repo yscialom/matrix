@@ -1,85 +1,85 @@
-# EPIC C — Dette technique
+# EPIC C — Technical Debt
 
-| US | Titre | Priorité | Statut |
+| US | Title | Priority | Status |
 |----|-------|----------|--------|
-| US-011 | Résoudre le conflit `feature-fill` | P0 | ✅ Done |
-| US-012 | Cleanup CMake & typos | P0 | ✅ Done |
-| US-013 | Fix bug : `operator=` templatés sans `return *this;` | P0 | ✅ Done |
-| US-014 | Renommer `_details` → `detail` | P2 | ✅ Done |
+| US-011 | Resolve the `feature-fill` conflict | P0 | ✅ Done |
+| US-012 | CMake cleanup & typos | P0 | ✅ Done |
+| US-013 | Fix bug: templated `operator=` without `return *this;` | P0 | ✅ Done |
+| US-014 | Rename `_details` → `detail` | P2 | ✅ Done |
 
 ---
 
-## US-011 — Résoudre le conflit `feature-fill`
+## US-011 — Resolve the `feature-fill` conflict
 
-**Priorité :** P0 — **Dépend de :** rien
+**Priority:** P0 — **Depends on:** nothing
 
 ### Story
-La branche `origin/feature-fill` ajoute `fill()` mais supprime `at()` (créée avant l'intégration de `feature-at`). Il faut intégrer `fill()` sans perdre `at()`.
+The branch `origin/feature-fill` adds `fill()` but removes `at()` (created before the integration of `feature-at`). We need to integrate `fill()` without losing `at()`.
 
-### Spécification
-- Cherry-pick uniquement le contenu fonctionnel de `22accdb` :
+### Specification
+- Cherry-pick only the functional content of `22accdb`:
   ```cpp
   void fill(const T& value) noexcept(std::is_nothrow_copy_assignable_v<T>)
   { _data.fill(value); }
   ```
-- Ne PAS importer la suppression de `at()` ni le renommage `Coords→Args` ni les modifs de `utils.hpp`
-- Ajouter tests `fill.cpp` : fill sur trivial, sur user-defined, sur matrix of matrix
-- Supprimer `origin/feature-fill` après merge (commande dans la PR description)
+- Do NOT import the removal of `at()`, nor the renaming `Coords→Args`, nor the `utils.hpp` modifications
+- Add tests `fill.cpp`: fill on trivial, on user-defined, on matrix of matrix
+- Delete `origin/feature-fill` after merge (command in the PR description)
 
-### Critères d'acceptation
-- [ ] `at()` toujours présent et fonctionnel
-- [ ] `fill()` testé (couverture 100%)
-- [ ] Branche remote `feature-fill` supprimée
+### Acceptance criteria
+- [ ] `at()` still present and functional
+- [ ] `fill()` tested (100% coverage)
+- [ ] Remote branch `feature-fill` deleted
 
 ---
 
-## US-012 — Cleanup CMake & typos
+## US-012 — CMake cleanup & typos
 
-**Priorité :** P0 — **Dépend de :** rien
+**Priority:** P0 — **Depends on:** nothing
 
-### Spécification
-- `test/CMakeLists.txt` ligne 2 : `Tets` → `Tests`
+### Specification
+- `test/CMakeLists.txt` line 2: `Tets` → `Tests`
 - Bump `cmake_minimum_required(VERSION 3.0)` → `3.20`
-- `set(CMAKE_CXX_STANDARD 17)` reste tant que US-008 pas merged
+- `set(CMAKE_CXX_STANDARD 17)` remains until US-008 is merged
 
-### Critères d'acceptation
-- [ ] Aucun warning CMake
-- [ ] Build identique
+### Acceptance criteria
+- [ ] No CMake warnings
+- [ ] Identical build
 
 ---
 
-## US-013 — Fix bug : `operator=` templatés sans `return *this;`
+## US-013 — Fix bug: templated `operator=` without `return *this;`
 
-**Priorité :** P0 — **Dépend de :** rien
+**Priority:** P0 — **Depends on:** nothing
 
 ### Bug
-`src/include/matrix.hpp` lignes 199-200 et 214-216 :
+`src/include/matrix.hpp` lines 199-200 and 214-216:
 ```cpp
 template<class U>
 matrix& operator=(matrix<U, Dimensions...> const& other)
 { std::copy(cbegin(other._data), cend(other._data), begin(_data)); }
-// MANQUE: return *this;
+// MISSING: return *this;
 ```
-C'est de l'**UB** (function returning non-void sans return). Idem pour la version move.
+This is **UB** (function returning non-void without return). Same for the move version.
 
-### Spécification
-- Ajouter `return *this;` dans les deux opérateurs templatés
-- Test régression `assignment_returns_self.cpp` : `auto& ref = (m1 = m2); ASSERT_EQ(&ref, &m1);`
+### Specification
+- Add `return *this;` in both templated operators
+- Regression test `assignment_returns_self.cpp`: `auto& ref = (m1 = m2); ASSERT_EQ(&ref, &m1);`
 
-### Critères d'acceptation
-- [ ] Bug corrigé
-- [ ] Test ajouté
+### Acceptance criteria
+- [ ] Bug fixed
+- [ ] Test added
 
 ---
 
-## US-014 — Renommer `_details` → `detail`
+## US-014 — Rename `_details` → `detail`
 
-**Priorité :** P2 — **Dépend de :** rien
+**Priority:** P2 — **Depends on:** nothing
 
-### Spécification
-- Convention plus standard (cf. Boost, std)
-- Pas de breaking change utilisateur (namespace interne)
+### Specification
+- More standard convention (cf. Boost, std)
+- No user-facing breaking change (internal namespace)
 
-### Critères d'acceptation
-- [x] Tous les usages renommés
-- [x] Build vert
+### Acceptance criteria
+- [x] All usages renamed
+- [x] Build green

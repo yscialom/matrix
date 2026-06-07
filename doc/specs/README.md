@@ -1,91 +1,91 @@
 # User Stories — ysc::matrix roadmap
 
-## Tableau de bord
+## Dashboard
 
-### Vue par épopée
+### View by epic
 
-| Épopée | Statut | Progression | Détail |
+| Epic | Status | Progress | Detail |
 |--------|--------|-------------|--------|
-| [**A — Infrastructure & CI/CD**](epic-a-infrastructure.md) | ✅ Terminée | 7/7 | ✅ US-001, US-002, US-003, US-004, US-005, US-006, US-007 |
-| [**B — Modernisation C++20**](epic-b-modernisation-cpp20.md) | ✅ Terminée | 3/3 | ✅ US-008, US-009, US-010 (fusionné US-019) |
-| [**C — Dette technique**](epic-c-dette-technique.md) | ✅ Terminée | 4/4 | ✅ US-011, US-012, US-013, US-014 |
-| [**D — Conformité STL**](epic-d-conformite-stl.md) | ✅ Terminée | 4/4 | ✅ US-015, US-016, US-017, US-018 |
-| [**E — Comparaison & I/O**](epic-e-comparaison-io.md) | ✅ Terminée | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
-| [**F — Arithmétique**](epic-f-arithmetique.md) | ✅ Terminée | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
-| [**G — Algorithmes**](epic-g-algorithmes.md) | ✅ Terminée | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
-| [**H — Vues & reshape**](epic-h-vues-reshape.md) | ✅ Terminée | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
-| [**I — Packaging & préparation v1.0.0**](epic-i-packaging.md) | 🔄 En cours | 9/10 | ✅ US-038, ✅ US-040, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-048, ✅ US-049, ⬜ US-042 |
-| [**J — Ergonomie & finition**](epic-j-ergonomie.md) | ✅ Terminée | 11/11 | ✅ US-039, ✅ US-050 à US-059 |
-| [**K — Extensions pre-v1**](epic-k-extensions.md) | ✅ Terminée | 10/10 | ✅ US-060 à US-069 |
+| [**A — Infrastructure & CI/CD**](epic-a-infrastructure.md) | ✅ Complete | 7/7 | ✅ US-001, US-002, US-003, US-004, US-005, US-006, US-007 |
+| [**B — C++20 Modernisation**](epic-b-modernisation-cpp20.md) | ✅ Complete | 3/3 | ✅ US-008, US-009, US-010 (merged US-019) |
+| [**C — Technical debt**](epic-c-dette-technique.md) | ✅ Complete | 4/4 | ✅ US-011, US-012, US-013, US-014 |
+| [**D — STL compliance**](epic-d-conformite-stl.md) | ✅ Complete | 4/4 | ✅ US-015, US-016, US-017, US-018 |
+| [**E — Comparison & I/O**](epic-e-comparaison-io.md) | ✅ Complete | 7/7 | ✅ US-019, US-020, US-021, US-022, US-023, US-024, US-025 |
+| [**F — Arithmetic**](epic-f-arithmetique.md) | ✅ Complete | 4/4 | ✅ US-026, ✅ US-027, ✅ US-028, ✅ US-029 |
+| [**G — Algorithms**](epic-g-algorithmes.md) | ✅ Complete | 5/5 | ✅ US-030, ✅ US-031, ✅ US-032, ✅ US-033, ✅ US-034 |
+| [**H — Views & reshape**](epic-h-vues-reshape.md) | ✅ Complete | 4/4 | ✅ US-035, ✅ US-036, ✅ US-037, ✅ US-044 |
+| [**I — Packaging & v1.0.0 preparation**](epic-i-packaging.md) | 🔄 In progress | 9/10 | ✅ US-038, ✅ US-040, ✅ US-041, ✅ US-043, ✅ US-045, ✅ US-046, ✅ US-047, ✅ US-048, ✅ US-049, ⬜ US-042 |
+| [**J — Ergonomics & polish**](epic-j-ergonomie.md) | ✅ Complete | 11/11 | ✅ US-039, ✅ US-050 to US-059 |
+| [**K — Pre-v1 extensions**](epic-k-extensions.md) | ✅ Complete | 10/10 | ✅ US-060 to US-069 |
 
-**Total : 68 / 69 US**
+**Total: 68 / 69 US**
 
-> Le tableau US par US de chaque épopée est dans le fichier correspondant. Mettre à jour ces tableaux **et** le compteur de progression de l'épopée ci-dessus à chaque US clôturée.
+> The per-US table for each epic is in the corresponding file. Update these tables **and** the epic progress counter above whenever a US is closed.
 
 ---
 
-## Objectifs globaux
+## Global objectives
 
-| Axe | Cible |
+| Axis | Target |
 |-----|-------|
 | Standard | C++20 (concepts, `<=>`, `consteval`, `std::span`) |
-| API | STL-compliant + algèbre linéaire + vues |
-| Couverture | 100 % lignes & branches |
-| Qualité | clang-format, clang-tidy, sanitizers, doc Doxygen publiée |
-| CI/CD | Multi-OS, multi-compilateurs, releases automatisées |
+| API | STL-compliant + linear algebra + views |
+| Coverage | 100% lines & branches |
+| Quality | clang-format, clang-tidy, sanitizers, Doxygen doc published |
+| CI/CD | Multi-OS, multi-compiler, automated releases |
 
-## Décisions transverses (s'appliquent à toutes les US)
+## Cross-cutting decisions (apply to all US)
 
-### Outils & versions cibles
-- **Compilateurs supportés :** GCC ≥ 12, Clang ≥ 15, MSVC ≥ 19.30 (VS 2022), Apple Clang ≥ 14
-- **CMake :** ≥ 3.20 (FetchContent stable, `target_compile_features(cxx_std_20)`)
-- **Tests :** GoogleTest (déjà en place — pas de migration vers Catch2/doctest)
-- **Couverture :** gcov + lcov + Codecov.io
-- **Doc :** Doxygen → GitHub Pages (branche `gh-pages`)
-- **Format :** clang-format avec style basé sur LLVM (4-space indent, 100 cols)
-- **Linter :** clang-tidy avec ruleset bugprone-*, modernize-*, performance-*, readability-*
+### Tools & target versions
+- **Supported compilers:** GCC ≥ 12, Clang ≥ 15, MSVC ≥ 19.30 (VS 2022), Apple Clang ≥ 14
+- **CMake:** ≥ 3.20 (FetchContent stable, `target_compile_features(cxx_std_20)`)
+- **Tests:** GoogleTest (already in place — no migration to Catch2/doctest)
+- **Coverage:** gcov + lcov + Codecov.io
+- **Doc:** Doxygen → GitHub Pages (`gh-pages` branch)
+- **Format:** clang-format with LLVM-based style (4-space indent, 100 cols)
+- **Linter:** clang-tidy with ruleset bugprone-*, modernize-*, performance-*, readability-*
 
-### Conventions de code
-- Namespace racine : `ysc`
-- Détails internes : `ysc::detail` (renommer `_details` → `detail`, US-014)
-- snake_case pour fonctions/variables, PascalCase pour templates types
-- Tests dans `test/src/<feature>.cpp` ; un fichier par US fonctionnelle
-- Noms de tests : `TEST(MatrixXxx, BehaviorYyy)`
+### Code conventions
+- Root namespace: `ysc`
+- Internal details: `ysc::detail` (rename `_details` → `detail`, US-014)
+- snake_case for functions/variables, PascalCase for template types
+- Tests in `test/src/<feature>.cpp`; one file per functional US
+- Test names: `TEST(MatrixXxx, BehaviorYyy)`
 
-### Layout mémoire & sémantique
-- **Row-major** (rightmost dimension contiguë) — CONSERVÉ, ne pas changer
-- Stockage : `std::array<T, (Dims*...)>` — CONSERVÉ
-- Aucun overhead vs C-array : tout doit rester `constexpr`-friendly et sans branche dynamique sur les chemins chauds
-- Politique d'invalidation des itérateurs : jamais invalidés (sauf swap qui suit l'élément)
+### Memory layout & semantics
+- **Row-major** (rightmost dimension contiguous) — RETAINED, do not change
+- Storage: `std::array<T, (Dims*...)>` — RETAINED
+- No overhead vs C-array: everything must remain `constexpr`-friendly and without dynamic branches on hot paths
+- Iterator invalidation policy: never invalidated (except swap which follows the element)
 
-### Politique d'erreur
-- `operator()` : UB hors bornes (perf-critical)
-- `at()` : `std::out_of_range`
-- Erreurs de type/taille : à la compilation (concepts/static_assert), jamais runtime
+### Error policy
+- `operator()`: UB out-of-bounds (perf-critical)
+- `at()`: `std::out_of_range`
+- Type/size errors: at compile time (concepts/static_assert), never runtime
 
-### Granularité des PRs
-- 1 US = 1 PR ≤ 400 lignes diff (hors tests)
-- Chaque PR doit laisser le build vert et les tests verts
-- Pas de breaking change sans bump majeur
+### PR granularity
+- 1 US = 1 PR ≤ 400 lines diff (excluding tests)
+- Each PR must leave the build and tests green
+- No breaking changes without a major bump
 
-### Définition of Done (DoD) — critères transverses
+### Definition of Done (DoD) — cross-cutting criteria
 
-Toute US est considérée **Done** quand, en plus de ses critères d'acceptation propres :
+A US is considered **Done** when, in addition to its own acceptance criteria:
 
-- Build et tests verts (`cmake --build build --target check`)
-- Aucun avertissement clang-format (`cmake --build build --target format-check`)
-- Aucun avertissement clang-tidy (`cmake --build build --target lint`)
-- **Documentation :** toute fonction publique (membre ou libre) ajoutée ou modifiée est documentée avec Doxygen :
-  - `@brief` — description en une phrase
-  - `@tparam` pour chaque paramètre template (si applicable)
-  - `@param` pour chaque paramètre de fonction (si applicable)
-  - `@return` si la valeur de retour est non-void
-  - Un exemple compilable dans `@code`…`@endcode`
-- Toute nouvelle fonction est rattachée à un groupe `@ingroup` existant (ou un nouveau groupe `@defgroup` créé), afin d'être accessible depuis la page principale de la doc Doxygen en ≤ 2 clics
+- Build and tests green (`cmake --build build --target check`)
+- No clang-format warnings (`cmake --build build --target format-check`)
+- No clang-tidy warnings (`cmake --build build --target lint`)
+- **Documentation:** every public function (member or free) added or modified is documented with Doxygen:
+  - `@brief` — one-sentence description
+  - `@tparam` for each template parameter (if applicable)
+  - `@param` for each function parameter (if applicable)
+  - `@return` if the return value is non-void
+  - A compilable example in `@code`…`@endcode`
+- Every new function is attached to an `@ingroup` existing group (or a new `@defgroup` created), so it is reachable from the main Doxygen doc page in ≤ 2 clicks
 
 ---
 
-## Épopées et dépendances
+## Epics and dependencies
 
 ```
 EPIC A — Infrastructure & CI/CD
@@ -95,63 +95,63 @@ EPIC A — Infrastructure & CI/CD
                   → US-006
                   → US-007
 
-EPIC B — Modernisation C++20
+EPIC B — C++20 Modernisation
   US-008 (bump standard) → US-009 (concepts) → US-010 (<=>)
 
-EPIC C — Dette technique & cleanup
-  US-011, US-012, US-013, US-014 (indépendants, faisables en parallèle)
+EPIC C — Technical debt & cleanup
+  US-011, US-012, US-013, US-014 (independent, can be done in parallel)
 
-EPIC D — Conformité STL
+EPIC D — STL compliance
   US-015 (typedefs) → US-016 (iterators) → US-017 (size/data/empty)
                                          → US-018 (front/back/fill)
 
-EPIC E — Comparaison & I/O
+EPIC E — Comparison & I/O
   US-019 (==/<=>) → US-020 (hash)
   US-021 (refactor ctor) → US-022 (nested init-list) → US-023 (factories)
   US-024 (ostream) → US-025 (std::format)
 
-EPIC F — Arithmétique
+EPIC F — Arithmetic
   US-026 (element-wise +/-) → US-027 (element-wise */÷)
-  US-028 (scalar) → US-029 (unaire)
+  US-028 (scalar) → US-029 (unary)
 
-EPIC G — Algorithmes
+EPIC G — Algorithms
   US-030 (apply) → US-031 (reductions)
   US-032 (transpose) → US-033 (matmul 2D) → US-034 (dot)
 
-EPIC H — Vues & reshape
+EPIC H — Views & reshape
   US-035 (matrix_view) → US-036 (slice/submatrix) → US-037 (reshape)
 
-EPIC I — Packaging & préparation v1.0.0
+EPIC I — Packaging & v1.0.0 preparation
   US-038 (zero-dim edge case)
   US-046 (doc fixes + .gitignore)
   US-045 (CMake packaging) → US-047 (README), US-048 (CI consumer), US-049 (amalgamation)
-  US-040 (examples) → dépend US-045
+  US-040 (examples) → depends US-045
   US-041 (100% coverage gate)
   US-043 (Doxygen) → US-050 (cookbook, EPIC J)
   US-047 (README) → US-042 (tag v1.0.0)
   US-049 (amalgamation) → US-042
 
-EPIC J — Ergonomie & finition
+EPIC J — Ergonomics & polish
   US-039 (benchmarks)
-  US-050 (cookbook) → dépend US-043
+  US-050 (cookbook) → depends US-043
   US-051 (strided iterators) → US-052, US-058
   US-052 (view I/O + composables)
-  US-053 (constructeurs additionnels)
-  US-054 (rows/cols + matmul 1D) → dépend US-036, US-033
+  US-053 (additional constructors)
+  US-054 (rows/cols + matmul 1D) → depends US-036, US-033
   US-055 (CHANGELOG)
   US-056 (at() messages)
-  US-057 (NOLINT centralisé)
-  US-058 (optim ctor strided) → dépend US-051
+  US-057 (centralise NOLINT)
+  US-058 (optimise strided ctor) → depends US-051
   US-059 (operator-() + hash 64-bit)
 
-EPIC K — Extensions pre-v1
-  US-060 (réductions par axe) → dépend US-031
-  US-061 (submatrix) → dépend US-036
-  US-062 (enumerate) → dépend US-016
-  US-063 (bitwise) → dépend US-026
-  US-064 (ASan dangling view) → dépend US-035, US-003
-  US-065 (linalg reference) → dépend US-033, US-034
+EPIC K — Pre-v1 extensions
+  US-060 (axis reductions) → depends US-031
+  US-061 (submatrix) → depends US-036
+  US-062 (enumerate) → depends US-016
+  US-063 (bitwise) → depends US-026
+  US-064 (ASan dangling view) → depends US-035, US-003
+  US-065 (linalg reference) → depends US-033, US-034
   US-066 (CI Windows cache)
-  US-067 (hygiène repo)
-  US-068 (migration guide) → dépend US-042
+  US-067 (repo hygiene)
+  US-068 (migration guide) → depends US-042
 ```

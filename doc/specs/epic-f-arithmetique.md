@@ -1,85 +1,85 @@
-# EPIC F — Arithmétique
+# EPIC F — Arithmetic
 
-| US | Titre | Priorité | Statut |
+| US | Title | Priority | Status |
 |----|-------|----------|--------|
-| US-026 | Addition/Soustraction élément-par-élément | P1 | ✅ Done |
-| US-027 | Multiplication/Division Hadamard (élément-par-élément) | P1 | ✅ Done |
-| US-028 | Arithmétique scalaire | P1 | ✅ Done |
-| US-029 | Opérateurs unaires `+`/`-` | P2 | ✅ Done |
+| US-026 | Element-wise addition/subtraction | P1 | ✅ Done |
+| US-027 | Hadamard multiplication/division (element-wise) | P1 | ✅ Done |
+| US-028 | Scalar arithmetic | P1 | ✅ Done |
+| US-029 | Unary operators `+`/`-` | P2 | ✅ Done |
 
 ---
 
-## US-026 — Addition/Soustraction élément-par-élément
+## US-026 — Element-wise addition/subtraction
 
-**Priorité :** P1 — **Dépend de :** US-016
+**Priority:** P1 — **Depends on:** US-016
 
-### Spécification
+### Specification
 ```cpp
 matrix& operator+=(const matrix& other);
 matrix& operator-=(const matrix& other);
 friend matrix operator+(matrix lhs, const matrix& rhs) { return lhs += rhs; }
 friend matrix operator-(matrix lhs, const matrix& rhs) { return lhs -= rhs; }
 ```
-Implémentation : `std::transform` sur `_data`.
-- Contrainte de type : `requires requires(T a, T b) { a += b; }`
+Implementation: `std::transform` on `_data`.
+- Type constraint: `requires requires(T a, T b) { a += b; }`
 
-### Critères d'acceptation
-- [ ] `m1 + m2`, `m1 - m2`, `m1 += m2`, `m1 -= m2` fonctionnent
-- [ ] Test : matrice avant/après identique, pas de modif de l'opérande
-- [ ] Compile-time error si T n'a pas `operator+=`
+### Acceptance criteria
+- [ ] `m1 + m2`, `m1 - m2`, `m1 += m2`, `m1 -= m2` work
+- [ ] Test: matrix before/after identical, no modification of operand
+- [ ] Compile-time error if T does not have `operator+=`
 
 ---
 
-## US-027 — Multiplication/Division Hadamard (élément-par-élément)
+## US-027 — Hadamard multiplication/division (element-wise)
 
-**Priorité :** P1 — **Dépend de :** US-026
+**Priority:** P1 — **Depends on:** US-026
 
-### Spécification
-**Note :** `operator*` est ici la **multiplication de Hadamard** (élément-par-élément), PAS le produit matriciel — c'est le choix STL/numpy. Le produit matriciel sera dans US-033 sous nom `matmul`.
+### Specification
+**Note:** `operator*` here is the **Hadamard product** (element-wise), NOT the matrix product — this is the STL/numpy convention. The matrix product will be in US-033 under the name `matmul`.
 ```cpp
 matrix& operator*=(const matrix& other);  // Hadamard
 matrix& operator/=(const matrix& other);
 friend matrix operator*(matrix lhs, const matrix& rhs);
 friend matrix operator/(matrix lhs, const matrix& rhs);
 ```
-Documenter clairement dans la docstring.
+Clearly document in the docstring.
 
-### Critères d'acceptation
-- [ ] Hadamard fonctionne
-- [ ] Doc explicite sur la sémantique
+### Acceptance criteria
+- [ ] Hadamard works
+- [ ] Explicit doc on the semantics
 - [ ] Test `arithmetic_hadamard.cpp`
 
 ---
 
-## US-028 — Arithmétique scalaire
+## US-028 — Scalar arithmetic
 
-**Priorité :** P1 — **Dépend de :** US-027
+**Priority:** P1 — **Depends on:** US-027
 
-### Spécification
+### Specification
 ```cpp
 template<class Scalar> matrix& operator*=(const Scalar& s);
 template<class Scalar> matrix& operator/=(const Scalar& s);
 template<class Scalar> matrix& operator+=(const Scalar& s);
 template<class Scalar> matrix& operator-=(const Scalar& s);
-// + opérateurs binaires friend (commute pour *)
+// + binary friend operators (commutative for *)
 ```
 
-### Critères d'acceptation
-- [ ] `m * 2`, `2 * m`, `m / 2` fonctionnent
+### Acceptance criteria
+- [ ] `m * 2`, `2 * m`, `m / 2` work
 - [ ] Test `arithmetic_scalar.cpp`
 
 ---
 
-## US-029 — Opérateurs unaires `+`/`-`
+## US-029 — Unary operators `+`/`-`
 
-**Priorité :** P2 — **Dépend de :** US-028
+**Priority:** P2 — **Depends on:** US-028
 
-### Spécification
+### Specification
 ```cpp
 matrix operator+() const { return *this; }
-matrix operator-() const;  // négation élément-par-élément
+matrix operator-() const;  // element-wise negation
 ```
 
-### Critères d'acceptation
-- [ ] `-m` retourne matrice avec éléments négatifs
+### Acceptance criteria
+- [ ] `-m` returns matrix with negated elements
 - [ ] `+m == m`

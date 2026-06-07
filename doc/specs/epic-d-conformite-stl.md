@@ -1,20 +1,20 @@
-# EPIC D — Conformité STL
+# EPIC D — STL Compliance
 
-| US | Titre | Priorité | Statut |
+| US | Title | Priority | Status |
 |----|-------|----------|--------|
-| US-015 | Typedefs membres | P0 | ✅ Done |
-| US-016 | Itérateurs (begin/end et co.) | P0 | ✅ Done |
+| US-015 | Member typedefs | P0 | ✅ Done |
+| US-016 | Iterators (begin/end and co.) | P0 | ✅ Done |
 | US-017 | `size()`, `empty()`, `data()`, `max_size()` | P1 | ✅ Done |
-| US-018 | `front()`, `back()`, `fill()`, `swap()` membre | P1 | ✅ Done |
+| US-018 | `front()`, `back()`, `fill()`, member `swap()` | P1 | ✅ Done |
 
 ---
 
-## US-015 — Typedefs membres
+## US-015 — Member typedefs
 
-**Priorité :** P0 — **Dépend de :** US-008 — **Bloque :** US-016
+**Priority:** P0 — **Depends on:** US-008 — **Blocks:** US-016
 
-### Spécification
-Ajouter dans `class matrix` :
+### Specification
+Add in `class matrix`:
 ```cpp
 using value_type             = T;
 using size_type              = std::size_t;
@@ -29,18 +29,18 @@ using reverse_iterator       = std::reverse_iterator<iterator>;
 using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 ```
 
-### Critères d'acceptation
-- [ ] `static_assert(std::same_as<matrix<int,3>::value_type, int>)` dans tests
-- [ ] Tous les typedefs accessibles publiquement
+### Acceptance criteria
+- [ ] `static_assert(std::same_as<matrix<int,3>::value_type, int>)` in tests
+- [ ] All typedefs publicly accessible
 
 ---
 
-## US-016 — Itérateurs (begin/end et co.)
+## US-016 — Iterators (begin/end and co.)
 
-**Priorité :** P0 — **Dépend de :** US-015
+**Priority:** P0 — **Depends on:** US-015
 
-### Spécification
-Itération **linéaire** (en row-major) sur tous les éléments.
+### Specification
+**Linear** iteration (in row-major order) over all elements.
 ```cpp
 constexpr iterator               begin()        noexcept { return _data.begin(); }
 constexpr const_iterator         begin()  const noexcept { return _data.begin(); }
@@ -56,19 +56,19 @@ constexpr const_reverse_iterator rend()   const noexcept { return _data.rend(); 
 constexpr const_reverse_iterator crend()  const noexcept { return _data.crend(); }
 ```
 
-### Critères d'acceptation
+### Acceptance criteria
 - [ ] `static_assert(std::contiguous_iterator<iterator>)`
-- [ ] Range-for fonctionne : `for (auto& v : m) ...`
-- [ ] `std::ranges::sort(m)` compile et fonctionne
-- [ ] Test `iterators.cpp` couvre toutes les variantes
+- [ ] Range-for works: `for (auto& v : m) ...`
+- [ ] `std::ranges::sort(m)` compiles and works
+- [ ] Test `iterators.cpp` covers all variants
 
 ---
 
 ## US-017 — `size()`, `empty()`, `data()`, `max_size()`
 
-**Priorité :** P1 — **Dépend de :** US-015
+**Priority:** P1 — **Depends on:** US-015
 
-### Spécification
+### Specification
 ```cpp
 static constexpr size_type size()      noexcept { return linear_size; }
 static constexpr bool      empty()     noexcept { return linear_size == 0; }
@@ -76,28 +76,28 @@ static constexpr size_type max_size()  noexcept { return linear_size; }
 constexpr pointer          data()       noexcept { return _data.data(); }
 constexpr const_pointer    data() const noexcept { return _data.data(); }
 ```
-Note : `size()/max_size()/empty()` sont `static` car compile-time. Documenter.
+Note: `size()/max_size()/empty()` are `static` because they are compile-time. Document this.
 
-### Critères d'acceptation
-- [ ] `static_assert(matrix<int,2,3>::size() == 6)` passe
-- [ ] `data()` retourne adresse de `_data[0]`
+### Acceptance criteria
+- [ ] `static_assert(matrix<int,2,3>::size() == 6)` passes
+- [ ] `data()` returns address of `_data[0]`
 
 ---
 
-## US-018 — `front()`, `back()`, `fill()`, `swap()` membre
+## US-018 — `front()`, `back()`, `fill()`, member `swap()`
 
-**Priorité :** P1 — **Dépend de :** US-016, US-011
+**Priority:** P1 — **Depends on:** US-016, US-011
 
-### Spécification
+### Specification
 ```cpp
 constexpr reference       front()       noexcept { return _data.front(); }
 constexpr const_reference front() const noexcept { return _data.front(); }
 constexpr reference       back()        noexcept { return _data.back(); }
 constexpr const_reference back()  const noexcept { return _data.back(); }
-void fill(const T& value)              { _data.fill(value); }   // déjà via US-011
-void swap(matrix& other)      noexcept(/* T swap noexcept */);  // membre, en plus du friend swap
+void fill(const T& value)              { _data.fill(value); }   // already via US-011
+void swap(matrix& other)      noexcept(/* T swap noexcept */);  // member, in addition to friend swap
 ```
 
-### Critères d'acceptation
-- [ ] Tous testés sur matrix vide → ne devrait pas compiler car `front/back` UB sur taille 0 (cf. US-038)
+### Acceptance criteria
+- [ ] All tested on empty matrix → should not compile because `front/back` is UB on size 0 (cf. US-038)
 - [ ] Test `accessors.cpp`

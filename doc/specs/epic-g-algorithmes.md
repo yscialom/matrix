@@ -1,39 +1,39 @@
-# EPIC G — Algorithmes
+# EPIC G — Algorithms
 
-| US | Titre | Priorité | Statut |
+| US | Title | Priority | Status |
 |----|-------|----------|--------|
 | US-030 | `apply()` / `transform()` | P1 | ✅ Done |
-| US-031 | Réductions : `sum`, `min`, `max`, `all`, `any` | P1 | ✅ Done |
-| US-032 | `transpose()` (2D uniquement) | P1 | ✅ Done |
-| US-033 | Produit matriciel `matmul` (2D) | P1 | ✅ Done |
-| US-034 | Produit scalaire `dot` (1D) | P2 | ✅ Done |
+| US-031 | Reductions: `sum`, `min`, `max`, `all`, `any` | P1 | ✅ Done |
+| US-032 | `transpose()` (2D only) | P1 | ✅ Done |
+| US-033 | Matrix product `matmul` (2D) | P1 | ✅ Done |
+| US-034 | Dot product `dot` (1D) | P2 | ✅ Done |
 
 ---
 
 ## US-030 — `apply()` / `transform()`
 
-**Priorité :** P1 — **Dépend de :** US-016
+**Priority:** P1 — **Depends on:** US-016
 
-### Spécification
+### Specification
 ```cpp
-template<std::invocable<T&> F>          void apply(F&& f);                 // mute en place
+template<std::invocable<T&> F>          void apply(F&& f);                 // mutates in place
 template<std::invocable<const T&> F>    auto map(F&& f) const -> matrix<std::invoke_result_t<F, const T&>, Dimensions...>;
 ```
-- `apply` modifie en place
-- `map` retourne nouvelle matrix (potentiellement type différent)
+- `apply` modifies in place
+- `map` returns a new matrix (potentially a different type)
 
-### Critères d'acceptation
-- [ ] `m.apply([](int& v){ v *= 2; })` mute m
-- [ ] `m.map([](int v){ return std::to_string(v); })` retourne `matrix<string, ...>`
+### Acceptance criteria
+- [ ] `m.apply([](int& v){ v *= 2; })` mutates m
+- [ ] `m.map([](int v){ return std::to_string(v); })` returns `matrix<string, ...>`
 
 ---
 
-## US-031 — Réductions : `sum`, `min`, `max`, `all`, `any`
+## US-031 — Reductions: `sum`, `min`, `max`, `all`, `any`
 
-**Priorité :** P1 — **Dépend de :** US-016
+**Priority:** P1 — **Depends on:** US-016
 
-### Spécification
-Méthodes membres const :
+### Specification
+Const member methods:
 ```cpp
 T    sum()  const;
 T    min()  const;   // requires linear_size > 0
@@ -41,59 +41,59 @@ T    max()  const;
 bool all()  const;   // requires T convertible_to bool
 bool any()  const;
 ```
-Implémentations via `std::accumulate`/`std::ranges::min`/etc.
+Implementations via `std::accumulate`/`std::ranges::min`/etc.
 
-### Critères d'acceptation
-- [x] Tous testés
-- [x] `static_assert` sur exemples constexpr-able
+### Acceptance criteria
+- [x] All tested
+- [x] `static_assert` on constexpr-able examples
 
 ---
 
-## US-032 — `transpose()` (2D uniquement)
+## US-032 — `transpose()` (2D only)
 
-**Priorité :** P1 — **Dépend de :** US-016
+**Priority:** P1 — **Depends on:** US-016
 
-### Spécification
+### Specification
 ```cpp
 template<std::size_t R, std::size_t C>
 constexpr matrix<T, C, R> transpose(const matrix<T, R, C>& m);
 ```
-Fonction libre dans `ysc::`. N'existe que pour matrices d'ordre 2.
+Free function in `ysc::`. Only exists for order-2 matrices.
 
-### Critères d'acceptation
-- [ ] `transpose(matrix<int,2,3>{...})` retourne `matrix<int,3,2>`
+### Acceptance criteria
+- [ ] `transpose(matrix<int,2,3>{...})` returns `matrix<int,3,2>`
 - [ ] `transpose(transpose(m)) == m`
 
 ---
 
-## US-033 — Produit matriciel `matmul` (2D)
+## US-033 — Matrix product `matmul` (2D)
 
-**Priorité :** P1 — **Dépend de :** US-032
+**Priority:** P1 — **Depends on:** US-032
 
-### Spécification
+### Specification
 ```cpp
 template<class T, std::size_t M, std::size_t N, std::size_t P>
 constexpr matrix<T, M, P> matmul(const matrix<T, M, N>& a, const matrix<T, N, P>& b);
 ```
-- Implémentation naïve O(MNP) — pas d'optim BLAS pour cette US (ferait l'objet d'une optim ultérieure si benchmarké comme bottleneck dans US-039)
-- Boucle triplement imbriquée, ordre i-k-j (cache-friendly avec layout row-major)
+- Naive O(MNP) implementation — no BLAS optimisation for this US (would be subject to a later optimisation if benchmarked as a bottleneck in US-039)
+- Triply nested loop, i-k-j order (cache-friendly with row-major layout)
 
-### Critères d'acceptation
-- [ ] Test contre matrices identités, matrices non-carrées
-- [ ] Test : `matmul(identity<int,3>(), m) == m`
-- [ ] Compile-time check sur dimensions intérieures
+### Acceptance criteria
+- [ ] Test against identity matrices, non-square matrices
+- [ ] Test: `matmul(identity<int,3>(), m) == m`
+- [ ] Compile-time check on inner dimensions
 
 ---
 
-## US-034 — Produit scalaire `dot` (1D)
+## US-034 — Dot product `dot` (1D)
 
-**Priorité :** P2 — **Dépend de :** US-016
+**Priority:** P2 — **Depends on:** US-016
 
-### Spécification
+### Specification
 ```cpp
 template<class T, std::size_t N>
 constexpr T dot(const matrix<T, N>& a, const matrix<T, N>& b);
 ```
 
-### Critères d'acceptation
+### Acceptance criteria
 - [ ] `dot({1,2,3}, {4,5,6}) == 32`

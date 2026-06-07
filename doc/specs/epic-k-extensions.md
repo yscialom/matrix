@@ -1,187 +1,187 @@
-# EPIC K — Extensions pre-v1
+# EPIC K — Pre-v1 Extensions
 
-| US | Titre | Priorité | Statut |
+| US | Title | Priority | Status |
 |----|-------|----------|--------|
-| US-060 | Réductions par axe (`sum<Axis>()`, etc.) | P2 | ✅ Done |
-| US-061 | `submatrix` : extraction d'un sous-bloc N-D | P2 | ✅ Done |
-| US-062 | `enumerate()` : itérateur de coordonnées | P2 | ✅ Done |
-| US-063 | Opérateurs bit-à-bit pour types entiers | P2 | ✅ Done |
-| US-064 | Test ASan : détection de vue dangling | P2 | ✅ Done |
-| US-065 | Tests de référence linalg (valeurs pré-calculées) | P2 | ✅ Done |
-| US-066 | CI Windows : cache vcpkg | P2 | ✅ Done |
-| US-067 | Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ✅ Done |
-| US-068 | Migration guide : promesse de stabilité SemVer v1.0.0 | P2 | ✅ Done |
-| US-069 | `generate` avec callable multi-index | P2 | ✅ Done |
+| US-060 | Axis reductions (`sum<Axis>()`, etc.) | P2 | ✅ Done |
+| US-061 | `submatrix`: N-D sub-block extraction | P2 | ✅ Done |
+| US-062 | `enumerate()`: coordinate iterator | P2 | ✅ Done |
+| US-063 | Bitwise operators for integer types | P2 | ✅ Done |
+| US-064 | ASan test: dangling view detection | P2 | ✅ Done |
+| US-065 | Linalg reference tests (pre-computed values) | P2 | ✅ Done |
+| US-066 | CI Windows: vcpkg cache | P2 | ✅ Done |
+| US-067 | Repo hygiene: `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot | P2 | ✅ Done |
+| US-068 | Migration guide: SemVer v1.0.0 stability promise | P2 | ✅ Done |
+| US-069 | `generate` with multi-index callable | P2 | ✅ Done |
 
 ---
 
-## US-060 — Réductions par axe (`sum<Axis>()`, etc.)
+## US-060 — Axis reductions (`sum<Axis>()`, etc.)
 
-**Priorité :** P2 — **Dépend de :** US-031 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-031 — **Epic:** K
 
 ### Story
-En tant qu'utilisateur, je veux calculer la somme, le min, le max d'une matrice selon un axe donné, en obtenant une matrice de dimension inférieure.
+As a user, I want to compute the sum, min, and max of a matrix along a given axis, obtaining a lower-dimensional matrix.
 
-### Spécification technique
-- `template<std::size_t Axis> constexpr auto sum() const -> matrix<T, /* dims sans Axis */>`
-- Idem pour `min<Axis>()` et `max<Axis>()`
-- Implémentation : métaprogrammation pour déduire les dimensions résultantes (supprimer la dimension `Axis` du pack `Dims...`)
-- Contrainte : `static_assert(Axis < order)`
+### Technical specification
+- `template<std::size_t Axis> constexpr auto sum() const -> matrix<T, /* dims without Axis */>`
+- Same for `min<Axis>()` and `max<Axis>()`
+- Implementation: metaprogramming to deduce the resulting dimensions (remove the `Axis` dimension from the `Dims...` pack)
+- Constraint: `static_assert(Axis < order)`
 
-### Critères d'acceptation
-- [x] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<0>()` == `matrix<int,3>{5,7,9}` (somme par colonnes)
-- [x] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<1>()` == `matrix<int,2>{6,15}` (somme par lignes)
-- [x] Erreur de compilation si `Axis >= order` (contrainte `requires(Axis < order)`)
-- [x] Tests dans `test/src/reductions_axis.cpp`
+### Acceptance criteria
+- [x] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<0>()` == `matrix<int,3>{5,7,9}` (column-wise sum)
+- [x] `matrix<int,2,3>{{1,2,3},{4,5,6}}.sum<1>()` == `matrix<int,2>{6,15}` (row-wise sum)
+- [x] Compilation error if `Axis >= order` (constraint `requires(Axis < order)`)
+- [x] Tests in `test/src/reductions_axis.cpp`
 
 ---
 
-## US-061 — `submatrix` : extraction d'un sous-bloc N-D
+## US-061 — `submatrix`: N-D sub-block extraction
 
-**Priorité :** P2 — **Dépend de :** US-036 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-036 — **Epic:** K
 
 ### Story
-En tant qu'utilisateur travaillant sur du traitement d'image ou des noyaux de convolution, je veux extraire un sous-bloc d'une matrice N-D.
+As a user working on image processing or convolution kernels, I want to extract a sub-block from an N-D matrix.
 
-### Spécification technique
+### Technical specification
 ```cpp
 template<std::size_t... NewD>
 matrix_view<T, strided, NewD...>
 submatrix(std::array<std::size_t, order> origin) const;
 ```
-- Contrainte compile-time : `sizeof...(NewD) == order`
-- Vérification runtime : `origin[i] + NewD[i] <= Dims[i]` pour chaque `i`, sinon `std::out_of_range`
-- Retourne une vue strided (strides calculés sur la matrice source)
+- Compile-time constraint: `sizeof...(NewD) == order`
+- Runtime verification: `origin[i] + NewD[i] <= Dims[i]` for each `i`, otherwise `std::out_of_range`
+- Returns a strided view (strides computed on the source matrix)
 
-### Critères d'acceptation
-- [ ] `m.submatrix<2,2>({1,1})` sur une `matrix<int,4,4>` retourne une vue 2×2 correcte
-- [ ] Mutation via la vue se reflète dans la matrice source
-- [ ] `m.submatrix<3,3>({2,2})` sur une `matrix<int,4,4>` lève `std::out_of_range`
-- [ ] Tests dans `test/src/submatrix.cpp`
-
----
-
-## US-062 — `enumerate()` : itérateur de coordonnées
-
-**Priorité :** P2 — **Dépend de :** US-016 — **Épopée :** K
-
-### Story
-En tant qu'utilisateur, je veux itérer sur les éléments d'une matrice avec leurs coordonnées multi-dimensionnelles (façon `np.ndenumerate`).
-
-### Spécification technique
-- `m.enumerate()` : retourne un range de `std::pair<std::array<std::size_t, order>, T&>`
-- Parcours row-major (cohérent avec l'itérateur linéaire)
-- Implémentation : adaptateur sur l'itérateur linéaire, conversion `linear_index → coordinates` via `detail::index_to_coordinates`
-
-### Critères d'acceptation
-- [ ] `for (auto& [coords, val] : m.enumerate())` compile
-- [ ] `coords` est un `std::array<std::size_t, order>` correct pour chaque élément
-- [ ] Mutation via `val` se reflète dans `m`
-- [ ] Tests dans `test/src/enumerate.cpp`
+### Acceptance criteria
+- [ ] `m.submatrix<2,2>({1,1})` on a `matrix<int,4,4>` returns a correct 2×2 view
+- [ ] Mutation via the view is reflected in the source matrix
+- [ ] `m.submatrix<3,3>({2,2})` on a `matrix<int,4,4>` raises `std::out_of_range`
+- [ ] Tests in `test/src/submatrix.cpp`
 
 ---
 
-## US-063 — Opérateurs bit-à-bit pour types entiers
+## US-062 — `enumerate()`: coordinate iterator
 
-**Priorité :** P2 — **Dépend de :** US-026 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-016 — **Epic:** K
 
 ### Story
-En tant qu'utilisateur travaillant sur des masques binaires (image, cryptographie), je veux appliquer des opérateurs bit-à-bit sur des `matrix<unsigned, ...>`.
+As a user, I want to iterate over the elements of a matrix with their multi-dimensional coordinates (like `np.ndenumerate`).
 
-### Spécification technique
-- Opérateurs membres : `operator&=`, `operator|=`, `operator^=`
-- Opérateurs scalaires : `operator<<=`, `operator>>=` (shift par un entier)
-- Opérateur unaire : `operator~` (NOT bit-à-bit)
-- Opérateurs binaires friends : `operator&`, `operator|`, `operator^`
-- Contrainte : `requires std::integral<T>` sur chaque opérateur
-- Implémentation : `std::transform` comme pour les opérateurs arithmétiques
+### Technical specification
+- `m.enumerate()`: returns a range of `std::pair<std::array<std::size_t, order>, T&>`
+- Row-major traversal (consistent with the linear iterator)
+- Implementation: adaptor on the linear iterator, conversion `linear_index → coordinates` via `detail::index_to_coordinates`
 
-### Critères d'acceptation
-- [ ] `matrix<unsigned,3>{1,2,3} & matrix<unsigned,3>{3,3,3}` compile et retourne `{1,2,3}`
-- [ ] `~matrix<unsigned,3>{0,0,0}` retourne matrice de `~0u`
-- [ ] Erreur de compilation pour `matrix<double,3>` (non-integral)
-- [ ] Tests dans `test/src/arithmetic_bitwise.cpp`
+### Acceptance criteria
+- [ ] `for (auto& [coords, val] : m.enumerate())` compiles
+- [ ] `coords` is a correct `std::array<std::size_t, order>` for each element
+- [ ] Mutation via `val` is reflected in `m`
+- [ ] Tests in `test/src/enumerate.cpp`
 
 ---
 
-## US-064 — Test ASan : détection de vue dangling
+## US-063 — Bitwise operators for integer types
 
-**Priorité :** P2 — **Dépend de :** US-035, US-003 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-026 — **Epic:** K
 
 ### Story
-En tant que mainteneur, je veux qu'un test sous ASan détecte une utilisation de `matrix_view` après destruction de la matrice source, pour valider le comportement attendu (UB → crash sous sanitizer).
+As a user working on binary masks (image, cryptography), I want to apply bitwise operators on `matrix<unsigned, ...>`.
 
-### Spécification technique
-- Fichier `test/src/matrix_view_lifetime.cpp`, compilé uniquement si `YSC_SANITIZERS_ENABLED`
-- Scénario : construire une `matrix_view` sur une matrice locale dans une sous-scope, laisser la matrice être détruite, accéder à la vue → use-after-free détecté par ASan
-- Le test est **intentionnellement un crash** sous ASan (use-after-free). Il doit être exclu du run normal et inclus dans un test dédié sous sanitizers
-- Utiliser `GTEST_SKIP()` si `!defined(YSC_SANITIZERS_ENABLED)` pour ne pas bloquer le build normal
+### Technical specification
+- Member operators: `operator&=`, `operator|=`, `operator^=`
+- Scalar operators: `operator<<=`, `operator>>=` (shift by an integer)
+- Unary operator: `operator~` (bitwise NOT)
+- Binary friend operators: `operator&`, `operator|`, `operator^`
+- Constraint: `requires std::integral<T>` on each operator
+- Implementation: `std::transform` as for arithmetic operators
 
-### Critères d'acceptation
-- [ ] Le fichier compile avec `ENABLE_SANITIZERS=ON`
-- [ ] Le test est skippé sans `ENABLE_SANITIZERS`
-- [ ] Le comportement UB est documenté dans la docstring Doxygen de `matrix_view`
+### Acceptance criteria
+- [ ] `matrix<unsigned,3>{1,2,3} & matrix<unsigned,3>{3,3,3}` compiles and returns `{1,2,3}`
+- [ ] `~matrix<unsigned,3>{0,0,0}` returns a matrix of `~0u`
+- [ ] Compilation error for `matrix<double,3>` (non-integral)
+- [ ] Tests in `test/src/arithmetic_bitwise.cpp`
 
 ---
 
-## US-065 — Tests de référence linalg (valeurs pré-calculées)
+## US-064 — ASan test: dangling view detection
 
-**Priorité :** P2 — **Dépend de :** US-033, US-034 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-035, US-003 — **Epic:** K
 
 ### Story
-En tant que mainteneur, je veux quelques tests de sanité qui comparent les résultats numériques de `matmul` et `dot` à des valeurs de référence.
+As a maintainer, I want a test under ASan to detect use of a `matrix_view` after destruction of the source matrix, to validate the expected behaviour (UB → crash under sanitizer).
 
-### Spécification technique
-- Nouveau fichier `test/src/linalg_reference.cpp`
-- Valeurs de référence hard-codées (calculées avec Numpy ou à la main, pas de dépendance runtime)
-- Matrices de test :
-  - `matmul` : 2×2, 2×3×3×2, matrice identité × matrice quelconque
-  - `dot` : 3 paires de vecteurs 1D
-  - `transpose` : 2×3 → vérification symétrie
-- Pas de dépendance externe (Numpy, Eigen) dans les tests
+### Technical specification
+- File `test/src/matrix_view_lifetime.cpp`, compiled only if `YSC_SANITIZERS_ENABLED`
+- Scenario: construct a `matrix_view` on a local matrix in a sub-scope, let the matrix be destroyed, access the view → use-after-free detected by ASan
+- The test is **intentionally a crash** under ASan (use-after-free). It must be excluded from the normal run and included in a dedicated test under sanitizers
+- Use `GTEST_SKIP()` if `!defined(YSC_SANITIZERS_ENABLED)` to not block the normal build
 
-### Critères d'acceptation
-- [ ] `matmul(A, B) == expected_AB` pour ≥ 3 paires de matrices
-- [ ] `dot(a, b) == expected` pour ≥ 3 paires de vecteurs
-- [ ] `transpose(transpose(m)) == m` pour ≥ 2 matrices
-- [ ] Tous les résultats vérifiés via `static_assert` quand `constexpr`
+### Acceptance criteria
+- [ ] The file compiles with `ENABLE_SANITIZERS=ON`
+- [ ] The test is skipped without `ENABLE_SANITIZERS`
+- [ ] The UB behaviour is documented in the Doxygen docstring of `matrix_view`
 
 ---
 
-## US-066 — CI Windows : cache vcpkg
+## US-065 — Linalg reference tests (pre-computed values)
 
-**Priorité :** P2 — **Dépend de :** US-001 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-033, US-034 — **Epic:** K
 
 ### Story
-En tant que mainteneur, je veux que la CI Windows ne retélécharge pas `vcpkg`/`gtest` à chaque run pour accélérer les builds.
+As a maintainer, I want a few sanity tests that compare the numerical results of `matmul` and `dot` against reference values.
 
-### Spécification technique
-- Ajouter `actions/cache@v4` sur `vcpkg_installed/` (ou le dossier d'install vcpkg) dans le job Windows
-- Key : hash du fichier de manifest vcpkg ou de la commande `vcpkg install gtest:x64-windows`
-- Restore-keys : fallback sur un cache partiel
+### Technical specification
+- New file `test/src/linalg_reference.cpp`
+- Hard-coded reference values (computed with NumPy or by hand, no runtime dependency)
+- Test matrices:
+  - `matmul`: 2×2, 2×3×3×2, identity matrix × arbitrary matrix
+  - `dot`: 3 pairs of 1D vectors
+  - `transpose`: 2×3 → symmetry verification
+- No external dependency (NumPy, Eigen) in the tests
 
-### Critères d'acceptation
-- [ ] Second run CI Windows avec code identique : step `vcpkg install` skippé (cache hit affiché)
-- [ ] Temps CI Windows réduit d'au moins 30 secondes sur cache chaud
+### Acceptance criteria
+- [ ] `matmul(A, B) == expected_AB` for ≥ 3 matrix pairs
+- [ ] `dot(a, b) == expected` for ≥ 3 vector pairs
+- [ ] `transpose(transpose(m)) == m` for ≥ 2 matrices
+- [ ] All results verified via `static_assert` when `constexpr`
 
 ---
 
-## US-067 — Hygiène repo : `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot
+## US-066 — CI Windows: vcpkg cache
 
-**Priorité :** P2 — **Dépend de :** rien — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-001 — **Epic:** K
 
 ### Story
-En tant que contributeur externe, je veux que le projet respecte les conventions OSS standards et facilite la contribution.
+As a maintainer, I want the Windows CI not to re-download `vcpkg`/`gtest` on every run in order to speed up builds.
 
-### Spécification technique
-- `.editorconfig` à la racine :
-  - `indent_style = space`, `indent_size = 4` pour C++ et CMake
-  - `indent_size = 2` pour YAML, JSON, Markdown
+### Technical specification
+- Add `actions/cache@v4` on `vcpkg_installed/` (or the vcpkg install directory) in the Windows job
+- Key: hash of the vcpkg manifest file or the command `vcpkg install gtest:x64-windows`
+- Restore-keys: fallback to a partial cache
+
+### Acceptance criteria
+- [ ] Second CI Windows run with identical code: `vcpkg install` step skipped (cache hit displayed)
+- [ ] Windows CI time reduced by at least 30 seconds on warm cache
+
+---
+
+## US-067 — Repo hygiene: `.editorconfig`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, Dependabot
+
+**Priority:** P2 — **Depends on:** nothing — **Epic:** K
+
+### Story
+As an external contributor, I want the project to follow standard OSS conventions and make contribution easier.
+
+### Technical specification
+- `.editorconfig` at the root:
+  - `indent_style = space`, `indent_size = 4` for C++ and CMake
+  - `indent_size = 2` for YAML, JSON, Markdown
   - `end_of_line = lf`, `charset = utf-8`, `trim_trailing_whitespace = true`, `insert_final_newline = true`
-  - Cohérent avec `.clang-format`
-- `SECURITY.md` : instructions pour reporter des vulnérabilités via GitHub Issue (surface réduite : lib sans I/O, header-only)
-- `CODE_OF_CONDUCT.md` : Contributor Covenant v2.1 (texte standard, adapté au nom du projet)
-- `.github/dependabot.yml` :
+  - Consistent with `.clang-format`
+- `SECURITY.md`: instructions for reporting vulnerabilities via GitHub Issue (reduced surface: lib without I/O, header-only)
+- `CODE_OF_CONDUCT.md`: Contributor Covenant v2.1 (standard text, adapted to the project name)
+- `.github/dependabot.yml`:
   ```yaml
   version: 2
   updates:
@@ -191,49 +191,49 @@ En tant que contributeur externe, je veux que le projet respecte les conventions
         interval: "monthly"
   ```
 
-### Critères d'acceptation
-- [ ] `.editorconfig` présent et cohérent avec `.clang-format` (même indent_size)
-- [ ] `SECURITY.md` présent avec instructions claires
-- [ ] `CODE_OF_CONDUCT.md` présent (Contributor Covenant v2.1)
-- [ ] `.github/dependabot.yml` présent avec config `github-actions`
+### Acceptance criteria
+- [ ] `.editorconfig` present and consistent with `.clang-format` (same indent_size)
+- [ ] `SECURITY.md` present with clear instructions
+- [ ] `CODE_OF_CONDUCT.md` present (Contributor Covenant v2.1)
+- [ ] `.github/dependabot.yml` present with `github-actions` config
 
 ---
 
-## US-068 — Migration guide : promesse de stabilité SemVer v1.0.0
+## US-068 — Migration guide: SemVer v1.0.0 stability promise
 
-**Priorité :** P2 — **Dépend de :** US-042 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-042 — **Epic:** K
 
 ### Story
-En tant qu'utilisateur adoptant la lib depuis une version v0.x, je veux comprendre les garanties de stabilité et les changements breaking introduits en v1.0.0.
+As a user adopting the lib from a v0.x version, I want to understand the stability guarantees and breaking changes introduced in v1.0.0.
 
-### Spécification technique
-- Nouveau fichier `doc/migration.md`
-- Contenu :
-  - **Promesse SemVer depuis v1.0.0** : API publique = tout hors `ysc::detail::`. `ysc::detail::` peut changer en patch.
-  - **Changements breaking depuis v0.x :**
-    - Renommage cible CMake `matrix` → `ysc-matrix`, alias `ysc::matrix` (US-045)
-    - Changement de valeur de hash (US-059) : les `std::unordered_set<matrix<...>>` sérialisés avant v1.0.0 sont invalidés
-  - **Instructions de migration** pour chaque changement (avant/après)
-- Lien depuis `README.md` section Installation et depuis `mainpage.md`
+### Technical specification
+- New file `doc/migration.md`
+- Content:
+  - **SemVer promise since v1.0.0**: public API = everything outside `ysc::detail::`. `ysc::detail::` may change in a patch.
+  - **Breaking changes since v0.x:**
+    - CMake target rename `matrix` → `ysc-matrix`, alias `ysc::matrix` (US-045)
+    - Hash value change (US-059): `std::unordered_set<matrix<...>>` serialised before v1.0.0 are invalidated
+  - **Migration instructions** for each change (before/after)
+- Link from `README.md` Installation section and from `mainpage.md`
 
-### Critères d'acceptation
-- [ ] `doc/migration.md` présent et lisible depuis le repo GitHub
-- [ ] Tous les changements breaking v0.x → v1.0.0 listés avec instructions
-- [ ] La promesse SemVer (API publique vs `ysc::detail::`) est explicitement documentée
-- [ ] Lien vers `doc/migration.md` depuis `README.md` et `mainpage.md`
+### Acceptance criteria
+- [ ] `doc/migration.md` present and readable from the GitHub repo
+- [ ] All breaking changes v0.x → v1.0.0 listed with instructions
+- [ ] The SemVer promise (public API vs `ysc::detail::`) is explicitly documented
+- [ ] Link to `doc/migration.md` from `README.md` and `mainpage.md`
 
 ---
 
-## US-069 — `generate` avec callable multi-index
+## US-069 — `generate` with multi-index callable
 
-**Priorité :** P2 — **Dépend de :** US-053 — **Épopée :** K
+**Priority:** P2 — **Depends on:** US-053 — **Epic:** K
 
 ### Story
-En tant qu'utilisateur construisant des matrices position-dépendantes (identité par fonction, triangulaire, Vandermonde, gradient XY, masques i*j…), je veux pouvoir passer à `ysc::generate` un callable qui reçoit les coordonnées N-D plutôt qu'un index linéaire. Aujourd'hui je dois dérouler à la main `i = k / cols; j = k % cols;`, ce qui est verbeux et fragile en 3D+.
+As a user constructing position-dependent matrices (identity by function, triangular, Vandermonde, XY gradient, i*j masks…), I want to pass to `ysc::generate` a callable that receives N-D coordinates rather than a linear index. Currently I have to manually unpack `i = k / cols; j = k % cols;`, which is verbose and fragile in 3D+.
 
-### Spécification technique
+### Technical specification
 
-Ajouter une **deuxième surcharge** de `ysc::generate` à côté de l'existante (`src/include/matrix.hpp:1632-1640`) :
+Add a **second overload** of `ysc::generate` alongside the existing one (`src/include/matrix.hpp:1632-1640`):
 
 ```cpp
 template <class T, std::size_t... Dims, class F>
@@ -243,18 +243,18 @@ template <class T, std::size_t... Dims, class F>
 constexpr matrix<T, Dims...> generate(F f);
 ```
 
-- L'overload existant (`std::invocable<F, std::size_t>`, index linéaire row-major) reste exposé et continue de compiler tel quel — **rétrocompatibilité totale**.
-- Implémentation : itérer sur les indices N-D via `detail::index_to_coordinates` (déjà disponible dans `matrix_detail.hpp`, US-044) et invoquer `f` avec `std::apply` sur le tuple de coordonnées.
-- Doxygen `@brief @tparam @return @code`, groupe `ysc_factory` (ou équivalent existant).
-- Le callable peut être `auto` (la C++ générique) ou typé explicitement `std::size_t`.
+- The existing overload (`std::invocable<F, std::size_t>`, linear row-major index) remains exposed and continues to compile as-is — **full backward compatibility**.
+- Implementation: iterate over N-D indices via `detail::index_to_coordinates` (already available in `matrix_detail.hpp`, US-044) and invoke `f` with `std::apply` on the coordinate tuple.
+- Doxygen `@brief @tparam @return @code`, group `ysc_factory` (or equivalent existing group).
+- The callable may be `auto` (generic C++) or explicitly typed `std::size_t`.
 
-**Cas limite à clarifier dans l'implémentation** : si `sizeof...(Dims) == 1`, un callable `[](std::size_t k){ ... }` satisfait à la fois `invocable<size_t>` et la nouvelle contrainte (1 arg). Trancher en faveur de la surcharge linéaire (rétrocompat) — par exemple via `requires(!std::invocable<F, std::size_t>)` sur la nouvelle surcharge, ou par concept plus strict.
+**Edge case to clarify in the implementation**: if `sizeof...(Dims) == 1`, a callable `[](std::size_t k){ ... }` satisfies both `invocable<size_t>` and the new constraint (1 arg). Resolve in favour of the linear overload (backward compat) — for example via `requires(!std::invocable<F, std::size_t>)` on the new overload, or via a stricter concept.
 
-### Critères d'acceptation
-- [ ] `auto I = ysc::generate<int, 3, 3>([](std::size_t i, std::size_t j){ return i == j ? 1 : 0; });` compile et produit la matrice identité 3×3.
-- [ ] `static_assert(ysc::generate<int, 2, 2>([](auto i, auto j){ return int(i + j); })(1, 1) == 2);` passe (la surcharge est `constexpr`).
-- [ ] Tenseur 3D : `auto m = ysc::generate<int, 2, 3, 4>([](auto i, auto j, auto k){ return int(i*100 + j*10 + k); });` compile et `m(1, 2, 3) == 123`.
-- [ ] La surcharge linéaire historique (`generate<int, N>([](std::size_t k){ return int(k); })`) compile sans modification.
-- [ ] Test dédié `test/src/generate_multi_index.cpp` couvrant : 1D (équivalent linéaire vs multi-index), 2D, 3D, type non-trivial, propagation `constexpr`.
-- [ ] Doxygen mis à jour avec exemple inline `@code`.
-- [ ] CI verte sur toutes plateformes ; clang-format / clang-tidy clean.
+### Acceptance criteria
+- [ ] `auto I = ysc::generate<int, 3, 3>([](std::size_t i, std::size_t j){ return i == j ? 1 : 0; });` compiles and produces the 3×3 identity matrix.
+- [ ] `static_assert(ysc::generate<int, 2, 2>([](auto i, auto j){ return int(i + j); })(1, 1) == 2);` passes (the overload is `constexpr`).
+- [ ] 3D tensor: `auto m = ysc::generate<int, 2, 3, 4>([](auto i, auto j, auto k){ return int(i*100 + j*10 + k); });` compiles and `m(1, 2, 3) == 123`.
+- [ ] The historical linear overload (`generate<int, N>([](std::size_t k){ return int(k); })`) compiles without modification.
+- [ ] Dedicated test `test/src/generate_multi_index.cpp` covering: 1D (linear vs multi-index equivalent), 2D, 3D, non-trivial type, `constexpr` propagation.
+- [ ] Doxygen updated with inline `@code` example.
+- [ ] CI green on all platforms; clang-format / clang-tidy clean.

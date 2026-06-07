@@ -1,92 +1,92 @@
 # EPIC A — Infrastructure & CI/CD
 
-| US | Titre | Priorité | Statut |
+| US | Title | Priority | Status |
 |----|-------|----------|--------|
-| US-001 | Pipeline CI multi-plateforme | P0 | ✅ Done |
-| US-002 | Couverture de code (gcov + lcov + Codecov) | P0 | ✅ Done |
+| US-001 | Multi-platform CI pipeline | P0 | ✅ Done |
+| US-002 | Code coverage (gcov + lcov + Codecov) | P0 | ✅ Done |
 | US-003 | Sanitizers (ASan + UBSan) | P1 | ✅ Done |
-| US-004 | clang-format + vérification CI | P1 | ✅ Done |
-| US-005 | clang-tidy + vérification CI | P1 | ✅ Done |
-| US-006 | Doc Doxygen publiée sur GitHub Pages | P1 | ✅ Done |
+| US-004 | clang-format + CI verification | P1 | ✅ Done |
+| US-005 | clang-tidy + CI verification | P1 | ✅ Done |
+| US-006 | Doxygen doc published on GitHub Pages | P1 | ✅ Done |
 | US-007 | Release automation (semver + GitHub Releases) | P2 | ✅ Done |
 
 ---
 
-## US-001 — Pipeline CI multi-plateforme
+## US-001 — Multi-platform CI pipeline
 
-**Priorité :** P0 — **Dépend de :** rien — **Bloque :** US-002 à US-007
+**Priority:** P0 — **Depends on:** nothing — **Blocks:** US-002 to US-007
 
 ### Story
-En tant que mainteneur, je veux qu'un workflow GitHub Actions compile et teste le code sur Linux/macOS/Windows × GCC/Clang/MSVC à chaque push et PR.
+As a maintainer, I want a GitHub Actions workflow to compile and test the code on Linux/macOS/Windows × GCC/Clang/MSVC on every push and PR.
 
-### Spécification technique
-- Fichier : `.github/workflows/ci.yml`
-- Triggers : `push` (toutes branches), `pull_request` (vers `develop` et `master`)
-- Matrice :
+### Technical specification
+- File: `.github/workflows/ci.yml`
+- Triggers: `push` (all branches), `pull_request` (towards `develop` and `master`)
+- Matrix:
   - `os: [ubuntu-24.04, macos-14, windows-2022]`
-  - `compiler: [gcc-12, gcc-13, clang-15, clang-17, msvc, appleclang]` (filtrer par OS)
+  - `compiler: [gcc-12, gcc-13, clang-15, clang-17, msvc, appleclang]` (filter by OS)
   - `build_type: [Debug, Release]`
-- Étapes :
+- Steps:
   1. `actions/checkout@v4`
-  2. Installer compilateur si besoin
+  2. Install compiler if needed
   3. `cmake -S . -B build -DCMAKE_BUILD_TYPE=$BUILD_TYPE`
   4. `cmake --build build --parallel`
   5. `ctest --test-dir build --output-on-failure`
 - `fail-fast: false`
-- Cache `~/.cache/ccache` (Linux/macOS) avec `actions/cache@v4`
+- Cache `~/.cache/ccache` (Linux/macOS) with `actions/cache@v4`
 
-### Critères d'acceptation
-- [ ] Tous les jobs verts sur la PR
-- [ ] Badge CI dans `README.md`
-- [ ] Temps total < 6 min sur cache chaud
+### Acceptance criteria
+- [ ] All jobs green on the PR
+- [ ] CI badge in `README.md`
+- [ ] Total time < 6 min on warm cache
 
 ---
 
-## US-002 — Couverture de code (gcov + lcov + Codecov)
+## US-002 — Code coverage (gcov + lcov + Codecov)
 
-**Priorité :** P0 — **Dépend de :** US-001 — **Bloque :** US-041
+**Priority:** P0 — **Depends on:** US-001 — **Blocks:** US-041
 
-### Spécification technique
-- Nouveau job CI `coverage` (Ubuntu + GCC seul, Debug)
-- Flags : `-O0 -g --coverage -fprofile-arcs -ftest-coverage`
-- Option CMake : `-DENABLE_COVERAGE=ON` pilotant ces flags
-- Étapes :
+### Technical specification
+- New CI job `coverage` (Ubuntu + GCC only, Debug)
+- Flags: `-O0 -g --coverage -fprofile-arcs -ftest-coverage`
+- CMake option: `-DENABLE_COVERAGE=ON` controlling these flags
+- Steps:
   1. Build + run tests
   2. `lcov --capture --directory build --output-file coverage.info`
   3. `lcov --remove coverage.info '*/test/*' '*/_deps/*' '/usr/*' --output-file coverage.info`
-  4. `codecov-action@v4` avec `coverage.info`
-- Badge Codecov dans README
+  4. `codecov-action@v4` with `coverage.info`
+- Codecov badge in README
 
-### Critères d'acceptation
-- [ ] Rapport visible sur codecov.io
-- [ ] Badge dans README
-- [ ] Couverture initiale rapportée (≥ existante, pas de seuil bloquant ici — US-041 ajoutera le seuil)
+### Acceptance criteria
+- [ ] Report visible on codecov.io
+- [ ] Badge in README
+- [ ] Initial coverage reported (≥ existing, no blocking threshold here — US-041 will add the threshold)
 
 ---
 
 ## US-003 — Sanitizers (ASan + UBSan)
 
-**Priorité :** P1 — **Dépend de :** US-001
+**Priority:** P1 — **Depends on:** US-001
 
-### Spécification
-- Job CI `sanitizers` (Ubuntu + Clang 17, Debug)
-- Flags : `-fsanitize=address,undefined -fno-omit-frame-pointer`
-- Option CMake : `-DENABLE_SANITIZERS=ON`
-- Variables d'env : `ASAN_OPTIONS=detect_leaks=1`, `UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1`
-- Pas de TSan (pas de threads), pas de MSan (complexe à provisionner)
+### Specification
+- CI job `sanitizers` (Ubuntu + Clang 17, Debug)
+- Flags: `-fsanitize=address,undefined -fno-omit-frame-pointer`
+- CMake option: `-DENABLE_SANITIZERS=ON`
+- Env variables: `ASAN_OPTIONS=detect_leaks=1`, `UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1`
+- No TSan (no threads), no MSan (complex to provision)
 
-### Critères d'acceptation
-- [ ] Job vert sur develop
-- [ ] Tout test échouant en sanitizer = build rouge
+### Acceptance criteria
+- [ ] Job green on develop
+- [ ] Any test failing under sanitizer = red build
 
 ---
 
-## US-004 — clang-format + vérification CI
+## US-004 — clang-format + CI verification
 
-**Priorité :** P1 — **Dépend de :** US-001
+**Priority:** P1 — **Depends on:** US-001
 
-### Spécification
-- Fichier `.clang-format` à la racine :
+### Specification
+- `.clang-format` file at the root:
   ```yaml
   BasedOnStyle: LLVM
   IndentWidth: 4
@@ -95,22 +95,22 @@ En tant que mainteneur, je veux qu'un workflow GitHub Actions compile et teste l
   PointerAlignment: Left
   AllowShortFunctionsOnASingleLine: InlineOnly
   ```
-- Job CI `format-check` : `clang-format --dry-run --Werror $(find src test -name '*.hpp' -o -name '*.cpp')`
-- Cible CMake `format` qui applique `clang-format -i`
-- Pre-commit hook documenté dans `CONTRIBUTING.md` (création optionnelle)
+- CI job `format-check`: `clang-format --dry-run --Werror $(find src test -name '*.hpp' -o -name '*.cpp')`
+- CMake target `format` that applies `clang-format -i`
+- Pre-commit hook documented in `CONTRIBUTING.md` (optional creation)
 
-### Critères d'acceptation
-- [ ] Tous les fichiers reformatés conformément
-- [ ] Job CI bloque tout PR non formaté
+### Acceptance criteria
+- [ ] All files reformatted accordingly
+- [ ] CI job blocks any unformatted PR
 
 ---
 
-## US-005 — clang-tidy + vérification CI
+## US-005 — clang-tidy + CI verification
 
-**Priorité :** P1 — **Dépend de :** US-001
+**Priority:** P1 — **Depends on:** US-001
 
-### Spécification
-- Fichier `.clang-tidy` à la racine :
+### Specification
+- `.clang-tidy` file at the root:
   ```yaml
   Checks: >
     bugprone-*,
@@ -125,42 +125,42 @@ En tant que mainteneur, je veux qu'un workflow GitHub Actions compile et teste l
   WarningsAsErrors: '*'
   HeaderFilterRegex: 'src/include/.*\.hpp$'
   ```
-- Job CI `lint` : `run-clang-tidy -p build` après cmake configure
-- Génération `compile_commands.json` via `CMAKE_EXPORT_COMPILE_COMMANDS=ON`
+- CI job `lint`: `run-clang-tidy -p build` after cmake configure
+- `compile_commands.json` generation via `CMAKE_EXPORT_COMPILE_COMMANDS=ON`
 
-### Critères d'acceptation
-- [ ] Aucun warning clang-tidy sur le code livré
-- [ ] CI rouge si nouveau warning introduit
+### Acceptance criteria
+- [ ] No clang-tidy warning on delivered code
+- [ ] CI red if a new warning is introduced
 
 ---
 
-## US-006 — Doc Doxygen publiée sur GitHub Pages
+## US-006 — Doxygen doc published on GitHub Pages
 
-**Priorité :** P1 — **Dépend de :** US-001
+**Priority:** P1 — **Depends on:** US-001
 
-### Spécification
-- Workflow `.github/workflows/docs.yml` déclenché sur `push` vers `develop`
-- Étapes : checkout, install Doxygen, `cmake --build build --target doc`, déploiement sur `gh-pages` via `peaceiris/actions-gh-pages@v3`
-- Le `doc/publish.sh` existant peut être supprimé ou rendu local-only
-- URL publique : `https://yscialom.github.io/matrix/`
-- Badge "docs" dans README
+### Specification
+- Workflow `.github/workflows/docs.yml` triggered on `push` to `develop`
+- Steps: checkout, install Doxygen, `cmake --build build --target doc`, deployment to `gh-pages` via `peaceiris/actions-gh-pages@v3`
+- The existing `doc/publish.sh` may be deleted or made local-only
+- Public URL: `https://yscialom.github.io/matrix/`
+- "docs" badge in README
 
-### Critères d'acceptation
-- [ ] Doc accessible sur l'URL ci-dessus
-- [ ] Mise à jour automatique à chaque merge sur `develop`
+### Acceptance criteria
+- [ ] Doc accessible at the above URL
+- [ ] Automatically updated on every merge to `develop`
 
 ---
 
 ## US-007 — Release automation (semver + GitHub Releases)
 
-**Priorité :** P2 — **Dépend de :** US-001
+**Priority:** P2 — **Depends on:** US-001
 
-### Spécification
-- Workflow `.github/workflows/release.yml` déclenché sur tag `v*.*.*`
-- Étapes : build, test, génération CHANGELOG via `git-cliff` (config `cliff.toml`), création release GitHub avec `softprops/action-gh-release@v1`
-- Convention de commits **Conventional Commits** (feat:, fix:, chore:, etc.) — documentée dans `CONTRIBUTING.md`
-- Bump des `VERSION_MAJOR/MINOR/PATCH` dans `CMakeLists.txt` à chaque release (manuel via PR, CI vérifie cohérence avec le tag)
+### Specification
+- Workflow `.github/workflows/release.yml` triggered on tag `v*.*.*`
+- Steps: build, test, CHANGELOG generation via `git-cliff` (config `cliff.toml`), GitHub release creation with `softprops/action-gh-release@v1`
+- **Conventional Commits** convention (feat:, fix:, chore:, etc.) — documented in `CONTRIBUTING.md`
+- Bump of `VERSION_MAJOR/MINOR/PATCH` in `CMakeLists.txt` on each release (manual via PR, CI checks consistency with the tag)
 
-### Critères d'acceptation
-- [ ] Release v2.0.0 créée à la fin de la roadmap (cf. US-042)
-- [ ] CHANGELOG généré
+### Acceptance criteria
+- [ ] Release v2.0.0 created at the end of the roadmap (cf. US-042)
+- [ ] CHANGELOG generated
