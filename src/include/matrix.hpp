@@ -2177,6 +2177,8 @@ public:
      * @ingroup ysc_enumerate
      */
     template <class ElemT> class enumerate_range {
+        friend class matrix;
+
     public:
         /** @brief Value type yielded by the iterator. */
         using value_type = std::pair<std::array<std::size_t, order>, ElemT&>;
@@ -2224,12 +2226,12 @@ public:
             std::size_t _idx;
         };
 
-        constexpr enumerate_range(ElemT* ptr, std::size_t n) noexcept : _ptr(ptr), _n(n) {}
-
         [[nodiscard]] constexpr iterator begin() const noexcept { return iterator{_ptr, 0}; }
         [[nodiscard]] constexpr iterator end() const noexcept { return iterator{_ptr, _n}; }
 
     private:
+        constexpr enumerate_range(ElemT* ptr, std::size_t n) noexcept : _ptr(ptr), _n(n) {}
+
         ElemT* _ptr;
         std::size_t _n;
     };
