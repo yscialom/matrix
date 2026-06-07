@@ -17,6 +17,7 @@ add_executable(matrix-bench
     src/bench_access.cpp
     src/bench_arithmetic.cpp
     src/bench_linalg.cpp
+    src/bench_fill_swap.cpp
 )
 target_include_directories(matrix-bench PRIVATE
     ${CMAKE_SOURCE_DIR}/src/include
