@@ -25,7 +25,8 @@ TEST(EmptyMatrix, ZeroConstruct) {
 
 TEST(EmptyMatrix, CopyConstruct) {
     ysc::matrix<int, 0> a;
-    ysc::matrix<int, 0> b = a; // NOLINT(performance-unnecessary-copy-initialization)
+    // NOLINTNEXTLINE(performance-unnecessary-copy-initialization) -- tests empty matrix copy ctor
+    ysc::matrix<int, 0> b = a;
     EXPECT_EQ(a, b);
 }
 

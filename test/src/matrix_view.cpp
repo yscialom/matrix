@@ -40,6 +40,7 @@ TEST(matrix_view_construct, from_matrix_implicit) {
 TEST(matrix_view_construct, copy_shares_pointer) {
     ysc::matrix<int, 3> m{10, 20, 30};
     ysc::matrix_view<int, ysc::contiguous, 3> v1 = m;
+    // Copy is intentional: verifies that two views share the same underlying pointer.
     // NOLINTNEXTLINE(performance-unnecessary-copy-initialization)
     ysc::matrix_view<int, ysc::contiguous, 3> v2 = v1;
     v2(0) = 99;
@@ -423,5 +424,6 @@ TEST(matrix_view_strided_iterators, iterator_three_way_comparison) {
     auto col4 = m2.col(0); // 4-element strided view
     auto a4 = col4.begin();
     auto b4 = col4.begin() + 1;
-    EXPECT_TRUE((a4 <=> b4) < 0); // NOLINT(misc-redundant-expression)
+    // NOLINTNEXTLINE(misc-redundant-expression) -- spaceship compared to 0 tests ordering contract
+    EXPECT_TRUE((a4 <=> b4) < 0);
 }

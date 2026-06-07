@@ -76,7 +76,7 @@ TEST(matrix_from_view, contiguous_from_slice) {
     for (std::size_t i = 0; i < 2; ++i) {
         for (std::size_t j = 0; j < 3; ++j) {
             for (std::size_t k = 0; k < 4; ++k) {
-                m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+                m(i, j, k) = static_cast<int>((i * 12) + (j * 4) + k + 1);
             }
         }
     }
@@ -92,7 +92,7 @@ TEST(matrix_from_view, contiguous_2d_explicit) {
     for (std::size_t i = 0; i < 2; ++i) {
         for (std::size_t j = 0; j < 3; ++j) {
             for (std::size_t k = 0; k < 4; ++k) {
-                m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+                m(i, j, k) = static_cast<int>((i * 12) + (j * 4) + k + 1);
             }
         }
     }
@@ -144,7 +144,7 @@ TEST(matrix_from_view, strided_2d_from_3d_slice) {
     for (std::size_t i = 0; i < 2; ++i) {
         for (std::size_t j = 0; j < 3; ++j) {
             for (std::size_t k = 0; k < 4; ++k) {
-                m(i, j, k) = static_cast<int>(i * 12 + j * 4 + k + 1);
+                m(i, j, k) = static_cast<int>((i * 12) + (j * 4) + k + 1);
             }
         }
     }
@@ -187,7 +187,7 @@ TEST(matrix_from_view, strided_1d_iterator_copies_correct_values) {
     ysc::matrix<int, 4, 5> m{};
     for (std::size_t i = 0; i < 4; ++i) {
         for (std::size_t j = 0; j < 5; ++j) {
-            m(i, j) = static_cast<int>(i * 5 + j + 1);
+            m(i, j) = static_cast<int>((i * 5) + j + 1);
         }
     }
     // col(3): elements m(0,3), m(1,3), m(2,3), m(3,3) — values 4, 9, 14, 19

@@ -123,7 +123,7 @@ TEST(construct_copy, user_defined_type) {
 // Expect matrixes to be movable for trivial types
 TEST(construct_move, trivial_type) {
     ysc::matrix<int, 3> m = {1987, 04, 24};
-    auto const m_copy = std::move(m); // NOLINT(performance-move-const-arg)
+    auto const m_copy = std::move(m); // NOLINT(performance-move-const-arg) -- tests move ctor
     ASSERT_EQ(m_copy(0), 1987);
     ASSERT_EQ(m_copy(1), 04);
     ASSERT_EQ(m_copy(2), 24);
@@ -132,7 +132,8 @@ TEST(construct_move, trivial_type) {
 // Expect matrixes to be movable for trivial types from a different source type
 TEST(construct_move, different_trivial_type) {
     ysc::matrix<int, 3> m = {1987, 04, 24};
-    ysc::matrix<long, 3> const m_copy = std::move(m); // NOLINT(performance-move-const-arg)
+    // NOLINTNEXTLINE(performance-move-const-arg) -- tests move ctor with cross-type conversion
+    ysc::matrix<long, 3> const m_copy = std::move(m);
     ASSERT_EQ(m_copy(0), 1987);
     ASSERT_EQ(m_copy(1), 04);
     ASSERT_EQ(m_copy(2), 24);
@@ -143,8 +144,8 @@ TEST(construct_move, user_defined_type) {
     ysc::matrix<std::shared_ptr<int>, 1> m{std::make_shared<int>(0)};
     auto const m_copy = std::move(m);
     ASSERT_EQ(*m_copy(0), 0);
-    ASSERT_FALSE(
-        static_cast<bool>(m(0))); // NOLINT(bugprone-use-after-move,clang-analyzer-cplusplus.Move)
+    // NOLINTNEXTLINE(bugprone-use-after-move,clang-analyzer-cplusplus.Move) -- moved-from is null
+    ASSERT_FALSE(static_cast<bool>(m(0)));
 }
 
 //
@@ -185,7 +186,8 @@ TEST(assign_copy, user_defined_type) {
 TEST(assign_move, trivial_type) {
     ysc::matrix<int, 3> m = {1987, 04, 24};
     ysc::matrix<int, 3> m_assign;
-    m_assign = std::move(m); // NOLINT(performance-move-const-arg)
+    // NOLINTNEXTLINE(performance-move-const-arg) -- tests move assignment; trivial type
+    m_assign = std::move(m);
     ASSERT_EQ(m_assign(0), 1987);
     ASSERT_EQ(m_assign(1), 04);
     ASSERT_EQ(m_assign(2), 24);
@@ -195,7 +197,8 @@ TEST(assign_move, trivial_type) {
 TEST(assign_move, different_trivial_type) {
     ysc::matrix<int, 3> m = {1987, 04, 24};
     ysc::matrix<long, 3> m_assign;
-    m_assign = std::move(m); // NOLINT(performance-move-const-arg)
+    // NOLINTNEXTLINE(performance-move-const-arg) -- tests move assignment, cross-type
+    m_assign = std::move(m);
     ASSERT_EQ(m_assign(0), 1987);
     ASSERT_EQ(m_assign(1), 04);
     ASSERT_EQ(m_assign(2), 24);
@@ -244,14 +247,16 @@ TEST(construct_init, copy_not_variadic) {
 TEST(destruct, user_defined_type) {
     bool trigger = false;
     struct S {
-        S(bool& flag)
-            : _flag(flag) {}   // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
+        // Implicit ctor intentional: test helper only.
+        // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
+        S(bool& flag) : _flag(flag) {}
         ~S() { _flag = true; } // upon destruction: sets trigger to true
         S(const S&) = delete;
         S& operator=(const S&) = delete;
         S(S&&) = delete;
         S& operator=(S&&) = delete;
-        bool& _flag; // NOLINT(cppcoreguidelines-avoid-const-or-ref-data-members)
+        // NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members) -- test helper
+        bool& _flag;
     };
 
     {

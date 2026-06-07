@@ -147,6 +147,8 @@ public:
      *
      * @ingroup ysc_views
      */
+    // Implicit conversion intentional: mirrors std::string_view design — `view = m;` must work
+    // without a cast, just as assigning a string to a string_view does.
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
     constexpr matrix_view(matrix<T, Dimensions...>& m) noexcept : _ptr{m.data()} {}
 
@@ -168,6 +170,7 @@ public:
      */
     template <class U>
         requires std::same_as<T, const U>
+    // Same as above: implicit conversion from const matrix& to read-only view is intentional.
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
     constexpr matrix_view(const matrix<U, Dimensions...>& m) noexcept : _ptr{m.data()} {}
 
@@ -213,6 +216,9 @@ public:
      *
      * @ingroup ysc_views
      */
+    // Implicit conversion from contiguous to strided view is intentional: widening (like const
+    // promotion), losing no information; requiring a cast would make everyday use unnecessarily
+    // verbose.
     // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
     constexpr operator matrix_view<T, strided, Dimensions...>() const noexcept;
 
@@ -847,6 +853,7 @@ public:
 
         const_iterator() noexcept = default;
         const_iterator(const T* ptr, std::size_t stride) noexcept : _ptr{ptr}, _stride{stride} {}
+        // Standard iterator→const_iterator implicit conversion (same idiom as std::vector).
         // NOLINTNEXTLINE(google-explicit-constructor,hicpp-explicit-conversions)
         const_iterator(iterator it) noexcept : _ptr{it._ptr}, _stride{it._stride} {}
 

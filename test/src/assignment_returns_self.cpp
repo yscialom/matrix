@@ -14,7 +14,8 @@ TEST(assign_returns_self, copy_different_type) {
 TEST(assign_returns_self, move_different_type) {
     ysc::matrix<int, 3> m1 = {1, 2, 3};
     ysc::matrix<long, 3> m2;
-    auto& ref = (m2 = std::move(m1)); // NOLINT(performance-move-const-arg)
+    // NOLINTNEXTLINE(performance-move-const-arg) -- move of trivial T; tests templated overload
+    auto& ref = (m2 = std::move(m1));
     ASSERT_EQ(&ref, &m2);
 }
 

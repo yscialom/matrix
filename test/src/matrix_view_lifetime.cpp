@@ -37,6 +37,7 @@ TEST(MatrixViewLifetime, DanglingViewUseAfterFree) {
         // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
         auto* m = new ysc::matrix<int, 3>{1, 2, 3};
         ysc::matrix_view<int, ysc::contiguous, 3> view{*m};
+        // Raw delete intentional: simulating use-after-free to verify ASan catches it.
         // NOLINTNEXTLINE(cppcoreguidelines-owning-memory)
         delete m;
         // The matrix has been freed; accessing the view is heap-use-after-free.

@@ -106,6 +106,7 @@ TEST(submatrix, throws_when_block_exceeds_dimension) {
                                9, 10, 11, 12,
                               13, 14, 15, 16};
     // clang-format on
+    // Capturing lambda is not a coroutine; wrapping the throwing call for EXPECT_THROW.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
     auto bad = [&] { (void)m.submatrix<3, 3>({2, 2}); };
     EXPECT_THROW(bad(), std::out_of_range);
@@ -113,6 +114,7 @@ TEST(submatrix, throws_when_block_exceeds_dimension) {
 
 TEST(submatrix, throws_on_row_overflow) {
     ysc::matrix<int, 3, 5> m{};
+    // Capturing lambda is not a coroutine; wrapping the throwing call for EXPECT_THROW.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
     auto bad = [&] { (void)m.submatrix<2, 3>({2, 0}); };
     EXPECT_THROW(bad(), std::out_of_range);
@@ -120,6 +122,7 @@ TEST(submatrix, throws_on_row_overflow) {
 
 TEST(submatrix, throws_on_col_overflow) {
     ysc::matrix<int, 5, 3> m{};
+    // Capturing lambda is not a coroutine; wrapping the throwing call for EXPECT_THROW.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
     auto bad = [&] { (void)m.submatrix<3, 2>({0, 2}); };
     EXPECT_THROW(bad(), std::out_of_range);
@@ -127,6 +130,7 @@ TEST(submatrix, throws_on_col_overflow) {
 
 TEST(submatrix, throws_on_const_matrix_overflow) {
     const ysc::matrix<int, 4, 4> m{};
+    // Capturing lambda is not a coroutine; wrapping the throwing call for EXPECT_THROW.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
     auto bad = [&] { (void)m.submatrix<3, 3>({2, 2}); };
     EXPECT_THROW(bad(), std::out_of_range);
@@ -134,6 +138,7 @@ TEST(submatrix, throws_on_const_matrix_overflow) {
 
 TEST(submatrix, does_not_throw_on_exact_boundary) {
     ysc::matrix<int, 4, 4> m{};
+    // Capturing lambda is not a coroutine; wrapping the call for EXPECT_NO_THROW.
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-capturing-lambda-coroutines)
     auto ok = [&] { (void)m.submatrix<2, 2>({2, 2}); };
     EXPECT_NO_THROW(ok());

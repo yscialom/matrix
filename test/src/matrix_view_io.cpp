@@ -134,6 +134,8 @@ TEST(matrix_view_io, contiguous_view_col) {
 TEST(matrix_view_io, contiguous_view_row_out_of_range) {
     ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
     auto v = m.reshape<2, 3>();
+    // The temporary view returned by row/col/slice is intentionally discarded; we only test that
+    // the call throws. The clang-analyzer false positive treats the throw path as a Move issue.
     // NOLINTNEXTLINE(bugprone-unused-return-value,clang-analyzer-cplusplus.Move)
     ASSERT_THROW({ auto r = v.row(2); }, std::out_of_range);
 }
@@ -141,6 +143,8 @@ TEST(matrix_view_io, contiguous_view_row_out_of_range) {
 TEST(matrix_view_io, contiguous_view_col_out_of_range) {
     ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
     auto v = m.reshape<2, 3>();
+    // The temporary view returned by row/col/slice is intentionally discarded; we only test that
+    // the call throws. The clang-analyzer false positive treats the throw path as a Move issue.
     // NOLINTNEXTLINE(bugprone-unused-return-value,clang-analyzer-cplusplus.Move)
     ASSERT_THROW({ auto c = v.col(3); }, std::out_of_range);
 }
@@ -149,6 +153,8 @@ TEST(matrix_view_io, contiguous_view_slice_out_of_range) {
     ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
     auto v = m.reshape<2, 3>();
     // Fix first dim with an out-of-bounds index → throws
+    // The temporary view returned by row/col/slice is intentionally discarded; we only test that
+    // the call throws. The clang-analyzer false positive treats the throw path as a Move issue.
     // NOLINTNEXTLINE(bugprone-unused-return-value,clang-analyzer-cplusplus.Move)
     ASSERT_THROW({ auto s = v.slice(5); }, std::out_of_range);
 }
@@ -157,6 +163,8 @@ TEST(matrix_view_io, contiguous_view_slice_non_prefix_out_of_range) {
     ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
     auto v = m.reshape<2, 3>();
     // Fix second dim with an out-of-bounds index → throws
+    // The temporary view returned by row/col/slice is intentionally discarded; we only test that
+    // the call throws. The clang-analyzer false positive treats the throw path as a Move issue.
     // NOLINTNEXTLINE(bugprone-unused-return-value,clang-analyzer-cplusplus.Move)
     ASSERT_THROW({ auto s = v.slice(ysc::all, 10); }, std::out_of_range);
 }
