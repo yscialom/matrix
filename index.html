@@ -162,6 +162,14 @@ Manual</h3>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&quot;</span></div>
 </div><!-- fragment --><hr  />
 <h2><a class="anchor" id="autotoc_md7"></a>
+Stability &amp; Semantic Versioning</h2>
+<p>Starting with v1.0.0, <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code> follows <a href="https://semver.org/">Semantic Versioning</a>:</p>
+<ul>
+<li><b>Public API</b> = everything in namespace <code>ysc</code> <em>except</em> <code>ysc::detail::</code>. Breaking changes to the public API require a <b>major version bump</b>.</li>
+<li>**<code>ysc::detail::</code>** is internal implementation. It may change in any release, including patch releases. Do <b>not</b> depend on it directly.</li>
+</ul>
+<hr  />
+<h2><a class="anchor" id="autotoc_md9"></a>
 Features</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -188,11 +196,11 @@ Features</h2>
 <td class="markdownTableBodyNone">Zero overhead   </td><td class="markdownTableBodyNone">Storage is <code>std::array&lt;T, N&gt;</code>, no heap, no virtual, no indirection   </td></tr>
 </table>
 <hr  />
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 Cookbook</h2>
 <p>Looking for practical, copy-paste examples? The <a class="el" href="cookbook.html">Cookbook — Practical Recipes for ysc::matrix</a> page collects six ready-to-use recipes covering the first use-cases — element access, factory functions, algorithms, zero-copy views, and linear algebra — and showcases the library's signature features: <code>constexpr</code> linear algebra, compile-time dimension checks, and views that carry their shape in the type.</p>
 <hr  />
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 API Reference</h2>
 <p>The API is organized into the following groups — see the <a href="topics.html">Topics</a> page for a full listing:</p><ul>
 <li><a class="el" href="group__ysc__construction.html">Construction</a> — Construction (constructors, assignment, <code>zeros</code>, <code>full</code>, <code>ones</code>, <code>identity</code>, <code>generate</code>)</li>

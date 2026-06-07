@@ -7,7 +7,7 @@ var searchData=
   ['col_4',['col',['../group__ysc__views.html#ga4b280459feffb12e7dcc2d7760fc3ce5',1,'ysc::matrix::col(std::size_t j) &amp;'],['../group__ysc__views.html#ga7ea9637e7e2988875521ca0375ed5c4c',1,'ysc::matrix::col(std::size_t j) const &amp;'],['../group__ysc__views.html#ga586e256a6319999d3761a08f93f38925',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::col()']]],
   ['cols_5',['cols',['../group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a',1,'ysc::matrix::cols() &amp;'],['../group__ysc__views.html#ga86bb1efda34f5a91a46631f0ebfc00ca',1,'ysc::matrix::cols() const &amp;']]],
   ['comparison_6',['Comparison',['../group__ysc__comparison.html',1,'']]],
-  ['compile_20time_7',['2. Algebra at compile time',['../cookbook.html#autotoc_md14',1,'']]],
+  ['compile_20time_7',['2. Algebra at compile time',['../cookbook.html#autotoc_md16',1,'']]],
   ['const_5fiterator_8',['const_iterator',['../structysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4_1_1const__iterator.html',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_iterator'],['../classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a32d24dbc7c4fd03245c8213232e17ba8',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::const_iterator'],['../classysc_1_1matrix.html#a846af3b247da263bf53d8ac0c61eb07f',1,'ysc::matrix::const_iterator']]],
   ['const_5fmatrix_5fview_9',['const_matrix_view',['../group__ysc__views.html#ga4cc25153c17fcf35d9990d4d49724706',1,'ysc']]],
   ['const_5fpointer_10',['const_pointer',['../classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a30427a2aa99b8883629a1b66349217a1',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::const_pointer'],['../classysc_1_1matrix__view_3_01T_00_01strided_00_01Dimensions_8_8_8_01_4.html#a732a83989dd64718f1ce8782d8e68112',1,'ysc::matrix_view&lt; T, strided, Dimensions... &gt;::const_pointer'],['../classysc_1_1matrix.html#a22773d7329f03ad1a28e046a9fb09514',1,'ysc::matrix::const_pointer']]],
@@ -15,9 +15,9 @@ var searchData=
   ['const_5freverse_5fiterator_12',['const_reverse_iterator',['../classysc_1_1matrix.html#a0c1ac7cc6c357915c3386b85d840965b',1,'ysc::matrix::const_reverse_iterator'],['../classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#aa2e131a4689d82c739b2bb2ff452fd1a',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::const_reverse_iterator']]],
   ['construction_13',['Construction',['../group__ysc__construction.html',1,'']]],
   ['contiguous_14',['contiguous',['../structysc_1_1contiguous.html',1,'ysc']]],
-  ['cookbook_15',['Cookbook',['../index.html#autotoc_md9',1,'']]],
+  ['cookbook_15',['Cookbook',['../index.html#autotoc_md11',1,'']]],
   ['cookbook_20—_20practical_20recipes_20for_20ysc_3a_3amatrix_16',['Cookbook — Practical Recipes for ysc::matrix',['../cookbook.html',1,'']]],
-  ['copy_20views_20and_20slicing_17',['5. Zero-copy views and slicing',['../cookbook.html#autotoc_md17',1,'']]],
+  ['copy_20views_20and_20slicing_17',['5. Zero-copy views and slicing',['../cookbook.html#autotoc_md19',1,'']]],
   ['crbegin_18',['crbegin',['../group__ysc__views.html#gaa6afcea4b26952305b583ffd34162281',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::crbegin()'],['../group__ysc__iterators.html#gabb1ec4b6e5cc8dce247981e33d802fcc',1,'ysc::matrix::crbegin()']]],
   ['crend_19',['crend',['../group__ysc__views.html#ga82c0d18da0997174dfc5b05cac687ea2',1,'ysc::matrix_view&lt; T, contiguous, Dimensions... &gt;::crend()'],['../group__ysc__iterators.html#ga49232c0a6abe78c4f0f8f2caa6e721b9',1,'ysc::matrix::crend()']]]
 ];

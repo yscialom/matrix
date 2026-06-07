@@ -27,12 +27,12 @@ var NAVTREE =
   [ "ysc-matrix", "index.html", [
     [ "ysc::matrix — Multi-dimensional Array Library", "index.html", null ],
     [ "Cookbook — Practical Recipes for ysc::matrix", "cookbook.html", [
-      [ "1. Hello, matrix", "cookbook.html#autotoc_md13", null ],
-      [ "2. Algebra at compile time", "cookbook.html#autotoc_md14", null ],
-      [ "3. Factory functions", "cookbook.html#autotoc_md15", null ],
-      [ "4. Map, reduce, transform", "cookbook.html#autotoc_md16", null ],
-      [ "5. Zero-copy views and slicing", "cookbook.html#autotoc_md17", null ],
-      [ "6. Linear algebra essentials", "cookbook.html#autotoc_md18", null ]
+      [ "1. Hello, matrix", "cookbook.html#autotoc_md15", null ],
+      [ "2. Algebra at compile time", "cookbook.html#autotoc_md16", null ],
+      [ "3. Factory functions", "cookbook.html#autotoc_md17", null ],
+      [ "4. Map, reduce, transform", "cookbook.html#autotoc_md18", null ],
+      [ "5. Zero-copy views and slicing", "cookbook.html#autotoc_md19", null ],
+      [ "6. Linear algebra essentials", "cookbook.html#autotoc_md20", null ]
     ] ],
     [ "Topics", "topics.html", "topics" ],
     [ "Concepts", "concepts.html", "concepts" ],

@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 <div class="contents">
 <div class="textblock"><p>Six self-contained recipes for the first things you will want to do with <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code>. Each one also highlights a property of the library that sets it apart from raw C arrays, nested <code>std::array</code>, Eigen, or <code>std::mdspan</code>.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 1. Hello, matrix</h1>
 <p>Aggregate-initialize a matrix, mutate one element through <code>operator()</code>, and print it. Same syntax as a C array — but bounds-checking, comparison, iteration, and <code>std::format</code> come for free.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> The storage is a <code>std::array&lt;int, 6&gt;</code> — same layout as <code>int m[2][3]</code>, zero indirection, zero allocation. You only pay for what you use. </p>
 </blockquote>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 2. Algebra at compile time</h1>
 <p>Every linear-algebra primitive is <code>constexpr</code>. Move invariants from the test suite into the build itself — broken dimensions or wrong values become compile errors, not runtime surprises.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> Neither Eigen nor <code>std::mdspan</code> lets you evaluate a matrix product inside a <code>static_assert</code>. Here the whole API is <code>constexpr</code>, so unit-test-grade checks run during compilation. </p>
 </blockquote>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 3. Factory functions</h1>
 <p>Five constexpr factories cover the matrices you most often need to type out by hand. All are type-safe and dimension-aware.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> All five live in the same header you already include, all are <code>constexpr</code>, and all carry their dimensions in the type. No <code>Eigen::MatrixXd::Identity(n, n)</code> runtime sizing surprise. </p>
 </blockquote>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 4. Map, reduce, transform</h1>
 <p>Mutate in place with <code>apply</code>, build a new matrix with <code>map</code>, reduce with <code>sum</code> / <code>min</code> / <code>max</code> / <code>all</code> / <code>any</code>. No need to drop down to STL algorithms for the common cases.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> <code>apply</code> and <code>map</code> are the matrix-native shorthands for <code>std::ranges::for_each</code> and <code>std::ranges::transform</code>, but they keep the dimensions in the type — so <code>m.map(f)</code> produces a <code>matrix&lt;U, Dims...&gt;</code>, not a <code>std::vector</code>. </p>
 </blockquote>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 5. Zero-copy views and slicing</h1>
 <p><code>row(i)</code>, <code>col(j)</code>, <code>reshape&lt;…&gt;()</code>, and <code>flatten()</code> return lightweight non-owning views — pointer + static shape, no allocation. Use them like <code>std::string_view</code> for matrices.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>
@@ -260,7 +260,7 @@ $(document).ready(function(){initNavTree('cookbook.html',''); initResizable(); }
 </div><!-- fragment --><blockquote class="doxtable">
 <p>&zwj;<b>Why it matters.</b> Slicing in Eigen returns expression templates with non-trivial lifetimes; <code>std::mdspan</code> is a view but not a container; nested <code>std::array</code> cannot slice at all. Here a view is a pointer + a compile-time shape, composable, and the const-ness is enforced by the type system. </p>
 </blockquote>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 6. Linear algebra essentials</h1>
 <p><code>transpose</code>, <code>matmul</code>, and <code>dot</code> cover most everyday linear algebra. <code>matmul</code> is overloaded for matrix × matrix and matrix × column-vector, and mismatched inner dimensions are a compile error — not a runtime check.</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="matrix_8hpp.html">matrix.hpp</a>&gt;</span></div>

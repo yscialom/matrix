@@ -595,19 +595,19 @@ class ysc::matrix&lt; T, Dimensions &gt;</div><p>Multi-dimensional container enc
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td>Element type </td></tr>
-    <tr><td class="paramname">Dimentions</td><td>Dimensions of the matrix</td></tr>
+    <tr><td class="paramname">Dimensions</td><td>Dimensions of the matrix</td></tr>
   </table>
   </dd>
 </dl>
 <p><code>matrix&lt;T, 2, 5, 9&gt;</code> is an order 3 matrix of <code>T</code> elements; its dimensions are 2 by 5 by 9 (90 <code>T</code> elements in total).</p>
 <p>This container is a class type with the semantics of an aggregate similar to a struct holding a C-style array <code>T[Dimensions][...]</code> as its only non-static data member. Unlike a C-style array, it doesn't decay to <code>T*</code> automatically. As an aggregate impersonator, it can be initialized with aggregate-initialization given exactly <code>linear_size</code> initializers that are convertible to <code>T:</code> <code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a>&lt;int, 3, 2&gt; m = {1,2,3,4,5,6};</code>.</p>
 <p>The struct combines the performance and accessibility of a C-style array with the benefits of a standard container, such as knowing its own size, supporting assignment, random access iterators, etc.</p>
-<h3><a class="anchor" id="autotoc_md19"></a>
+<h3><a class="anchor" id="autotoc_md21"></a>
 Named requirements</h3>
 <p><code><a class="el" href="classysc_1_1matrix.html" title="Multi-dimensional container encapsulating a fixed size matrix.">ysc::matrix</a></code> satisfies the C++ named requirements <a href="https://en.cppreference.com/w/cpp/named_req/Container">Container</a>, <a href="https://en.cppreference.com/w/cpp/named_req/ReversibleContainer">ReversibleContainer</a>, and <a href="https://en.cppreference.com/w/cpp/named_req/ContiguousContainer">ContiguousContainer</a>. It does <b>not</b> satisfy SequenceContainer (fixed size — no insert/erase).</p>
-<h3><a class="anchor" id="autotoc_md20"></a>
+<h3><a class="anchor" id="autotoc_md22"></a>
 Iterator invalidation</h3>
-<p>As a rule, iterators to aa matrix are never invalidated throughout the lifetime of the matrix. One should take note, however, that during swap, the iterator will continue to point to the same matrix element, and will thus change its value. </p>
+<p>As a rule, iterators to a matrix are never invalidated throughout the lifetime of the matrix. One should take note, however, that during swap, the iterator will continue to point to the same matrix element, and will thus change its value. </p>
 
 <p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l00126">126</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
