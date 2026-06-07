@@ -463,9 +463,9 @@ public:
      * @return Const reference to the element
      * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
      *         of the form:
-     *         @code
+     *         @verbatim
      *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
-     *         @endcode
+     *         @endverbatim
      *
      * @code
      * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
@@ -502,9 +502,9 @@ public:
      * @return Mutable reference to the element
      * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
      *         of the form:
-     *         @code
+     *         @verbatim
      *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
-     *         @endcode
+     *         @endverbatim
      *
      * @code
      * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
@@ -567,8 +567,9 @@ public:
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
-     * auto row0 = m.row(0);        // matrix_view<int, contiguous, 4>
-     * auto sub = row0.slice(2);    // matrix_view<int, contiguous, 2> — last 2 elements
+     * ysc::matrix_view<int, ysc::contiguous, 3, 4> v{m};
+     * auto sub1 = v.slice(1);            // matrix_view<int, contiguous, 4> — row 1
+     * auto sub2 = v.slice(ysc::all, 2);  // matrix_view<int, strided, 3> — column 2
      * @endcode
      *
      * @ingroup ysc_views
@@ -619,7 +620,7 @@ public:
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
-     * auto v2d = m.flatten().reshape<3, 4>();
+     * ysc::matrix_view<int, ysc::contiguous, 3, 4> v2d{m};
      * auto r   = v2d.row(1);  // contiguous view of row 1 — 4 elements
      * @endcode
      *
@@ -644,7 +645,7 @@ public:
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
-     * auto v2d = m.flatten().reshape<3, 4>();
+     * ysc::matrix_view<int, ysc::contiguous, 3, 4> v2d{m};
      * auto c   = v2d.col(2);  // strided view of column 2 — 3 elements, stride 4
      * @endcode
      *
@@ -672,9 +673,9 @@ public:
  *
  * A @c matrix_view<T,strided,Dims...> holds a raw pointer and a strides array.
  * Elements are accessed as:
- * @code
+ * @verbatim
  * element(c0, c1, ...) == *(_ptr + c0*strides[0] + c1*strides[1] + ...)
- * @endcode
+ * @endverbatim
  *
  * @note Iterators and @c data() are not available (non-contiguous layout).
  *       Use @c operator() or @c at() for element access.
@@ -1080,7 +1081,7 @@ public:
      * @return Const reference to the element
      *
      * No bounds checking is performed; use @c at() for bounds-checked access.
-     * The element is located at: @code _ptr + c0*strides[0] + c1*strides[1] + ... @endcode
+     * The element is located at: <tt>_ptr + c0*strides[0] + c1*strides[1] + ...</tt>
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
@@ -1111,7 +1112,7 @@ public:
      * @return Mutable reference to the element
      *
      * No bounds checking is performed; use @c at() for bounds-checked access.
-     * The element is located at: @code _ptr + c0*strides[0] + c1*strides[1] + ... @endcode
+     * The element is located at: <tt>_ptr + c0*strides[0] + c1*strides[1] + ...</tt>
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
@@ -1144,9 +1145,9 @@ public:
      * @return Const reference to the element
      * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
      *         of the form:
-     *         @code
+     *         @verbatim
      *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
-     *         @endcode
+     *         @endverbatim
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};
@@ -1183,9 +1184,9 @@ public:
      * @return Mutable reference to the element
      * @throws std::out_of_range if any coordinate is negative or out of bounds, with a message
      *         of the form:
-     *         @code
+     *         @verbatim
      *         "matrix_view::at: coordinate <c> is out of bounds for dimension <i> (size=<s>)"
-     *         @endcode
+     *         @endverbatim
      *
      * @code
      * ysc::matrix<int, 3, 4> m{};

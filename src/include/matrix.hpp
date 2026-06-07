@@ -368,13 +368,12 @@ public:
      * @param rhs value to be swapped
      *
      * Swaps the elements of @a lhs and @a rhs as if:
-     * @code
-     using std::swap;
-     for (auto lhs_it = lhs.begin(), auto rhs_it = rhs.begin() ; lhs_it !=
-     lhs.end() ; ++lhs_it,
-     ++rhs_it) { swap(*lhs_it, *rhs_it);
-     }
-     @endcode
+     * @verbatim
+       using std::swap;
+       for (auto [lhs_it, rhs_it] = std::pair{lhs.begin(), rhs.begin()};
+            lhs_it != lhs.end(); ++lhs_it, ++rhs_it)
+           swap(*lhs_it, *rhs_it);
+       @endverbatim
      *
      * @ingroup ysc_modifiers
      */
@@ -1793,10 +1792,9 @@ public:
      *
      * @code
      * ysc::matrix<int, 3, 4, 5> m{};
-     * auto v0 = m.slice(1);            // contiguous: row 1 across all 4×5
-     * columns auto v1 = m.slice(ysc::all, 2);  // strided: column 2 across all
-     * 3×5 rows auto v2 = m.slice();             // contiguous: view over the
-     * whole matrix
+     * auto v0 = m.slice(1);             // contiguous: 4x5 hyper-slice at index 1
+     * auto v1 = m.slice(ysc::all, 2);   // strided: column 2 across all 3 rows, 5 deep
+     * auto v2 = m.slice();              // contiguous: full view over the whole matrix
      * @endcode
      *
      * @ingroup ysc_views
@@ -2250,7 +2248,7 @@ public:
      *
      * @code
      * ysc::matrix<int, 2, 3> m{1, 2, 3, 4, 5, 6};
-     * for (auto& [coords, val] : m.enumerate()) {
+     * for (auto [coords, val] : m.enumerate()) {
      *     // coords == {0,0},{0,1},{0,2},{1,0},{1,1},{1,2} in order
      *     val *= 10;  // mutates m
      * }
