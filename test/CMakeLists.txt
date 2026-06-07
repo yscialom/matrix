@@ -44,6 +44,7 @@ add_executable(${TARGET_NAME}
     src/slice.cpp
     src/submatrix.cpp
     src/ostream.cpp
+    src/pathological_types.cpp
     src/reductions.cpp
     src/reductions_axis.cpp
     src/rows_cols.cpp
