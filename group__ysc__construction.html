@@ -196,6 +196,10 @@ requires requires { T{1}; }</td></tr>
 <tr class="memitem:gac576c1a63cac336454e2023283a902f2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dims... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__construction.html#gac576c1a63cac336454e2023283a902f2">ysc::generate</a> (F f)</td></tr>
 <tr class="memdesc:gac576c1a63cac336454e2023283a902f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a matrix filled by calling <em>f(i)</em> for each linear index <em>i</em>.  <br /></td></tr>
 <tr class="separator:gac576c1a63cac336454e2023283a902f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga997cbe9082811a8775a912cd3a6eae16" id="r_ga997cbe9082811a8775a912cd3a6eae16"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t... Dims, detail::coord_generator&lt; T, Dims... &gt; MultiIndexF&gt; </td></tr>
+<tr class="memitem:ga997cbe9082811a8775a912cd3a6eae16"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dims... &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__ysc__construction.html#ga997cbe9082811a8775a912cd3a6eae16">ysc::generate</a> (MultiIndexF f)</td></tr>
+<tr class="memdesc:ga997cbe9082811a8775a912cd3a6eae16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a matrix filled by calling <em>f</em>(i₀, i₁, …) for each N-D coordinate.  <br /></td></tr>
+<tr class="separator:ga997cbe9082811a8775a912cd3a6eae16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Constructors, assignment operators, and factory functions. </p>
@@ -672,7 +676,7 @@ template&lt;class T , std::size_t... D&gt; </div>
 </div>
 </div>
 <a id="gac576c1a63cac336454e2023283a902f2" name="gac576c1a63cac336454e2023283a902f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac576c1a63cac336454e2023283a902f2">&#9670;&#160;</a></span>generate()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gac576c1a63cac336454e2023283a902f2">&#9670;&#160;</a></span>generate() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -716,8 +720,62 @@ template&lt;class T , std::size_t... Dims, std::invocable&lt; std::size_t &gt; F
 <div class="fragment"><div class="line"><span class="keyword">auto</span> m = ysc::generate&lt;int, 3&gt;([](std::size_t i) { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(i * 2); });</div>
 <div class="line"><span class="comment">// m == ysc::matrix&lt;int, 3&gt;{0, 2, 4}</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02465">2465</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02475">2475</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
+</div>
+</div>
+<a id="ga997cbe9082811a8775a912cd3a6eae16" name="ga997cbe9082811a8775a912cd3a6eae16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga997cbe9082811a8775a912cd3a6eae16">&#9670;&#160;</a></span>generate() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , std::size_t... Dims, detail::coord_generator&lt; T, Dims... &gt; MultiIndexF&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classysc_1_1matrix.html">matrix</a>&lt; T, Dims... &gt; ysc::generate </td>
+          <td>(</td>
+          <td class="paramtype">MultiIndexF&#160;</td>
+          <td class="paramname"><em>f</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a matrix filled by calling <em>f</em>(i₀, i₁, …) for each N-D coordinate. </p>
+<p>This overload accepts a callable that takes <code>sizeof</code>...(Dims) arguments of type <code>std::size_t</code> — one per dimension, in row-major order. It is selected when <em>f</em> is <b>not</b> callable with a single <code>std::size_t</code> (which would select the linear-index overload instead, preserving backward compatibility).</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Element type </td></tr>
+    <tr><td class="paramname">Dims</td><td>Dimensions of the result matrix </td></tr>
+    <tr><td class="paramname">F</td><td>Callable type: <code>f</code>(i₀, …, iₙ) must be convertible to <code>T</code> </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td>Generator callable receiving the N-D coordinates </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>New <code>matrix&lt;T, Dims...&gt;</code> where element at <code></code>(i₀,…,iₙ) equals <code>f</code>(i₀,…,iₙ)</dd></dl>
+<div class="fragment"><div class="line"><span class="comment">// 3×3 identity matrix</span></div>
+<div class="line"><span class="keyword">auto</span> I = ysc::generate&lt;int, 3, 3&gt;([](std::size_t i, std::size_t j) {</div>
+<div class="line">    <span class="keywordflow">return</span> i == j ? 1 : 0;</div>
+<div class="line">});</div>
+<div class="line"><span class="comment">// Tensor: m(i,j,k) = i*100 + j*10 + k</span></div>
+<div class="line"><span class="keyword">auto</span> m = ysc::generate&lt;int, 2, 3, 4&gt;([](<span class="keyword">auto</span> i, <span class="keyword">auto</span> j, <span class="keyword">auto</span> k) {</div>
+<div class="line">    <span class="keywordflow">return</span> int(i * 100 + j * 10 + k);</div>
+<div class="line">});</div>
+</div><!-- fragment --> 
 </div>
 </div>
 <a id="ga6533093080ef6a1147b0b2e65fc72093" name="ga6533093080ef6a1147b0b2e65fc72093"></a>

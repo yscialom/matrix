@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"group__ysc__views.html#gadb84e3605a194f6e56030570070bc267":[2,12,40],
+"group__ysc__views.html#gadf38f09060d276c14e7dc8581149ccb7":[2,12,28],
 "group__ysc__views.html#gadf746e2210100153fe918d8eab35bf2a":[2,12,48],
 "group__ysc__views.html#gae04eeded82427bf1ff980d87165ffb5f":[2,12,47],
 "group__ysc__views.html#gae45a5dceb0d0ea551c7d0f3cc1a3a97a":[2,12,34],
@@ -17,7 +19,6 @@ var NAVTREEINDEX1 =
 "index.html":[],
 "index.html":[0],
 "matrix_8hpp.html":[5,0,0,0,0],
-"matrix_8hpp.html#gac576c1a63cac336454e2023283a902f2":[5,0,0,0,0,6],
 "matrix_8hpp_source.html":[5,0,0,0,0],
 "matrix__detail_8hpp.html":[5,0,0,0,1],
 "matrix__detail_8hpp.html#a03c2f1b12cbc7f746aa4d159b77a079c":[5,0,0,0,1,7],

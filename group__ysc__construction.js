@@ -12,6 +12,7 @@ var group__ysc__construction =
     [ "ysc::matrix::explicit", "group__ysc__construction.html#ga39262f99acad5c261e742a9eb02f1d9f", null ],
     [ "ysc::full", "group__ysc__construction.html#ga4667d4ca977426b55a433ec7d7b0af03", null ],
     [ "ysc::generate", "group__ysc__construction.html#gac576c1a63cac336454e2023283a902f2", null ],
+    [ "ysc::generate", "group__ysc__construction.html#ga997cbe9082811a8775a912cd3a6eae16", null ],
     [ "ysc::identity", "group__ysc__construction.html#ga6533093080ef6a1147b0b2e65fc72093", null ],
     [ "ysc::ones", "group__ysc__construction.html#ga6f48d7d8e532ef83b8433e665768086d", null ],
     [ "ysc::matrix::operator=", "group__ysc__construction.html#gace2d8f3355ae19ccf2c21c1d910f04b7", null ],

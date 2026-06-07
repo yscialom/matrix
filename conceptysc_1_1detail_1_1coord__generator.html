@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>ysc-matrix: Concepts</title>
+<title>ysc-matrix: ysc::detail::coord_generator Concept Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -83,7 +83,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('concepts.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('conceptysc_1_1detail_1_1coord__generator.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -109,23 +109,25 @@ $(document).ready(function(){initNavTree('concepts.html',''); initResizable(); }
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Concepts</div></div>
+  <div class="headertitle"><div class="title">ysc::detail::coord_generator Concept Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented concepts with brief descriptions:</div><div class="directory">
-<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><span class="icona"><span class="icon">N</span></span><b>ysc</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_" class="odd"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="toggleFolder('0_0_')">&#9660;</span><span class="icona"><span class="icon">N</span></span><b>detail</b></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">R</span></span><a class="el" href="conceptysc_1_1detail_1_1coord__generator.html" target="_self">coord_generator</a></td><td class="desc"></td></tr>
-<tr id="row_0_1_" class="odd"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">R</span></span><a class="el" href="conceptysc_1_1matrix__convertible__from.html" target="_self">matrix_convertible_from</a></td><td class="desc">Satisfied when <code>U</code> is convertible to <code>T</code>. Used to constrain converting constructors and assignment operators </td></tr>
-<tr id="row_0_2_" class="even"><td class="entry"><span style="width:32px;display:inline-block;">&#160;</span><span class="icona"><span class="icon">R</span></span><a class="el" href="conceptysc_1_1integral__coordinates.html" target="_self">integral_coordinates</a></td><td class="desc">Satisfied when all types in <code>Coords</code> are integral (ignoring cv-ref). Used to constrain <code>operator()</code> and <code>at()</code> on matrix and matrix_view </td></tr>
-</table>
-</div><!-- directory -->
-</div><!-- contents -->
+<h2 class="groupheader">Concept definition</h2>
+<div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class </span>F, <span class="keyword">class </span>T, std::size_t... Dims&gt;</div>
+<div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptysc_1_1detail_1_1coord__generator.html">ysc::detail::coord_generator</a> =  <span class="keyword">requires</span>(F f, std::array&lt;std::size_t, <span class="keyword">sizeof</span>...(Dims)&gt; coords) {</div>
+<div class="line">    { std::apply(f, coords) } -&gt; std::convertible_to&lt;T&gt;;</div>
+<div class="line">}</div>
+<div class="ttc" id="aconceptysc_1_1detail_1_1coord__generator_html"><div class="ttname"><a href="conceptysc_1_1detail_1_1coord__generator.html">ysc::detail::coord_generator</a></div><div class="ttdef"><b>Definition</b> <a href="matrix_8hpp_source.html#l02454">matrix.hpp:2454</a></div></div>
+</div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Satisfied when F can be invoked with sizeof...(Dims) std::size_t arguments and the result is convertible to T. Used to dispatch the multi-index overload of <a class="el" href="group__ysc__construction.html#gac576c1a63cac336454e2023283a902f2" title="Returns a matrix filled by calling f(i) for each linear index i.">ysc::generate</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02454">2454</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><b>ysc</b></li><li class="navelem"><b>detail</b></li><li class="navelem"><a class="el" href="conceptysc_1_1detail_1_1coord__generator.html">coord_generator</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
