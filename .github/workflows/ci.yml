@@ -95,9 +95,7 @@ jobs:
 
       - name: Install compiler and GTest (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
-        uses: eclipse-score/apt-install@main
-        with:
-          packages: ccache ${{ matrix.packages }}
+        run: sudo apt-get update -q && sudo apt-get install -y ccache ${{ matrix.packages }}
 
       - name: Install GTest (macOS)
         if: startsWith(matrix.os, 'macos')
@@ -159,9 +157,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install GCC-13, GTest and lcov
-        uses: eclipse-score/apt-install@main
-        with:
-          packages: g++-13 libgtest-dev lcov
+        run: sudo apt-get update -q && sudo apt-get install -y g++-13 libgtest-dev lcov
 
       - name: Configure with coverage
         env:
@@ -211,9 +207,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install Clang-17 and GTest
-        uses: eclipse-score/apt-install@main
-        with:
-          packages: clang-17 libgtest-dev
+        run: sudo apt-get update -q && sudo apt-get install -y clang-17 libgtest-dev
 
       - name: Configure with sanitizers
         env:
@@ -241,9 +235,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install clang-format
-        uses: eclipse-score/apt-install@main
-        with:
-          packages: clang-format
+        run: sudo apt-get update -q && sudo apt-get install -y clang-format
 
       - name: Check formatting
         run: |
@@ -258,9 +250,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install clang-tidy and GTest
-        uses: eclipse-score/apt-install@main
-        with:
-          packages: clang-tidy libgtest-dev
+        run: sudo apt-get update -q && sudo apt-get install -y clang-tidy libgtest-dev
 
       - name: Configure
         run: cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DYSC_MATRIX_BUILD_EXAMPLES=ON
@@ -276,9 +266,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Install GCC-13
-        uses: eclipse-score/apt-install@main
-        with:
-          packages: g++-13
+        run: sudo apt-get update -q && sudo apt-get install -y g++-13
 
       - name: Create consumer project
         run: |
