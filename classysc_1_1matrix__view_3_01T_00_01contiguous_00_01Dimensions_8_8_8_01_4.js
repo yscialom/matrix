@@ -35,7 +35,7 @@ var classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4 =
     [ "fill", "group__ysc__views.html#gab49beb82fe19e372ced47038927a4fbe", null ],
     [ "front", "group__ysc__views.html#ga01e388299f48cf6c916df60ef7c3a3a7", null ],
     [ "front", "group__ysc__views.html#ga414d0e5094db6623769b36e63d44ee26", null ],
-    [ "operator matrix_view< T, strided, Dimensions... >", "group__ysc__views.html#ga23f17b4aad3e2bdfc5ad3af2e8521a1c", null ],
+    [ "operator matrix_view< T, strided, Dimensions... >", "group__ysc__views.html#ga069948ebe625338c7edf5827e23d61c8", null ],
     [ "operator()", "group__ysc__views.html#ga6f817a8a802ed8e7125f4816f487830d", null ],
     [ "operator()", "group__ysc__views.html#gaa9c6c3c58df74f32cba0e5b32d1fb933", null ],
     [ "operator=", "classysc_1_1matrix__view_3_01T_00_01contiguous_00_01Dimensions_8_8_8_01_4.html#a4766a83d32722c288134bdfb446222c0", null ],

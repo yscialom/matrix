@@ -671,7 +671,7 @@ template&lt;class T , std::size_t... D&gt; </div>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> m = ysc::full&lt;int, 2, 3&gt;(7);</div>
 <div class="line">assert(m(0, 0) == 7 &amp;&amp; m(1, 2) == 7);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02403">2403</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02405">2405</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -720,7 +720,7 @@ template&lt;class T , std::size_t... Dims, std::invocable&lt; std::size_t &gt; F
 <div class="fragment"><div class="line"><span class="keyword">auto</span> m = ysc::generate&lt;int, 3&gt;([](std::size_t i) { <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(i * 2); });</div>
 <div class="line"><span class="comment">// m == ysc::matrix&lt;int, 3&gt;{0, 2, 4}</span></div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02475">2475</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02477">2477</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -815,7 +815,7 @@ requires requires { T{1}; }</div>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> m = ysc::identity&lt;double, 3&gt;();</div>
 <div class="line">assert(m(0, 0) == 1.0 &amp;&amp; m(0, 1) == 0.0);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02441">2441</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02443">2443</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -856,7 +856,7 @@ requires requires { T{1}; }</div>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> m = ysc::ones&lt;double, 3&gt;();</div>
 <div class="line">assert(m(0) == 1.0 &amp;&amp; m(2) == 1.0);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02423">2423</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02425">2425</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1072,7 @@ template&lt;class T , std::size_t... D&gt; </div>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> m = ysc::zeros&lt;int, 2, 3&gt;();</div>
 <div class="line">assert(m(0, 0) == 0 &amp;&amp; m(1, 2) == 0);</div>
 </div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02386">2386</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="matrix_8hpp_source.html#l02388">2388</a> of file <a class="el" href="matrix_8hpp_source.html">matrix.hpp</a>.</p>
 
 </div>
 </div>
