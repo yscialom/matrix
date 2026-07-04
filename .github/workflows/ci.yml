@@ -91,7 +91,7 @@ jobs:
             build_type: Release
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install compiler and GTest (Ubuntu)
         if: startsWith(matrix.os, 'ubuntu')
@@ -154,7 +154,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install GCC-13, GTest and lcov
         run: sudo apt-get update -q && sudo apt-get install -y g++-13 libgtest-dev lcov
@@ -204,7 +204,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install Clang-17 and GTest
         run: sudo apt-get update -q && sudo apt-get install -y clang-17 libgtest-dev
@@ -239,7 +239,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install clang-format
         run: sudo apt-get update -q && sudo apt-get install -y clang-format
@@ -254,7 +254,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install clang-tidy and GTest
         run: sudo apt-get update -q && sudo apt-get install -y clang-tidy libgtest-dev
@@ -270,7 +270,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install GCC-13
         run: sudo apt-get update -q && sudo apt-get install -y g++-13
@@ -329,7 +329,7 @@ jobs:
     name: Doxygen build (no publish)
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Install Doxygen
         run: |
